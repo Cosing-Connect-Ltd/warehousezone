@@ -293,8 +293,7 @@ namespace WMS.Controllers.TA
                         });
                     }
 
-                    CreateDetail(report, "FullName"); //Employees by Fullname
-                    CreateDetailReport(report, "TimeLogs"); //Lists of Timelogs
+                    report.Status.EvaluateBinding += Status_EvaluateBinding;
 
                     report.DataSource = employeesTimeLogs;
                 }
@@ -401,27 +400,24 @@ namespace WMS.Controllers.TA
 
                         if (expectedHours == TimeSpan.ParseExact("00:00", @"hh\:mm", CultureInfo.InvariantCulture))
                         {
-                            status = "Unknown";
-                            statusColor = "Black";
+                            status = "";
                         }
                         else
                         {
                             if (totalTime.Equals(expectedHours.Value.Hours))
                             {
                                 status = "GOOD";
-                                statusColor = "Green";
                             }
                             if (totalTime > expectedHours.Value)
                             {
                                 status = "OVERTIME";
-                                statusColor = "Violet";
                             }
                             if (totalTime < expectedHours.Value)
                             {
                                 status = "SHORT";
-                                statusColor = "Red";
                             }
                         }
+
 
                         //calculate TotalSalary (# hours x hourly rate)
                         if (hourlyRate > 0)
@@ -462,7 +458,7 @@ namespace WMS.Controllers.TA
                         ExpectedHours = null,
                         Breaks = null,
                         WeekNumber = weekNumber,
-                        Status = "Unknown",
+                        Status = "",
                         Employees = null
                     });
                 }
@@ -472,228 +468,6 @@ namespace WMS.Controllers.TA
         }
 
         #region Devexpress Report
-        private void CreateDetail(XtraReport report, string dataMember)
-        {
-            // Create a label bound to the ContactName data field.
-            XRLabel labelDetail = new XRLabel();
-            labelDetail.DataBindings.Add(
-                new XRBinding("Text", report.DataSource, dataMember, "{0}"));
-            labelDetail.Font = new Font("Tahoma", 10, System.Drawing.FontStyle.Bold);
-            labelDetail.BackColor = Color.LightBlue;
-            labelDetail.WidthF = (report.PageWidth - report.Margins.Left - report.Margins.Right) / 3;
-
-            XRLabel labelDetail2 = new XRLabel();
-            labelDetail2.DataBindings.Add(
-                new XRBinding("Text", report.DataSource, "EmployeeRole", "Role: {0}"));
-            labelDetail2.Font = new Font("Tahoma", 10, System.Drawing.FontStyle.Bold);
-            labelDetail2.BackColor = Color.LightBlue;
-            labelDetail2.WidthF = (report.PageWidth - report.Margins.Left - report.Margins.Right) / 3;
-            labelDetail2.LeftF = (report.PageWidth - report.Margins.Left - report.Margins.Right) / 3;
-
-            XRLabel labelDetail3 = new XRLabel();
-            labelDetail3.DataBindings.Add(
-                new XRBinding("Text", report.DataSource, "PayrollEmployeeNo", "Payroll Employee No: {0}"));
-            labelDetail3.Font = new Font("Tahoma", 10, System.Drawing.FontStyle.Bold);
-            labelDetail3.BackColor = Color.LightBlue;
-            labelDetail3.WidthF = (report.PageWidth - report.Margins.Left - report.Margins.Right) / 3;
-            labelDetail3.LeftF = ((report.PageWidth - report.Margins.Left - report.Margins.Right) / 3) * 2;
-
-
-            // Create a detail band and display the category name in it.
-            //DetailBand detailBand = new DetailBand();
-            DetailBand detailBand = report.Bands[BandKind.Detail] as DetailBand; //use BandKind to search because a DetailBand already exists at Report
-            detailBand.Height = labelDetail.Height;
-            detailBand.KeepTogetherWithDetailReports = true;
-            report.Bands.Add(detailBand);
-            labelDetail.TopF = detailBand.LocationFloat.Y + 20F;
-            labelDetail2.TopF = detailBand.LocationFloat.Y + 20F;
-            labelDetail3.TopF = detailBand.LocationFloat.Y + 20F;
-
-
-
-
-            detailBand.Controls.Add(labelDetail);
-            detailBand.Controls.Add(labelDetail2);
-            detailBand.Controls.Add(labelDetail3);
-
-            //sort
-            detailBand.SortFields.Add(new GroupField(dataMember, XRColumnSortOrder.Ascending));
-            detailBand.SortFields.Add(new GroupField("EmployeeRole", XRColumnSortOrder.Ascending));
-            detailBand.SortFields.Add(new GroupField("PayrollEmployeeNo", XRColumnSortOrder.Ascending));
-        }
-
-        private void CreateDetailReport(XtraReport report, string dataMember)
-        {
-            // Create a detail report band and bind it to data.
-            DetailReportBand detailReportBand = new DetailReportBand();
-            report.Bands.Add(detailReportBand);
-            detailReportBand.DataSource = report.DataSource;
-            detailReportBand.DataMember = dataMember;
-
-            // ---------Add a header to the detail report.---------------
-            ReportHeaderBand detailReportHeader = new ReportHeaderBand();
-            detailReportBand.Bands.Add(detailReportHeader);
-
-            XRTable tableHeader = new XRTable();
-            tableHeader.BeginInit();
-            tableHeader.Rows.Add(new XRTableRow());
-
-            //tableHeader.Borders = BorderSide.All;
-            tableHeader.BorderColor = Color.DarkGray;
-            tableHeader.Font = new Font("Tahoma", 9, System.Drawing.FontStyle.Bold);
-            tableHeader.Padding = 10;
-            tableHeader.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-
-            XRTableCell cellHeader1 = new XRTableCell();
-            cellHeader1.Text = "";
-            XRTableCell cellHeader2 = new XRTableCell();
-            cellHeader2.Text = "Hours";
-            XRTableCell cellHeader3 = new XRTableCell();
-            cellHeader3.Text = "Salary";
-            //cellHeader2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            XRTableCell cellHeader4 = new XRTableCell();
-            cellHeader4.Text = "Exp. Hours";
-            XRTableCell cellHeader5 = new XRTableCell();
-            cellHeader5.Text = "Time In";
-            XRTableCell cellHeader6 = new XRTableCell();
-            cellHeader6.Text = "Time Out";
-            XRTableCell cellHeader7 = new XRTableCell();
-            cellHeader7.Text = "Breaks";
-            XRTableCell cellHeader8 = new XRTableCell();
-            cellHeader8.Text = "Status";
-
-            tableHeader.Rows[0].Cells.AddRange(new XRTableCell[] { cellHeader1, cellHeader2, cellHeader3, cellHeader4, cellHeader5, cellHeader6, cellHeader7, cellHeader8 });
-            detailReportHeader.Height = tableHeader.Height;
-            detailReportHeader.Controls.Add(tableHeader);
-
-            // Adjust the table width.
-            tableHeader.BeforePrint += tableHeader_BeforePrint;
-            tableHeader.EndInit();
-
-            //------------ Create the Header (TimeLogs Listing) detail band.--------------
-            XRTable tableDetail = new XRTable();
-            tableDetail.BeginInit();
-
-            tableDetail.Rows.Add(new XRTableRow());
-            tableDetail.Borders = ((DevExpress.XtraPrinting.BorderSide)(BorderSide.Top | BorderSide.Left | BorderSide.Right | BorderSide.Bottom));
-            tableDetail.BorderColor = Color.DarkGray;
-            tableDetail.Font = new Font("Tahoma", 9);
-            tableDetail.Padding = 10;
-            tableDetail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-
-            XRTableCell cellDetail1 = new XRTableCell();
-            cellDetail1.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".WeekDay")});
-            cellDetail1.WidthF = 108f;
-
-            XRTableCell cellDetail2 = new XRTableCell();
-            cellDetail2.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".TotalHours")});
-
-            XRTableCell cellDetail3 = new XRTableCell();
-            cellDetail3.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".TotalSalary")});
-            //cellDetail3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-
-            XRTableCell cellDetail4 = new XRTableCell();
-            cellDetail4.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".ExpectedHoursString")});
-            //cellDetail4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-
-            XRTableCell cellDetail5 = new XRTableCell();
-            cellDetail5.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".TimeIn")});
-            //cellDetail5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            cellDetail5.EvaluateBinding += DateTimeFormatting_EvaluateBinding;
-
-            XRTableCell cellDetail6 = new XRTableCell();
-            cellDetail6.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".TimeOut")});
-            cellDetail6.EvaluateBinding += DateTimeFormatting_EvaluateBinding;
-
-            XRTableCell cellDetail7 = new XRTableCell();
-            cellDetail7.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".Breaks")});
-
-            XRTableCell cellDetail8 = new XRTableCell();
-            cellDetail8.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".Status")});
-            cellDetail8.Font = new Font("Tahoma", 8, FontStyle.Regular);
-            cellDetail8.EvaluateBinding += CellDetail8_EvaluateBinding;
-
-            tableDetail.Rows[0].Cells.AddRange(new XRTableCell[] { cellDetail1, cellDetail2, cellDetail3, cellDetail4, cellDetail5, cellDetail6, cellDetail7, cellDetail8 });
-
-            DetailBand detailBand = new DetailBand();
-            detailBand.Height = tableDetail.Height;
-            detailReportBand.Bands.Add(detailBand);
-            detailBand.Controls.Add(tableDetail);
-
-            // Adjust the table width.
-            tableDetail.BeforePrint += tableDetail_BeforePrint;
-            tableDetail.EndInit();
-
-            //---------Add a footer to the detail report.-------------
-            ReportFooterBand detailReportFooter = new ReportFooterBand();
-            detailReportBand.Bands.Add(detailReportFooter);
-
-            XRTable tableFooter = new XRTable();
-            tableFooter.BeginInit();
-            tableFooter.Rows.Add(new XRTableRow());
-
-            //tableHeader.Borders = BorderSide.All;
-            tableFooter.BorderColor = Color.DarkGray;
-            tableFooter.Font = new Font("Tahoma", 9, System.Drawing.FontStyle.Bold);
-            tableFooter.Padding = 10;
-            tableFooter.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            tableFooter.Borders = ((DevExpress.XtraPrinting.BorderSide)(BorderSide.Top | BorderSide.Left | BorderSide.Right | BorderSide.Bottom));
-
-            XRSummary summary1 = new XRSummary();
-            summary1.Func = SummaryFunc.Sum;
-            summary1.Running = SummaryRunning.Report;
-            summary1.IgnoreNullValues = true;
-            //summary1.FormatString = "Total: {0}";
-
-            XRTableCell cellFooter1 = new XRTableCell();
-            cellFooter1.Text = "";
-            cellFooter1.WidthF = 108f;
-
-            XRTableCell cellFooter2 = new XRTableCell();
-            cellFooter2.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".TotalHours")});
-            cellHeader2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            cellFooter2.Summary = summary1;
-
-            XRSummary summary2 = new XRSummary();
-            summary2.Running = SummaryRunning.Report;
-            summary2.Func = SummaryFunc.Sum;
-            summary2.IgnoreNullValues = true;
-            //summary2.FormatString = "Total: {0:$0.00}";
-
-            XRTableCell cellFooter3 = new XRTableCell();
-            cellFooter3.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, dataMember + ".TotalSalary")});
-            cellFooter3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            cellFooter3.Summary = summary2;
-
-            XRTableCell cellFooter4 = new XRTableCell();
-            cellFooter4.Text = "";
-            XRTableCell cellFooter5 = new XRTableCell();
-            cellFooter5.Text = "";
-            XRTableCell cellFooter6 = new XRTableCell();
-            cellFooter6.Text = "";
-            XRTableCell cellFooter7 = new XRTableCell();
-            cellFooter7.Text = "";
-            XRTableCell cellFooter8 = new XRTableCell();
-            cellFooter8.Text = "";
-
-            tableFooter.Rows[0].Cells.AddRange(new XRTableCell[] { cellFooter1, cellFooter2, cellFooter3, cellFooter4, cellFooter5, cellFooter6, cellFooter7, cellFooter8 });
-            detailReportFooter.Height = tableFooter.Height;
-            detailReportFooter.Controls.Add(tableFooter);
-
-            // Adjust the table width.
-            tableFooter.BeforePrint += tableHeader_BeforePrint; //just copy from tableHeader
-            tableFooter.EndInit();
-        }
 
         private void DateTimeFormatting_EvaluateBinding(object sender, BindingEventArgs e)
         {
@@ -710,9 +484,9 @@ namespace WMS.Controllers.TA
             }
         }
 
-        private void CellDetail8_EvaluateBinding(object sender, BindingEventArgs e)
+        private void Status_EvaluateBinding(object sender, BindingEventArgs e)
         {
-            XRTableCell cell = (sender as XRTableCell);
+            var cell = sender as XRLabel;
 
             cell.ForeColor = Color.Black; //default
 
