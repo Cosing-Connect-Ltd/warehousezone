@@ -94,8 +94,8 @@ namespace Ganedata.Core.Services
                                                                     LocationId = s.LocationsId,
                                                                     TimeBreaks = s.TimeBreaks,
                                                                     Date = o.Start.Date,
-                                                                    StartTime = s.StartTime,
-                                                                    EndTime = s.EndTime,
+                                                                    StartTime = o.Start.Date + s.StartTime.TimeOfDay,
+                                                                    EndTime = o.Start.Date + (s.EndTime.Date - s.StartTime.Date) + s.EndTime.TimeOfDay,
                                                                     EmployeeName = s.Resources.Name
                                                                   });
                                                               });

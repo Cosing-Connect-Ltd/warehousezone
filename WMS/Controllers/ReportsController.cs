@@ -489,16 +489,16 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             // get properties of tenant
-            caTenant tenant = caCurrent.CurrentTenant();
+            var tenant = caCurrent.CurrentTenant();
 
-            TimeAttendanceStatusReport report = new TimeAttendanceStatusReport();
+            var report = new TimeAttendanceStatusReport();
 
-            PageHeader(report);
-            CreateListingReport(report, "Employee");
+            //PageHeader(report);
+            //CreateListingReport(report, "Employee");
 
             report.DataSourceDemanded += Report_DataSourceDemanded;
 
-            Parameter paramTenantId = new Parameter()
+            var paramTenantId = new Parameter()
             {
                 Name = "tenantId",
                 Type = typeof(int),
@@ -506,23 +506,21 @@ namespace WMS.Controllers
                 Visible = false
             };
 
-            Parameter paramReportType = new Parameter()
+            var paramReportType = new Parameter()
             {
                 Name = "ReportTypeId",
                 Type = typeof(string),
-                Value = "Lateness",
+                Value = "Lateness & Overtime",
                 Description = "Report Type:",
                 LookUpSettings = new StaticListLookUpSettings(),
             };
 
             ((StaticListLookUpSettings)paramReportType.LookUpSettings).LookUpValues.AddRange(new LookUpValue[] {
-                new LookUpValue("1", "Lateness"),
-                new LookUpValue("2", "On Site"),
-                new LookUpValue("3", "Off Site"),
-                new LookUpValue("4", "Absence")
+                new LookUpValue("1", "Lateness & Overtime"),
+                new LookUpValue("2", "Absence")
             });
 
-            Parameter paramLocations = new Parameter()
+            var paramLocations = new Parameter()
             {
                 Name = "WarehouseId",
                 Type = typeof(string),
@@ -537,23 +535,23 @@ namespace WMS.Controllers
                 }
             };
 
-            Parameter paramStartDate = new Parameter()
+            var paramStartDate = new Parameter()
             {
                 Name = "StartDate",
                 Type = typeof(DateTime),
-                Value = DateTime.Now,
+                Value = DateTime.Today.AddDays(-7),
                 Description = "Start Date:",
             };
 
-            Parameter paramEndDate = new Parameter()
+            var paramEndDate = new Parameter()
             {
                 Name = "EndDate",
                 Type = typeof(DateTime),
-                Value = DateTime.Now,
+                Value = DateTime.Today,
                 Description = "End Date:",
             };
 
-            Parameter paramGracePeriod = new Parameter()
+            var paramGracePeriod = new Parameter()
             {
                 Name = "GracePeriodId",
                 Type = typeof(string),
@@ -584,7 +582,7 @@ namespace WMS.Controllers
         {
             var report = (TimeAttendanceStatusReport)sender;
 
-            int reportTypeId = (!String.IsNullOrEmpty(report.Parameters["ReportTypeId"].Value.ToString()) ? (int)(report.Parameters["ReportTypeId"].Value.ToString() == "Lateness" ? 1 : Convert.ToInt32(report.Parameters["ReportTypeId"].Value)) : 1); //1=Lateness
+            int reportTypeId = (!String.IsNullOrEmpty(report.Parameters["ReportTypeId"].Value.ToString()) ? (int)(report.Parameters["ReportTypeId"].Value.ToString() == "Lateness & Overtime" ? 1 : Convert.ToInt32(report.Parameters["ReportTypeId"].Value)) : 1); //1=Lateness & Overtime
             int locationId = (!String.IsNullOrEmpty(report.Parameters["WarehouseId"].Value.ToString()) ? (int)(report.Parameters["WarehouseId"].Value.ToString() == "Select a Location" ? 0 : Convert.ToInt32(report.Parameters["WarehouseId"].Value)) : 0);
             var startDate = (DateTime)report.Parameters["StartDate"].Value;
             var endDate = (DateTime)report.Parameters["EndDate"].Value;
@@ -596,25 +594,20 @@ namespace WMS.Controllers
 
             var shiftSchedules = _shiftScheduleService.GetShiftSchedules(locationId, startDate, endDate);
 
-            if (reportTypeId == 1)
+            var isLatenessReport = reportTypeId == 1;
+
+            report.StampInLabel.Visible = isLatenessReport;
+            report.StampOutLabel.Visible = isLatenessReport;
+            report.LateTimeLabel.Visible = isLatenessReport;
+            report.OverTimeLabel.Visible = isLatenessReport;
+
+            if (isLatenessReport)
             {//1=Lateness
-                report.FindControl("xrLabel1", true).Text = "Lateness";
+                report.FindControl("xrLabel1", true).Text = "Lateness & Overtime";
                 report.DataSource = Lateness(gracePeriodId, shiftSchedules);
             }
 
             if (reportTypeId == 2)
-            { //2=On Site
-                report.FindControl("xrLabel1", true).Text = "On Site";
-
-                report.DataSource = OnSite(locationId, startDate, tenantId, shiftSchedules.FirstOrDefault(s => s.Date == startDate.Date));
-            }
-            if (reportTypeId == 3)
-            { //3=Off Site
-                report.FindControl("xrLabel1", true).Text = "Off Site";
-                report.DataSource = OffSite(locationId, startDate, tenantId, shiftSchedules.FirstOrDefault(s => s.Date == startDate.Date));
-            }
-
-            if (reportTypeId == 4)
             { //4=Absence
                 report.FindControl("xrLabel1", true).Text = "Absence";
                 report.DataSource = Absence(shiftSchedules);
@@ -633,136 +626,94 @@ namespace WMS.Controllers
                 foreach (var itemShift in shiftSchedules)
                 {
                     //get EmployeeShifts by EmployeeId and Date
-                    var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(itemShift.EmployeeId, itemShift.Date, CurrentTenantId);
+                    var allStamps = _employeeShiftsServices.SearchByEmployeeIdAndDate(itemShift.EmployeeId, itemShift.Date, CurrentTenantId);
 
-                    if (employeeShifts != null && employeeShifts.Count() >= 1)
+                    if (allStamps != null && allStamps.Count() >= 1)
                     {
                         //get first stamp
-                        var stampFirstIn = employeeShifts.FirstOrDefault()?.TimeStamp;
-                        var stampLastOut = employeeShifts.LastOrDefault()?.TimeStamp;
+                        var firstInStamp = allStamps.FirstOrDefault(a => a.StatusType == "In")?.TimeStamp;
+                        var lastOutStamp = allStamps.LastOrDefault(a => a.StatusType == "Out" && a.TimeStamp > firstInStamp)?.TimeStamp;
 
-                        if (stampFirstIn.Value.Equals(stampLastOut)) //not equal
+                        if (lastOutStamp == null)
                         {
-                            stampLastOut = null;
+                            var nextDayStampLastOut = _employeeShiftsServices.SearchByEmployeeIdAndDate(itemShift.EmployeeId, itemShift.Date.AddDays(1), CurrentTenantId).FirstOrDefault();
+
+                            lastOutStamp = nextDayStampLastOut.StatusType == "Out" ? nextDayStampLastOut.TimeStamp : (DateTime?)null;
                         }
 
-                        //get last stamp
-                        foreach (var employeeShift in employeeShifts)
+
+                        if (firstInStamp.HasValue)
                         {
-                            if (employeeShift.StatusType == "In")
+                            var totalTime = new TimeSpan();
+                            var totalBreaksTaken = new TimeSpan();
+
+                            if (lastOutStamp != null && allStamps.Count() <= 2)
                             {
-                                //compare Shifts StartTime with EmployeeShifts TimeStamp
-                                var startTime = itemShift.StartTime;
-                                var timeStamp = employeeShift.TimeStamp;
-
-                                switch (gracePeriod)
-                                {
-                                    case 1:
-                                        if ((timeStamp - startTime).TotalMinutes >= 15) //15 minutes passed
-                                        {
-                                            model.Add(ReportTypeModel(id, timeStamp, stampFirstIn, stampLastOut, itemShift));
-                                            id += 1;
-                                        };
-
-                                        break;
-
-                                    case 2:
-                                        if ((timeStamp - startTime).TotalMinutes >= 30) //30 minutes passed
-                                        {
-                                            model.Add(ReportTypeModel(id, timeStamp, stampFirstIn, stampLastOut, itemShift));
-                                            id += 1;
-                                        }
-
-                                        break;
-
-                                    case 3:
-                                        if ((timeStamp - startTime).TotalHours >= 1) //1 hour passed
-                                        {
-                                            model.Add(ReportTypeModel(id, timeStamp, stampFirstIn, stampLastOut, itemShift));
-                                            id += 1;
-                                        }
-
-                                        break;
-
-                                    default: //show all
-                                        model.Add(ReportTypeModel(id, timeStamp, stampFirstIn, stampLastOut, itemShift));
-
-                                        break;
-                                }
+                                totalTime = lastOutStamp.Value - firstInStamp.Value;
                             }
-                            break;
-                        }
-                    }
-                }
-            }
+                            else if (allStamps.Count() > 2)
+                            {
+                                var allInStamps = allStamps.Where(x => x.StatusType == "In").ToList();
+                                var allOutStamps = allStamps.Where(x => x.StatusType == "Out").ToList();
 
-            return model;
-        }
+                                foreach (var stamp in allInStamps)
+                                {
+                                    try
+                                    {
+                                        int index = allInStamps.IndexOf(stamp);
+                                        if (index < allInStamps.Count() && index < allOutStamps.Count())
+                                        {
+                                            totalTime += allOutStamps[index].TimeStamp - allInStamps[index].TimeStamp;
+                                        }
 
-        public List<ReportViewModel> OnSite(int locationId, DateTime date, int tenantId, ShiftScheduleViewModel shiftSchedule)
-        {
-            List<ReportViewModel> model = new List<ReportViewModel>();
+                                    }
+                                    catch
+                                    {
+                                        break;
+                                    }
+                                }
 
-            //get all employees at the location
-            var employeeList = _employeeServices.GetAllEmployeesByLocation(tenantId, locationId);
+                                // calculate total breaks
+                                totalBreaksTaken = (lastOutStamp.Value - firstInStamp.Value) - totalTime;
+                            }
 
-            //foreach employeeId
-            foreach (var employee in employeeList)
-            {
-                int id = 1;
-                //get EmployeeShifts by EmployeeId and Date
-                var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(employee.ResourceId, date, CurrentTenantId);
+                            //compare Shifts StartTime with EmployeeShifts TimeStamp
+                            var startTime = itemShift.StartTime.TimeOfDay;
 
-                if (employeeShifts != null && employeeShifts.Count() >= 1)
-                {
-                    //First Stamp In
-                    var firstTimeStamp = employeeShifts.FirstOrDefault().TimeStamp;
-                    var lastStamp = employeeShifts.LastOrDefault().TimeStamp;
+                            switch (gracePeriod)
+                            {
+                                case 1:
+                                    if ((firstInStamp.Value.TimeOfDay - startTime).TotalMinutes >= 15) //15 minutes passed
+                                    {
+                                        model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
+                                        id += 1;
+                                    };
 
-                    if (employeeShifts.Count() >= 1)
-                    {
-                        //check if ODD/EVEN scheme; EVEN = Good, ODD = Bad
-                        //only get the ODD scheme, w/c means missing Stamp Out or Employee is still On Site
-                        if (employeeShifts.Count() % 2 != 0) //ODD
-                        {
-                            model.Add(ReportTypeModel(id, lastStamp, null, employeeShifts.LastOrDefault(), shiftSchedule));
-                            id = id + 1;
-                        }
-                    }
-                }
-            }
+                                    break;
 
-            return model;
-        }
+                                case 2:
+                                    if ((firstInStamp.Value.TimeOfDay - startTime).TotalMinutes >= 30) //30 minutes passed
+                                    {
+                                        model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
+                                        id += 1;
+                                    }
 
-        public List<ReportViewModel> OffSite(int locationId, DateTime date, int tenantId, ShiftScheduleViewModel shiftSchedule)
-        {
-            List<ReportViewModel> model = new List<ReportViewModel>();
+                                    break;
 
-            //get all employees at the location
-            var employeeList = _employeeServices.GetAllEmployeesByLocation(tenantId, locationId);
+                                case 3:
+                                    if ((firstInStamp.Value.TimeOfDay - startTime).TotalHours >= 1) //1 hour passed
+                                    {
+                                        model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
+                                        id += 1;
+                                    }
 
-            //foreach employeeId
-            foreach (var employee in employeeList)
-            {
-                int id = 1;
-                //get EmployeeShifts by EmployeeId and Date
-                var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(employee.ResourceId, date, CurrentTenantId);
+                                    break;
 
-                if (employeeShifts != null && employeeShifts.Count() >= 1)
-                {
-                    //First Stamp In
-                    var firstTimeStamp = employeeShifts.FirstOrDefault().TimeStamp;
-                    var lastStamp = employeeShifts.LastOrDefault().TimeStamp;
+                                default: //show all
+                                    model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
 
-                    if (employeeShifts.Count() >= 1)
-                    {
-                        //check if ODD/EVEN scheme; EVEN = Good, ODD = Bad
-                        //only get the EVEN scheme, w/c means employee is out from site.
-                        if (employeeShifts.Count() % 2 != 1) //ODD
-                        {
-                            model.Add(ReportTypeModel(id, null, lastStamp, employeeShifts.LastOrDefault(), shiftSchedule));
-                            id = id + 1;
+                                    break;
+                            }
                         }
                     }
                 }
@@ -788,7 +739,7 @@ namespace WMS.Controllers
                     //if no employeeShifts TimeStamp
                     if (employeeShifts.Count() == 0)
                     {
-                        model.Add(ReportTypeModel(id, timeStamp: null, null, null, shiftSchedule));
+                        model.Add(ReportTypeModel(id, null, null, shiftSchedule, null));
                     }
                 }
             }
@@ -796,8 +747,10 @@ namespace WMS.Controllers
             return model;
         }
 
-        private ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, ShiftScheduleViewModel shiftSchedule)
+        private ReportViewModel ReportTypeModel(int id, DateTime? stampFirstIn, DateTime? stampLastOut, ShiftScheduleViewModel shiftSchedule, TimeSpan? totalTime)
         {
+            var overtime = totalTime != null ? ((TimeSpan)(totalTime - shiftSchedule.ExpectedHours)) : (TimeSpan?)null;
+
             return new ReportViewModel()
             {
                 Id = id,
@@ -807,194 +760,12 @@ namespace WMS.Controllers
                 ShiftEndTime = shiftSchedule.EndTime,
                 StampIn = stampFirstIn,
                 StampOut = stampLastOut,
-                LateTime = (timeStamp != null ? (timeStamp - shiftSchedule.StartTime).Value.TotalMinutes : 0f),
-            };
-        }
-
-        private ReportViewModel ReportTypeModel(int id, DateTime? stampFirstIn, DateTime? stampLastOut, ResourceShifts resourceShift, ShiftScheduleViewModel shiftSchedule)
-        {
-            return new ReportViewModel()
-            {
-                Id = id,
-                Employee = resourceShift.Resources.Name,
-                Date = resourceShift.Date,
-                ShiftStartTime = shiftSchedule.StartTime,
-                ShiftEndTime = shiftSchedule.EndTime,
-                StampIn = stampFirstIn,
-                StampOut = stampLastOut
+                LateTime = (stampFirstIn != null ? (stampFirstIn.Value.TimeOfDay - shiftSchedule.StartTime.TimeOfDay).ToString() : string.Empty),
+                OverTime = overtime != null && overtime > new TimeSpan(0, 0, 0) ? overtime.ToString() : string.Empty
             };
         }
 
         #endregion TAReports
-
-        #region DevExpress Report
-
-        private void PageHeader(XtraReport report)
-        {
-            // ---------Add a header to the listing report---------------
-            XRTable tableHeader = new XRTable();
-            tableHeader.BeginInit();
-            tableHeader.Rows.Add(new XRTableRow());
-
-            //tableHeader.Borders = BorderSide.All;
-            tableHeader.BorderColor = Color.DarkGray;
-            tableHeader.Font = new Font("Tahoma", 9, System.Drawing.FontStyle.Bold);
-            tableHeader.Padding = 10;
-            tableHeader.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-
-            XRTableCell cellHeader1 = new XRTableCell();
-            cellHeader1.Text = "Employee";
-            XRTableCell cellHeader2 = new XRTableCell();
-            cellHeader2.Text = "Date";
-            cellHeader2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            XRTableCell cellHeader3 = new XRTableCell();
-            cellHeader3.Text = "Shift Start";
-            //cellHeader2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            XRTableCell cellHeader4 = new XRTableCell();
-            cellHeader4.Text = "Shift End";
-            XRTableCell cellHeader5 = new XRTableCell();
-            cellHeader5.Text = "Stamp In";
-            XRTableCell cellHeader6 = new XRTableCell();
-            cellHeader6.Text = "Stamp Out";
-            XRTableCell cellHeader7 = new XRTableCell();
-            cellHeader7.Text = "Late Time";
-
-            tableHeader.Rows[0].Cells.AddRange(new XRTableCell[] { cellHeader1, cellHeader2, cellHeader3, cellHeader4, cellHeader5, cellHeader6, cellHeader7 });
-
-            PageHeaderBand phReport = new PageHeaderBand();
-            phReport.HeightF = tableHeader.HeightF;
-            report.Bands.Add(phReport);
-            phReport.Controls.Add(tableHeader);
-
-            // Adjust the table width.
-            tableHeader.BeforePrint += tableHeader_BeforePrint;
-            tableHeader.EndInit();
-        }
-
-        private void CreateListingReport(XtraReport report, string dataMember)
-        {
-            // Create a detail report band and bind it to data.
-            DetailReportBand detailReportBand = new DetailReportBand();
-            report.Bands.Add(detailReportBand);
-            detailReportBand.DataSource = report.DataSource;
-            detailReportBand.DataMember = dataMember;
-
-            //------------ Create the (Report Listing) detail band.--------------
-            XRTable tableDetail = new XRTable();
-            tableDetail.BeginInit();
-
-            tableDetail.Rows.Add(new XRTableRow());
-            tableDetail.Borders = ((DevExpress.XtraPrinting.BorderSide)(BorderSide.Top | BorderSide.Left | BorderSide.Right | BorderSide.Bottom));
-            tableDetail.BorderColor = Color.DarkGray;
-            tableDetail.Font = new Font("Tahoma", 9);
-            tableDetail.Padding = 10;
-            tableDetail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-
-            XRTableCell cellDetail1 = new XRTableCell();
-            cellDetail1.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".Employee")});
-            cellDetail1.WidthF = 108f;
-
-            XRTableCell cellDetail2 = new XRTableCell();
-            cellDetail2.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".Date")});
-            cellDetail2.EvaluateBinding += DateTime2Formatting_EvaluateBinding;
-
-            XRTableCell cellDetail3 = new XRTableCell();
-            cellDetail3.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".ShiftStartTime")});
-            //cellDetail3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            cellDetail3.EvaluateBinding += DateTimeFormatting_EvaluateBinding;
-
-            XRTableCell cellDetail4 = new XRTableCell();
-            cellDetail4.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".ShiftEndTime")});
-            //cellDetail4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            cellDetail4.EvaluateBinding += DateTimeFormatting_EvaluateBinding;
-
-            XRTableCell cellDetail5 = new XRTableCell();
-            cellDetail5.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".StampIn")});
-            //cellDetail5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            cellDetail5.EvaluateBinding += DateTimeFormatting_EvaluateBinding;
-
-            XRTableCell cellDetail6 = new XRTableCell();
-            cellDetail6.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".StampOut")});
-            cellDetail6.EvaluateBinding += DateTimeFormatting_EvaluateBinding;
-
-            XRTableCell cellDetail7 = new XRTableCell();
-            cellDetail7.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".LateTime")});
-            cellDetail7.EvaluateBinding += StringFormatting_EvaluateBinding;
-
-            tableDetail.Rows[0].Cells.AddRange(new XRTableCell[] { cellDetail1, cellDetail2, cellDetail3, cellDetail4, cellDetail5, cellDetail6, cellDetail7 });
-
-            DetailBand detailBand = new DetailBand();
-            detailBand.Height = tableDetail.Height;
-            detailReportBand.Bands.Add(detailBand);
-            detailBand.Controls.Add(tableDetail);
-
-            // Adjust the table width.
-            tableDetail.BeforePrint += tableDetail_BeforePrint;
-            tableDetail.EndInit();
-        }
-
-        private void AdjustTableWidth(XRTable table)
-        {
-            XtraReport report = table.RootReport;
-            table.WidthF = report.PageWidth - report.Margins.Left - report.Margins.Right;
-        }
-
-        private void tableHeader_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
-        {
-            AdjustTableWidth(sender as XRTable);
-        }
-
-        private void tableDetail_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
-        {
-            AdjustTableWidth(sender as XRTable);
-        }
-
-        private void DateTimeFormatting_EvaluateBinding(object sender, BindingEventArgs e)
-        {
-            XRTableCell cell = (sender as XRTableCell);
-
-            if (e.Value != null && !String.IsNullOrWhiteSpace(e.Value.ToString()))
-            {
-                DateTime? value = Convert.ToDateTime(e.Value);
-                string formattedDate = value.Value.ToString("HH:mm:ss");
-
-                e.Value = formattedDate;
-            }
-        }
-
-        private void DateTime2Formatting_EvaluateBinding(object sender, BindingEventArgs e)
-        {
-            XRTableCell cell = (sender as XRTableCell);
-
-            if (e.Value != null && !String.IsNullOrWhiteSpace(e.Value.ToString()))
-            {
-                DateTime? value = Convert.ToDateTime(e.Value);
-                string formattedDate = value.Value.ToString("MM/dd/yyyy");
-
-                e.Value = formattedDate;
-            }
-        }
-
-        private void StringFormatting_EvaluateBinding(object sender, BindingEventArgs e)
-        {
-            XRTableCell cell = (sender as XRTableCell);
-
-            if (e.Value != null && !String.IsNullOrWhiteSpace(e.Value.ToString()))
-            {
-                string formattedDate = String.Format("{0:0} minutes", e.Value);
-
-                e.Value = formattedDate;
-            }
-        }
-
-        #endregion DevExpress Report
 
         #region InvoiceReport
 

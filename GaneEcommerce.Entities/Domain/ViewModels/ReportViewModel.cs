@@ -1,8 +1,5 @@
-﻿using Ganedata.Core.Entities.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Ganedata.Core.Models
 {
@@ -15,7 +12,8 @@ namespace Ganedata.Core.Models
         public DateTime? ShiftEndTime { get; set; }
         public DateTime? StampIn { get; set; }
         public DateTime? StampOut { get; set; }
-        public Double LateTime { get; set; }
+        public string LateTime { get; set; }
+        public string OverTime { get; set; }
     }
 
     public class ExpensivePropertiseTotalsViewModel
