@@ -1251,7 +1251,6 @@ namespace WMS.Controllers
             var productOrdersHistoryReport = new ProductOrdersHistoryReport();
             productOrdersHistoryReport.detailedOrdersToggle.Visible = tenantConfig.EnableOrdersHistoryReportDetails;
             productOrdersHistoryReport.DetailReport.Visible = tenantConfig.EnableOrdersHistoryReportDetails;
-            productOrdersHistoryReport.ProductsIds.Visible = tenantConfig.EnableOrdersHistoryReportDetails;
             productOrdersHistoryReport.StartDate.Value = DateTime.Today.AddMonths(-1);
             productOrdersHistoryReport.EndDate.Value = DateTime.Today;
             productOrdersHistoryReport.lbldate.Text = DateTime.UtcNow.ToShortDateString();
@@ -1309,18 +1308,18 @@ namespace WMS.Controllers
                 tenantDepartmentsSettings.LookUpValues.Add(group);
             }
 
+            var products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
+            StaticListLookUpSettings setting = (StaticListLookUpSettings)productOrdersHistoryReport.ProductsIds.LookUpSettings;
+            foreach (var item in products)
+            {
+                LookUpValue product = new LookUpValue();
+                product.Description = item.NameWithCode;
+                product.Value = item.ProductId;
+                setting.LookUpValues.Add(product);
+            }
+
             if (tenantConfig.EnableOrdersHistoryReportDetails)
             {
-                var products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
-                StaticListLookUpSettings setting = (StaticListLookUpSettings)productOrdersHistoryReport.ProductsIds.LookUpSettings;
-                foreach (var item in products)
-                {
-                    LookUpValue product = new LookUpValue();
-                    product.Description = item.NameWithCode;
-                    product.Value = item.ProductId;
-                    setting.LookUpValues.Add(product);
-                }
-
                 var productOrdersHistoryDetailReport = new ProductOrdersHistoryDetailReport();
                 productOrdersHistoryDetailReport.DataSourceDemanded += CreateproductOrdersHistoryReport_DataSourceDemanded;
                 productOrdersHistoryDetailReport.OrderNumber.DataBindings.AddRange(new XRBinding[] {

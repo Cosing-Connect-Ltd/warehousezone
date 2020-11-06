@@ -104,12 +104,14 @@ namespace WMS.Controllers
                 var orderDetails = order.OrderDetails.Where(u => u.IsDeleted != true);
                 if (order != null && orderDetails.All(m => m.ProcessedQty >= m.Qty || m.ProductMaster.IsAutoShipment == true || m.ProductMaster.ProductType == ProductKitTypeEnum.Virtual))
                 {
-                    if (orderDetails.All(m => m.ProcessedQty >= m.Qty)){
+                    if (orderDetails.All(m => m.ProcessedQty >= m.Qty))
+                    {
                         OrderService.OrderProcessAutoComplete(id, string.Empty, CurrentUserId, false, true);
                     }
                     else
                     {
-                        await AutoCompleteOrder(new AutoCompleteOrderViewModel {
+                        await AutoCompleteOrder(new AutoCompleteOrderViewModel
+                        {
                             OrderID = id,
                             ForceComplete = true,
                             IncludeProcessing = true,
@@ -523,6 +525,7 @@ namespace WMS.Controllers
 
         public ActionResult _SalesOrdersPaging(GridViewPagerState pager, int? type)
         {
+            SetViewBagItems();
             var viewModel = GetSalesOrdersListViewModel(type);
             viewModel.Pager.Assign(pager);
             return PrepareSalesOrdersListActionResult(viewModel, type);
@@ -530,6 +533,7 @@ namespace WMS.Controllers
 
         public ActionResult _SalesOrdersFiltering(GridViewFilteringState filteringState, int? type)
         {
+            SetViewBagItems();
             var viewModel = GetSalesOrdersListViewModel(type);
             viewModel.ApplyFilteringState(filteringState);
             return PrepareSalesOrdersListActionResult(viewModel, type);
@@ -537,9 +541,17 @@ namespace WMS.Controllers
 
         public ActionResult _SalesOrdersSorting(GridViewColumnState column, bool reset, int? type)
         {
+            SetViewBagItems();
             var viewModel = GetSalesOrdersListViewModel(type);
             viewModel.ApplySortingState(column, reset);
             return PrepareSalesOrdersListActionResult(viewModel, type);
+        }
+
+        public void SetViewBagItems()
+        {
+            var tenantConfig = _tenantServices.GetTenantConfigById(CurrentTenantId);
+            ViewBag.ShowDeliveryService = tenantConfig.ShowDeliveryServiceInOrdersList;
+            ViewBag.ShowShopSiteName = tenantConfig.ShowExternalShopSiteNameInOrdersList;
         }
 
         private GridViewModel GetSalesOrdersListViewModel(int? type)
