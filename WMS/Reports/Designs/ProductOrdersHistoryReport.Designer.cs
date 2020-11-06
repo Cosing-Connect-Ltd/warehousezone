@@ -452,9 +452,6 @@
             // 
             this.xrLabel22.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel22.Borders = DevExpress.XtraPrinting.BorderSide.None;
-            this.xrLabel22.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif(?InventoryTransactionTypeId == 2 || ?InventoryTransactionTypeId == 15, \'Sales" +
-                    " History\', \'Purchases History\')")});
             this.xrLabel22.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel22.LocationFloat = new DevExpress.Utils.PointFloat(247.9166F, 0F);
             this.xrLabel22.Name = "xrLabel22";
@@ -924,7 +921,6 @@
         public DevExpress.XtraReports.Parameters.Parameter EndDate;
         private DevExpress.XtraReports.UI.XRLabel xrLabel5;
         public DevExpress.XtraReports.UI.XRLabel lbldate;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel22;
         private DevExpress.XtraReports.UI.XRLabel xrLabel19;
         private DevExpress.XtraReports.UI.XRLabel xrLabel20;
         private DevExpress.XtraReports.UI.XRLabel xrLabel21;
@@ -959,5 +955,6 @@
         public DevExpress.XtraReports.Parameters.Parameter AccountSectorIds;
         public DevExpress.XtraReports.UI.XRLabel detailedOrdersToggle;
         public DevExpress.XtraReports.UI.DetailReportBand DetailReport;
+        public DevExpress.XtraReports.UI.XRLabel xrLabel22;
     }
 }
