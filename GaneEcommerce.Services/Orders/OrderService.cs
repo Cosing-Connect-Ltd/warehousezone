@@ -2349,7 +2349,7 @@ namespace Ganedata.Core.Services
                         }
                         else
                         {
-                            item.WarrantyAmount = item.Warranty.FixedPrice;
+                            item.WarrantyAmount = item.Warranty?.FixedPrice ?? 0;
                         }
                     }
 

@@ -1232,7 +1232,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ProductOrdersHistoryReport report = CreateProductOrdersHistoryReport(InventoryTransactionTypeEnum.PurchaseOrder);
-            ViewBag.Title = "Product Purchase History";
+            ViewBag.Title = "Purchase History Report";
             return View("ProductOrdersHistoryReport", report);
         }
 
@@ -1240,7 +1240,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ProductOrdersHistoryReport report = CreateProductOrdersHistoryReport(InventoryTransactionTypeEnum.SalesOrder);
-            ViewBag.Title = "Product Sale History";
+            ViewBag.Title = "Sales History Report";
             return View("ProductOrdersHistoryReport", report);
         }
 
@@ -1262,11 +1262,13 @@ namespace WMS.Controllers
             {
                 int[] inventoryTypes = { (int)InventoryTransactionTypeEnum.SalesOrder, (int)InventoryTransactionTypeEnum.DirectSales };
                 productOrdersHistoryReport.InventoryTransactionTypeIds.Value = inventoryTypes;
+                productOrdersHistoryReport.xrLabel22.Text = "Sales History Report";
             }
             else
             {
                 int[] inventoryTypes = { (int)ordersType };
                 productOrdersHistoryReport.InventoryTransactionTypeIds.Value = inventoryTypes;
+                productOrdersHistoryReport.xrLabel22.Text = "Purchase History Report";
             }
 
             var markets = _marketServices.GetAllValidMarkets(CurrentTenantId);

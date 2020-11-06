@@ -511,7 +511,7 @@ namespace WMS.Controllers
                 decimal? balance = Financials.CalcAccountBalance(account.AccountID);
                 var lastTransaction = _currentDbContext.AccountTransactions.Where(x => x.AccountId == account.AccountID && x.IsDeleted != true).OrderByDescending(x => x.AccountTransactionId).FirstOrDefault();
 
-                if (balance != account.FinalBalance || (account.FinalBalance != lastTransaction?.FinalBalance && lastTransaction != null))
+                if (balance != account.FinalBalance || account.FinalBalance != (lastTransaction?.FinalBalance ?? 0))
                 {
                     notMatched.Add(account.AccountCode);
                     account.FinalBalance = balance;
@@ -550,7 +550,8 @@ namespace WMS.Controllers
             {
                 counter++;
                 decimal? balance = Financials.CalcAccountBalance(account.AccountID);
-                var transactions = _currentDbContext.AccountTransactions.Where(x => x.AccountId == account.AccountID && x.IsDeleted != true).OrderByDescending(x => x.AccountTransactionId).Take(numberOfLastTransactions).ToList();
+                var transactions = _currentDbContext.AccountTransactions.Where(x => x.AccountId == account.AccountID && x.IsDeleted != true)
+                    .OrderByDescending(x => x.AccountTransactionId).Take(numberOfLastTransactions).ToList();
 
                 transactions = transactions.OrderBy(x => x.AccountTransactionId).ToList();
 
