@@ -62,7 +62,7 @@ namespace WMS.CustomBindings
 
             }
 
-            var transactions = OrderService.GetAllOrderProcesses(null, null, (type == "Active" ? OrderProcessStatusEnum.Dispatched : OrderProcessStatusEnum.Invoiced), InventoryTransactionTypeEnum.DirectSales).
+            var transactions = OrderService.GetAllOrderProcesses(null, null, (type == "Active" ? OrderProcessStatusEnum.Dispatched : OrderProcessStatusEnum.Invoiced), InventoryTransactionTypeEnum.SalesOrder).
                 Select(m => new OrderProcessViewModel()
                 {
                     DateCreated = m.DateCreated,
