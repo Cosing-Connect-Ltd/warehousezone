@@ -13,6 +13,7 @@ namespace Ganedata.Core.Models
         public string TotalHours { get; set; }
         public decimal? ExpectedHours { get; set; }
         public string ExpectedHoursString { get; set; }
+        public string OvertimeWork { get; set; }
         public DateTime? TimeIn { get; set; }
         public DateTime? TimeOut { get; set; }
         public TimeSpan? Breaks { get; set; }
