@@ -39,11 +39,6 @@
             c.FieldName = "EnforceMinimumPriceMessage";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
-        settings.Columns.Add(c =>
-        {
-            c.FieldName = "EnabledRelayEmailServer";
-            c.ColumnType = MVCxGridViewColumnType.CheckBox;
-        });
         
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
