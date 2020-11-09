@@ -22,6 +22,17 @@
             field.FieldName = "WeekDay";
             field.Caption = " ";
         });
+        settings.Columns.Add(field =>
+        {
+            field.Settings.AllowSort = DefaultBoolean.False;
+            field.FieldName = "TotalSalary";
+        });
+        settings.TotalSummary.Add(new ASPxSummaryItem()
+        {
+            SummaryType = DevExpress.Data.SummaryItemType.Sum,
+            FieldName = "TotalSalary",
+            DisplayFormat = "Total: {0}"
+        });
 
         settings.Columns.Add(field =>
         {
@@ -38,14 +49,38 @@
         settings.Columns.Add(field =>
         {
             field.Settings.AllowSort = DefaultBoolean.False;
-            field.FieldName = "TotalSalary";
+            field.FieldName = "ExpectedHoursString";
+            field.Caption = "Expected Hours";
         });
+
         settings.TotalSummary.Add(new ASPxSummaryItem()
         {
             SummaryType = DevExpress.Data.SummaryItemType.Sum,
-            FieldName = "TotalSalary",
+            FieldName = "ExpectedHoursString",
             DisplayFormat = "Total: {0}"
         });
+
+        settings.Columns.Add(field =>
+        {
+            field.Settings.AllowSort = DefaultBoolean.False;
+            field.FieldName = "OvertimeWork";
+            field.Caption = "Overtime Hours";
+        });
+
+        settings.TotalSummary.Add(new ASPxSummaryItem()
+        {
+            SummaryType = DevExpress.Data.SummaryItemType.Sum,
+            FieldName = "OvertimeWork",
+            DisplayFormat = "Total: {0}"
+        });
+
+        settings.Columns.Add(field =>
+        {
+            field.Settings.AllowSort = DefaultBoolean.False;
+            field.Caption = "Expected Breaks";
+            field.FieldName = "Breaks";
+        });
+
         settings.Columns.Add(field =>
         {
             field.Settings.AllowSort = DefaultBoolean.False;
@@ -80,20 +115,6 @@
                 //DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
                 ViewContext.Writer.Write(date.HasValue ? date.Value.ToString("dd/MM/yyyy HH:mm") : "");
             });
-        });
-
-        settings.Columns.Add(field =>
-        {
-            field.Settings.AllowSort = DefaultBoolean.False;
-            field.FieldName = "ExpectedHoursString";
-            field.Caption = "Expected Hours";
-        });
-
-        settings.Columns.Add(field =>
-        {
-            field.Settings.AllowSort = DefaultBoolean.False;
-            field.Caption = "Expected Breaks";
-            field.FieldName = "Breaks";
         });
 
         settings.Columns.Add(field =>
