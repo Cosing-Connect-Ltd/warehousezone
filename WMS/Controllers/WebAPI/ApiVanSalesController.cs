@@ -98,7 +98,7 @@ namespace WMS.Controllers.WebAPI
 
             }
 
-            var result = new TerminalMetadataSync()
+            var result = new TerminalMetadataSync
             {
                 Serial = terminal.TermainlSerial,
                 TerminalId = terminal.TerminalId,
@@ -127,7 +127,13 @@ namespace WMS.Controllers.WebAPI
                 ScanVehicleLicensePlate = terminal.ScanVehicleLicensePlate,
                 PickByContainer = terminal.TenantWarehous.PickByContainer,
                 MandatoryPickByContainer = terminal.TenantWarehous.MandatoryPickByContainer,
-                MandatoryLocationScan = config.MandatoryLocationScan
+                MandatoryLocationScan = config.MandatoryLocationScan,
+                SplashScreenImage = config.LoyaltyAppSplashScreenImage,
+                PrimaryColour = config.LoyaltyAppPrimaryColour,
+                SecondaryColour = config.LoyaltyAppSecondaryColour,
+                PrimaryTextColour = config.LoyaltyAppPrimaryTextColour,
+                SecondaryTextColour = config.LoyaltyAppSecondaryTextColour,
+                AboutUsPageText = config.LoyaltyAppAboutUsPageText,
             };
 
             var mobileLocation = TerminalServices.GetMobileLocationByTerminalId(terminal.TerminalId);

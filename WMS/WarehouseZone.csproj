@@ -1869,9 +1869,6 @@
     <Content Include="Views\Theme\Default\StockTakes\_StocktakeDetailGridPartial.cshtml" />
     <Content Include="Views\Theme\Default\Tenant\Create.cshtml" />
     <Content Include="Views\Theme\Default\TenantConfigs\Create.cshtml" />
-    <Content Include="Views\Theme\Default\TenantConfigs\Delete.cshtml" />
-    <Content Include="Views\Theme\Default\TenantConfigs\Details.cshtml" />
-    <Content Include="Views\Theme\Default\TenantConfigs\Edit.cshtml" />
     <Content Include="Views\Theme\Default\TenantConfigs\Index.cshtml" />
     <Content Include="Views\Theme\Default\TenantConfigs\_TenantConfigGridViewPartial.cshtml" />
     <Content Include="Views\Theme\Default\StockTakes\StockTakeDetail.cshtml" />

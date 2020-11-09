@@ -39,13 +39,18 @@ namespace WMS.Controllers
         {
             return PartialView("PlaceholdersHtmlEditorPartial", new HtmlEditorModel() { EditorName = "Description", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorWebsiteDescriptionEditorPartial", Height = 300 });
         }
+
+        public ActionResult HtmlEditorLoyaltyAppAboutUsPageTextEditorPartial()
+        {
+            return PartialView("PlaceholdersHtmlEditorPartial", new HtmlEditorModel() { EditorName = "LoyaltyAppAboutUsPageText", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorLoyaltyAppAboutUsPageTextEditorPartial", Height = 300 });
+        }
         public ActionResult ImageUpload(string editorName)
         {
             if (!Directory.Exists(Server.MapPath(HtmlEditorFeaturesDemosHelper.ImagesDirectory)))
             {
                 Directory.CreateDirectory(Server.MapPath(HtmlEditorFeaturesDemosHelper.ImagesDirectory));
             }
-            
+
             HtmlEditorExtension.SaveUploadedFile(string.IsNullOrEmpty(editorName)?"Content":editorName, HtmlEditorFeaturesDemosHelper.ImageUploadValidationSettings, HtmlEditorFeaturesDemosHelper.ImagesDirectory);
             return null;
         }

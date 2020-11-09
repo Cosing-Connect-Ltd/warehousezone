@@ -75,5 +75,11 @@ namespace Ganedata.Core.Entities.Domain
         public bool EnableDynamicPriceCalculation { get; set; }
         public bool EnableRebateCalculation { get; set; }
         public bool EnableOrdersHistoryReportDetails { get; set; }
+        public string LoyaltyAppSplashScreenImage { get; set; }
+        public string LoyaltyAppPrimaryColour { get; set; }
+        public string LoyaltyAppSecondaryColour { get; set; }
+        public string LoyaltyAppPrimaryTextColour { get; set; }
+        public string LoyaltyAppSecondaryTextColour { get; set; }
+        public string LoyaltyAppAboutUsPageText { get; set; }
     }
 }

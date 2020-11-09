@@ -55,6 +55,12 @@ namespace Ganedata.Core.Models
         public bool PickByContainer { get; set; }
         public bool MandatoryPickByContainer { get; set; }
         public bool MandatoryLocationScan { get; set; }
+        public string SplashScreenImage { get; set; }
+        public string PrimaryColour { get; set; }
+        public string SecondaryColour { get; set; }
+        public string PrimaryTextColour { get; set; }
+        public string SecondaryTextColour { get; set; }
+        public string AboutUsPageText { get; set; }
     }
 
 

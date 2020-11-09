@@ -1,18 +1,24 @@
 ﻿@model Ganedata.Core.Entities.Domain.TenantConfig
 @using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Services;
 @{
     ViewBag.Title = "Create";
 }
 @section scripts {
 
     @Html.DevExpress().GetStyleSheets(
-        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme }
-        
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.ColorEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.HtmlEditor, Theme = GaneStaticAppExtensions.DevexTheme }
+
         )
 
     @Html.DevExpress().GetScripts(
-        new Script { ExtensionType = ExtensionType.PopupControl }
-      
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.UploadControl },
+        new Script { ExtensionType = ExtensionType.ColorEdit },
+        new Script { ExtensionType = ExtensionType.HtmlEditor }
         )
 }
 
@@ -22,8 +28,8 @@
 {
 
     @Html.AntiForgeryToken()
-  @Html.HiddenFor(model => model.TenantConfigId)
-    @Html.HiddenFor(model=>model.DateCreated)
+    @Html.HiddenFor(model => model.TenantConfigId)
+    @Html.HiddenFor(model => model.DateCreated)
     <div class="col-md-6 pull-left">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="input-group h-100 justify-content-center align-items-center">
@@ -119,68 +125,48 @@
         </div>
 
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.WorksOrderScheduleByAmPm, htmlAttributes: new { @class = "col-md-6" })
+            @Html.LabelFor(model => model.LoyaltyAppSplashScreenImage, htmlAttributes: new { @class = "col-md-6" })
             <div class="col-md-6">
-
-                @Html.EditorFor(model => model.WorksOrderScheduleByAmPm)
-                @Html.ValidationMessageFor(model => model.WorksOrderScheduleByAmPm, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.EnableLiveEmails, htmlAttributes: new { @class = "col-md-6" })
-            <div class="col-md-6">
-
-                @Html.EditorFor(model => model.EnableLiveEmails)
-                @Html.ValidationMessageFor(model => model.EnableLiveEmails, "", new { @class = "text-danger" })
-
+                @Html.Action("_FileUploader", new { name = "LoyaltyAppSplashScreenImage", filePath = Model.LoyaltyAppSplashScreenImage })
             </div>
         </div>
 
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.MiniProfilerEnabled, htmlAttributes: new { @class = "col-md-6" })
+            @Html.LabelFor(model => model.LoyaltyAppPrimaryColour, htmlAttributes: new { @class = "col-md-6" })
             <div class="col-md-6">
-
-                @Html.EditorFor(model => model.MiniProfilerEnabled)
-                @Html.ValidationMessageFor(model => model.MiniProfilerEnabled, "", new { @class = "text-danger" })
-
+                @Html.DevExpress().ColorEditFor(model => model.LoyaltyAppPrimaryColour, ColorEditorHelper.ColorEditSettingsMethod).GetHtml()
+                @Html.ValidationMessageFor(model => model.LoyaltyAppPrimaryColour, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LoyaltyAppSecondaryColour, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.DevExpress().ColorEditFor(model => model.LoyaltyAppSecondaryColour, ColorEditorHelper.ColorEditSettingsMethod).GetHtml()
+                @Html.ValidationMessageFor(model => model.LoyaltyAppSecondaryColour, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LoyaltyAppAboutUsPageText, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.Partial("PlaceholdersHtmlEditorPartial", new HtmlEditorModel() { HtmlContent = Model.LoyaltyAppAboutUsPageText, EditorName = "LoyaltyAppAboutUsPageText", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorLoyaltyAppAboutUsPageTextEditorPartial", Height = 300 })
+                @Html.ValidationMessageFor(model => model.LoyaltyAppAboutUsPageText, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.EnablePalletingOnPick, htmlAttributes: new { @class = "col-md-6" })
+            @Html.LabelFor(model => model.LoyaltyAppPrimaryTextColour, htmlAttributes: new { @class = "col-md-6" })
             <div class="col-md-6">
-
-                @Html.EditorFor(model => model.EnablePalletingOnPick)
-                @Html.ValidationMessageFor(model => model.EnablePalletingOnPick, "", new { @class = "text-danger" })
-
+                @Html.DevExpress().ColorEditFor(model => model.LoyaltyAppPrimaryTextColour, ColorEditorHelper.ColorEditSettingsMethod).GetHtml()
+                @Html.ValidationMessageFor(model => model.LoyaltyAppPrimaryTextColour, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.WarehouseLogEmailsToDefault, htmlAttributes: new { @class = "col-md-6" })
+            @Html.LabelFor(model => model.LoyaltyAppSecondaryTextColour, htmlAttributes: new { @class = "col-md-6" })
             <div class="col-md-6">
-                @Html.EditorFor(model => model.WarehouseLogEmailsToDefault)
-                @Html.ValidationMessageFor(model => model.WarehouseLogEmailsToDefault, "", new { @class = "text-danger" })
+                @Html.DevExpress().ColorEditFor(model => model.LoyaltyAppSecondaryTextColour, ColorEditorHelper.ColorEditSettingsMethod).GetHtml()
+                @Html.ValidationMessageFor(model => model.LoyaltyAppSecondaryTextColour, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        @*<div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.WarehouseScheduleStartTime, htmlAttributes: new { @class = "col-md-6" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.WarehouseScheduleStartTime, new { htmlAttributes = new { @class = "" } })
-                @Html.ValidationMessageFor(model => model.WarehouseScheduleStartTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.WarehouseScheduleEndTime, htmlAttributes: new { @class = "col-md-6" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.WarehouseScheduleEndTime)
-                @Html.ValidationMessageFor(model => model.WarehouseScheduleEndTime, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
     </div>
     <div class="col-md-6 pull-left">
         <div class="input-group h-100 justify-content-center align-items-center">
@@ -276,12 +262,12 @@
         </div>
 
         @*<div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.TenantLogo, htmlAttributes: new { @class = "col-md-6" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.TenantLogo)
-                @Html.ValidationMessageFor(model => model.TenantLogo, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.TenantLogo, htmlAttributes: new { @class = "col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.TenantLogo)
+                    @Html.ValidationMessageFor(model => model.TenantLogo, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.PrintLogoForReceipts, htmlAttributes: new { @class = "col-md-6" })
@@ -300,9 +286,53 @@
                 @Html.ValidationMessageFor(model => model.SessionTimeoutHours, "", new { @class = "text-danger" })
             </div>
         </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.WorksOrderScheduleByAmPm, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
 
-       
+                @Html.EditorFor(model => model.WorksOrderScheduleByAmPm)
+                @Html.ValidationMessageFor(model => model.WorksOrderScheduleByAmPm, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EnableLiveEmails, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.EnableLiveEmails)
+                @Html.ValidationMessageFor(model => model.EnableLiveEmails, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.MiniProfilerEnabled, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.MiniProfilerEnabled)
+                @Html.ValidationMessageFor(model => model.MiniProfilerEnabled, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EnablePalletingOnPick, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.EnablePalletingOnPick)
+                @Html.ValidationMessageFor(model => model.EnablePalletingOnPick, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.WarehouseLogEmailsToDefault, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.WarehouseLogEmailsToDefault)
+                @Html.ValidationMessageFor(model => model.WarehouseLogEmailsToDefault, "", new { @class = "text-danger" })
+            </div>
+        </div>
     </div>
 
     <div class="input-group h-100 justify-content-center align-items-center">
