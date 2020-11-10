@@ -29,6 +29,8 @@
 
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.TenantConfigId)
+    @Html.HiddenFor(model => model.TenantLogo)
+    @Html.HiddenFor(model => model.SiteId)
     @Html.HiddenFor(model => model.DateCreated)
     <div class="col-md-6 pull-left">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -121,6 +123,75 @@
             <div class="col-md-6">
                 @Html.EditorFor(model => model.WorksOrderScheduleByMarginHours)
                 @Html.ValidationMessageFor(model => model.WorksOrderScheduleByMarginHours, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.WarehouseScheduleStartTime, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.WarehouseScheduleStartTime)
+                @Html.ValidationMessageFor(model => model.WarehouseScheduleStartTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.WarehouseScheduleEndTime, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.WarehouseScheduleEndTime)
+                @Html.ValidationMessageFor(model => model.WarehouseScheduleEndTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.DefaultCustomMessage, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.DefaultCustomMessage)
+                @Html.ValidationMessageFor(model => model.DefaultCustomMessage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.IvReportFooterMsg1, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.IvReportFooterMsg1)
+                @Html.ValidationMessageFor(model => model.IvReportFooterMsg1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EmailAutoCheckedOnEdit, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.EmailAutoCheckedOnEdit)
+                @Html.ValidationMessageFor(model => model.EmailAutoCheckedOnEdit, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowDuplicateProductName, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.AllowDuplicateProductName)
+                @Html.ValidationMessageFor(model => model.AllowDuplicateProductName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.OrdersAuthroisingRequired, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.OrdersAuthroisingRequired)
+                @Html.ValidationMessageFor(model => model.OrdersAuthroisingRequired, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowOrderStatusEmailConfigChange, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.AllowOrderStatusEmailConfigChange)
+                @Html.ValidationMessageFor(model => model.AllowOrderStatusEmailConfigChange, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowOrderStatusSmsConfigChange, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.AllowOrderStatusSmsConfigChange)
+                @Html.ValidationMessageFor(model => model.AllowOrderStatusSmsConfigChange, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -261,13 +332,13 @@
             </div>
         </div>
 
-        @*<div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.TenantLogo, htmlAttributes: new { @class = "col-md-6" })
-                <div class="col-md-6">
-                    @Html.EditorFor(model => model.TenantLogo)
-                    @Html.ValidationMessageFor(model => model.TenantLogo, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.TenantReceiptPrintHeaderLine5, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.TenantReceiptPrintHeaderLine5)
+                @Html.ValidationMessageFor(model => model.TenantReceiptPrintHeaderLine5, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.PrintLogoForReceipts, htmlAttributes: new { @class = "col-md-6" })
@@ -327,10 +398,141 @@
         </div>
 
         <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowDuplicateBarcode, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.AllowDuplicateBarcode)
+                @Html.ValidationMessageFor(model => model.AllowDuplicateBarcode, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ShowDecimalPoint, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.ShowDecimalPoint)
+                @Html.ValidationMessageFor(model => model.ShowDecimalPoint, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ShowDeliveryServiceInOrdersList, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.ShowDeliveryServiceInOrdersList)
+                @Html.ValidationMessageFor(model => model.ShowDeliveryServiceInOrdersList, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ShowExternalShopSiteNameInOrdersList, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.ShowExternalShopSiteNameInOrdersList)
+                @Html.ValidationMessageFor(model => model.ShowExternalShopSiteNameInOrdersList, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EnableDynamicPriceCalculation, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.EnableDynamicPriceCalculation)
+                @Html.ValidationMessageFor(model => model.EnableDynamicPriceCalculation, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EnableRebateCalculation, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.EnableRebateCalculation)
+                @Html.ValidationMessageFor(model => model.EnableRebateCalculation, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EnableOrdersHistoryReportDetails, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.EnableOrdersHistoryReportDetails)
+                @Html.ValidationMessageFor(model => model.EnableOrdersHistoryReportDetails, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.MandatoryLocationScan, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.MandatoryLocationScan)
+                @Html.ValidationMessageFor(model => model.MandatoryLocationScan, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.WarehouseLogEmailsToDefault, htmlAttributes: new { @class = "col-md-6" })
             <div class="col-md-6">
                 @Html.EditorFor(model => model.WarehouseLogEmailsToDefault)
                 @Html.ValidationMessageFor(model => model.WarehouseLogEmailsToDefault, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ProductCatagories, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.ProductCatagories)
+                @Html.ValidationMessageFor(model => model.ProductCatagories, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.TenantAgreement, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.TenantAgreement)
+                @Html.ValidationMessageFor(model => model.TenantAgreement, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EnableTimberProperties, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.EnableTimberProperties)
+                @Html.ValidationMessageFor(model => model.EnableTimberProperties, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.TerminalSyncDays, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.TerminalSyncDays)
+                @Html.ValidationMessageFor(model => model.TerminalSyncDays, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ArchivableItemsAgeDays, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.ArchivableItemsAgeDays)
+                @Html.ValidationMessageFor(model => model.ArchivableItemsAgeDays, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.DefaultSaleNominalCode, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.DefaultSaleNominalCode)
+                @Html.ValidationMessageFor(model => model.DefaultSaleNominalCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.DefaultPurchaseNominalCode, htmlAttributes: new { @class = "col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.DefaultPurchaseNominalCode)
+                @Html.ValidationMessageFor(model => model.DefaultPurchaseNominalCode, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
