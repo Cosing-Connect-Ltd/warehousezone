@@ -83,8 +83,8 @@
                                                         <div class="col-md-12 col-lg-12 col-xl-9">
                                                             @if (kitProductMaster.SellPrice != null && kitProductMaster.SellPrice > 0)
                                                             {
-                                                                <div class="prd_amnt">@ViewBag.CurrencySymbol@(prices.FinalSellPrice + prices.TaxAmount)<span> inc VAT</span></div>
-                                                                <div class="prd_amnt_excl_VAT">(@ViewBag.CurrencySymbol@prices.FinalSellPrice<span> excl VAT</span>)</div>
+                                                                <div class="prd_amnt">@ViewBag.CurrencySymbol@prices.FinalSellPrice<span> excl VAT</span></div>
+                                                                <div class="prd_amnt_incl_VAT">(@ViewBag.CurrencySymbol@(prices.FinalSellPrice + prices.TaxAmount)<span> inc VAT</span>)</div>
                                                                 if (kitProductMaster.SellPrice != prices.FinalSellPrice)
                                                                 {
                                                                     <div class="prd_amnt_RRP">RRP @ViewBag.CurrencySymbol@kitProductMaster.SellPrice<span> excl VAT</span></div>
