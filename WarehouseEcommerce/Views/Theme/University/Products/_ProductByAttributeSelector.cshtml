@@ -13,8 +13,8 @@
                     @Html.HiddenFor(model => Model.Product.ProductId)
                     @if (Model.Product.SellPrice != null && Model.Product.SellPrice > 0)
                     {
-                        <div class="prd_amnt">@ViewBag.CurrencySymbol@(Model.Prices.FinalSellPrice + Model.Prices.TaxAmount)<span> inc VAT</span></div>
-                        <div class="prd_amnt_excl_VAT">(@ViewBag.CurrencySymbol@Model.Prices.FinalSellPrice<span> excl VAT</span>)</div>
+                        <div class="prd_amnt">@ViewBag.CurrencySymbol@Model.Prices.FinalSellPrice<span> excl VAT</span></div>
+                        <div class="prd_amnt_incl_VAT">(@ViewBag.CurrencySymbol@(Model.Prices.FinalSellPrice + Model.Prices.TaxAmount)<span> inc VAT</span>)</div>
                         if (Model.Product.SellPrice != Model.Prices.FinalSellPrice)
                         {
                             <div class="prd_amnt_RRP">RRP @ViewBag.CurrencySymbol@Model.Product.SellPrice<span> excl VAT</span></div>
@@ -25,7 +25,6 @@
                         @if (availableProductCount > 0)
                         {
                             <input type="hidden" class="availablity" value="true">
-                            @*<span>Availability:</span>*@
                             @((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))
                         }
                         else

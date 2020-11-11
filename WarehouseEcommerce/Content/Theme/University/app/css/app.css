@@ -2288,7 +2288,7 @@ input[type=number]::-webkit-outer-spin-button {
         }
 
         .nb_prd_det_rightsec .prd_amnt_RRP,
-        .nb_prd_det_rightsec .prd_amnt_excl_VAT,
+        .nb_prd_det_rightsec .prd_amnt_incl_VAT,
         .nb_prd_det_rightsec .prd_amnt {
             display: block;
             text-align: right;
@@ -2300,7 +2300,7 @@ input[type=number]::-webkit-outer-spin-button {
             font-size: 24px;
             color: #f33655;
         }
-        .nb_prd_det_rightsec .prd_amnt_excl_VAT {
+        .nb_prd_det_rightsec .prd_amnt_incl_VAT {
             font-size: 16px;
             color: gray;
         }
@@ -2310,7 +2310,7 @@ input[type=number]::-webkit-outer-spin-button {
         }
 
             .nb_prd_det_rightsec .prd_amnt_RRP > span,
-            .nb_prd_det_rightsec .prd_amnt_excl_VAT > span,
+            .nb_prd_det_rightsec .prd_amnt_incl_VAT > span,
             .nb_prd_det_rightsec .prd_amnt > span {
                 font-size: 14px;
             }

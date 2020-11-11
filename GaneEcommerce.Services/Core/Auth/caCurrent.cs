@@ -37,14 +37,14 @@ namespace Ganedata.Core.Services
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
 
             int CurrentWarehouseId;
-            TenantLocations Warehouse = new TenantLocations();
+            TenantLocations Warehouse = null;
 
             if (HttpContext.Current.Session["CurrentWarehouseId"] != null)
             {
                 CurrentWarehouseId = (int)HttpContext.Current.Session["CurrentWarehouseId"];
                 Warehouse = context.TenantWarehouses.FirstOrDefault(e => e.WarehouseId == CurrentWarehouseId && e.IsDeleted != true);
             }
-            return Warehouse;
+            return Warehouse ?? new TenantLocations();
         }
 
         public static caTenantWebsites CurrentTenantWebSite()
