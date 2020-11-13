@@ -468,9 +468,16 @@ namespace WMS.Controllers
 
         }
 
-        public ActionResult CreateInvoicesforDispatchedOrders()
+        public ActionResult CreateInvoicesforDispatchedOrders(int tenantId = 0, int userId = 0, bool skipAuthorisation = false)
         {
-            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            if (!skipAuthorisation)
+            {
+                if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+                tenantId = CurrentTenantId;
+                userId = CurrentUserId;
+            }
+
+            if (tenantId == 0 || userId == 0) { return Redirect((string)Session["ErrorUrl"]); }
 
             var items = _currentDbContext.OrderProcess.AsNoTracking().Where(x => x.OrderProcessStatusId == OrderProcessStatusEnum.Dispatched && x.InvoiceNo == null && x.IsDeleted != true
                 && (x.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales || x.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder))
@@ -479,10 +486,31 @@ namespace WMS.Controllers
             foreach (var item in items)
             {
                 var invoice = _invoiceServices.GetInvoicePreviewModelByOrderProcessId(item, CurrentTenant);
-                var invoiceMaster = _invoiceServices.CreateInvoiceForSalesOrder(invoice, CurrentTenantId, CurrentUserId, true);
+                var invoiceMaster = _invoiceServices.CreateInvoiceForSalesOrder(invoice, tenantId, userId, true);
                 invoice.InvoiceMasterId = invoiceMaster.InvoiceMasterId;
             }
 
+
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Operation was Successful";
+            ViewBag.Detail = "Operation was Completed Successfully";
+
+            return View("AdminUtilities");
+
+        }
+
+        public ActionResult MarkCompletedOrdersDispatched(int tenantId = 0, bool skipAuthorisation = false)
+        {
+            if (!skipAuthorisation)
+            {
+                if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+                tenantId = CurrentTenantId;
+            }
+
+            if (tenantId == 0) { return Redirect((string)Session["ErrorUrl"]); }
+
+            //mark order processes as dispatched where status is complete
+            _currentDbContext.Database.ExecuteSqlCommand("update OrderProcesses set OrderProcessStatusId = {0} where  OrderProcessStatusId = {1} ", OrderProcessStatusEnum.Dispatched, OrderProcessStatusEnum.Complete);
 
             ViewBag.Title = "Operation was Successful";
             ViewBag.Message = "Operation was Successful";

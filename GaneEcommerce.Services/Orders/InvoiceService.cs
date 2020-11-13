@@ -189,7 +189,7 @@ namespace Ganedata.Core.Services
                 inventoryTransactionType = process.Order.InventoryTransactionTypeId;
                 process.InvoiceNo = invoice.InvoiceNumber;
                 process.OrderProcessStatusId = OrderProcessStatusEnum.Invoiced;
-                process.DateUpdated = DateTime.UtcNow;
+                process.DateUpdated = (useOrderProcessDate) ? process.DateUpdated : DateTime.UtcNow;
                 process.UpdatedBy = userId;
 
                 process.Order.InvoiceNo = invoice.InvoiceNumber + string.Join(",", _currentDbContext.OrderProcess.Where(u => u.OrderID == process.OrderID).Select(u => u.InvoiceNo).ToList());
