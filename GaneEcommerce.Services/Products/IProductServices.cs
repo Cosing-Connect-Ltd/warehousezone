@@ -1,11 +1,10 @@
 ﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ganedata.Core.Models;
-using Ganedata.Core.Entities.Enums;
 using System.Web.Mvc;
 
 namespace Ganedata.Core.Services
@@ -128,6 +127,7 @@ namespace Ganedata.Core.Services
         bool GetInventroyTransactionCountbyOrderProcessDetailId(int orderprocessdetailId, int tenantId);
         IEnumerable<ProductMaster> GetAllProductProcessByPallet(int tenantId);
         string CreatePalletTracking(PalletTracking palletTracking, int NoOfLabels);
+        List<string> CreatePalletTracking(LabelPrintViewModel requestData, int tenantId, int warehouseId);
 
         ProductKitMap SaveProductKit(int KitId, decimal Quantity, int ProductId, int userId, int? ProductKitTypeId);
     }

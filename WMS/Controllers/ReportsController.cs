@@ -1432,7 +1432,6 @@ namespace WMS.Controllers
             }
 
             var dataSource = new List<InvoiceProfitReportViewModel>();
-            var detailsDataSource = new List<InvoiceProfitReportProductsViewModel>();
             foreach (var invoice in invoices.ToList())
             {
                 var invoiceProductsPrices = _invoiceService.GetInvoiceProductsPrices(invoice.InvoiceMasterId, productIds, CurrentTenantId);

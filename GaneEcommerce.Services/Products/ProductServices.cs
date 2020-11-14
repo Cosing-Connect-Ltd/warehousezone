@@ -2,6 +2,7 @@
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -1891,22 +1892,68 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductMaster.Where(a => a.TenantId == tenantId && a.IsDeleted != true && a.ProcessByPallet == true);
         }
 
-        public string CreatePalletTracking(PalletTracking palletTracking, int NoOfLabels)
+        public string CreatePalletTracking(PalletTracking palletTrackingData, int NoOfLabels)
         {
             List<int> palletTrackingId = new List<int>();
             for (int i = 0; i < NoOfLabels; i++)
             {
-                PalletTracking palletTrackings = new PalletTracking();
-                var date = DateTime.Now.Date.ToString("ddMMyy");
-                date += DateTime.Now.ToString("HHmmss");
-                date += GenerateRandomNo();
-                palletTracking.PalletSerial = date;
-                palletTrackings = palletTracking;
-                _currentDbContext.PalletTracking.Add(palletTrackings);
+                var palletTracking = palletTrackingData.DeepClone();
+                var palletSerials = new List<string>();
+                var palletSerial = string.Empty;
+                while (palletSerials.Contains(palletSerial) || string.IsNullOrEmpty(palletSerial))
+                {
+                    palletSerial = DateTime.Now.Date.ToString("ddMMyy") +
+                                              DateTime.Now.ToString("HHmmss") +
+                                              GenerateRandomNo();
+                }
+
+                palletTracking.PalletSerial = palletSerial;
+
+                _currentDbContext.PalletTracking.Add(palletTracking);
                 _currentDbContext.SaveChanges();
-                palletTrackingId.Add(palletTrackings.PalletTrackingId);
+                palletTrackingId.Add(palletTracking.PalletTrackingId);
+                palletSerials.Add(palletTracking.PalletSerial);
             }
             return string.Join(",", palletTrackingId.ToArray());
+        }
+
+        public List<string> CreatePalletTracking(LabelPrintViewModel requestData, int tenantId, int warehouseId)
+        {
+            var palletTrackingData = new PalletTracking
+            {
+                ProductId = requestData.ProductId,
+                BatchNo = requestData.BatchNumber,
+                TotalCases = requestData.Cases.Value,
+                RemainingCases = requestData.Cases.Value,
+                Comments = requestData.Comments,
+                Status = PalletTrackingStatusEnum.Created,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow,
+                TenantId = tenantId,
+                WarehouseId = warehouseId
+            };
+
+            var palletSerials = new List<string>();
+            var palletSerial = string.Empty;
+
+            for (int i = 0; i < requestData.PalletsCount; i++)
+            {
+                var palletTracking = palletTrackingData.DeepClone();
+                while (palletSerials.Contains(palletSerial) || string.IsNullOrEmpty(palletSerial))
+                {
+                    palletSerial = DateTime.Now.Date.ToString("ddMMyy") +
+                                              DateTime.Now.ToString("HHmmss") +
+                                              GenerateRandomNo();
+                }
+
+                palletTracking.PalletSerial = palletSerial;
+
+                _currentDbContext.PalletTracking.Add(palletTracking);
+                _currentDbContext.SaveChanges();
+                palletSerials.Add(palletTracking.PalletSerial);
+            }
+
+            return palletSerials;
         }
 
         public string GenerateRandomNo()

@@ -111,4 +111,23 @@ namespace Ganedata.Core.Entities.Domain
         public decimal MinStockQuantity { get; set; }
         public string SKUCode { get; set; }
     }
+
+    [Serializable]
+    public class LabelPrintViewModel
+    {
+        public int? OrderDetailId { get; set; }
+        public int ProductId { get; set; }
+        public string ProductBarcode { get; set; }
+        public string ProductSkuCode { get; set; }
+        public string ProductName { get; set; }
+        public string Comments { get; set; }
+        public string BatchNumber { get; set; }
+        public short LabelsCount { get; set; }
+        public int? PalletsCount { get; set; }
+        public int Quantity { get; set; }
+        public int? Cases { get; set; }
+        public DateTime LabelDate { get; set; }
+        public string OrderNumber { get; set; }
+        public string PalletSerial { get; set; }
+    }
 }

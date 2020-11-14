@@ -729,6 +729,12 @@
     <Compile Include="Reports\Designs\DileveryReportPrintGroup.Designer.cs">
       <DependentUpon>DileveryReportPrintGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\Designs\ProductLabelPrint.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Designs\PalletLabelPrint.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\Designs\FinancialTransactionReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -2761,6 +2767,9 @@
     <Content Include="Views\Theme\Default\Shifts\_SchedulerPartial.cshtml" />
     <Content Include="Views\Theme\Default\Shifts\Index.cshtml" />
     <Content Include="Views\Theme\Default\Shifts\_ShiftScheduleFormPartial.cshtml" />
+    <Content Include="Views\Theme\Default\Products\_ProductLabelPrint.cshtml" />
+    <Content Include="Views\Theme\Default\Products\_PalletLabelPrint.cshtml" />
+    <Content Include="Views\Theme\Default\Products\PalletLabelPrintViewer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -2780,6 +2789,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\DileveryReportPrintGroup.resx">
       <DependentUpon>DileveryReportPrintGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Designs\ProductLabelPrint.resx">
+      <DependentUpon>ProductLabelPrint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Designs\PalletLabelPrint.resx">
+      <DependentUpon>PalletLabelPrint.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\FinancialTransactionReport.resx">
       <DependentUpon>FinancialTransactionReport.cs</DependentUpon>
