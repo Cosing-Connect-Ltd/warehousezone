@@ -1,0 +1,75 @@
+﻿
+@using Ganedata.Core.Entities.Helpers
+@model Ganedata.Core.Entities.Domain.LabelPrintViewModel
+
+@section scripts {
+    @Html.DevExpress().GetStyleSheets(
+            new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.PopupMenu, Theme = GaneStaticAppExtensions.DevexTheme }
+            )
+
+    @Html.DevExpress().GetScripts(
+            new Script { ExtensionType = ExtensionType.PopupControl },
+            new Script { ExtensionType = ExtensionType.PopupMenu }
+            )
+}
+@{
+    Layout = null;
+}
+<h2><span>Print Product Label</span></h2>
+@using (Html.BeginForm("", "", FormMethod.Post, new { @id = "frmLabelPrint" }))
+{
+    @Html.HiddenFor(m => m.ProductId)
+    @Html.HiddenFor(m => m.OrderDetailId)
+    @Html.HiddenFor(m => m.ProductName)
+    @Html.HiddenFor(m => m.ProductBarcode)
+    @Html.HiddenFor(m => m.ProductSkuCode)
+    @Html.HiddenFor(m => m.OrderNumber)
+
+    <div class="clearfix"></div>
+
+    <h3>@Model.ProductName</h3>
+    <br />
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("No Of Labels: ", htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(m => m.LabelsCount, new { htmlAttributes = new { @type = "number", @min = "0", @Value = "1" } })
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Quantity: ", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
+        <div class="col-md-8">
+            @Html.EditorFor(m => m.Quantity, new { htmlAttributes = new { @type = "number", @min = "1" } })
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Cartons: ", htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(m => m.Cases, new { htmlAttributes = new { @type = "number", @min = "1" } })
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Date: ", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
+        <div class="col-md-8">
+            @Html.DevExpress().DateEditFor(m => m.LabelDate,
+                     settings =>
+                     {
+                         settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                         settings.ClientVisible = true;
+                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                         settings.ControlStyle.CssClass = "form-control required";
+                         settings.Properties.MinDate = DateTime.Today;
+                         settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+                     }
+                     ).GetHtml()
+        </div>
+    </div>
+
+    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+        <input type="button" value="Preview" class="btn btn-primary btn-submit120px pull-right" onclick="showProductLabelPreview();" />
+        <input type="button" value="Print" class="btn btn-primary btn-submit120px pull-right" onclick="printProductLabel();" />
+        <input type="button" value="Cancel" class="btn btn-default btn-submit120px pull-right" onclick="ProductLabelPrintPopup.Hide();" />
+    </div>
+}

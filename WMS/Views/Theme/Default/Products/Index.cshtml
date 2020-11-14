@@ -60,6 +60,7 @@
 @Html.Action("ProductList")
 
 <div class="col-md-offset-2 col-md-10 bottom-right">
+    <a href="javascript:void(0)" class="btn btn-primary" onclick="showPrintProductLabelPopup($('#selkeyProductList').val(), 0)">Print Label</a>
     @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Products", "Create"))
     {
         @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })

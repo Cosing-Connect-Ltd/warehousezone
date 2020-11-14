@@ -32,6 +32,18 @@
         settings.Columns.Add("WarrantyAmount", "War Amt");
         settings.Columns.Add("TaxName.PercentageOfAmount", "Tax %");
         settings.Columns.Add("TaxAmount", "Tax Amt");
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(40);
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var orderDetailID = (int)DataBinder.Eval(m.DataItem, "OrderDetailID");
+                var productId = (int)DataBinder.Eval(m.DataItem, "ProductId");
+
+                ViewContext.Writer.Write("<a target='_blank' alt='Print Label' title='Print Label' class='btn fa fa-barcode' onclick='showPrintProductLabelPopup(" + productId + ", " + orderDetailID + ")'></a>");
+            });
+        });
 
         settings.Columns.Add(column =>
         {

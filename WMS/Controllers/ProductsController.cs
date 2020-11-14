@@ -1,6 +1,8 @@
 ﻿using DevExpress.Web.Mvc;
+using DevExpress.XtraPrinting;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using System;
@@ -8,12 +10,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using WMS.CustomBindings;
-
 
 namespace WMS.Controllers
 {
@@ -1769,8 +1771,119 @@ namespace WMS.Controllers
             return PartialView();
         }
 
+        public ActionResult _ProductLabelPrint(int productId, int orderDetailId)
+        {
+
+            var orderDetail = OrderService.GetOrderDetailsById(orderDetailId);
+
+            var product = orderDetail?.ProductMaster ?? _productServices.GetProductMasterById(productId);
+
+            var quantity = orderDetail?.Qty ?? 1;
+
+            var model = new LabelPrintViewModel
+            {
+                ProductId = productId,
+                LabelDate = DateTime.Today,
+                OrderDetailId = orderDetailId,
+                ProductName = product?.NameWithCode,
+                ProductSkuCode = product?.SKUCode,
+                OrderNumber = orderDetail?.Order?.OrderNumber,
+                ProductBarcode = !string.IsNullOrEmpty(product?.BarCode?.Trim()) ? product?.BarCode?.Trim() : product?.BarCode2?.Trim(),
+                Quantity = (int)quantity,
+                Cases = product.ProductsPerCase != null ? (int)Math.Floor(quantity / product.ProductsPerCase.Value) : 1
+            };
+
+            if (product.ProcessByPallet && CurrentWarehouse.EnableGlobalProcessByPallet)
+            {
+                model.PalletsCount = product.CasesPerPallet != null && product.ProductsPerCase!= null ? (int)Math.Floor(quantity / (product.CasesPerPallet.Value * product.ProductsPerCase.Value)) : (int?)null;
+
+                return PartialView("_PalletLabelPrint", model);
+            }
+            else
+            {
+                return PartialView(model);
+            }
+        }
+
+        public JsonResult PrintProductLabel(LabelPrintViewModel requestData)
+        {
+            var labelPrint = new ProductLabelPrint();
+            var labels = CreatePalletLabels(requestData);
+            labelPrint.DataSource = labels;
+            labelPrint.CreateDocument();
+            var tool = new PrintToolBase(labelPrint.PrintingSystem);
+            tool.PrinterSettings.Copies = requestData.LabelsCount;
+            tool.Print();
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult PrintProductLabelPreview(LabelPrintViewModel requestData)
+        {
+            var labelPrint = new ProductLabelPrint();
+            var labels = CreateProductLabels(requestData);
+            labelPrint.DataSource = labels;
+
+            labelPrint.CreateDocument();
+
+            return View("PalletLabelPrintViewer", labelPrint);
+        }
+
+        private IEnumerable<LabelPrintViewModel> CreateProductLabels(LabelPrintViewModel requestData)
+        {
+            var labels = new List<LabelPrintViewModel>();
+
+            for (int i = 1; i <= requestData.Cases; i++)
+            {
+                var reportData = requestData.DeepClone();
+                reportData.Cases = i;
+                labels.Add(reportData);
+            }
+
+            return labels;
+        }
 
 
+        public JsonResult PrintPalletLabel(LabelPrintViewModel requestData)
+        {
+            var labels = CreatePalletLabels(requestData);
+            var labelPrint = new PalletLabelPrint();
+            labelPrint.DataSource = labels;
+            labelPrint.CreateDocument();
+
+            var tool = new PrintToolBase(labelPrint.PrintingSystem);
+            tool.PrinterSettings.Copies = requestData.LabelsCount;
+            tool.Print();
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult PrintPalletLabelPreview(LabelPrintViewModel requestData)
+        {
+            var labels = CreatePalletLabels(requestData);
+            var labelPrint = new PalletLabelPrint();
+            labelPrint.DataSource = labels;
+
+            labelPrint.CreateDocument();
+
+            return View("PalletLabelPrintViewer", labelPrint);
+        }
+
+        private IEnumerable<LabelPrintViewModel> CreatePalletLabels(LabelPrintViewModel requestData)
+        {
+            var palletSerials = _productServices.CreatePalletTracking(requestData, CurrentTenantId, CurrentWarehouseId);
+
+            var labels = palletSerials.Select(palletSerial =>
+            {
+                var reportData = requestData.DeepClone();
+                reportData.Cases = requestData.Cases;
+                reportData.PalletSerial = palletSerial;
+
+                return reportData;
+            });
+
+            return labels;
+        }
 
         protected override void Initialize(RequestContext requestContext)
         {

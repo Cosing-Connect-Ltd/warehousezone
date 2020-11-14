@@ -1,5 +1,78 @@
 ﻿//////////////////PRODUCT PAGES FUNCTIONS////////////////////////////////////////
 var tempid = 0;
+var labelPrintProductId = 0;
+var labelPrintOrderDetailId = 0;
+
+function showPrintProductLabelPopup(productId, orderDetailId) {
+    labelPrintProductId = productId;
+    labelPrintOrderDetailId = orderDetailId;
+    ProductLabelPrintPopup.Show();
+}
+function beginProductLabelPrintCallback(s, e) {
+    e.customArgs["ProductId"] = labelPrintProductId;
+    e.customArgs["OrderDetailId"] = labelPrintOrderDetailId;
+}
+
+function printProductLabel() {
+    printPalletOrProductLabel("Product");
+}
+
+function printPalletLabel() {
+    printPalletOrProductLabel("Pallet");
+}
+
+function printPalletOrProductLabel(labelType) {
+
+    if (IsValidForm('#frmLabelPrint')) {
+        var requestData = $("#frmLabelPrint").serialize();
+
+        $.post("/Products/Print" + labelType + "Label",
+            requestData,
+            function (result) {
+                if (result == true) {
+                    ProductLabelPrintPopup.Hide();
+                    alert("Labels send to the printer!");
+                }
+                else {
+                    alert("Print Failed! exception: " + result);
+                }
+            });
+    }
+}
+
+function showProductLabelPreview() {
+    showPalletOrProductLabelPreview("Product");
+}
+
+function showPalletLabelPreview() {
+    showPalletOrProductLabelPreview("Pallet");
+}
+
+function showPalletOrProductLabelPreview(labelType) {
+
+    if (IsValidForm('#frmLabelPrint')) {
+        var requestData = $("#frmLabelPrint").serialize();
+
+        requestData = requestData.substring(0, requestData.indexOf("&DXScript"));
+
+        requestData = updateQueryStringParameter(requestData, 'LabelDate', LabelDate.GetDate().toISOString())
+
+        window.open('/Products/Print' + labelType + 'LabelPreview?' + requestData).focus();
+    }
+}
+
+
+function updateQueryStringParameter(uri, key, value) {
+    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+    if (uri.match(re)) {
+        return uri.replace(re, '$1' + key + "=" + value + '$2');
+    }
+    else {
+        return uri + separator + key + "=" + value;
+    }
+}
+
 
 function productPriceSave() {
 

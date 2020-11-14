@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Configuration;
+using System.Data.Spatial;
 using System.Globalization;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Configuration;
-using System.Web.WebPages;
-using System.Data.Spatial;
-using BCrypt.Net;
 
 namespace Ganedata.Core.Entities.Helpers
 {
@@ -134,12 +134,22 @@ namespace Ganedata.Core.Entities.Helpers
             {
                 return false;
             }
-           
+
             return BCrypt.Net.BCrypt.Verify(textTobeVerfied, correctHash);
         }
 
 
+        public static T DeepClone<T>(this T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
 
+                return (T)formatter.Deserialize(ms);
+            }
+        }
 
 
 
