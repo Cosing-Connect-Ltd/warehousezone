@@ -1222,7 +1222,7 @@ namespace Ganedata.Core.Services
                                                                          (u.UserId == userId || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)));
             if (cartProduct == null)
             {
-                var accountId = _currentDbContext.Account.FirstOrDefault(a => a.OwnerUserId == userId).AccountID;
+                var accountId = _currentDbContext.AuthUsers.FirstOrDefault(a => a.UserId == userId)?.AccountId;
                 cartProduct = new WebsiteCartItem();
                 cartProduct.ProductId = productId;
                 cartProduct.Quantity = quantity;

@@ -535,6 +535,24 @@ namespace Ganedata.Core.Data.Migrations
                     VariableName = "CustomMessage",
                     TenantId = CurrentTenantId
                 });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "UserName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "ConfirmationLink",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "TransactionReferenceNumber",
+                    TenantId = CurrentTenantId
+                });
 
 
             context.VehicleInspectionTypes.AddOrUpdate(m => new { m.TypeName }, new VehicleInspectionType()
@@ -909,6 +927,25 @@ namespace Ganedata.Core.Data.Migrations
                     VariableName = "CustomMessage",
                     TenantId = CurrentTenantId
                 });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "UserName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "ConfirmationLink",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "TransactionReferenceNumber",
+                    TenantId = CurrentTenantId
+                });
+
 
 
             context.VehicleInspectionTypes.AddOrUpdate(m => new { m.TypeName }, new VehicleInspectionType()
@@ -1303,6 +1340,25 @@ namespace Ganedata.Core.Data.Migrations
                     VariableName = "ConfirmationLink",
                     TenantId = CurrentTenantId
                 });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "UserName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "ConfirmationLink",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "TransactionReferenceNumber",
+                    TenantId = CurrentTenantId
+                });
+
 
 
             context.VehicleInspectionTypes.AddOrUpdate(m => new { m.TypeName }, new VehicleInspectionType()
@@ -1697,6 +1753,25 @@ namespace Ganedata.Core.Data.Migrations
                     VariableName = "ConfirmationLink",
                     TenantId = CurrentTenantId
                 });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "UserName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "ConfirmationLink",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "TransactionReferenceNumber",
+                    TenantId = CurrentTenantId
+                });
+
 
 
             context.VehicleInspectionTypes.AddOrUpdate(m => new { m.TypeName }, new VehicleInspectionType()
@@ -2097,6 +2172,25 @@ namespace Ganedata.Core.Data.Migrations
                     VariableName = "TransactionReferenceNumber",
                     TenantId = CurrentTenantId
                 });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "UserName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "ConfirmationLink",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "TransactionReferenceNumber",
+                    TenantId = CurrentTenantId
+                });
+
 
 
             context.VehicleInspectionTypes.AddOrUpdate(m => new { m.TypeName }, new VehicleInspectionType()
