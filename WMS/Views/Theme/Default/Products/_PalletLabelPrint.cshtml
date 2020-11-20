@@ -16,7 +16,7 @@
 @{
     Layout = null;
 }
-<h2><span>Print Pallets Label</span></h2>
+<h2><span>Print Pallets Labels</span></h2>
 @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "frmLabelPrint" }))
 {
     @Html.HiddenFor(m => m.ProductId)
@@ -81,8 +81,8 @@
     </div>
 
     <div class="col-md-offset-2 col-md-12 bottom-right-popup">
-        <input type="button" value="Preview" class="btn btn-primary btn-submit120px pull-right" onclick="showPalletLabelPreview();" />
-        <input type="button" value="Print" class="btn btn-primary btn-submit120px pull-right" onclick="printPalletLabel();" />
+        <input type="button" value="Preview and Print" class="btn btn-primary btn-submit pull-right" onclick="showPalletLabelPreview();" />
+        @*<input type="button" value="Print" class="btn btn-primary btn-submit120px pull-right" onclick="printPalletLabel();" />*@
         <input type="button" value="Cancel" class="btn btn-default btn-submit120px pull-right" onclick="ProductLabelPrintPopup.Hide();" />
     </div>
 }
