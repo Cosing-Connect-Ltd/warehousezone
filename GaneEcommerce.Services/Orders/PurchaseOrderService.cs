@@ -121,7 +121,7 @@ namespace Ganedata.Core.Services
                     order.ShipmentAddressLine1 = currentTenant.TenantAddress1;
                     order.ShipmentAddressLine2 = currentTenant.TenantAddress2;
                     order.ShipmentAddressLine3 = currentTenant.TenantAddress3;
-                    order.ShipmentAddressTown = currentTenant.TenantAddress4;
+                    order.ShipmentAddressTown = currentTenant.TenantCity;
                     order.ShipmentAddressPostcode = currentTenant.TenantPostalCode;
                     order.ShipmentAccountAddressId = null;
                 }
@@ -277,7 +277,7 @@ namespace Ganedata.Core.Services
                             order.ShipmentAddressLine1 = currentTenant.TenantAddress1;
                             order.ShipmentAddressLine2 = currentTenant.TenantAddress2;
                             order.ShipmentAddressLine3 = currentTenant.TenantAddress3;
-                            order.ShipmentAddressTown = currentTenant.TenantAddress4;
+                            order.ShipmentAddressTown = currentTenant.TenantCity;
                             order.ShipmentAddressPostcode = currentTenant.TenantPostalCode;
                             order.PPropertyId = null;
                             order.ShipmentAccountAddressId = null;
@@ -290,7 +290,7 @@ namespace Ganedata.Core.Services
                             order.ShipmentAddressLine1 = location.AddressLine1;
                             order.ShipmentAddressLine2 = location.AddressLine2;
                             order.ShipmentAddressLine3 = location.AddressLine3;
-                            order.ShipmentAddressTown = location.AddressLine4;
+                            order.ShipmentAddressTown = location.City;
                             order.ShipmentAddressPostcode = location.PostalCode;
                             order.PPropertyId = null;
                             order.ShipmentAccountAddressId = null;

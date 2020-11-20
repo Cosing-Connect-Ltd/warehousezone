@@ -10,8 +10,8 @@ namespace Ganedata.Core.Entities.Domain
         public string AddressLine2 { get; set; }
         [Display(Name = "City/Town")]
         public string AddressLine3 { get; set; }
-        [Display(Name = "County")]
-        public string AddressLine4 { get; set; }
+        [Display(Name = "City/Town")]
+        public string AddressTown { get; set; }
         [Display(Name = "Post code")]
         public string AddressPostcode { get; set; }
         [Display(Name = "Home Telephone")]
@@ -33,7 +33,7 @@ namespace Ganedata.Core.Entities.Domain
             fullAddress += string.IsNullOrEmpty(AddressLine1) ? "" : AddressLine1;
             fullAddress += string.IsNullOrEmpty(AddressLine2) ? "" : ", " + AddressLine2;
             fullAddress += string.IsNullOrEmpty(AddressLine3) ? "" : ", " + AddressLine3;
-            fullAddress += string.IsNullOrEmpty(AddressLine4) ? "" : ", " + AddressLine4;
+            fullAddress += string.IsNullOrEmpty(AddressTown) ? "" : ", " + AddressTown;
             fullAddress += string.IsNullOrEmpty(AddressPostcode) ? "" : ", " + AddressPostcode;
             return fullAddress;
         }

@@ -39,7 +39,7 @@ namespace Ganedata.Core.Services
                             tenant.AddressLine1 != existingTenant.AddressLine1 ||
                             tenant.AddressLine2 != existingTenant.AddressLine2 ||
                             tenant.AddressLine3 != existingTenant.AddressLine3 ||
-                            tenant.AddressLine4 != existingTenant.AddressLine4 ||
+                            tenant.AddressTown != existingTenant.AddressTown ||
                             tenant.AddressPostcode != existingTenant.AddressPostcode
                             || tenant.Email != existingTenant.Email ||
                             tenant.MobileNumber != existingTenant.MobileNumber ||
@@ -63,7 +63,7 @@ namespace Ganedata.Core.Services
                             existingTenant.AddressLine1 = tenant.AddressLine1;
                             existingTenant.AddressLine2 = tenant.AddressLine2;
                             existingTenant.AddressLine3 = tenant.AddressLine3;
-                            existingTenant.AddressLine4 = tenant.AddressLine4;
+                            existingTenant.AddressTown = tenant.AddressTown;
                             existingTenant.AddressPostcode = tenant.AddressPostcode;
                             existingTenant.Email = tenant.Email;
                             existingTenant.MobileNumber = tenant.MobileNumber;
@@ -142,7 +142,7 @@ namespace Ganedata.Core.Services
                 {
                     //Check whether all information are up to date, if not update the information
                     if (landlord.LandlordFullname != existingLandlord.LandlordFullname || landlord.LandlordSalutation != existingLandlord.LandlordSalutation || landlord.AddressLine1 != existingLandlord.AddressLine1 || landlord.AddressLine2 != existingLandlord.AddressLine2 ||
-                        landlord.AddressLine3 != existingLandlord.AddressLine3 || landlord.AddressLine4 != existingLandlord.AddressLine4 || landlord.AddressPostcode != existingLandlord.AddressPostcode
+                        landlord.AddressLine3 != existingLandlord.AddressLine3 || landlord.AddressTown != existingLandlord.AddressTown || landlord.AddressPostcode != existingLandlord.AddressPostcode
                         || landlord.Email != existingLandlord.Email || landlord.MobileNumber != existingLandlord.MobileNumber || landlord.HomeTelephone != existingLandlord.HomeTelephone || landlord.WorkTelephone1 != existingLandlord.WorkTelephone1 || landlord.WorkTelephone2 != existingLandlord.WorkTelephone2 || landlord.WorkTelephoneFax != existingLandlord.WorkTelephoneFax
                         || landlord.LandlordAdded != existingLandlord.LandlordAdded || landlord.LandlordStatus != existingLandlord.LandlordStatus)
                     {
@@ -152,7 +152,7 @@ namespace Ganedata.Core.Services
                         existingLandlord.AddressLine1 = landlord.AddressLine1;
                         existingLandlord.AddressLine2 = landlord.AddressLine2;
                         existingLandlord.AddressLine3 = landlord.AddressLine3;
-                        existingLandlord.AddressLine4 = landlord.AddressLine4;
+                        existingLandlord.AddressTown = landlord.AddressTown;
                         existingLandlord.AddressPostcode = landlord.AddressPostcode;
                         existingLandlord.Email = landlord.Email;
                         existingLandlord.MobileNumber = landlord.MobileNumber;

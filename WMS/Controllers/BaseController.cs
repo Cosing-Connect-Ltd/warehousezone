@@ -101,7 +101,7 @@ namespace WMS.Controllers
 
             if (Tenant != null)
             {
-                var tenantMainLocation = new PropertyContactInfo() { PropertyCode = "TenantLocMain", AddressLine1 = Tenant.TenantAddress1, AddressLine2 = Tenant.TenantAddress2, AddressLine3 = Tenant.TenantAddress3, AddressLine4 = Tenant.TenantAddress4, AddressPostcode = Tenant.TenantPostalCode };
+                var tenantMainLocation = new PropertyContactInfo() { PropertyCode = "TenantLocMain", AddressLine1 = Tenant.TenantAddress1, AddressLine2 = Tenant.TenantAddress2, AddressLine3 = Tenant.TenantAddress3, AddressTown = Tenant.TenantCity, AddressPostcode = Tenant.TenantPostalCode };
 
                 var addressList = new List<PropertyContactInfo>() { tenantMainLocation };
 
@@ -112,7 +112,7 @@ namespace WMS.Controllers
                         AddressLine1 = location.AddressLine1,
                         AddressLine2 = location.AddressLine2,
                         AddressLine3 = location.AddressLine3,
-                        AddressLine4 = location.AddressLine4,
+                        AddressTown = location.City,
                         AddressPostcode = location.PostalCode,
                         PropertyCode = "TenantLoc" + location.WarehouseId
                     });
