@@ -23,7 +23,6 @@ namespace Ganedata.Core.Entities.Domain
         public string TenantAddress1 { get; set; }
         public string TenantAddress2 { get; set; }
         public string TenantAddress3 { get; set; }
-        public string TenantAddress4 { get; set; }
         public string TenantCity { get; set; }
         public string TenantStateCounty { get; set; }
         public string TenantPostalCode { get; set; }

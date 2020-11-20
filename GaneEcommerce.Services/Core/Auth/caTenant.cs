@@ -45,7 +45,6 @@ namespace Ganedata.Core.Services
                 TenantAddress1 = tenant.TenantAddress1;
                 TenantAddress2 = tenant.TenantAddress2;
                 TenantAddress3 = tenant.TenantAddress3;
-                TenantAddress4 = tenant.TenantAddress4;
                 TenantCity = tenant.TenantCity;
                 TenantStateCounty = tenant.TenantStateCounty;
                 TenantPostalCode = tenant.TenantPostalCode;

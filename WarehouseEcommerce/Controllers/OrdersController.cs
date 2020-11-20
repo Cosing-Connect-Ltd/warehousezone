@@ -200,7 +200,7 @@ namespace WarehouseEcommerce.Controllers
                                                                             Address = warehouse?.AddressLine1 +
                                                                                       (!string.IsNullOrEmpty(warehouse?.AddressLine2?.Trim()) ? $", {warehouse?.AddressLine2}" : string.Empty) +
                                                                                       (!string.IsNullOrEmpty(warehouse?.AddressLine3?.Trim()) ? $", {warehouse?.AddressLine3}" : string.Empty) +
-                                                                                      (!string.IsNullOrEmpty(warehouse?.AddressLine4?.Trim()) ? $", {warehouse?.AddressLine4}" : string.Empty),
+                                                                                      (!string.IsNullOrEmpty(warehouse?.City?.Trim()) ? $", {warehouse?.City}" : string.Empty),
                                                                             warehouse?.City,
                                                                             warehouse?.GlobalCountry?.CountryName,
                                                                             warehouse?.ContactNumbers,
