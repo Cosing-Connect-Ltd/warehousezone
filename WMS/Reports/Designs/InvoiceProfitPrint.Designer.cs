@@ -668,7 +668,7 @@
             this.xrLabel17.SizeF = new System.Drawing.SizeF(92.09753F, 18.28338F);
             this.xrLabel17.StylePriority.UseBorderWidth = false;
             this.xrLabel17.StylePriority.UseFont = false;
-            this.xrLabel17.Text = "Sell Price";
+            this.xrLabel17.Text = "Profit";
             // 
             // xrLabel16
             // 
