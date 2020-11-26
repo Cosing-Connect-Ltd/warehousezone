@@ -31,6 +31,7 @@
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings2 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings3 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
+            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings4 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
@@ -86,6 +87,7 @@
             this.xrLine3 = new DevExpress.XtraReports.UI.XRLine();
             this.ReportFooter1 = new DevExpress.XtraReports.UI.ReportFooterBand();
             this.xrLine2 = new DevExpress.XtraReports.UI.XRLine();
+            this.paramOwnerIds = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -765,6 +767,15 @@
             this.xrLine2.SizeF = new System.Drawing.SizeF(756.2087F, 3.888914F);
             this.xrLine2.StylePriority.UseForeColor = false;
             // 
+            // paramOwnerIds
+            // 
+            this.paramOwnerIds.AllowNull = true;
+            this.paramOwnerIds.Description = "Select Owners";
+            this.paramOwnerIds.MultiValue = true;
+            this.paramOwnerIds.Name = "paramOwnerIds";
+            this.paramOwnerIds.Type = typeof(int);
+            this.paramOwnerIds.ValueSourceSettings = staticListLookUpSettings4;
+            // 
             // InvoiceProfitPrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -782,6 +793,7 @@
             this.paramEndDate,
             this.paramAccountIds,
             this.paramProductIds,
+            this.paramOwnerIds,
             this.paramMarketId});
             this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -845,5 +857,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel13;
         private DevExpress.XtraReports.UI.XRLabel xrLabel12;
         private DevExpress.XtraReports.UI.XRLabel xrLabel11;
+        public DevExpress.XtraReports.Parameters.Parameter paramOwnerIds;
     }
 }

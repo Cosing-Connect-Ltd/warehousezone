@@ -1321,7 +1321,7 @@ namespace WMS.Controllers
             if (tenantConfig.EnableOrdersHistoryReportDetails)
             {
                 var productOrdersHistoryDetailReport = new ProductOrdersHistoryDetailReport();
-                productOrdersHistoryDetailReport.DataSourceDemanded += CreateproductOrdersHistoryReport_DataSourceDemanded;
+                productOrdersHistoryDetailReport.DataSourceDemanded += CreateProductOrdersHistoryReport_DataSourceDemanded;
                 productOrdersHistoryDetailReport.OrderNumber.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".OrderNumber")});
 
@@ -1359,7 +1359,7 @@ namespace WMS.Controllers
             return productOrdersHistoryReport;
         }
 
-        public void CreateproductOrdersHistoryReport_DataSourceDemanded(object sender, EventArgs e)
+        public void CreateProductOrdersHistoryReport_DataSourceDemanded(object sender, EventArgs e)
         {
             var report = (ProductOrdersHistoryDetailReport)sender;
 
@@ -1405,6 +1405,10 @@ namespace WMS.Controllers
             var markets = _marketServices.GetAllValidMarkets(CurrentTenantId).Markets;
             marketsSettings.LookUpValues.AddRange(markets.Select(m => new LookUpValue(m.Id, m.Name)));
 
+            var users = OrderService.GetAllAuthorisedUsers(CurrentTenantId, true);
+            StaticListLookUpSettings ownerSettings = (StaticListLookUpSettings)report.paramOwnerIds.LookUpSettings;
+            ownerSettings.LookUpValues.AddRange(users.Select(m => new LookUpValue(m.UserId, m.DisplayName)));
+
             report.DataSourceDemanded += ProfitInvoiceReport_DataSourceDemanded;
 
             return View(report);
@@ -1419,7 +1423,14 @@ namespace WMS.Controllers
             var accountIds = (int[])report.paramAccountIds.Value;
             var productIds = (int[])report.paramProductIds.Value;
             var marketId = (int?)report.paramMarketId.Value;
-            var invoices = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId, accountIds).Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate);
+            var ownerIds = (int[])report.paramOwnerIds.Value;
+            var invoices = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId, accountIds)
+                                          .Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate);
+
+            if (ownerIds != null && ownerIds.Count() > 0)
+            {
+                invoices = invoices.Where(x => ownerIds.Contains(x.Account.OwnerUserId));
+            }
 
             if (marketId != null && marketId != 0)
             {
