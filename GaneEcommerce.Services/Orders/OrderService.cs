@@ -1242,7 +1242,8 @@ namespace Ganedata.Core.Services
                     ShipmentAddressLine1 = item.ShipmentAddressLine1,
                     ShipmentAddressPostcode = item.ShipmentAddressPostcode,
                     ExpectedDate = expectedDate,
-                    FoodOrderType = item.FoodOrderType
+                    FoodOrderType = item.FoodOrderType,
+                    OfflineSale = item.OfflineSale
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
@@ -1716,6 +1717,7 @@ namespace Ganedata.Core.Services
                     order.OrderCost = (item.OrderProcessDetails.Sum(m => m.Price * m.QtyProcessed) + item.OrderProcessDetails.Sum(m => m.TaxAmount) + item.OrderProcessDetails.Sum(m => m.WarrantyAmount));
                     order.OrderDiscount = item.OrderProcessDiscount;
                     order.OrderTotal = (decimal)order.OrderCost - item.OrderProcessDiscount;
+                    order.OfflineSale = item.OfflineSale;
 
                     if (item.AccountTransactionInfo != null)
                     {

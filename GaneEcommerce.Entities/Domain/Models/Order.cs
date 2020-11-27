@@ -270,5 +270,6 @@ namespace Ganedata.Core.Entities.Domain
         public virtual Order BaseOrder { get; set; }
 
         public virtual IEnumerable<Order> RelatedOrders { get; set; }
+        public bool OfflineSale { get; set; }
     }
 }

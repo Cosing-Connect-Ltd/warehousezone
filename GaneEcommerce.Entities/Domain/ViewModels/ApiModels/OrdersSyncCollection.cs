@@ -92,6 +92,7 @@ namespace Ganedata.Core.Models
         public int? PickerId { get; set; }
         public string FullName { get; set; }
         public string MobileNumber { get; set; }
+        public bool OfflineSale { get; set; }
     }
 
     public class OrderDetailSync
