@@ -1179,6 +1179,10 @@
     <Compile Include="Migrations\202011200721511_address-line-4-dropped-from-PTenants-PLandlords-and-tenant-locations.designer.cs">
       <DependentUpon>202011200721511_address-line-4-dropped-from-PTenants-PLandlords-and-tenant-locations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011201426060_OfflineMode-flag-added-orders.cs" />
+    <Compile Include="Migrations\202011201426060_OfflineMode-flag-added-orders.designer.cs">
+      <DependentUpon>202011201426060_OfflineMode-flag-added-orders.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2383,6 +2387,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011200721511_address-line-4-dropped-from-PTenants-PLandlords-and-tenant-locations.resx">
       <DependentUpon>202011200721511_address-line-4-dropped-from-PTenants-PLandlords-and-tenant-locations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011201426060_OfflineMode-flag-added-orders.resx">
+      <DependentUpon>202011201426060_OfflineMode-flag-added-orders.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

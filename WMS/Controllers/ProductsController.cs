@@ -1793,9 +1793,14 @@ namespace WMS.Controllers
                 Cases = product.ProductsPerCase != null ? (int)Math.Floor(quantity / product.ProductsPerCase.Value) : 1
             };
 
+            if (orderDetail == null)
+            {
+                model.Cases = product.CasesPerPallet != null ? product.CasesPerPallet.Value : 1;
+            }
+
             if (product.ProcessByPallet && CurrentWarehouse.EnableGlobalProcessByPallet)
             {
-                model.PalletsCount = product.CasesPerPallet != null && product.ProductsPerCase!= null ? (int)Math.Floor(quantity / (product.CasesPerPallet.Value * product.ProductsPerCase.Value)) : (int?)null;
+                model.PalletsCount = product.CasesPerPallet != null && product.ProductsPerCase != null ? (int)Math.Floor(quantity / (product.CasesPerPallet.Value * product.ProductsPerCase.Value)) : (int?)null;
 
                 return PartialView("_PalletLabelPrint", model);
             }
