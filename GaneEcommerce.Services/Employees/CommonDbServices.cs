@@ -166,10 +166,12 @@ namespace Ganedata.Core.Services
                     model.TaxAmount = Math.Round(((model.Price * model.Qty) / 100) * (model.TaxName != null ? model.TaxName.PercentageOfAmount : 0), 2);
                     if (accountId.HasValue)
                     {
-                        var accounttax = _currentDbContext.Account.FirstOrDefault(u => u.AccountID == accountId && (u.TaxID == 4 || u.TaxID == 5));
-                        if (accounttax != null)
+                        var accountTax = _currentDbContext.Account.FirstOrDefault(u => u.AccountID == accountId && (u.GlobalTax == null || u.GlobalTax.PercentageOfAmount <= 0));
+                        if (accountTax != null)
                         {
                             model.TaxAmount = 0;
+                            model.TaxID = accountTax.TaxID;
+                            model.TaxName.PercentageOfAmount = 0;
                         }
                     }
                 }
