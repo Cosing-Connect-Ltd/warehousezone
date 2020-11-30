@@ -63,8 +63,6 @@ namespace WMS.Controllers.WebAPI
             return Ok(result);
         }
 
-
-
         // POST http://localhost:8005/api/sync/post-stockmovement-detail
         public IHttpActionResult PostStockMovementDetail(StockMovementCollectionViewModel data)
         {

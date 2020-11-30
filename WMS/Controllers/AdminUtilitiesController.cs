@@ -22,9 +22,10 @@ namespace WMS.Controllers
         private readonly IEmployeeShiftsServices _employShiftServices;
         private readonly IMapper _mapper;
         private readonly IInvoiceService _invoiceServices;
+        private readonly IDeliverectSyncService _deliverectSyncService;
 
         public AdminUtilitiesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAdminServices adminServices,
-            IProductServices productServices, IApplicationContext currentDbContext, IEmployeeShiftsServices employeeShiftsServices, IMapper mapper, IInvoiceService invoiceServices)
+            IProductServices productServices, IApplicationContext currentDbContext, IEmployeeShiftsServices employeeShiftsServices, IMapper mapper, IInvoiceService invoiceServices, IDeliverectSyncService deliverectSyncService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _adminServices = adminServices;
@@ -33,6 +34,7 @@ namespace WMS.Controllers
             _employShiftServices = employeeShiftsServices;
             _mapper = mapper;
             _invoiceServices = invoiceServices;
+            _deliverectSyncService = deliverectSyncService;
         }
         // GET: AdminUtilities/RecalculateStockAll
         /// <summary>
@@ -204,6 +206,18 @@ namespace WMS.Controllers
 
             return View("AdminUtilities");
 
+        }
+
+        public async Task<ActionResult> SyncDeliverectDatas()
+        {
+            await _deliverectSyncService.SyncChannelLinks();
+            await _deliverectSyncService.SyncProducts(CurrentTenantId, CurrentUserId);
+
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Operation was Successful";
+            ViewBag.Detail = "Deliverect Data Sync Completed Successfully";
+
+            return View("AdminUtilities");
         }
 
 

@@ -1183,6 +1183,10 @@
     <Compile Include="Migrations\202011201426060_OfflineMode-flag-added-orders.designer.cs">
       <DependentUpon>202011201426060_OfflineMode-flag-added-orders.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011301344316_added-Deliverect-related-fields.cs" />
+    <Compile Include="Migrations\202011301344316_added-Deliverect-related-fields.designer.cs">
+      <DependentUpon>202011301344316_added-Deliverect-related-fields.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2390,6 +2394,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011201426060_OfflineMode-flag-added-orders.resx">
       <DependentUpon>202011201426060_OfflineMode-flag-added-orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011301344316_added-Deliverect-related-fields.resx">
+      <DependentUpon>202011301344316_added-Deliverect-related-fields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web;
 
 namespace Ganedata.Core.Entities.Domain
 {
@@ -29,6 +28,12 @@ namespace Ganedata.Core.Entities.Domain
         [MaxLength(200)]
         [Display(Name = "Location")]
         public string WarehouseName { get; set; }
+        [Display(Name = "DeliverectId")]
+        public string DeliverectChannel { get; set; }
+        [Display(Name = "DeliverectId")]
+        public string DeliverectChannelLinkId { get; set; }
+        [Display(Name = "DeliverectName")]
+        public string DeliverectChannelLinkName { get; set; }
         [MaxLength(200)]
         [Display(Name = "Address Line 1")]
         public string AddressLine1 { get; set; }

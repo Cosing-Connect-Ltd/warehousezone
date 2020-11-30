@@ -1,3 +1,4 @@
+using Ganedata.Core.Entities.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Configuration;
@@ -81,5 +82,6 @@ namespace Ganedata.Core.Entities.Domain
         public string LoyaltyAppPrimaryTextColour { get; set; }
         public string LoyaltyAppSecondaryTextColour { get; set; }
         public string LoyaltyAppAboutUsPageText { get; set; }
+        public LoyaltyAppOrderProcessTypeEnum LoyaltyAppOrderProcessType { get; set; }
     }
 }

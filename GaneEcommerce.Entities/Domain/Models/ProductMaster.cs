@@ -42,10 +42,11 @@ namespace Ganedata.Core.Entities.Domain
         [Remote("IsSKUAvailable", "Products", AdditionalFields = "ProductId", ErrorMessage = "SKUCode already exists. ")]
         [Display(Name = "SKU Code")]
         public string SKUCode { get; set; }
-
+        public string DeliverectPLU { get; set; }
+        public int DeliverectProductType { get; set; }
+        public string DeliverectProductId { get; set; }
         [Display(Name = "Second Code")]
         public string SecondCode { get; set; }
-
         [Required]
         [Display(Name = "Product Name")]
         public string Name { get; set; }

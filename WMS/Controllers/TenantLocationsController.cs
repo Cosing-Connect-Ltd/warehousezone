@@ -6,6 +6,7 @@ using System.Net;
 using System.Web.Mvc;
 using DevExpress.Web.Mvc;
 using WMS.CustomBindings;
+using Ganedata.Core.Entities.Enums;
 
 namespace WMS.Controllers
 {
@@ -16,15 +17,26 @@ namespace WMS.Controllers
         private readonly ITerminalServices _terminalServices;
         private readonly IUserService _userService;
         private readonly IEmployeeServices _employeeServices;
+        private readonly ITenantsServices _tenantsServices;
 
-        public TenantLocationsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantLocationServices tenantLocationServices, IMarketServices marketServices, ITerminalServices terminalServices, IUserService userService, IEmployeeServices employeeServices)
+        public TenantLocationsController(ICoreOrderService orderService, 
+                                         IPropertyService propertyService, 
+                                         IAccountServices accountServices, 
+                                         ILookupServices lookupServices, 
+                                         ITenantLocationServices tenantLocationServices, 
+                                         IMarketServices marketServices, 
+                                         ITerminalServices terminalServices, 
+                                         IUserService userService, 
+                                         IEmployeeServices employeeServices,
+                                         ITenantsServices tenantsServices)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _tenantLocationServices = tenantLocationServices;
             _marketServices = marketServices;
-            this._terminalServices = terminalServices;
-            this._userService = userService;
-            this._employeeServices = employeeServices;
+            _terminalServices = terminalServices;
+            _userService = userService;
+            _employeeServices = employeeServices;
+            _tenantsServices = tenantsServices;
         }
 
         public ActionResult Index()
@@ -64,6 +76,8 @@ namespace WMS.Controllers
             ViewBag.CountryId = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryId", "CountryName");
             ViewBag.AllVehicles = _marketServices.GetAllValidMarketVehicles(CurrentTenantId).MarketVehicles.Select(m => new SelectListItem() { Value = m.Id.ToString(), Text = m.Name });
             ViewBag.PriceGroups = LookupServices.GetAllPriceGroups(CurrentTenantId).Select(m => new SelectListItem() { Value = m.PriceGroupID.ToString(), Text = m.Name });
+
+            ViewBag.IsDeliverectIntegrated = _tenantsServices.GetTenantConfigById(CurrentTenantId)?.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect;
 
             return View();
         }
@@ -112,6 +126,7 @@ namespace WMS.Controllers
             ViewBag.AllTerminals = _terminalServices.GetAllTerminalsWithoutMobileLocationLinks(CurrentTenantId, tenantwarehouse.SalesTerminalId).Select(m => new SelectListItem() { Value = m.TerminalId.ToString(), Text = m.TerminalName + " " + m.TermainlSerial });
             ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId, tenantwarehouse.SalesManUserId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " " + m.FirstName });
             ViewBag.PriceGroups = LookupServices.GetAllPriceGroups(CurrentTenantId).Select(m => new SelectListItem() { Value = m.PriceGroupID.ToString(), Text = m.Name });
+            ViewBag.IsDeliverectIntegrated = _tenantsServices.GetTenantConfigById(CurrentTenantId)?.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect;
             return View(tenantwarehouse);
         }
 

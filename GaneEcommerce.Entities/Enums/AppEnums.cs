@@ -376,6 +376,12 @@ namespace Ganedata.Core.Entities.Enums
         EatIn = 3
     }
 
+    public enum LoyaltyAppOrderProcessTypeEnum
+    {
+        Internal = 0,
+        Deliverect = 1
+    }
+
     public enum PalletTrackingSchemeEnum
     {
         FirstInFirstOut = 1,
