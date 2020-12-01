@@ -21,7 +21,7 @@ using WMS.CustomBindings;
 
 namespace WMS
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
 
 
@@ -52,7 +52,7 @@ namespace WMS
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             }
 
-            GlobalFilters.Filters.Add(new StackExchange.Profiling.Mvc.ProfilingActionFilter());
+            GlobalFilters.Filters.Add(new ProfilingActionFilter());
 
             // remove unnecessary view engines
             ViewEngines.Engines.Clear();
@@ -69,7 +69,7 @@ namespace WMS
             //custom Json date formatter
             JsonMediaTypeFormatter jsonFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
 
-            JsonSerializerSettings jSettings = new Newtonsoft.Json.JsonSerializerSettings()
+            JsonSerializerSettings jSettings = new JsonSerializerSettings()
             {
                 //Formatting = Formatting.Indented,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc

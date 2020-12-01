@@ -364,6 +364,8 @@
     <Compile Include="Core\Barcoding\GS128Decoder.cs" />
     <Compile Include="Core\Finance\Financials.cs" />
     <Compile Include="Core\Inventory\Inventory.cs" />
+    <Compile Include="Deliverect\IDeliverectSyncService.cs" />
+    <Compile Include="Deliverect\DeliverectSyncService.cs" />
     <Compile Include="Emails\EmailServices.cs" />
     <Compile Include="Emails\IEmailServices.cs" />
     <Compile Include="Emails\EmailSender.cs" />

@@ -102,6 +102,7 @@ namespace WMS
             container.RegisterType<IUISettingServices, UISettingServices>();
             container.RegisterType<IApiCredentialServices, ApiCredentialServices>();
             container.RegisterType<IAccountSectorService, AccountSectorService>();
+            container.RegisterType<IDeliverectSyncService, DeliverectSyncService>();
 
             container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());
 

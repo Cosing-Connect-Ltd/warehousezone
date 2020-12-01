@@ -62,13 +62,6 @@
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AddressLine4, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AddressLine4)
-                @Html.ValidationMessageFor(model => model.AddressLine4)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
             <label class="col-md-4"> Pallet Tracking Scheme</label>
             <div class="col-md-8">
                 @Html.EnumDropDownListFor(m => m.PalletTrackingScheme, new { @class = "chosen-select" })
@@ -213,6 +206,30 @@
                 @Html.ValidationMessageFor(model => model.IsActive)
             </div>
         </div>
+        @if (ViewBag.IsDeliverectIntegrated)
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Deliverect ChannelLinkId", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.DeliverectChannelLinkId)
+                    @Html.ValidationMessageFor(model => model.DeliverectChannelLinkId)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Deliverect ChannelLinkName", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.DeliverectChannelLinkName)
+                    @Html.ValidationMessageFor(model => model.DeliverectChannelLinkName)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Deliverect Channel", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.DeliverectChannel)
+                    @Html.ValidationMessageFor(model => model.DeliverectChannel)
+                </div>
+            </div>
+        }
     </div>
     <div class="col-md-12 pull-left border-wrapper" id="divMobileLocation">
         <div class="col-md-6 pull-left">
@@ -310,7 +327,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 pull-left">  
+            <div class="col-md-6 pull-left">
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.DefaultEatInTimeMinutes, new { @class = "col-md-4" })
                     <div class="col-md-8">

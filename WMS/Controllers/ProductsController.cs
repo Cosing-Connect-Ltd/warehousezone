@@ -26,8 +26,16 @@ namespace WMS.Controllers
         private readonly ILookupServices _lookupServices;
         private readonly IProductLookupService _productLookupService;
         private readonly ITenantWebsiteService _tenantWebsiteService;
+        private readonly ITenantsServices _tenantsServices;
 
-        public ProductsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices, ITenantWebsiteService tenantWebsiteService, IProductLookupService productLookupService)
+        public ProductsController(ICoreOrderService orderService, 
+                                  IPropertyService propertyService, 
+                                  IAccountServices accountServices, 
+                                  ILookupServices lookupServices, 
+                                  IProductServices productServices, 
+                                  ITenantWebsiteService tenantWebsiteService, 
+                                  IProductLookupService productLookupService,
+                                  ITenantsServices tenantsServices)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _accountServices = accountServices;
@@ -35,6 +43,7 @@ namespace WMS.Controllers
             _lookupServices = lookupServices;
             _productLookupService = productLookupService;
             _tenantWebsiteService = tenantWebsiteService;
+            _tenantsServices = tenantsServices;
         }
         string UploadDirectory = "~/UploadedFiles/Products/";
         string UploadTempDirectory = "~/UploadedFiles/Products/TempFiles/";
@@ -105,6 +114,8 @@ namespace WMS.Controllers
             var prefAccounts = _accountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Supplier).Select(acnts => new { PreferredSupplier = acnts.AccountID, Supplier = acnts.AccountCode }).ToList();
 
             ViewBag.PreferredSuppliers = new SelectList(prefAccounts, "PreferredSupplier", "Supplier");
+
+            ViewBag.IsDeliverectIntegrated = _tenantsServices.GetTenantConfigById(CurrentTenantId)?.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect;
 
             if (Request.UrlReferrer != null)
             {
@@ -211,6 +222,9 @@ namespace WMS.Controllers
                     files.Add(new KeyValuePair<string, UploadedFileViewModel>(dInfo.Name, null));
                 }
             }
+
+            ViewBag.IsDeliverectIntegrated = _tenantsServices.GetTenantConfigById(CurrentTenantId)?.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect;
+
             return productMaster;
         }
 

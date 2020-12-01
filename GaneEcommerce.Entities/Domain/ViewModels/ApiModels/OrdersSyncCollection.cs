@@ -59,6 +59,8 @@ namespace Ganedata.Core.Models
         public int? AuthorisedUserID { get; set; }
         public string AuthorisedNotes { get; set; }
         public int? WarehouseId { get; set; }
+        public string DeliverectChannelLinkId { get; set; }
+        public string DeliverectChannel { get; set; }
         public string ShipmentAddressLine1 { get; set; }
         public string ShipmentAddressLine2 { get; set; }
         public string ShipmentAddressLine3 { get; set; }

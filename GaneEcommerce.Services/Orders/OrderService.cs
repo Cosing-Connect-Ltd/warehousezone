@@ -1443,6 +1443,8 @@ namespace Ganedata.Core.Services
 
                 _currentDbContext.SaveChanges();
                 var result = _mapper.Map(order, new OrdersSync());
+                result.DeliverectChannelLinkId = warehouse.DeliverectChannelLinkId;
+                result.DeliverectChannel = warehouse.DeliverectChannel;
                 result.RequestSuccess = true;
                 result.RequestStatus = "Order created successfully";
                 result.OrderID = order.OrderID;

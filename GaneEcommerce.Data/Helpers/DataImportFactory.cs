@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -2177,6 +2178,10 @@ namespace Ganedata.Core.Data.Helpers
                 }
 
                 context.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                return new List<string> { $"Import Failed! Exception: {ex.Message}" };
             }
             catch (Exception ex)
             {

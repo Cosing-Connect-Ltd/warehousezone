@@ -1,29 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Http;
 using AutoMapper;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace WMS.Controllers.WebAPI
 {
     public class ApiOrderProcessesSyncController : BaseApiController
     {
         private readonly IAccountServices _accountServices;
+        private readonly ITenantsServices _tenantServices;
+        private readonly IDeliverectSyncService _deliverectSyncService;
         private readonly IGaneConfigurationsHelper _configHelper;
         private readonly IMapper _mapper;
 
-        public ApiOrderProcessesSyncController(ITerminalServices terminalServices,
-            ITenantLocationServices tenantLocationServices, IOrderService orderService,
-            IProductServices productServices, IUserService userService, IAccountServices accountServices, IGaneConfigurationsHelper configHelper, IMapper mapper) :
+        public ApiOrderProcessesSyncController(ITerminalServices terminalServices, IDeliverectSyncService deliverectSyncService,
+            ITenantLocationServices tenantLocationServices, IOrderService orderService, ITenantsServices tenantsServices,
+            IProductServices productServices, IUserService userService, IAccountServices accountServices, 
+            IGaneConfigurationsHelper configHelper, IMapper mapper) :
             base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _accountServices = accountServices;
+            _tenantServices = tenantsServices;
+            _deliverectSyncService = deliverectSyncService;
             _configHelper = configHelper;
             _mapper = mapper;
         }
@@ -116,9 +120,26 @@ namespace WMS.Controllers.WebAPI
                     {
                         var order = OrderService.SaveOrderProcessSync(item, terminal);
 
-                        results.Add(order);
+                        var deliverectSyncResult = true;
+                        var tenantConfig = _tenantServices.GetTenantConfigById(terminal.TenantId);
+                        if (tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect && 
+                            !string.IsNullOrEmpty(order.DeliverectChannelLinkId?.Trim()) && 
+                            !string.IsNullOrEmpty(order.DeliverectChannel?.Trim()))
+                        {
+                            deliverectSyncResult = await _deliverectSyncService.SendOrderToDeliverect(order);
 
-                        if (order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation)
+                            if (!deliverectSyncResult)
+                            {
+                                OrderService.UpdateOrderStatus(order.OrderID, OrderStatusEnum.Hold, 0);
+                            }
+                        }
+
+                        if (deliverectSyncResult)
+                        {
+                            results.Add(order);
+                        }
+
+                        if (order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation && deliverectSyncResult)
                         {
                             OrderViewModel orderViewModel = new OrderViewModel();
                             orderViewModel.OrderID = order.OrderID;
