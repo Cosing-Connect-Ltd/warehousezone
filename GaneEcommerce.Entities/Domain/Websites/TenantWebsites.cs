@@ -54,6 +54,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Contact Page Url")]
         public string ContactPageUrl { get; set; }
         public bool IsActive { get; set; }
+        public bool IsInternalWebsite { get; set; }
         [Display(Name = "Price Including Tax")]
         public bool ShowPricesIncludingTax { get; set; }
         [Display(Name = "Collection Is Available")]

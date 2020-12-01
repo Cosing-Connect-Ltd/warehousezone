@@ -1,0 +1,11 @@
+﻿@model Ganedata.Core.Entities.Domain.WebsiteContentPages
+@{
+    ViewBag.Title = Model.Title;
+
+}
+@if (Model != null)
+{
+    <h2><span>@Model.Title</span></h2>
+    <p>@Html.Raw(Model.Content)</p>
+}
+

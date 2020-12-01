@@ -1187,6 +1187,10 @@
     <Compile Include="Migrations\202011301344316_added-Deliverect-related-fields.designer.cs">
       <DependentUpon>202011301344316_added-Deliverect-related-fields.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.cs" />
+    <Compile Include="Migrations\202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.designer.cs">
+      <DependentUpon>202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2397,6 +2401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011301344316_added-Deliverect-related-fields.resx">
       <DependentUpon>202011301344316_added-Deliverect-related-fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.resx">
+      <DependentUpon>202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
