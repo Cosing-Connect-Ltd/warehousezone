@@ -1,22 +1,24 @@
 ﻿using eSpares.Levity;
 using Ganedata.Core.Barcoding;
 using Ganedata.Core.Data;
-using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Services;
 using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Web.Mvc;
 
 namespace WMS.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+        public HomeController(ITenantWebsiteService tenantWebsiteService)
+        {
+            _tenantWebsiteService = tenantWebsiteService;
+        }
         public ActionResult Index()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -108,6 +110,13 @@ namespace WMS.Controllers
             return View();
         }
 
+        public ActionResult page(string pageUrl)
+        {
+            var content = _tenantWebsiteService.GetWebsiteContentByUrl(null, pageUrl);
+            if (string.IsNullOrEmpty(pageUrl) || content == null) { RedirectToAction("Index"); }
+
+            return View(content);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

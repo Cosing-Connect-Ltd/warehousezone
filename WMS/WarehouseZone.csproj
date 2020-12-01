@@ -2771,6 +2771,7 @@
     <Content Include="Views\Theme\Default\Products\_ProductLabelPrint.cshtml" />
     <Content Include="Views\Theme\Default\Products\_PalletLabelPrint.cshtml" />
     <Content Include="Views\Theme\Default\Products\PalletLabelPrintViewer.cshtml" />
+    <Content Include="Views\Theme\Default\Home\Page.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

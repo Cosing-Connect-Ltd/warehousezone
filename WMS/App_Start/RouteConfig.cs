@@ -15,6 +15,13 @@ namespace WMS
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{resource}.ashx/{*pathInfo}");
 
+
+            routes.MapRoute(
+                "Page",
+                "page/{pageUrl}",
+                new { controller = "Home", action = "Page", pageUrl = UrlParameter.Optional }, new { controller = new NotEqual("ErrorLog") }
+            );
+
             routes.MapRoute(
                name: "Admin_elmah",
                url: "Admin/ErrorLog/{type}",
@@ -82,7 +89,6 @@ namespace WMS
                 "{controller}/{action}/{id}",
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional }, new { controller = new NotEqual("ErrorLog") }
             );
-
         }
     }
 

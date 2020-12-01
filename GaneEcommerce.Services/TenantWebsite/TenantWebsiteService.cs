@@ -73,7 +73,7 @@ namespace Ganedata.Core.Services
 
         public TenantWebsites GetTenantWebSiteBySiteId(int SiteId)
         {
-            return _currentDbContext.TenantWebsites.FirstOrDefault(u => u.IsDeleted != true && u.SiteID == SiteId && u.IsActive == true);
+            return _currentDbContext.TenantWebsites.FirstOrDefault(u => u.IsDeleted != true && u.SiteID == SiteId);
         }
 
         public TenantWebsites CreateOrUpdateTenantWebsite(TenantWebsites tenantWebsites, int UserId, int TenantId)
@@ -176,9 +176,9 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteContentPages.FirstOrDefault(u => u.Id == Id);
         }
 
-        public WebsiteContentPages GetWebsiteContentByUrl(int siteId, string url)
+        public WebsiteContentPages GetWebsiteContentByUrl(int? siteId, string url)
         {
-            return _currentDbContext.WebsiteContentPages.FirstOrDefault(u => u.pageUrl == url && u.SiteID == siteId);
+            return _currentDbContext.WebsiteContentPages.FirstOrDefault(u => u.pageUrl == url && (u.SiteID == siteId || (siteId == null && u.TenantWebsites.IsInternalWebsite)));
         }
 
         //ProductsWebsitesMaps

@@ -24,7 +24,7 @@ namespace Ganedata.Core.Services
         WebsiteContentPages CreateOrUpdateWebsiteContentPages(WebsiteContentPages WebsiteContentPages, int UserId, int TenantId);
         WebsiteContentPages RemoveWebsiteContentPages(int Id, int UserId);
         WebsiteContentPages GetWebsiteContentById(int Id);
-        WebsiteContentPages GetWebsiteContentByUrl(int siteId, string url);
+        WebsiteContentPages GetWebsiteContentByUrl(int? siteId, string url);
 
         //WebsiteWarehouses
         bool CreateOrUpdateWebsiteWarehouse(WebsiteWarehousesViewModel websiteWarehouseData, int UserId, int TenantId);
