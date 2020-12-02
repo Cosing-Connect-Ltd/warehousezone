@@ -68,6 +68,7 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.ProductName = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.ProductSkuCode = new DevExpress.XtraReports.UI.XRLabel();
@@ -86,7 +87,6 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLine4 = new DevExpress.XtraReports.UI.XRLine();
             this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.PalletSerial = new DevExpress.XtraReports.UI.XRBarCode();
-            this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -124,6 +124,19 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.Detail.HeightF = 596.5277F;
             this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
+            // 
+            // xrLabel6
+            // 
+            this.xrLabel6.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(12.59732F, 567.8645F);
+            this.xrLabel6.Multiline = true;
+            this.xrLabel6.Name = "xrLabel6";
+            this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel6.SizeF = new System.Drawing.SizeF(139.1319F, 23F);
+            this.xrLabel6.StylePriority.UseFont = false;
+            this.xrLabel6.StylePriority.UseTextAlignment = false;
+            this.xrLabel6.Text = "Pallet Serial";
+            this.xrLabel6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // ProductName
             // 
@@ -200,6 +213,8 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             // 
             // xrLabel3
             // 
+            this.xrLabel3.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([RequiresBatchNumber], \'Batch No:\', \'\')\n")});
             this.xrLabel3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(210.9723F, 201.9029F);
             this.xrLabel3.Multiline = true;
@@ -208,7 +223,6 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel3.SizeF = new System.Drawing.SizeF(91.90961F, 23F);
             this.xrLabel3.StylePriority.UseFont = false;
             this.xrLabel3.StylePriority.UseTextAlignment = false;
-            this.xrLabel3.Text = "Batch No:";
             this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel2
@@ -263,6 +277,8 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             // 
             // xrLabel4
             // 
+            this.xrLabel4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([RequiresExpiryDate], \'Expiry Date:\', \'Date:\')")});
             this.xrLabel4.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(10.00002F, 356.4342F);
             this.xrLabel4.Multiline = true;
@@ -271,7 +287,6 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel4.SizeF = new System.Drawing.SizeF(112.0486F, 23F);
             this.xrLabel4.StylePriority.UseFont = false;
             this.xrLabel4.StylePriority.UseTextAlignment = false;
-            this.xrLabel4.Text = "Expiry Date:";
             this.xrLabel4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel5
@@ -348,20 +363,7 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.PalletSerial.Symbology = code128Generator2;
             this.PalletSerial.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
             // 
-            // xrLabel6
-            // 
-            this.xrLabel6.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(12.59732F, 567.8645F);
-            this.xrLabel6.Multiline = true;
-            this.xrLabel6.Name = "xrLabel6";
-            this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel6.SizeF = new System.Drawing.SizeF(139.1319F, 23F);
-            this.xrLabel6.StylePriority.UseFont = false;
-            this.xrLabel6.StylePriority.UseTextAlignment = false;
-            this.xrLabel6.Text = "Pallet Serial";
-            this.xrLabel6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // PalletLabelPrintTest
+            // PalletLabelPrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.TopMargin,

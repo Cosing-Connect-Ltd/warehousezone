@@ -1793,7 +1793,7 @@ namespace WMS.Controllers
             var product = orderDetail?.ProductMaster ?? _productServices.GetProductMasterById(productId);
 
             var quantity = orderDetail?.Qty ?? 1;
-
+            
             var model = new LabelPrintViewModel
             {
                 ProductId = productId,
@@ -1804,17 +1804,15 @@ namespace WMS.Controllers
                 OrderNumber = orderDetail?.Order?.OrderNumber,
                 ProductBarcode = !string.IsNullOrEmpty(product?.BarCode?.Trim()) ? product?.BarCode?.Trim() : product?.BarCode2?.Trim(),
                 Quantity = (int)quantity,
-                Cases = product.ProductsPerCase != null ? (int)Math.Floor(quantity / product.ProductsPerCase.Value) : 1
+                Cases = product.ProductsPerCase != null ? (int)Math.Ceiling(quantity / product.ProductsPerCase.Value) : 1,
+                RequiresBatchNumber = product.RequiresBatchNumberOnReceipt,
+                RequiresExpiryDate = product.RequiresExpiryDateOnReceipt
             };
-
-            if (orderDetail == null)
-            {
-                model.Cases = product.CasesPerPallet != null ? product.CasesPerPallet.Value : 1;
-            }
 
             if (product.ProcessByPallet && CurrentWarehouse.EnableGlobalProcessByPallet)
             {
-                model.PalletsCount = product.CasesPerPallet != null && product.ProductsPerCase != null ? (int)Math.Floor(quantity / (product.CasesPerPallet.Value * product.ProductsPerCase.Value)) : (int?)null;
+                model.PalletsCount = product.CasesPerPallet != null ? (int)Math.Ceiling(Math.Ceiling(quantity / (product.ProductsPerCase ?? 1)) / product.CasesPerPallet.Value) : 1;
+                model.Cases = product.CasesPerPallet ?? 1;
 
                 return PartialView("_PalletLabelPrint", model);
             }

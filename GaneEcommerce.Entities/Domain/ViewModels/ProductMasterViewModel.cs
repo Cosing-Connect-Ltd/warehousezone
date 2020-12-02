@@ -129,5 +129,7 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime LabelDate { get; set; }
         public string OrderNumber { get; set; }
         public string PalletSerial { get; set; }
+        public bool? RequiresBatchNumber { get; set; }
+        public bool? RequiresExpiryDate { get; set; }
     }
 }

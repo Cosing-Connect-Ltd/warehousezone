@@ -25,6 +25,8 @@
     @Html.HiddenFor(m => m.ProductBarcode)
     @Html.HiddenFor(m => m.ProductSkuCode)
     @Html.HiddenFor(m => m.OrderNumber)
+    @Html.HiddenFor(m => m.RequiresExpiryDate)
+    @Html.HiddenFor(m => m.RequiresBatchNumber)
 
     <div class="clearfix"></div>
 
@@ -44,22 +46,44 @@
         </div>
     </div>
 
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.Label("Expiry Date: ", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
-        <div class="col-md-8">
-            @Html.DevExpress().DateEditFor(m => m.LabelDate,
-                     settings =>
-                     {
-                         settings.Properties.DisplayFormatString = "dd/MM/yyyy";
-                         settings.ClientVisible = true;
-                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                         settings.ControlStyle.CssClass = "form-control required";
-                         settings.Properties.MinDate = DateTime.Today;
-                         settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
-                     }
-                     ).GetHtml()
+    if (Model.RequiresExpiryDate == true)
+    {
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Expiry Date: ", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
+            <div class="col-md-8">
+                @Html.DevExpress().DateEditFor(m => m.LabelDate,
+                          settings =>
+                          {
+                              settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                              settings.ClientVisible = true;
+                              settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                              settings.ControlStyle.CssClass = "form-control required";
+                              settings.Properties.MinDate = DateTime.Today;
+                              settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+                          }
+                          ).GetHtml()
+            </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Date: ", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
+            <div class="col-md-8">
+                @Html.DevExpress().DateEditFor(m => m.LabelDate,
+                         settings =>
+                         {
+                             settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                             settings.ClientVisible = true;
+                             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                             settings.ControlStyle.CssClass = "form-control required";
+                             settings.Properties.MinDate = DateTime.Today;
+                             settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+                         }
+                         ).GetHtml()
+            </div>
+        </div>
+    }
 
     <div class="input-group h-100 justify-content-center align-items-center">
         @Html.Label("Cases: ", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
@@ -67,12 +91,15 @@
             @Html.EditorFor(m => m.Cases, new { htmlAttributes = new { @type = "number", @min = "1", @required = "required" } })
         </div>
     </div>
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.Label("Batch No: ", htmlAttributes: new { @class = "col-md-4" })
-        <div class="col-md-8">
-            @Html.EditorFor(m => m.BatchNumber, new { @class = "form-control" })
+    if (Model.RequiresBatchNumber == true)
+    {
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Batch No: ", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.BatchNumber, new { @class = "form-control" })
+            </div>
         </div>
-    </div>
+    }
     <div class="input-group h-100 justify-content-center align-items-center">
         @Html.Label("Comments: ", htmlAttributes: new { @class = "col-md-4" })
         <div class="col-md-8">
