@@ -566,7 +566,9 @@ namespace WarehouseEcommerce.Controllers
             }
 
             productFiltering.Categories = !isProductChildsFilter ?
-                                           _productlookupServices.GetWebsiteNavigationCategoriesList(categoryId, CurrentTenantWebsite.SiteID).ToList() :
+                                           _productlookupServices.GetWebsiteNavigationCategoriesList(categoryId, CurrentTenantWebsite.SiteID)
+                                           .OrderBy(o => o.SortOrder)
+                                           .ToList() :
                                            new List<WebsiteNavigation>();
 
             return productFiltering;
