@@ -10,6 +10,9 @@
             AddColumn("dbo.Resources", "IsFlexibleWorkingAllowed", c => c.Boolean(nullable: false));
             AddColumn("dbo.Resources", "IsOvertimeWorkingAllowed", c => c.Boolean(nullable: false));
             AddColumn("dbo.Resources", "AttendanceGracePeriodInMinutes", c => c.Int(nullable: false));
+
+            Sql("UPDATE dbo.Resources SET IsOvertimeWorkingAllowed = 1");
+            Sql("UPDATE dbo.Resources SET IsFlexibleWorkingAllowed = 1");
         }
         
         public override void Down()

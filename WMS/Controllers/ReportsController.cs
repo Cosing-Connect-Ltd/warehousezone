@@ -675,7 +675,7 @@ namespace WMS.Controllers
                                 totalBreaksTaken = (lastOutStamp.Value - firstInStamp.Value) - totalTime;
                             }
 
-                            if ((firstInStamp.Value.TimeOfDay - itemShift.StartTime.TimeOfDay).TotalMinutes >= itemShift.AttendanceGracePeriodInMinutes)
+                            if (totalTime.TotalMinutes > 0)
                             {
                                 model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
                                 id += 1;
