@@ -293,6 +293,9 @@ namespace WMS.Controllers
                 newEmployee.PayrollEmployeeNo = appointmentResources.PayrollEmployeeNo;
                 newEmployee.AuthUserId = appointmentResources.AuthUserId;
                 newEmployee.JobStartDate = appointmentResources.JobStartDate;
+                newEmployee.IsFlexibleWorkingAllowed = appointmentResources.IsFlexibleWorkingAllowed;
+                newEmployee.IsOvertimeWorkingAllowed = appointmentResources.IsOvertimeWorkingAllowed;
+                newEmployee.AttendanceGracePeriodInMinutes = appointmentResources.AttendanceGracePeriodInMinutes;
                 // update address         
 
                 if (newEmployee.Address == null)

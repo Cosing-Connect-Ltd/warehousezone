@@ -276,6 +276,27 @@
             @Html.ValidationMessageFor(model => model.AuthUserId, "", new { @class = "text-danger" })
         </div>
     </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.IsFlexibleWorkingAllowed, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.IsFlexibleWorkingAllowed, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.IsFlexibleWorkingAllowed, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.IsOvertimeWorkingAllowed, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.IsOvertimeWorkingAllowed, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.IsOvertimeWorkingAllowed, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AttendanceGracePeriodInMinutes, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AttendanceGracePeriodInMinutes, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AttendanceGracePeriodInMinutes, "", new { @class = "text-danger" })
+        </div>
+    </div>
 </div>
 
     <div class="input-group h-100 justify-content-center align-items-center">

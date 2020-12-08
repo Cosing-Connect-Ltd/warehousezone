@@ -268,7 +268,7 @@ namespace WarehouseEcommerce.Controllers
                                                                            u.ProductMaster.IsDeleted != true &&
                                                                            u.IsDeleted != true);
 
-            var allCalculatableProducts = allKitProducts.Where(k => k.ProductKitTypes.UseInParentCalculations == true)
+            var allCalculatableProducts = allKitProducts.Where(k => k.ProductKitTypes != null && k.ProductKitTypes.UseInParentCalculations == true)
                                                                         .Select(p => p.KitProductMaster)
                                                                         .ToList();
 

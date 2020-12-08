@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Ganedata.Core.Models
 {
@@ -14,5 +13,8 @@ namespace Ganedata.Core.Models
         public DateTime Date { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public bool IsFlexibleWorkingAllowed { get; set; }
+        public bool IsOvertimeWorkingAllowed { get; set; }
+        public int AttendanceGracePeriodInMinutes { get; set; }
     }
 }

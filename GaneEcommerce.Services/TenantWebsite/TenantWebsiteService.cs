@@ -1010,6 +1010,7 @@ namespace Ganedata.Core.Services
                                                                                 k.IsDeleted != true &&
                                                                                 k.KitProductMaster.IsActive &&
                                                                                 k.KitProductMaster.IsDeleted != true &&
+                                                                                k.ProductKitTypes != null && 
                                                                                 k.ProductKitTypes.UseInParentCalculations == true &&
                                                                                 k.ProductKitType != ProductKitTypeEnum.RelatedProduct &&
                                                                                 k.KitProductMaster.ManufacturerId != null)
@@ -1094,6 +1095,7 @@ namespace Ganedata.Core.Services
         public Dictionary<int, string> GetAllValidProductManufacturers(List<int> productIds)
         {
             var manufatcurers = _currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
+                                                                a.ProductKitTypes != null && 
                                                                 a.ProductKitTypes.UseInParentCalculations == true &&
                                                                 a.IsDeleted != true &&
                                                                 a.IsActive &&
@@ -1687,6 +1689,7 @@ namespace Ganedata.Core.Services
             if ((product.SellPrice == null || product.SellPrice <= 0) && (product.ProductType == ProductKitTypeEnum.ProductByAttribute || product.ProductType == ProductKitTypeEnum.Grouped))
             {
                 product = _currentDbContext.ProductKitMaps.Where(p => p.ProductId == productId &&
+                                                                      p.ProductKitTypes != null && 
                                                                       p.ProductKitTypes.UseInParentCalculations == true &&
                                                                       p.IsActive &&
                                                                       p.IsDeleted != true &&
