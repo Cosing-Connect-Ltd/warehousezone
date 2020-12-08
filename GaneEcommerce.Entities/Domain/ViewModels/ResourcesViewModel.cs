@@ -28,6 +28,12 @@ namespace Ganedata.Core.Models
         public int? Nationality { get; set; }
         [DisplayName("Hourly Rate")]
         public decimal? HourlyRate { get; set; }
+        [DisplayName("Allow Flexible Working Time")]
+        public bool IsFlexibleWorkingAllowed { get; set; }
+        [DisplayName("Allow Overtime Working")]
+        public bool IsOvertimeWorkingAllowed { get; set; }
+        [DisplayName("Grace Period In Minutes")]
+        public int AttendanceGracePeriodInMinutes { get; set; }
 
 
         [DisplayName("Job Start Date")]

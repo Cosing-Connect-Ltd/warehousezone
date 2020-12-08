@@ -53,7 +53,6 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Payroll Employee No")]
         public int? PayrollEmployeeNo { get; set; }
         public double? HolidayEntitlement { get; set; }
-
         public DateTime? JobStartDate { get; set; }
         public virtual Address Address { get; set; }
         public virtual ICollection<Appointments> Appointmentses { get; set; }
@@ -69,5 +68,9 @@ namespace Ganedata.Core.Entities.Domain
         public int? AuthUserId { get; set; }
         [ForeignKey("AuthUserId")]
         public virtual AuthUser AuthUser { get; set; }
+
+        public bool IsFlexibleWorkingAllowed { get; set; }
+        public bool IsOvertimeWorkingAllowed { get; set; }
+        public int AttendanceGracePeriodInMinutes { get; set; }
     }
 }

@@ -72,7 +72,10 @@ namespace Ganedata.Core.Services
                                                             TimeBreaks = s.TimeBreaks,
                                                             StartTime = s.StartTime,
                                                             EndTime = s.EndTime,
-                                                            EmployeeName = s.Resources.Name
+                                                            EmployeeName = s.Resources.Name,
+                                                            IsFlexibleWorkingAllowed = s.Resources.IsFlexibleWorkingAllowed,
+                                                            IsOvertimeWorkingAllowed = s.Resources.IsOvertimeWorkingAllowed,
+                                                            AttendanceGracePeriodInMinutes = s.Resources.AttendanceGracePeriodInMinutes
                                                         })
                                                         .ToList();
 

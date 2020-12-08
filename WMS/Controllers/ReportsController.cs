@@ -551,28 +551,11 @@ namespace WMS.Controllers
                 Description = "End Date:",
             };
 
-            var paramGracePeriod = new Parameter()
-            {
-                Name = "GracePeriodId",
-                Type = typeof(string),
-                Value = "Select All",
-                Description = "Grace Period:",
-                LookUpSettings = new StaticListLookUpSettings()
-            };
-
-            ((StaticListLookUpSettings)paramGracePeriod.LookUpSettings).LookUpValues.AddRange(new LookUpValue[] {
-                new LookUpValue("0", "Select All"),
-                new LookUpValue("1", "15 minutes"),
-                new LookUpValue("2", "30 minutes"),
-                new LookUpValue("3", "1 hour"),
-            });
-
             // Add the parameter to the report.
             report.Parameters.Add(paramReportType);
             report.Parameters.Add(paramLocations);
             report.Parameters.Add(paramStartDate);
             report.Parameters.Add(paramEndDate);
-            report.Parameters.Add(paramGracePeriod);
             report.Parameters.Add(paramTenantId);
 
             return View(report);
@@ -587,7 +570,6 @@ namespace WMS.Controllers
             var startDate = (DateTime)report.Parameters["StartDate"].Value;
             var endDate = (DateTime)report.Parameters["EndDate"].Value;
             int tenantId = (int)report.Parameters["tenantId"].Value;
-            int gracePeriodId = (!String.IsNullOrEmpty(report.Parameters["GracePeriodId"].Value.ToString()) ? (int)(report.Parameters["GracePeriodId"].Value.ToString() == "Select All" ? 0 : Convert.ToInt32(report.Parameters["GracePeriodId"].Value)) : 0);
 
             report.FindControl("xrLabel2", true).Text = _tenantLocationsServices.GetTenantLocationById(locationId)?.WarehouseName;
             report.FindControl("xrLabel3", true).Text = $"{startDate.ToShortDateString()} - {endDate.ToShortDateString()}";
@@ -604,7 +586,7 @@ namespace WMS.Controllers
             if (isLatenessReport)
             {//1=Lateness
                 report.FindControl("xrLabel1", true).Text = "Lateness & Overtime";
-                report.DataSource = Lateness(gracePeriodId, shiftSchedules);
+                report.DataSource = LatenessAndOvertime(shiftSchedules);
             }
 
             if (reportTypeId == 2)
@@ -614,7 +596,7 @@ namespace WMS.Controllers
             }
         }
 
-        public List<ReportViewModel> Lateness(int gracePeriod, IEnumerable<ShiftScheduleViewModel> shiftSchedules)
+        public List<ReportViewModel> LatenessAndOvertime(IEnumerable<ShiftScheduleViewModel> shiftSchedules)
         {
             List<ReportViewModel> model = new List<ReportViewModel>();
 
@@ -649,7 +631,15 @@ namespace WMS.Controllers
 
                             if (lastOutStamp != null && allStamps.Count() <= 2)
                             {
-                                totalTime = lastOutStamp.Value - firstInStamp.Value;
+                                var inTimestamp = !itemShift.IsFlexibleWorkingAllowed && itemShift != null && firstInStamp < itemShift?.StartTime ?
+                                                    itemShift.StartTime :
+                                                    itemShift.AttendanceGracePeriodInMinutes > 0 && itemShift != null && firstInStamp < itemShift.StartTime && (itemShift.StartTime - firstInStamp.Value).TotalMinutes > itemShift.AttendanceGracePeriodInMinutes ? itemShift.StartTime : firstInStamp.Value;
+
+                                var outTimestamp = !itemShift.IsFlexibleWorkingAllowed && !itemShift.IsOvertimeWorkingAllowed && itemShift != null && lastOutStamp > itemShift?.EndTime ?
+                                                     itemShift.EndTime :
+                                                     lastOutStamp.Value;
+
+                                totalTime = outTimestamp - inTimestamp;
                             }
                             else if (allStamps.Count() > 2)
                             {
@@ -663,7 +653,15 @@ namespace WMS.Controllers
                                         int index = allInStamps.IndexOf(stamp);
                                         if (index < allInStamps.Count() && index < allOutStamps.Count())
                                         {
-                                            totalTime += allOutStamps[index].TimeStamp - allInStamps[index].TimeStamp;
+                                            var inTimestamp = !itemShift.IsFlexibleWorkingAllowed && itemShift != null && allInStamps[index].TimeStamp < itemShift?.StartTime ?
+                                                                itemShift.StartTime :
+                                                                itemShift.AttendanceGracePeriodInMinutes > 0 && itemShift != null && allInStamps[index].TimeStamp < itemShift.StartTime && (itemShift.StartTime - allInStamps[index].TimeStamp).TotalMinutes > itemShift.AttendanceGracePeriodInMinutes ? itemShift.StartTime : allInStamps[index].TimeStamp;
+
+                                            var outTimestamp = !itemShift.IsFlexibleWorkingAllowed && !itemShift.IsOvertimeWorkingAllowed && itemShift != null && allOutStamps[index].TimeStamp > itemShift?.EndTime ?
+                                                                 itemShift.EndTime :
+                                                                 allOutStamps[index].TimeStamp;
+
+                                            totalTime += outTimestamp - inTimestamp;
                                         }
 
                                     }
@@ -677,43 +675,11 @@ namespace WMS.Controllers
                                 totalBreaksTaken = (lastOutStamp.Value - firstInStamp.Value) - totalTime;
                             }
 
-                            //compare Shifts StartTime with EmployeeShifts TimeStamp
-                            var startTime = itemShift.StartTime.TimeOfDay;
-
-                            switch (gracePeriod)
+                            if ((firstInStamp.Value.TimeOfDay - itemShift.StartTime.TimeOfDay).TotalMinutes >= itemShift.AttendanceGracePeriodInMinutes)
                             {
-                                case 1:
-                                    if ((firstInStamp.Value.TimeOfDay - startTime).TotalMinutes >= 15) //15 minutes passed
-                                    {
-                                        model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
-                                        id += 1;
-                                    };
-
-                                    break;
-
-                                case 2:
-                                    if ((firstInStamp.Value.TimeOfDay - startTime).TotalMinutes >= 30) //30 minutes passed
-                                    {
-                                        model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
-                                        id += 1;
-                                    }
-
-                                    break;
-
-                                case 3:
-                                    if ((firstInStamp.Value.TimeOfDay - startTime).TotalHours >= 1) //1 hour passed
-                                    {
-                                        model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
-                                        id += 1;
-                                    }
-
-                                    break;
-
-                                default: //show all
-                                    model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
-
-                                    break;
-                            }
+                                model.Add(ReportTypeModel(id, firstInStamp, lastOutStamp, itemShift, totalTime));
+                                id += 1;
+                            };
                         }
                     }
                 }

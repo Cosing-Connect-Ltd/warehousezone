@@ -148,7 +148,7 @@ namespace Ganedata.Core.Services
 
             productsCategorys.AddRange(_currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
                                                                 a.IsDeleted != true &&
-                                                                a.ProductKitTypes.UseInParentCalculations == true &&
+                                                                a.ProductKitTypes != null && a.ProductKitTypes.UseInParentCalculations == true &&
                                                                 a.IsActive &&
                                                                 a.KitProductMaster.ProductCategory != null)
                                                  .Select(a => a.KitProductMaster.ProductCategory)

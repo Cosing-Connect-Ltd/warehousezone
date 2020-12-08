@@ -24,11 +24,12 @@ namespace WMS.Controllers.TA
         readonly ITenantLocationServices _tenantLocationsServices;
         readonly IShiftScheduleService _shiftScheduleService;
         readonly IActivityServices _activityServices;
+        readonly ITenantsServices _tenantsServices;
         private readonly IMapper _mapper;
 
         public TimeLogController(IEmployeeShiftsServices employeeShiftsServices, IEmployeeShiftsStoresServices employeeShiftsStoresServices,
             IEmployeeServices employeeServices, ITenantLocationServices tenantLocationsServices, IShiftScheduleService shiftScheduleService, ICoreOrderService orderService, IPropertyService propertyService,
-            IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, IMapper mapper)
+            IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantsServices, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _employeeShiftsServices = employeeShiftsServices;
@@ -37,6 +38,7 @@ namespace WMS.Controllers.TA
             _tenantLocationsServices = tenantLocationsServices;
             _shiftScheduleService = shiftScheduleService;
             _activityServices = activityServices;
+            _tenantsServices = tenantsServices;
             _mapper = mapper;
         }
 
@@ -314,155 +316,125 @@ namespace WMS.Controllers.TA
         {
             var model = new List<TimeLogsViewModel>();
 
-
-
-
             foreach (var date in weekDates) //loop through days of week.
             {
-                bool hasValue = false;
-                var timeIn = new DateTime?();
-                var timeOut = new DateTime?();
-                var status = "";
-                List<ResourceShifts> allStamps = new List<ResourceShifts>();
-                TimeSpan totalTime = new TimeSpan();
-                TimeSpan totalBreaksTaken = new TimeSpan();
+                var timeLogViewModel = new TimeLogsViewModel { 
+                    WeekNumber = weekNumber,
+                    WeekDay = date.DayOfWeek.ToString()
+                };
+
+                var tenantConfig = _tenantsServices.GetTenantConfigById(CurrentTenantId);
+                var allStamps = new List<ResourceShifts>();
+                var totalTime = new TimeSpan();
                 var empShifts = _employeeShiftsServices.GetByEmployeeAndWeekAndStore(employeeId, date, storesId).OrderBy(s => s.TimeStamp).ToList();
-                if (empShifts != null)
+                if (empShifts == null)
                 {
-                    var firstInStamp = empShifts.Where(x => x.TimeStamp.Date == date.Date && x.StatusType == "In").FirstOrDefault();
+                    model.Add(timeLogViewModel);
+                    continue;
+                }
 
-                    if (firstInStamp != null)
+                var firstInStamp = empShifts.Where(x => x.TimeStamp.Date == date.Date && x.StatusType == "In").FirstOrDefault();
+
+                if (firstInStamp == null)
+                {
+                    model.Add(timeLogViewModel);
+                    continue;
+                }
+
+                timeLogViewModel.TimeIn = firstInStamp.TimeStamp;
+
+                var lastOutStamp = empShifts.Where(x => x.TimeStamp > firstInStamp.TimeStamp && x.TimeStamp <= firstInStamp.TimeStamp.AddHours(16) && x.StatusType == "Out").LastOrDefault();
+
+                if (lastOutStamp != null)
+                {
+                    timeLogViewModel.TimeOut = lastOutStamp.TimeStamp;
+                    allStamps = empShifts.Where(x => x.TimeStamp >= firstInStamp.TimeStamp && x.TimeStamp <= lastOutStamp.TimeStamp).ToList();
+                }
+
+                //get shifts info
+                var shiftsInfo = _shiftScheduleService.GetShiftSchedule(employeeId, date, CurrentTenantId);
+                var employeeInfo = _employeeServices.GetByEmployeeId(employeeId);
+
+                if (lastOutStamp != null && allStamps.Count() <= 2)
+                {
+                    var inTimestamp = !employeeInfo.IsFlexibleWorkingAllowed && shiftsInfo != null && firstInStamp.TimeStamp < shiftsInfo?.StartTime ? 
+                                        shiftsInfo.StartTime :
+                                        employeeInfo.AttendanceGracePeriodInMinutes > 0 && shiftsInfo != null && firstInStamp.TimeStamp < shiftsInfo.StartTime && (shiftsInfo.StartTime - firstInStamp.TimeStamp).TotalMinutes > employeeInfo.AttendanceGracePeriodInMinutes ? shiftsInfo.StartTime : firstInStamp.TimeStamp;
+
+                    var outTimestamp = !employeeInfo.IsFlexibleWorkingAllowed && !employeeInfo.IsOvertimeWorkingAllowed && shiftsInfo != null && lastOutStamp.TimeStamp > shiftsInfo?.EndTime ?
+                                         shiftsInfo.EndTime : 
+                                         lastOutStamp.TimeStamp;
+
+                    totalTime = outTimestamp - inTimestamp;
+                }
+                else if (allStamps.Count() > 2)
+                {
+                    var allInStamps = allStamps.Where(x => x.StatusType == "In").ToList();
+                    var allOutStamps = allStamps.Where(x => x.StatusType == "Out").ToList();
+
+                    foreach (var stamp in allInStamps)
                     {
-                        timeIn = firstInStamp.TimeStamp;
-                        var lastOutStamp = empShifts.Where(x => x.TimeStamp > firstInStamp.TimeStamp && x.TimeStamp <= firstInStamp.TimeStamp.AddHours(16) && x.StatusType == "Out").LastOrDefault();
-
-                        if (lastOutStamp != null)
+                        try
                         {
-                            timeOut = lastOutStamp.TimeStamp;
-                            allStamps = empShifts.Where(x => x.TimeStamp >= firstInStamp.TimeStamp && x.TimeStamp <= lastOutStamp.TimeStamp).ToList();
-                        }
-
-                        string statusColor = String.Empty;
-
-                        if (lastOutStamp != null && allStamps.Count() <= 2)
-                        {
-                            totalTime = lastOutStamp.TimeStamp - firstInStamp.TimeStamp;
-                        }
-                        else if (allStamps.Count() > 2)
-                        {
-                            var allInStamps = allStamps.Where(x => x.StatusType == "In").ToList();
-                            var allOutStamps = allStamps.Where(x => x.StatusType == "Out").ToList();
-
-                            foreach (var stamp in allInStamps)
+                            int index = allInStamps.IndexOf(stamp);
+                            if (index < allInStamps.Count() && index < allOutStamps.Count())
                             {
-                                try
-                                {
-                                    int index = allInStamps.IndexOf(stamp);
-                                    if (index < allInStamps.Count() && index < allOutStamps.Count())
-                                    {
-                                        totalTime += allOutStamps[index].TimeStamp - allInStamps[index].TimeStamp;
-                                    }
+                                var inTimestamp = !employeeInfo.IsFlexibleWorkingAllowed && shiftsInfo != null && allInStamps[index].TimeStamp < shiftsInfo?.StartTime ?
+                                                    shiftsInfo.StartTime :
+                                                    employeeInfo.AttendanceGracePeriodInMinutes > 0 && shiftsInfo != null && allInStamps[index].TimeStamp < shiftsInfo.StartTime && (shiftsInfo.StartTime - allInStamps[index].TimeStamp).TotalMinutes > employeeInfo.AttendanceGracePeriodInMinutes ? shiftsInfo.StartTime : allInStamps[index].TimeStamp;
 
-                                }
-                                catch
-                                {
-                                    break;
-                                }
+                                var outTimestamp = !employeeInfo.IsFlexibleWorkingAllowed && !employeeInfo.IsOvertimeWorkingAllowed && shiftsInfo != null && allOutStamps[index].TimeStamp > shiftsInfo?.EndTime ?
+                                                     shiftsInfo.EndTime :
+                                                     allOutStamps[index].TimeStamp;
+
+                                totalTime += outTimestamp - inTimestamp;
                             }
 
-                            // calculate total breaks
-                            totalBreaksTaken = (lastOutStamp.TimeStamp - firstInStamp.TimeStamp) - totalTime;
                         }
-
-
-                        //get shifts info
-                        var shiftsInfo = _shiftScheduleService.GetShiftSchedule(employeeId, date, CurrentTenantId);
-                        var employeeInfo = _employeeServices.GetByEmployeeId(employeeId);
-                        double totalSalary = 0f;
-                        TimeSpan? expectedHours = TimeSpan.ParseExact("00:00", @"hh\:mm", CultureInfo.InvariantCulture);
-                        double? hourlyRate = 0f;
-                        TimeSpan? timeBreaks = TimeSpan.ParseExact("00:00", @"hh\:mm", CultureInfo.InvariantCulture);
-
-                        //TODO: refactor this IF's?
-                        if (shiftsInfo == null)
+                        catch
                         {
-                            expectedHours = TimeSpan.ParseExact("00:00", @"hh\:mm", CultureInfo.InvariantCulture);
-                            hourlyRate = 0f;
+                            break;
                         }
-                        else
-                        {
-                            expectedHours = shiftsInfo.ExpectedHours;
-                            timeBreaks = shiftsInfo.TimeBreaks;
-                        }
+                    }
 
-                        if (employeeInfo != null)
-                            hourlyRate = (double?)employeeInfo.HourlyRate;
+                    // calculate total breaks
+                    timeLogViewModel.BreaksTaken = (lastOutStamp.TimeStamp - firstInStamp.TimeStamp) - totalTime;
+                }
 
-                        if (expectedHours == TimeSpan.ParseExact("00:00", @"hh\:mm", CultureInfo.InvariantCulture))
-                        {
-                            status = "";
-                        }
-                        else
-                        {
-                            if (totalTime.Equals(expectedHours.Value.Hours))
-                            {
-                                status = "GOOD";
-                            }
-                            if (totalTime > expectedHours.Value)
-                            {
-                                status = "OVERTIME";
-                            }
-                            if (totalTime < expectedHours.Value)
-                            {
-                                status = "SHORT";
-                            }
-                        }
+                var hourlyRate = employeeInfo?.HourlyRate ?? 0;
 
+                timeLogViewModel.Breaks = shiftsInfo?.TimeBreaks ?? TimeSpan.ParseExact("00:00", @"hh\:mm", CultureInfo.InvariantCulture);
 
-                        //calculate TotalSalary (# hours x hourly rate)
-                        if (hourlyRate > 0)
-                        {
-                            var hours = totalTime.TotalHours;
-                            totalSalary = ((double)(hours * hourlyRate));
-                        }
-
-                        hasValue = true;
-
-                        model.Add(new TimeLogsViewModel()
-                        {
-                            TotalHours = totalTime.TotalHours.ToString("N2"),
-                            TimeIn = timeIn,
-                            TimeOut = timeOut,
-                            WeekDay = date.DayOfWeek.ToString(),
-                            ExpectedHours = (decimal?)(expectedHours.HasValue ? expectedHours.Value.Hours : 0f),
-                            ExpectedHoursString = (expectedHours.HasValue && expectedHours.Value > TimeSpan.ParseExact("00:00", @"hh\:mm", CultureInfo.InvariantCulture) ? $"{expectedHours.Value.TotalHours:N2}" : string.Empty),
-                            OvertimeWork = expectedHours.HasValue && expectedHours.Value > TimeSpan.ParseExact("00:00", @"hh\:mm", CultureInfo.InvariantCulture) && totalTime > expectedHours ? (totalTime - expectedHours.Value).TotalHours.ToString("N2") : string.Empty,
-                            TotalSalary = totalSalary.ToString("N2"),
-                            Breaks = timeBreaks,
-                            BreaksTaken = totalBreaksTaken,
-                            Status = status,
-                            WeekNumber = weekNumber,
-
-                            Employees = _mapper.Map(empShifts.FirstOrDefault().Resources, new ResourcesViewModel())
-                        });
-
+                if (shiftsInfo?.ExpectedHours != null)
+                {
+                    if (totalTime.Equals(shiftsInfo?.ExpectedHours.Value.Hours))
+                    {
+                        timeLogViewModel.Status = "GOOD";
+                    }
+                    else if (totalTime > shiftsInfo?.ExpectedHours)
+                    {
+                        timeLogViewModel.Status = "OVERTIME";
+                    }
+                    else if (totalTime < shiftsInfo?.ExpectedHours)
+                    {
+                        timeLogViewModel.Status = "SHORT";
                     }
                 }
-                if (!hasValue)
-                {
 
-                    model.Add(new TimeLogsViewModel()
-                    {
-                        TotalHours = "0",
-                        TotalSalary = "0.00",
-                        WeekDay = date.DayOfWeek.ToString(),
-                        ExpectedHours = null,
-                        Breaks = null,
-                        WeekNumber = weekNumber,
-                        Status = "",
-                        Employees = null
-                    });
-                }
+                timeLogViewModel.TotalSalary = ((employeeInfo?.HourlyRate ?? 0) > 0 ? ((decimal)totalTime.TotalHours * employeeInfo.HourlyRate.Value) : 0).ToString("N2");
+
+                timeLogViewModel.TotalHours = totalTime.TotalHours.ToString("N2");
+                timeLogViewModel.ExpectedHours = shiftsInfo?.ExpectedHours?.Hours;
+                timeLogViewModel.ExpectedHoursString = shiftsInfo?.ExpectedHours != null ? $"{shiftsInfo.ExpectedHours.Value.TotalHours:N2}" : string.Empty;
+                timeLogViewModel.OvertimeWork = employeeInfo.IsOvertimeWorkingAllowed && 
+                                                shiftsInfo?.ExpectedHours != null && 
+                                                totalTime > shiftsInfo.ExpectedHours ? 
+                                                    (totalTime - shiftsInfo.ExpectedHours.Value).TotalHours.ToString("N2") : 
+                                                    string.Empty;
+
+                timeLogViewModel.Employees = _mapper.Map(empShifts.FirstOrDefault().Resources, new ResourcesViewModel());
+
+                model.Add(timeLogViewModel);                
             }
 
             return model;
