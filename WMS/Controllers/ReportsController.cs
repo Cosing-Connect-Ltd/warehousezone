@@ -1497,12 +1497,6 @@ namespace WMS.Controllers
 
             report.TenantID.Value = CurrentTenantId;
 
-            var invoices = _invoiceService.GetAllInvoiceMasters(CurrentTenantId).Select(i => new { i.InvoiceMasterId, i.InvoiceNumber }).ToList();
-
-            var invoiceSelector = (StaticListLookUpSettings)report.InvoiceId.LookUpSettings;
-
-            invoiceSelector.LookUpValues.AddRange(invoices.Select(m => new LookUpValue(m.InvoiceMasterId, m.InvoiceNumber)));
-
             report.DataSourceDemanded += InvoiceDetailReport_DataSourceDemanded;
 
             // binding
@@ -1523,14 +1517,19 @@ namespace WMS.Controllers
         private void InvoiceDetailReport_DataSourceDemanded(object sender, EventArgs e)
         {
             var report = (InvoiceDetailReport)sender;
-            var invoiceId = (int)report.Parameters["InvoiceId"].Value;
+            var invoiceNo = (string)report.Parameters["InvoiceNo"].Value;
 
-            var invoice = _invoiceService.GetInvoiceMasterById(invoiceId);
+            var invoice = _invoiceService.GetAllInvoiceViews(CurrentTenantId).FirstOrDefault(i => i.InvoiceNumber == invoiceNo);
+
+            if (invoice == null)
+            {
+                return;
+            }
 
             report.InvoiceNumber.Value = invoice?.InvoiceNumber;
             report.InvoiceDate.Value = invoice?.InvoiceDate;
 
-            report.DataSource = _invoiceService.GetAllInvoiceDetailReportData(invoiceId);
+            report.DataSource = _invoiceService.GetAllInvoiceDetailReportData(invoice.InvoiceMasterId);
         }
 
         #endregion InvoiceByProduct

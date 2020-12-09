@@ -12,7 +12,7 @@ public class InvoiceDetailReport : DevExpress.XtraReports.UI.XtraReport
     private TopMarginBand TopMargin;
     private BottomMarginBand BottomMargin;
     private DetailBand Detail;
-    public DevExpress.XtraReports.Parameters.Parameter InvoiceId;
+    public DevExpress.XtraReports.Parameters.Parameter InvoiceNo;
     private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
     private ReportHeaderBand ReportHeader;
     private XRLabel xrLabel22;
@@ -80,7 +80,6 @@ public class InvoiceDetailReport : DevExpress.XtraReports.UI.XtraReport
     private void InitializeComponent()
     {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
@@ -93,7 +92,7 @@ public class InvoiceDetailReport : DevExpress.XtraReports.UI.XtraReport
             this.Quantity = new DevExpress.XtraReports.UI.XRLabel();
             this.ProductName = new DevExpress.XtraReports.UI.XRLabel();
             this.SkuCode = new DevExpress.XtraReports.UI.XRLabel();
-            this.InvoiceId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.InvoiceNo = new DevExpress.XtraReports.Parameters.Parameter();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.InvoiceDate = new DevExpress.XtraReports.UI.XRLabel();
@@ -238,12 +237,10 @@ public class InvoiceDetailReport : DevExpress.XtraReports.UI.XtraReport
             this.SkuCode.SizeF = new System.Drawing.SizeF(77.08327F, 19.99998F);
             this.SkuCode.StylePriority.UseFont = false;
             // 
-            // InvoiceId
+            // InvoiceNo
             // 
-            this.InvoiceId.Description = "Select Invoice";
-            this.InvoiceId.Name = "InvoiceId";
-            this.InvoiceId.Type = typeof(int);
-            this.InvoiceId.ValueSourceSettings = staticListLookUpSettings1;
+            this.InvoiceNo.Description = "Invoice Number";
+            this.InvoiceNo.Name = "InvoiceNo";
             // 
             // sqlDataSource1
             // 
@@ -562,7 +559,7 @@ public class InvoiceDetailReport : DevExpress.XtraReports.UI.XtraReport
             this.PageWidth = 1169;
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
-            this.InvoiceId,
+            this.InvoiceNo,
             this.TenantID,
             this.WarehouseId});
             this.Version = "20.1";
