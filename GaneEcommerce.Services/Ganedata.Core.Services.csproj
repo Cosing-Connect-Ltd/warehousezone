@@ -370,6 +370,8 @@
     <Compile Include="Emails\IEmailServices.cs" />
     <Compile Include="Emails\EmailSender.cs" />
     <Compile Include="Employees\ResourceHolidayServices.cs" />
+    <Compile Include="Feedbacks\FeedbackService.cs" />
+    <Compile Include="Feedbacks\IFeedbackService.cs" />
     <Compile Include="Helpers\GaneConfigurationsHelper.cs" />
     <Compile Include="Helpers\IGaneConfigurationsHelper.cs" />
     <Compile Include="Markets\IVanSalesService.cs" />

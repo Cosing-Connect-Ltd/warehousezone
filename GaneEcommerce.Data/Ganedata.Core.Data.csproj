@@ -1195,6 +1195,14 @@
     <Compile Include="Migrations\202012071404406_added-new-time-and-attendance-related-fields-to-Resources-table.designer.cs">
       <DependentUpon>202012071404406_added-new-time-and-attendance-related-fields-to-Resources-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012100857189_Feedback.cs" />
+    <Compile Include="Migrations\202012100857189_Feedback.designer.cs">
+      <DependentUpon>202012100857189_Feedback.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012101131586_customername.cs" />
+    <Compile Include="Migrations\202012101131586_customername.designer.cs">
+      <DependentUpon>202012101131586_customername.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2411,6 +2419,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012071404406_added-new-time-and-attendance-related-fields-to-Resources-table.resx">
       <DependentUpon>202012071404406_added-new-time-and-attendance-related-fields-to-Resources-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012100857189_Feedback.resx">
+      <DependentUpon>202012100857189_Feedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012101131586_customername.resx">
+      <DependentUpon>202012101131586_customername.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
