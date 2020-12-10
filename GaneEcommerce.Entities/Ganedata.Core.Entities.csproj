@@ -200,6 +200,7 @@
     <Compile Include="Domain\Auth\AuthUserLoginActivity.cs" />
     <Compile Include="Domain\Auth\AuthUserprofile.cs" />
     <Compile Include="Domain\Auth\Module.cs" />
+    <Compile Include="Domain\Feedback\Feedback.cs" />
     <Compile Include="Domain\ImportModels\DeliverectModels.cs" />
     <Compile Include="Domain\Models\ProductLocationStocks.cs" />
     <Compile Include="Domain\Shifts\ShiftSchedule.cs" />
