@@ -13,7 +13,7 @@
 <div class="nb_prd_viewingsecWrap" id="Prod_carr_viewer">
     <span id="zoomViewTrigger"><i class="icon-search"></i></span>
     <span class="img_view_area">
-        <img id="selected-image"
+        <img id="selected-image" alt="@Model.Name"
              src="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
              data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
     </span>
@@ -25,7 +25,7 @@
                     <a href="#" data-image="@(ViewBag.BaseFilePath + item.FilePath)"
                        data-zoom-image="@(ViewBag.BaseFilePath + item.FilePath)"
                        class="@(Model.DefaultImage == item.FilePath? "active" : "")">
-                        <img id="selected-image" src="@(ViewBag.BaseFilePath + item.FilePath)" alt="" />
+                        <img id="selected-image" src="@(ViewBag.BaseFilePath + item.FilePath)" alt="@Model.Name" />
                     </a>
                 </div>
             }

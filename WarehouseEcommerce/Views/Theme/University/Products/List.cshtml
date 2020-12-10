@@ -90,14 +90,14 @@
                                                 var imageIcon = product.ProductTagMaps.ToList()[i].ProductTag.IconImage;
 
                                                 <span class="badge badge-@i">
-                                                    <img src="@(ViewBag.BaseFilePath + imageIcon)" alt="" />
+                                                    <img src="@(ViewBag.BaseFilePath + imageIcon)" alt="@product.Name" />
                                                 </span>
                                             }
                                         }
 
                                         <span class="imagewrap">
                                             <a href="@Url.Action("ProductDetails", "Products", new { sku = product.SKUCode, filters = Model.CurrentFilters })">
-                                                <img src="@(!string.IsNullOrEmpty(product.DefaultImage) ? ViewBag.BaseFilePath + product.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                                <img alt="@product.Name" src="@(!string.IsNullOrEmpty(product.DefaultImage) ? ViewBag.BaseFilePath + product.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                                             </a>
                                         </span>
                                         <h3 class="prdName">
