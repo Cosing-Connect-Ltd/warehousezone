@@ -322,8 +322,6 @@ function GetOrderDetail() {
                 data: { "OrderId": orderId, "accounId": accounId, "PageSession": sessionStorage["PageSessionToken"] },
                 success: function (e) {
                     gridViewOrdDet.Refresh();
-                    // _PalletTrackingListGridView.Refresh();
-
                     LoadingPanel.Hide();
                 }
             });
@@ -335,9 +333,7 @@ function GetOrderDetail() {
             url: "/PurchaseOrders/_GetOrderDetail",
             data: { "OrderId": orderId, "accounId": accounId, "PageSession": sessionStorage["PageSessionToken"] },
             success: function (e) {
-                orderDetailGrid.Refresh();
-                // _PalletTrackingListGridView.Refresh();
-
+                gridViewOrdDet.Refresh();
                 LoadingPanel.Hide();
             }
         });
