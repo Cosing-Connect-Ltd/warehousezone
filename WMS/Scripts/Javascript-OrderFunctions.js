@@ -164,14 +164,10 @@ function addDetail(action) {
         }
     };
 
-    //if (Qty.GetValue() < 1) {
-    //    Gane.Helpers.ShowPopupMessage('Invalid Quantity', 'Please add minimum 1 Quantity', PopupTypes.Warning);
-    //    return false;
-    //}
-
     var duplicateProduct = null;
+    debugger;
     if ($("#IsNewProduct").prop("checked")) {
-        $.get("/purchaseorders/CheckProductExist/" + $("#divNewProductAddForm #ProductCode").val(),
+        $.get("/purchaseorders/CheckProductExist/" + $("#divNewProductAddForm #ProductName").val(),
             function (data) {
                 if (data == true) {
                     $("#divNewProductErrorForm").html(

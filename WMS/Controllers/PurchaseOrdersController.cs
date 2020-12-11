@@ -174,7 +174,7 @@ namespace WMS.Controllers
 
         public ActionResult CheckProductExist(string id)
         {
-            var product = _productServices.GetProductMasterByProductCode(id, CurrentTenantId);
+            var product = _productServices.GetProductMasterByName(id, CurrentTenantId);
             return Json(product != null, JsonRequestBehavior.AllowGet);
         }
 
