@@ -217,7 +217,7 @@ namespace Ganedata.Core.Services
         public IEnumerable<OrderSchedule> GetAllOrderSchedule(DateTime? filterByDate = null, int resourceId = 0, bool includeCancelled = false)
         {
             return _currentDbContext.OrderSchedule.Where(m => m.IsCanceled != true && (filterByDate == null || DbFunctions.TruncateTime((DateTime?)m.StartTime) == DbFunctions.TruncateTime(filterByDate)) && (resourceId == 0 || m.MarketVehicleId == resourceId))
-               .OrderBy(m => m.PalletDispatchId).ThenBy(m => m.StartTime);
+               .OrderBy(m => m.OrderId).ThenBy(m => m.StartTime);
         }
         public IQueryable<OrderSchedule> GetAllActiveOrdersAppointments(int tenantId)
         {
@@ -243,19 +243,19 @@ namespace Ganedata.Core.Services
             return _currentDbContext.MarketVehicles.Find(VechicleId);
         }
 
-        public OrderSchedule CreateOrderScheduleAppointment(string start, string end, string subject, string resourceId, int joblabel, int tenantId, int palletDispatchId)
+        public OrderSchedule CreateOrderScheduleAppointment(string start, string end, string subject, string resourceId, int joblabel, int tenantId, int orderId)
         {
-            var palletDispatch = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == palletDispatchId);
+            var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
             var resIds = $"<ResourceIds>\r\n<ResourceId Type = \"System.Int32\" Value = \"{resourceId}\" />\r\n</ResourceIds>";
             var newAppt = new OrderSchedule()
             {
                 StartTime = ParseDate(start),
                 EndTime = ParseDate(end),
-                Subject = palletDispatch.DispatchReference + ":" + palletDispatch?.OrderProcess?.Order?.OrderNumber + ":" + palletDispatch?.OrderProcess?.Order?.Account?.CompanyName,
+                Subject = order?.OrderNumber + ": " + order?.Account?.CompanyName,
                 Description = string.Join("\n", _currentDbContext.AuthUsers.FirstOrDefault(m => m.TenantId == tenantId)?.DisplayName),
                 MarketVehicleId = Convert.ToInt32(resourceId),
                 ResourceIDs = resIds,
-                PalletDispatchId = palletDispatchId,
+                OrderId = orderId,
                 Label = joblabel,
                 TenentId = tenantId
             };

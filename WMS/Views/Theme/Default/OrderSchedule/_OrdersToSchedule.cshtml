@@ -1,0 +1,63 @@
+﻿@using Ganedata.Core.Entities.Domain;
+@model IList<Order>
+@using Ganedata.Core.Entities.Enums;
+
+<div id="JobTabs">
+    <ul>
+        <li><a href="#SalesOrders">Sales Orders</a></li>
+        <li><a href="#PurchaseOrders">Purchase Orders</a></li>
+    </ul>
+    @ViewBag.title
+    
+    <div id="SalesOrders">
+        <div class="works-jobs" id="JobsByTrade">
+            <div id="works-jobs">
+                @foreach (var order in Model.Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder))
+                {
+                    var backgroundColour = (order.OrderStatusID < OrderStatusEnum.BeingPicked) ?
+                        "#fbfb91" :
+                        (order.OrderStatusID >= OrderStatusEnum.AwaitingArrival || (order.OrderStatusID >= OrderStatusEnum.BeingPicked && order.OrderProcess.Any(o => o.OrderProcessStatusId != OrderProcessStatusEnum.Dispatched)) ? "#fedd78" : "#E0E0E0");
+                    <ul>
+                        <li style="background-color: @backgroundColour; padding: 4px; border-radius: 3px" value="@order.OrderID" class="draggable reallocation-parent"
+                            data-orderid="@order.OrderID" data-tid="@order.TenentId">
+                            <p>
+                                <i>
+                                    Order No: <b>@order.OrderNumber</b>
+                                </i>
+                            </p>
+                            <p>
+                                <i>
+                                    Account Name: <b>@order.Account.CompanyName</b>
+                                </i>
+                            </p>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+    <div id="PurchaseOrders">
+        <div class="works-jobs" id="JobsByTrade">
+            <div id="works-jobs">
+                @foreach (var order in Model.Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder))
+                {
+                    <ul>
+                        <li style="background-color: #b0f797; padding: 4px; border-radius: 3px" value="@order.OrderID" class="draggable reallocation-parent"
+                            data-orderid="@order.OrderID" data-tid="@order.TenentId">
+                            <p>
+                                <i>
+                                    Order No: <b>@order.OrderNumber</b>
+                                </i>
+                            </p>
+                            <p>
+                                <i>
+                                    Account Name: <b>@order.Account.CompanyName</b>
+                                </i>
+                            </p>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>

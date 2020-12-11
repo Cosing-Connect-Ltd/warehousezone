@@ -13,12 +13,10 @@
             CreateIndex("dbo.Orders", "SiteID");
             CreateIndex("dbo.Orders", "ApiCredentialId");
             AddForeignKey("dbo.Orders", "ApiCredentialId", "dbo.ApiCredentials", "Id");
-            AddForeignKey("dbo.Orders", "SiteID", "dbo.TenantWebsites", "SiteID");
         }
 
         public override void Down()
         {
-            DropForeignKey("dbo.Orders", "SiteID", "dbo.TenantWebsites");
             DropForeignKey("dbo.Orders", "ApiCredentialId", "dbo.ApiCredentials");
             DropIndex("dbo.Orders", new[] { "ApiCredentialId" });
             DropIndex("dbo.Orders", new[] { "SiteID" });

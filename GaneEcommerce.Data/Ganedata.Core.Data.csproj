@@ -1199,6 +1199,10 @@
     <Compile Include="Migrations\202012110216160_ProductLocationStocks-table-added-for-location-stock-calculations.designer.cs">
       <DependentUpon>202012110216160_ProductLocationStocks-table-added-for-location-stock-calculations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.cs" />
+    <Compile Include="Migrations\202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.designer.cs">
+      <DependentUpon>202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2418,6 +2422,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012110216160_ProductLocationStocks-table-added-for-location-stock-calculations.resx">
       <DependentUpon>202012110216160_ProductLocationStocks-table-added-for-location-stock-calculations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.resx">
+      <DependentUpon>202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

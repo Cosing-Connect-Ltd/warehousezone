@@ -1971,7 +1971,6 @@
     <Content Include="Views\Theme\Default\ReturnOrders\Index.cshtml" />
     <Content Include="Views\Theme\Default\ReturnOrders\_ReturnOrders.cshtml" />
     <Content Include="Views\Theme\Default\OrderSchedule\Index.cshtml" />
-    <Content Include="Views\Theme\Default\OrderSchedule\_PalletToDispatch.cshtml" />
     <Content Include="Views\Theme\Default\OrderSchedule\_SchedulerPartial.cshtml" />
     <Content Include="Views\Theme\Default\Products\_EditableProductGrid.cshtml" />
     <Content Include="Views\Theme\Default\Products\EditProducts.cshtml" />
@@ -2773,6 +2772,7 @@
     <Content Include="Views\Theme\Default\Products\_PalletLabelPrint.cshtml" />
     <Content Include="Views\Theme\Default\Products\PalletLabelPrintViewer.cshtml" />
     <Content Include="Views\Theme\Default\Home\Page.cshtml" />
+    <Content Include="Views\Theme\Default\OrderSchedule\_OrdersToSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
