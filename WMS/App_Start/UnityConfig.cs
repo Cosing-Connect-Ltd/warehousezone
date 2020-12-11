@@ -3,7 +3,7 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Services;
 using LazyCache;
 using System;
-
+using Ganedata.Core.Services.Feedbacks;
 using Unity;
 using Unity.Injection;
 
@@ -103,6 +103,7 @@ namespace WMS
             container.RegisterType<IApiCredentialServices, ApiCredentialServices>();
             container.RegisterType<IAccountSectorService, AccountSectorService>();
             container.RegisterType<IDeliverectSyncService, DeliverectSyncService>();
+            container.RegisterType<IFeedbackService, FeedbackService>();
 
             container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());
 

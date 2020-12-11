@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Feedback : DbMigration
+    public partial class OrderFeedbacks : DbMigration
     {
         public override void Up()
         {
@@ -15,10 +15,12 @@
                         AccountID = c.Int(nullable: false),
                         OrderID = c.Int(nullable: false),
                         ServiceRate = c.String(),
+                        CustomerName = c.String(),
                         FoodRate = c.String(),
                         AppRate = c.String(),
-                        FeedbackMessge = c.String(),
-                        TenantId = c.Int(nullable: false),
+                        FeedbackMessage = c.String(),
+                        TenantID = c.Int(nullable: false),
+                        TenantLocationID = c.Int(nullable: false),
                         IsDeleted = c.Boolean(),
                     })
                 .PrimaryKey(t => t.Id)

@@ -101,6 +101,8 @@ namespace WMS
             config.Routes.MapHttpRoute("DeliverectMenuPushed", "api/deliverect/menuPushed", new { controller = "DeliverectWebhooks", action = "MenuPushed" });
             config.Routes.MapHttpRoute("DeliverectProductSnoozeChanged", "api/deliverect/productSnoozeChanged", new { controller = "DeliverectWebhooks", action = "ProductSnoozeChanged" });
             config.Routes.MapHttpRoute("DeliverectOrderStatusUpdated", "api/deliverect/orderStatusUpdated", new { controller = "DeliverectWebhooks", action = "OrderStatusUpdated" });
+            config.Routes.MapHttpRoute("LoyaltyFeedbackCreate", "api/feedbacks/create", new { controller = "ApiFeedback", action = "PostFeedback" });
+            config.Routes.MapHttpRoute("LoyaltyFeedbackList", "api/feedbacks/list", new { controller = "ApiFeedback", action = "GetFeedback" });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

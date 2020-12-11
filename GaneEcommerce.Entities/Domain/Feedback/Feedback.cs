@@ -18,8 +18,9 @@ namespace Ganedata.Core.Entities.Domain.Feedback
         public string CustomerName{ get; set; }
         public string FoodRate { get; set; }
         public string AppRate { get; set; }
-        public string FeedbackMessge { get; set; }
-        public int TenantId { get; set; }
+        public string FeedbackMessage { get; set; }
+        public int TenantID { get; set; }
+        public int TenantLocationID { get; set; }
         public bool? IsDeleted { get; set; }
         public virtual Account Customer { get; set; }
         public virtual Order Order { get; set; }

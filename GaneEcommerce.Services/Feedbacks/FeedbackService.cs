@@ -16,7 +16,6 @@ namespace Ganedata.Core.Services.Feedbacks
     {
         private readonly IApplicationContext _currentDbContext;
 
-        //constructor
         public FeedbackService(IApplicationContext currentDbContext)
         {
             _currentDbContext = currentDbContext;
@@ -26,13 +25,12 @@ namespace Ganedata.Core.Services.Feedbacks
         {
             _currentDbContext.Feedbacks.Add(feedback);
             int result = _currentDbContext.SaveChanges();
-
             return result > 0;
         }
 
         public IEnumerable<Feedback> GetAll(int tenantId)
         {
-            return _currentDbContext.Feedbacks.Where(x => x.TenantId.Equals(tenantId) && x.IsDeleted != true);
+            return _currentDbContext.Feedbacks.Where(x => x.TenantID.Equals(tenantId) && x.IsDeleted != true);
         }
     }
 }
