@@ -16,20 +16,17 @@ namespace WMS.Controllers.WebAPI
     public class ApiFeedbackController : BaseApiController
     {
         readonly IFeedbackService _feedbackServices;
-        private readonly IMapper _mapper;
         public ApiFeedbackController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService,
             IProductServices productServices, IUserService userService,IFeedbackService feedbackService, IMapper mapper)
               : base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _feedbackServices = feedbackService;
-
-            _mapper = mapper;
         }
 
 
-        public IHttpActionResult GetFeedback(int tentenId)
+        public IHttpActionResult GetFeedback(int tenantId)
         {
-            var feedback = _feedbackServices.GetAll(tentenId);
+            var feedback = _feedbackServices.GetAll(tenantId);
             if(feedback.Count() > 0)
             {
                 return Ok(feedback);

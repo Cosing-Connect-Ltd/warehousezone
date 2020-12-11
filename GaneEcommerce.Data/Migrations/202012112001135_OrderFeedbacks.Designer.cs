@@ -7,13 +7,13 @@ namespace Ganedata.Core.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class Feedback : IMigrationMetadata
+    public sealed partial class OrderFeedbacks : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Feedback));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(OrderFeedbacks));
         
         string IMigrationMetadata.Id
         {
-            get { return "202012100857189_Feedback"; }
+            get { return "202012112001135_OrderFeedbacks"; }
         }
         
         string IMigrationMetadata.Source
