@@ -529,7 +529,7 @@ namespace Ganedata.Core.Services
                 EnableGlobalProcessByPallet = ord.TenantWarehouse.EnableGlobalProcessByPallet,
                 TransType = _currentDbContext.Order.Find(ord.OrderID).InventoryTransactionTypeId,
                 QtyProcessed = ord.ProcessedQty,
-                DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && (ord.ProductMaster.ProductLocationsMap != null && ord.ProductMaster.ProductLocationsMap.Count < 1)
+                DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && (ord.ProductMaster.ProductLocations != null && ord.ProductMaster.ProductLocations.Count < 1)
             }).ToList();
 
             return results;
@@ -556,7 +556,7 @@ namespace Ganedata.Core.Services
                 TotalAmount = ord.TotalAmount,
                 DateCreated = ord.DateCreated,
                 TransType = _currentDbContext.Order.Find(ord.OrderID).InventoryTransactionTypeId,
-                DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && (ord.ProductMaster.ProductLocationsMap != null && ord.ProductMaster.ProductLocationsMap.Count < 1)
+                DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && (ord.ProductMaster.ProductLocations != null && ord.ProductMaster.ProductLocations.Count < 1)
             }).ToList();
 
             return results;
@@ -618,7 +618,7 @@ namespace Ganedata.Core.Services
                 TotalAmount = ord.TotalAmount,
                 TransType = ord.Order.InventoryTransactionTypeId,
                 QtyProcessed = ord.ProcessedQty,
-                DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && !_currentDbContext.ProductLocationsMap.Any(m => m.ProductId == ord.ProductId && m.IsDeleted != true)
+                DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && !_currentDbContext.ProductLocations.Any(m => m.ProductId == ord.ProductId && m.IsDeleted != true)
             }).ToList();
 
             return results;
@@ -646,7 +646,7 @@ namespace Ganedata.Core.Services
                 TotalAmount = ord.TotalAmount,
                 TransType = ord.Order.InventoryTransactionTypeId,
                 QtyProcessed = ord.ProcessedQty,
-                DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && !_currentDbContext.ProductLocationsMap.Any(m => m.ProductId == ord.ProductId && m.IsDeleted != true)
+                DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && !_currentDbContext.ProductLocations.Any(m => m.ProductId == ord.ProductId && m.IsDeleted != true)
             }).ToList();
 
             return results;
@@ -2483,7 +2483,7 @@ namespace Ganedata.Core.Services
 
                 foreach (var orderDetail in orderDetailsToProcess)
                 {
-                    invalidForDirectProcessing = orderDetail.ProductMaster.Serialisable || orderDetail.ProductMaster.ProductLocationsMap.Count() > 1;
+                    invalidForDirectProcessing = orderDetail.ProductMaster.Serialisable || orderDetail.ProductMaster.ProductLocations.Count() > 1;
                     if (!invalidForDirectProcessing || directshipment == true || orderDetail.ProductMaster.IsAutoShipment == true || orderDetail.ProductMaster.ProductType == ProductKitTypeEnum.Virtual)
                     {
                         var qtyDifference = orderDetail.Qty - orderDetail.ProcessedQty;

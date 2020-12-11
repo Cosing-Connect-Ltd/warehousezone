@@ -532,6 +532,7 @@
     <Compile Include="Controllers\MarketsVehicleController.cs" />
     <Compile Include="Controllers\AccountSectorsController.cs" />
     <Compile Include="Controllers\ProductAttributeValuesController.cs" />
+    <Compile Include="Controllers\WebAPI\ApiProductLocationStocksSyncController.cs" />
     <Compile Include="Controllers\WebAPI\DeliverectWebhooksController.cs" />
     <Compile Include="Controllers\WebAPI\ApiTenantLocationsSyncController.cs" />
     <Compile Include="Controllers\WebAPI\ApiWebsitesController.cs" />

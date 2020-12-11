@@ -36,7 +36,7 @@ namespace Ganedata.Core.Services
             var locationIds = new List<int>();
             if (filterForProductId > 0)
             {
-                locationIds = _currentDbContext.ProductLocationsMap.Where(x => x.IsDeleted != true && x.ProductId == filterForProductId).Select(y => y.LocationId).Distinct().ToList();
+                locationIds = _currentDbContext.ProductLocations.Where(x => x.IsDeleted != true && x.ProductId == filterForProductId).Select(y => y.LocationId).Distinct().ToList();
             }
             return _currentDbContext.Locations.Where(m => m.TenentId == tenantId && m.WarehouseId == warehouseId && m.IsDeleted != true && (filterForProductId == 0 || locationIds.Contains(m.LocationId)));
         }
@@ -180,7 +180,7 @@ namespace Ganedata.Core.Services
         }
         public IEnumerable<ProductLocations> GetAllProductLocationsByProductId(int productId, int warehouseId)
         {
-            return _currentDbContext.ProductLocationsMap.Where(
+            return _currentDbContext.ProductLocations.Where(
                 a => a.Locations.IsDeleted != true && a.IsDeleted != true && a.ProductId == productId);
         }
         public IQueryable<ProductMaster> ApplyFixedFilters(IQueryable<ProductMaster> products, string filterString, int siteId, int? accountId)
@@ -603,7 +603,7 @@ namespace Ganedata.Core.Services
                         DateCreated = DateTime.UtcNow,
                         CreatedBy = userId
                     };
-                    _currentDbContext.ProductLocationsMap.Add(map);
+                    _currentDbContext.ProductLocations.Add(map);
                 }
             }
             else
@@ -634,7 +634,7 @@ namespace Ganedata.Core.Services
             current.UpdatedBy = userId;
             current.DateUpdated = DateTime.UtcNow;
 
-            var maps = _currentDbContext.ProductLocationsMap.Where(a => a.LocationId == locationId && a.ProductId == productId);
+            var maps = _currentDbContext.ProductLocations.Where(a => a.LocationId == locationId && a.ProductId == productId);
             foreach (var cMap in maps)
             {
                 cMap.IsDeleted = true;

@@ -36,7 +36,6 @@ namespace WMS.Controllers
         public ActionResult _PalletToDispatch()
         {
             var allOrders = _palletingService.GetAllPalletsDispatch();
-
             return PartialView(allOrders);
         }
 

@@ -34,6 +34,7 @@ namespace Ganedata.Core.Services
         List<InventoryStock> GetAllInventoryStocksByProductId(int productId);
         InventoryStock GetInventoryStocksByProductAndTenantLocation(int productId, int tenantLocationId);
         IQueryable<InventoryStock> GetAllInventoryStocks(int tenantId, int warehouseId, DateTime? reqDate = null);
+        IQueryable<ProductLocationStocks> GetAllProductLocationStocks(int tenantId, int warehouseId, DateTime? reqDate = null);
         IQueryable<InventoryStockViewModel> GetAllInventoryStocksList(int tenantId, int warehouseId, int filterByProductId = 0);
         IQueryable<InventoryTransaction> GetAllInventoryTransactions(int tenantId, int warehouseId);
         IEnumerable<InventoryTransaction> GetAllInventoryTransactionsByProductId(int productId, int warehouseId);
@@ -50,9 +51,10 @@ namespace Ganedata.Core.Services
         ProductMaster GetProductMasterByProductCode(string productCode, int tenantId);
         ProductMaster GetProductMasterByBarcode(string barcode, int tenantId);
         ProductMaster GetProductMasterByOuterBarcode(string outerBarcode, int tenantId);
+        ProductMaster GetProductMasterByName(string name, int tenantId);
         IEnumerable<ProductMaster> GetProductMasterDropdown(int productId);
 
-        IEnumerable<ProductMaster> GetProductByCategory(int siteId, int tenantId, int numberofProducts, string tagName,int? tagId=null);
+        IEnumerable<ProductMaster> GetProductByCategory(int siteId, int tenantId, int numberofProducts, string tagName, int? tagId = null);
 
         string GenerateNextProductCode(int tenantId);
         bool IsCodeAvailableForUse(string code, int tenantId, EnumProductCodeType codeType = EnumProductCodeType.All, int productId = 0);
