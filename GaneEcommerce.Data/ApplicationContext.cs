@@ -77,6 +77,7 @@ namespace Ganedata.Core.Data
         public DbSet<ProductGroups> ProductGroups { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<InventoryStock> InventoryStocks { get; set; }
+        public DbSet<ProductLocationStocks> ProductLocationStocks { get; set; }
         public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
         public DbSet<TenantDeliveryService> TenantDeliveryServices { get; set; }
         public DbSet<ApiCredentials> ApiCredentials { get; set; }
@@ -95,7 +96,7 @@ namespace Ganedata.Core.Data
         public DbSet<InvoiceMaster> InvoiceMasters { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         public DbSet<OrderPTenantEmailRecipient> OrderPTenantEmailRecipients { get; set; }
-        public DbSet<ProductLocations> ProductLocationsMap { get; set; }
+        public DbSet<ProductLocations> ProductLocations { get; set; }
         public DbSet<ProductAttributes> ProductAttributes { get; set; }
         public DbSet<ProductAttributeValues> ProductAttributeValues { get; set; }
         public DbSet<ProductAttributeValuesMap> ProductAttributeValuesMap { get; set; }

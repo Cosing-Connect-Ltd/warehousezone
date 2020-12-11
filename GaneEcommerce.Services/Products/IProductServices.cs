@@ -34,6 +34,7 @@ namespace Ganedata.Core.Services
         List<InventoryStock> GetAllInventoryStocksByProductId(int productId);
         InventoryStock GetInventoryStocksByProductAndTenantLocation(int productId, int tenantLocationId);
         IQueryable<InventoryStock> GetAllInventoryStocks(int tenantId, int warehouseId, DateTime? reqDate = null);
+        IQueryable<ProductLocationStocks> GetAllProductLocationStocks(int tenantId, int warehouseId, DateTime? reqDate = null);
         IQueryable<InventoryStockViewModel> GetAllInventoryStocksList(int tenantId, int warehouseId, int filterByProductId = 0);
         IQueryable<InventoryTransaction> GetAllInventoryTransactions(int tenantId, int warehouseId);
         IEnumerable<InventoryTransaction> GetAllInventoryTransactionsByProductId(int productId, int warehouseId);

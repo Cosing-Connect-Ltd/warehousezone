@@ -11,7 +11,7 @@ namespace Ganedata.Core.Entities.Domain
     {
         public Locations()
         {
-            ProductLocationsMap = new HashSet<ProductLocations>();
+            ProductLocations = new HashSet<ProductLocations>();
         }
 
         [Key]
@@ -81,7 +81,7 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("LocationGroupId")]
         public virtual LocationGroup LocationGroup { get; set; }
         public virtual TenantLocations TenantWarehouses { get; set; }
-        public virtual ICollection<ProductLocations> ProductLocationsMap { get; set; }
+        public virtual ICollection<ProductLocations> ProductLocations { get; set; }
         public virtual LocationTypes LocationType { get; set; }
         public string LocationWithCode
         {

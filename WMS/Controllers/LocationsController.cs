@@ -195,7 +195,7 @@ namespace WMS.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Products = locations.ProductLocationsMap.Where(a => a.IsDeleted != true).Select(p => p.ProductMaster.Name).ToList();
+            ViewBag.Products = locations.ProductLocations.Where(a => a.IsDeleted != true).Select(p => p.ProductMaster.Name).ToList();
 
             return View(locations);
         }

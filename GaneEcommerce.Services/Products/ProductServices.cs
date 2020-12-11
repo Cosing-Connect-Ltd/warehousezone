@@ -583,12 +583,12 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<int> GetAllProductsInALocationFromMaps(int locationId)
         {
-            return _currentDbContext.ProductLocationsMap.Where(a => a.LocationId == locationId && a.IsDeleted != true).Select(a => a.ProductId);
+            return _currentDbContext.ProductLocations.Where(a => a.LocationId == locationId && a.IsDeleted != true).Select(a => a.ProductId);
         }
 
         public IEnumerable<int> GetAllProductLocationsFromMaps(int productId)
         {
-            return _currentDbContext.ProductLocationsMap.Where(m => m.ProductId == productId).Select(m => m.LocationId);
+            return _currentDbContext.ProductLocations.Where(m => m.ProductId == productId).Select(m => m.LocationId);
         }
 
         public bool IsCodeAvailableForUse(string code, int tenantId, EnumProductCodeType codeType = EnumProductCodeType.All, int productId = 0)
@@ -730,7 +730,7 @@ namespace Ganedata.Core.Services
 
                 if (productLocationIds == null)
                 {
-                    foreach (var entity in _currentDbContext.ProductLocationsMap.Where(
+                    foreach (var entity in _currentDbContext.ProductLocations.Where(
                         x => x.ProductId == productMaster.ProductId))
                     {
                         entity.IsDeleted = true;
@@ -740,7 +740,7 @@ namespace Ganedata.Core.Services
                 else
                 {
                     var ToDelete = new List<int>();
-                    ToDelete = _currentDbContext.ProductLocationsMap
+                    ToDelete = _currentDbContext.ProductLocations
                         .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
                         .Select(x => x.LocationId)
                         .ToList()
@@ -748,7 +748,7 @@ namespace Ganedata.Core.Services
                         .ToList();
                     var ToAdd = new List<int>();
                     ToAdd = productLocationIds
-                        .Except(_currentDbContext.ProductLocationsMap
+                        .Except(_currentDbContext.ProductLocations
                             .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
                             .Select(x => x.LocationId)
                             .ToList())
@@ -756,7 +756,7 @@ namespace Ganedata.Core.Services
 
                     foreach (int item in ToDelete)
                     {
-                        var Current = _currentDbContext.ProductLocationsMap
+                        var Current = _currentDbContext.ProductLocations
                             .FirstOrDefault(x => x.ProductId == productMaster.ProductId && x.LocationId == item &&
                                                  x.IsDeleted != true);
                         Current.IsDeleted = true;
@@ -772,7 +772,7 @@ namespace Ganedata.Core.Services
                             TenantId = tenantId,
                             ProductId = productMaster.ProductId,
                         };
-                        _currentDbContext.ProductLocationsMap.Add(newItem);
+                        _currentDbContext.ProductLocations.Add(newItem);
                     }
                 }
 
@@ -828,7 +828,7 @@ namespace Ganedata.Core.Services
                             TenantId = tenantId
                         };
 
-                        _currentDbContext.ProductLocationsMap.Add(pLocation);
+                        _currentDbContext.ProductLocations.Add(pLocation);
                     }
                 }
 
@@ -1184,6 +1184,15 @@ namespace Ganedata.Core.Services
             return model;
         }
 
+        public IQueryable<ProductLocationStocks> GetAllProductLocationStocks(int tenantId, int warehouseId, DateTime? reqDate = null)
+        {
+            var model = _currentDbContext.ProductLocationStocks
+                .Where(x => x.TenantId == tenantId && x.WarehouseId == warehouseId &&
+                            x.ProductMaster.IsDeleted != true && x.ProductMaster.DontMonitorStock != true && (!reqDate.HasValue || (x.DateUpdated ?? x.DateCreated) >= reqDate));
+
+            return model;
+        }
+
         public IQueryable<InventoryStockViewModel> GetAllInventoryStocksList(int tenantId, int warehouseId, int filterByProductId = 0)
         {
             IQueryable<InventoryStockViewModel> results;
@@ -1502,7 +1511,7 @@ namespace Ganedata.Core.Services
                     ProductGroupName = prd.ProductGroup == null ? "" : prd.ProductGroup.ProductGroup,
                     ProductCategoryName = prd.ProductCategory == null ? "" : prd.ProductCategory.ProductCategoryName,
                     DepartmentName = prd.TenantDepartment.DepartmentName,
-                    Location = prd.ProductLocationsMap.Where(a => a.IsDeleted != true).Select(x => x.Locations.LocationCode).FirstOrDefault().ToString(),
+                    Location = prd.ProductLocations.Where(a => a.IsDeleted != true).Select(x => x.Locations.LocationCode).FirstOrDefault().ToString(),
                     EnableWarranty = prd.EnableWarranty ?? false,
                     EnableTax = prd.EnableTax ?? false,
                     DontMonitorStock = prd.DontMonitorStock,
@@ -1524,14 +1533,14 @@ namespace Ganedata.Core.Services
         {
             ProductMaster productmaster = GetProductMasterById(productId);
 
-            ProductLocations location = _currentDbContext.ProductLocationsMap.Find(locationId);
+            ProductLocations location = _currentDbContext.ProductLocations.Find(locationId);
 
             if (productmaster == null || location == null)
             {
                 return null;
             }
 
-            productmaster.ProductLocationsMap.Add(location);
+            productmaster.ProductLocations.Add(location);
 
             _currentDbContext.SaveChanges();
 
@@ -1555,17 +1564,17 @@ namespace Ganedata.Core.Services
             {
                 for (int i = 0; i < locationIds.Length; i++)
                 {
-                    ProductLocations loc = _currentDbContext.ProductLocationsMap.Find(locationIds[i]);
+                    ProductLocations loc = _currentDbContext.ProductLocations.Find(locationIds[i]);
                     if (loc != null)
                     {
-                        productmaster.ProductLocationsMap.Add(loc);
+                        productmaster.ProductLocations.Add(loc);
                     }
                 }
 
                 _currentDbContext.SaveChanges();
             }
 
-            return productmaster.ProductLocationsMap.ToList();
+            return productmaster.ProductLocations.ToList();
         }
 
         public bool RemoveProductLocationMap(int productId, int locationId)
@@ -1578,7 +1587,7 @@ namespace Ganedata.Core.Services
                 return false;
             }
 
-            productmaster.ProductLocationsMap.Remove(loc);
+            productmaster.ProductLocations.Remove(loc);
 
             _currentDbContext.SaveChanges();
             return true;
@@ -1590,7 +1599,7 @@ namespace Ganedata.Core.Services
 
             if (productmaster == null) return null;
 
-            var pgoups = productmaster.ProductLocationsMap.Where(a => a.IsDeleted != true).Select(s => s.LocationId);
+            var pgoups = productmaster.ProductLocations.Where(a => a.IsDeleted != true).Select(s => s.LocationId);
 
             var pg = from r in _currentDbContext.Locations
                      where (r.WarehouseId == warehouseId && (r.LocationCode.Contains(code) || String.IsNullOrEmpty(code)))
@@ -1649,7 +1658,7 @@ namespace Ganedata.Core.Services
 
         public ProductLocations GetProductLocationMapById(int productLocationId)
         {
-            return _currentDbContext.ProductLocationsMap.Find(productLocationId);
+            return _currentDbContext.ProductLocations.Find(productLocationId);
         }
 
         public InventoryStock GetInventoryStockById(int inventoryStockId)
@@ -1762,7 +1771,7 @@ namespace Ganedata.Core.Services
                     Console.Write("this should be marked as dontmoniter stock");
                 }
 
-                if (prod.ProductLocationsMap.Any(x => x.IsDeleted != true) && prod.ProductLocationsMap.Any(a => a.Locations.LocationCode != "external" && a.IsDeleted != true))
+                if (prod.ProductLocations.Any(x => x.IsDeleted != true) && prod.ProductLocations.Any(a => a.Locations.LocationCode != "external" && a.IsDeleted != true))
                 {
                     prod.DontMonitorStock = false;
                 }
@@ -1773,7 +1782,7 @@ namespace Ganedata.Core.Services
                     var externalLocation = _currentDbContext.Locations.Where(x => x.LocationCode == "external").FirstOrDefault();
 
                     var newLocation = new ProductLocations { ProductId = prod.ProductId, LocationId = externalLocation.LocationId, DateCreated = DateTime.UtcNow, CreatedBy = caCurrent.CurrentUser().UserId, TenantId = currentTenantId, IsActive = true };
-                    _currentDbContext.ProductLocationsMap.Add(newLocation);
+                    _currentDbContext.ProductLocations.Add(newLocation);
                 }
             }
 

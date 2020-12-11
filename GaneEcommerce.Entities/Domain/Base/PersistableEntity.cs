@@ -15,9 +15,7 @@ namespace Ganedata.Core.Entities.Domain
         public int? CreatedBy { get; set; }
         [Display(Name = "Updated By")]
         public int? UpdatedBy { get; set; }
-
         public bool? IsDeleted { get; set; }
-
         public void UpdateCreatedInfo(int userId)
         {
             this.CreatedBy = userId;

@@ -104,6 +104,7 @@ namespace WMS
                 cfg.CreateMap<AccountAddresses, AddressViewModel>().ReverseMap();
                 cfg.CreateMap<GlobalCountry, CountryViewModel>().ReverseMap();
                 cfg.CreateMap<TenantLocations, CollectionPointViewModel>().ReverseMap();
+                cfg.CreateMap<ProductLocationStocks, ProductLocationStocksSync>().ReverseMap();
             });
 
             return config;

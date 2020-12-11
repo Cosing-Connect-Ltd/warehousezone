@@ -18,7 +18,7 @@ namespace Ganedata.Core.Entities.Domain
         {
             ProductSCCCodes = new HashSet<ProductSCCCodes>();
             ProductAttributeValuesMap = new HashSet<ProductAttributeValuesMap>();
-            ProductLocationsMap = new HashSet<ProductLocations>();
+            ProductLocations = new HashSet<ProductLocations>();
             OrderDetail = new HashSet<OrderDetail>();
             InventoryStocks = new HashSet<InventoryStock>();
             InventoryTransactions = new HashSet<InventoryTransaction>();
@@ -255,7 +255,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual GlobalTax GlobalTax { get; set; }
         public virtual ICollection<ProductSCCCodes> ProductSCCCodes { get; set; }
         public virtual ICollection<ProductAttributeValuesMap> ProductAttributeValuesMap { get; set; }
-        public virtual ICollection<ProductLocations> ProductLocationsMap { get; set; }
+        public virtual ICollection<ProductLocations> ProductLocations { get; set; }
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
         public virtual ICollection<InventoryStock> InventoryStocks { get; set; }
         public virtual ICollection<InventoryTransaction> InventoryTransactions { get; set; }

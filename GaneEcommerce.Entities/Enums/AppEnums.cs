@@ -299,7 +299,8 @@ namespace Ganedata.Core.Entities.Enums
         PostStockMovement = 34,
         TenantLocationsSyncLog = 35,
         UserAccountsSync = 36,
-        AccountAddressesSync = 37
+        AccountAddressesSync = 37,
+        ProductLocationStocksSync = 38
     }
 
     public enum OrderProcessStatusEnum

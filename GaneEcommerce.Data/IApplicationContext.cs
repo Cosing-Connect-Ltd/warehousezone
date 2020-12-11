@@ -52,6 +52,7 @@ namespace Ganedata.Core.Data
         DbSet<TenantPriceGroups> TenantPriceGroups { get; set; }
         DbSet<TenantDepartments> TenantDepartments { get; set; }
         DbSet<InventoryStock> InventoryStocks { get; set; }
+        DbSet<ProductLocationStocks> ProductLocationStocks { get; set; }
         DbSet<InventoryTransaction> InventoryTransactions { get; set; }
         DbSet<JobType> JobTypes { get; set; }
         DbSet<JobSubType> JobSubTypes { get; set; }
@@ -70,7 +71,7 @@ namespace Ganedata.Core.Data
         DbSet<PalletsDispatch> PalletsDispatches { get; set; }
         DbSet<Pallet> Pallets { get; set; }
         DbSet<PalletProduct> PalletProducts { get; set; }
-        DbSet<ProductLocations> ProductLocationsMap { get; set; }
+        DbSet<ProductLocations> ProductLocations { get; set; }
         DbSet<ProductAttributes> ProductAttributes { get; set; }
         DbSet<ProductGroups> ProductGroups { get; set; }
         DbSet<ProductCategory> ProductCategories { get; set; }
