@@ -5,15 +5,13 @@ using DevExpress.XtraScheduler.Xml;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
-using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using System;
 using System.Collections;
-using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace WMS.CustomBindings
 {
@@ -46,7 +44,8 @@ namespace WMS.CustomBindings
                     appointmentStorage.Mappings.Status = "Status";
                     appointmentStorage.Mappings.ResourceId = "ResourceIDs";
                     appointmentStorage.CustomFieldMappings.Add(new ASPxAppointmentCustomFieldMapping("Canceled", "IsCanceled"));
-                    appointmentStorage.CustomFieldMappings.Add(new ASPxAppointmentCustomFieldMapping("PalletDispatchId", "PalletDispatchId"));
+                    appointmentStorage.CustomFieldMappings.Add(new ASPxAppointmentCustomFieldMapping("OrderId", "OrderId"));
+                    appointmentStorage.CustomFieldMappings.Add(new ASPxAppointmentCustomFieldMapping("BackColor", "BackColor"));
                     appointmentStorage.CustomFieldMappings.Add(new ASPxAppointmentCustomFieldMapping("TenentId", "TenentId"));
 
                     // clear existing lables and create new ones
@@ -125,7 +124,7 @@ namespace WMS.CustomBindings
             var currentTenant = caCurrent.CurrentTenant();
             var currentUser = caCurrent.CurrentUser();
             var appointmentServices = DependencyResolver.Current.GetService<IAppointmentsService>();
-            var _palletingService = DependencyResolver.Current.GetService<IPalletingService>();
+            var orderService = DependencyResolver.Current.GetService<IOrderService>();
 
             var updAppointments = SchedulerExtension.GetAppointmentsToUpdate<OrderSchedule>("Scheduler", dataObject.FetchAppointments, dataObject.Resources,
                 AppointmentStorage, ResourceStorage);
@@ -166,14 +165,12 @@ namespace WMS.CustomBindings
 
                 }
 
-               var status=appointmentServices.UpdateOrderScheduleAppointment(appointment);
+                var status = appointmentServices.UpdateOrderScheduleAppointment(appointment);
                 if (status)
                 {
-                    var order = _palletingService.UpdatePalletsDispatchStatus((appointment.PalletDispatchId.HasValue?appointment.PalletDispatchId.Value:0), (appointment.MarketVehicleId.HasValue? appointment.MarketVehicleId : 0), currentUser.UserId);
-
+                    orderService.UpdateOrderStatus((appointment.OrderId.HasValue ? appointment.OrderId.Value : 0), OrderStatusEnum.Scheduled, currentUser.UserId);
                 }
             }
-
         }
 
         private static void DeleteAppointments(SchedulerDataObject dataObject)
@@ -181,7 +178,7 @@ namespace WMS.CustomBindings
             var currentTenant = caCurrent.CurrentTenant();
             var currentUser = caCurrent.CurrentUser();
             var appointmentServices = DependencyResolver.Current.GetService<IAppointmentsService>();
-            var palletservice = DependencyResolver.Current.GetService<IPalletingService>();
+            var orderService = DependencyResolver.Current.GetService<IOrderService>();
 
             var delAppointments = SchedulerExtension.GetAppointmentsToRemove<OrderSchedule>("Scheduler", dataObject.FetchAppointments, dataObject.Resources,
                 AppointmentStorage, ResourceStorage);
@@ -195,12 +192,12 @@ namespace WMS.CustomBindings
                 }
 
                 //get order against appointment
-                var palletdispatch = palletservice.GetPalletsDispatchByDispatchId((appointment.PalletDispatchId??0));
+                var order = orderService.GetOrderById((appointment.OrderId ?? 0));
 
                 // set order status for rescheduling
-                if (palletdispatch != null)
+                if (order != null)
                 {
-                    palletservice.UpdatePalletsDispatchStatus((appointment.PalletDispatchId ?? 0),null, currentUser.UserId, true);
+                    orderService.UpdateOrderStatus((appointment.OrderId.HasValue ? appointment.OrderId.Value : 0), OrderStatusEnum.Active, currentUser.UserId);
                 }
 
                 //cancel notification queues
@@ -223,8 +220,27 @@ namespace WMS.CustomBindings
             args.ForceReloadAppointments = true;
             DateTime startDate = args.Interval.Start;
             DateTime endDate = args.Interval.End;
-            return _currentDbContext.OrderSchedule.AsNoTracking().Where(m => ((m.StartTime >= startDate && m.StartTime <= endDate) || (m.EndTime >= startDate && m.EndTime <= endDate) ||
+            var orderSchedules = _currentDbContext.OrderSchedule.AsNoTracking().Where(m => ((m.StartTime >= startDate && m.StartTime <= endDate) || (m.EndTime >= startDate && m.EndTime <= endDate) ||
                                              (m.StartTime >= startDate && m.EndTime <= endDate) || (m.StartTime < startDate && m.EndTime > endDate) || (m.EventType > 0)) && m.IsCanceled != true).ToList();
+
+            orderSchedules.ForEach(o => {
+                if (o.Order == null)
+                {
+                    o.BackColor = "#E0E0E0";
+                }
+                else if (o.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder)
+                {
+                    o.BackColor = "#b0f797";
+                }
+                else
+                {
+                    o.BackColor = o.Order.OrderStatusID < OrderStatusEnum.BeingPicked ?
+                                    "#fbfb91" :
+                                    (o.Order.OrderStatusID >= OrderStatusEnum.AwaitingArrival || (o.Order.OrderStatusID >= OrderStatusEnum.BeingPicked && o.Order.OrderProcess.Any(op => op.OrderProcessStatusId != OrderProcessStatusEnum.Dispatched)) ? "#fedd78" : "#E0E0E0");
+                }
+            });
+
+            return orderSchedules;
         }
 
         public static SchedulerDataObject DataObject
@@ -277,6 +293,7 @@ namespace WMS.CustomBindings
             settings.ClientSideEvents.EndCallback = "OnAppointmentEndCallBack";
             settings.ClientSideEvents.AppointmentClick = "function(s,e){ OnAppointmentEventsClick(s,e); }";
             settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+            settings.AppointmentViewInfoCustomizing += AppointmentViewInfoCustomizing;
             settings.AppointmentFormShowing += Scheduler_AppointmentFormShowing;
 
             settings.PopupMenuShowing = (sender, e) =>
@@ -284,7 +301,7 @@ namespace WMS.CustomBindings
                 if (e.Menu.MenuId == SchedulerMenuItemId.AppointmentMenu)
                 {
                     DevExpress.Web.MenuItem item =
-                        e.Menu.Items.FindByName("DeleteAppointment") as DevExpress.Web.MenuItem;
+                        e.Menu.Items.FindByName("DeleteAppointment");
                     item.Text = "Cancel Appointment";
 
                     DevExpress.Web.MenuItem statusMenu =
@@ -314,6 +331,12 @@ namespace WMS.CustomBindings
             };
 
             return settings;
+        }
+
+        static void AppointmentViewInfoCustomizing(object sender, AppointmentViewInfoCustomizingEventArgs e)
+        {
+            e.ViewInfo.AppointmentStyle.BackColor = ColorTranslator.FromHtml((string)e.ViewInfo.Appointment.CustomFields["BackColor"]);
+            e.ViewInfo.AppointmentStyle.ForeColor = Color.Black;
         }
 
         static void Scheduler_HtmlTimeCellPrepared(object handler, ASPxSchedulerTimeCellPreparedEventArgs e)

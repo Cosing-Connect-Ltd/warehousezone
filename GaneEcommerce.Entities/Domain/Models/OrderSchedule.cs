@@ -22,13 +22,15 @@ namespace Ganedata.Core.Entities.Domain
         public string ReminderInfo { get; set; }
         public int? MarketVehicleId { get; set; }
         public string ResourceIDs { get; set; }
-        public int? PalletDispatchId { get; set; }
+        public int? OrderId { get; set; }
         public int? TenentId { get; set; }
         public bool IsCanceled { get; set; }
         public string CancelReason { get; set; }
         [ForeignKey("MarketVehicleId")]
         public virtual MarketVehicle Resources { get; set; }
-        [ForeignKey("PalletDispatchId")]
-        public virtual PalletsDispatch PalletsDispatches { get; set; }
+        [ForeignKey("OrderId")]
+        public virtual Order Order { get; set; }
+        [NotMapped]
+        public string BackColor { get; set; }
     }
 }
