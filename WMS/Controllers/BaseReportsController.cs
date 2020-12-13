@@ -88,7 +88,7 @@ namespace WMS.Controllers
             }
             else if (returns)
             {
-                report.lblheading.Text = "RETURN INVOICE";
+                report.lblheading.Text = "CREDIT NOTE";
                 report.lblheading.WidthF = 750;
                 report.xrLabel70.Visible = false;
             }
