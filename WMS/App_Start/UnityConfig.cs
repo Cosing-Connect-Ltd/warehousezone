@@ -103,6 +103,7 @@ namespace WMS
             container.RegisterType<IApiCredentialServices, ApiCredentialServices>();
             container.RegisterType<IAccountSectorService, AccountSectorService>();
             container.RegisterType<IDeliverectSyncService, DeliverectSyncService>();
+            container.RegisterType<IAdyenPaymentService, AdyenPaymentService>();
             container.RegisterType<IFeedbackService, FeedbackService>();
 
             container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());

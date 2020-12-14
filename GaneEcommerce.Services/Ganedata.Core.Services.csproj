@@ -352,6 +352,7 @@
     <Compile Include="AccountSectors\IAccountSectorService.cs" />
     <Compile Include="Activity\ActivityServices.cs" />
     <Compile Include="Activity\IActivityServices.cs" />
+    <Compile Include="Adyen\IAdyenPaymentService.cs" />
     <Compile Include="Assets\AssetServices.cs" />
     <Compile Include="Assets\IAssetServices.cs" />
     <Compile Include="Core\Auth\caCurrencyDetail.cs" />

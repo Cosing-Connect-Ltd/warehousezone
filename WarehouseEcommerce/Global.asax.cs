@@ -28,5 +28,11 @@ namespace WarehouseEcommerce
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
         }
+        void Application_Error(object sender, EventArgs e)
+        {
+            // Code that runs when an unhandled error occurs
+            Exception ex = Server.GetLastError().GetBaseException();
+            var errorMsg = ex.Message;
+        }
     }
 }

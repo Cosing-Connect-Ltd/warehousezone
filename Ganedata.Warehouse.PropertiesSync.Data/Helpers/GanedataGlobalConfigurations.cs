@@ -52,5 +52,7 @@ namespace Ganedata.Warehouse.PropertiesSync.Data.Helpers
 
         public static string WarehouseStoreBaseUri => WebConfigurationManager.AppSettings["WarehouseStoreBaseUri"];
         public static int WarehouseSyncIntervalSeconds => WebConfigurationManager.AppSettings["WarehouseSyncIntervalSeconds"]!=null? int.Parse(WebConfigurationManager.AppSettings["WarehouseSyncIntervalSeconds"]):60*15;
+
     }
+
 }

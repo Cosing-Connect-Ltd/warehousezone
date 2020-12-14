@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Ganedata.Core.Models.AdyenPayments;
 using PaymentMethod = Ganedata.Core.Entities.Domain.ViewModels.PaymentMethod;
 
 namespace WarehouseEcommerce.Controllers
@@ -31,6 +32,7 @@ namespace WarehouseEcommerce.Controllers
         private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly ITenantLocationServices _tenantLocationServices;
         private readonly ITenantWebsiteService _tenantWebsiteService;
+        private readonly IAdyenPaymentService _adyenPaymentService;
         private readonly string _paypalClientId;
         public OrdersController(IProductServices productServices,
                                 IProductLookupService productlookupServices,
@@ -45,7 +47,7 @@ namespace WarehouseEcommerce.Controllers
                                 IMapper mapper,
                                 IGaneConfigurationsHelper configurationsHelper,
                                 ITenantLocationServices tenantLocationServices,
-                                ITenantWebsiteService tenantWebsiteService
+                                ITenantWebsiteService tenantWebsiteService, IAdyenPaymentService adyenPaymentService
                                 )
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices, tenantWebsiteService)
         {
@@ -59,6 +61,7 @@ namespace WarehouseEcommerce.Controllers
             _configurationsHelper = configurationsHelper;
             _tenantLocationServices = tenantLocationServices;
             _tenantWebsiteService = tenantWebsiteService;
+            _adyenPaymentService = adyenPaymentService;
         }
         // GET: Orders
         public ActionResult Index()
@@ -310,7 +313,22 @@ namespace WarehouseEcommerce.Controllers
                 }
             }
 
+
             Session["CheckoutViewModel"] = model;
+
+            var paymentLink = _adyenPaymentService.GenerateOrderPaymentLink(new AdyenCreatePayLinkRequestModel()
+            {
+                Amount = new AdyenAmount(){ Value = model.TotalOrderAmount },
+                MerchantAccount = AdyenPaymentService.AdyenMerchantAccountName,
+                OrderDescription = model.CartItems.First().ProductMaster.Description,
+                PaymentReference = Guid.NewGuid().ToString("N"),
+                ShopperUniqueReference = model.OrderNumber+"_"+DateTime.Now.ToFileTime()
+            }).ConfigureAwait(false).GetAwaiter().GetResult();
+
+            Session[data.OrderNumber + "_AdyenPaylink"] = paymentLink.Url;
+
+            //Todo: Record the Adyen request and response and payment status, create web hooks
+
 
             switch (model.PaymentMethodId)
             {

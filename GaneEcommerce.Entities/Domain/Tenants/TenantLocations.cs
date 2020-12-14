@@ -123,6 +123,10 @@ namespace Ganedata.Core.Entities.Domain
         public bool MandatoryPickByContainer { get; set; }
         [Display(Name = "Delivery Charges")]
         public decimal DeliveryCharges { get; set; }
+        [Display(Name = "Minimum Order value for delivery")]
+        public decimal? DeliveryMinimumOrderValue { get; set; }
+        [Display(Name = "Minimum Order value for FREE delivery")]
+        public decimal? DeliveryMinimumOrderValueForFree { get; set; }
         [Display(Name = "Collection Charges")]
         public decimal CollectionCharges { get; set; }
         public decimal EatInCharges { get; set; }

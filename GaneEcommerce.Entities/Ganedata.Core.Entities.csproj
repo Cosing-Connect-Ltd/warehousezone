@@ -241,6 +241,7 @@
     <Compile Include="Domain\Models\ProductManufacturer.cs" />
     <Compile Include="Domain\Models\UISettingItem.cs" />
     <Compile Include="Domain\Models\UISetting.cs" />
+    <Compile Include="Domain\ViewModels\AdyenPayments\CreatePayLinkRequestViewModel.cs" />
     <Compile Include="Domain\ViewModels\ProductPriceViewModel.cs" />
     <Compile Include="Domain\ViewModels\ProductSearchResultViewModel.cs" />
     <Compile Include="Domain\ViewModels\ApiCredentialsViewModel.cs" />
