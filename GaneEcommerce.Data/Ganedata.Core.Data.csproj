@@ -1211,6 +1211,10 @@
     <Compile Include="Migrations\202012141118378_added-DefaultImageAltText-to-ProductMaster-table.designer.cs">
       <DependentUpon>202012141118378_added-DefaultImageAltText-to-ProductMaster-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012142213442_FeedbacksAndTenantLocationConfigs.cs" />
+    <Compile Include="Migrations\202012142213442_FeedbacksAndTenantLocationConfigs.designer.cs">
+      <DependentUpon>202012142213442_FeedbacksAndTenantLocationConfigs.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2439,6 +2443,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012141118378_added-DefaultImageAltText-to-ProductMaster-table.resx">
       <DependentUpon>202012141118378_added-DefaultImageAltText-to-ProductMaster-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012142213442_FeedbacksAndTenantLocationConfigs.resx">
+      <DependentUpon>202012142213442_FeedbacksAndTenantLocationConfigs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
