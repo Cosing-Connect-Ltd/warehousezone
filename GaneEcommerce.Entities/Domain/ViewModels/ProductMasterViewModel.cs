@@ -88,6 +88,7 @@ namespace Ganedata.Core.Entities.Domain
         public decimal? SellPrice { get; set; }
         public string HoverImage { get; set; }
         public string DefaultImage { get; set; }
+        public string DefaultImageAltText { get; set; }
 
         public decimal? Qty { get; set; }
 

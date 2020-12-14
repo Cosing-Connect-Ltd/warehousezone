@@ -213,7 +213,7 @@ $(function () {
     }).autocomplete('instance')._renderItem = function (ul, item) {
         if (seeAll) {
             return $('<li class="search-item">').append("")
-                .append("<a href=" + basePath + "/Products/ProductDetails?sku=" + item.SkuCode + "><img style='width: 46px; height:46px;' src=" + encodeURI(item.DefaultImage) + " alt=" + item.Name + "/>" + item.Name + "</a>").appendTo(ul);
+                .append("<a href=" + basePath + "/Products/ProductDetails?sku=" + item.SkuCode + "><img style='width: 46px; height:46px;' src=" + encodeURI(item.DefaultImage) + " alt=" + item.DefaultImageAltText + "/>" + item.Name + "</a>").appendTo(ul);
         }
         else {
             return $('<li class="search-item">').append("")

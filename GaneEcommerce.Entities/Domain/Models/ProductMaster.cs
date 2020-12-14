@@ -245,6 +245,9 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Auto Shipment")]
         public bool IsAutoShipment { get; set; }
 
+        [Display(Name = "Default Image alt Text")]
+        public string DefaultImageAltText { get; set; }
+
         [ForeignKey("ManufacturerId")]
         public ProductManufacturer ProductManufacturer { get; set; }
 

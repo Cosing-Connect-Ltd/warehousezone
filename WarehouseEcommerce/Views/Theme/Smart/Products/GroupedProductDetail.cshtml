@@ -42,7 +42,7 @@
                         <ul class="thumbnails">
                             <li>
                                 <a class="thumbnail" href="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="#">
-                                    <img data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" src="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" id="zoom_03" class="img-responsive center-block" alt="image">
+                                    <img data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" src="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" id="zoom_03" class="img-responsive center-block" alt="@Model.DefaultImageAltText">
                                     @*<img src="~/Content/Theme/Smart/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens-1.jpg" id="zoom_03" class="img-responsive center-block" alt="image">*@
                                 </a>
                             </li>
@@ -58,7 +58,7 @@
                                                 @if (Images.Contains(extension))
                                                 {
                                                     <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
-                                                        <img src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
+                                                        <img src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="@Model.DefaultImageAltText">
                                                         @*<img src="~/Content/Theme/Smart/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens-1.jpg" id="zoom_03" class="img-responsive center-block" alt="image">*@
                                                     </a>
                                                 }
