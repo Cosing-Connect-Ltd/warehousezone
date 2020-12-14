@@ -41,12 +41,12 @@
             <div class="checkout-options-wrapper">
                 <div class="checkboxwrap">
                     <input class="styled-checkbox"
-                           id="paypal__checkbox"
+                           id="adyen__checkbox"
                            type="radio"
                            name="payment-method-radio"
-                           value="@((int)PaymentMethodEnum.PayPal)"
-                           checked="@(Model.PaymentMethodId == (int)PaymentMethodEnum.PayPal)"/>
-                    <label for="paypal__checkbox">PayPal</label>
+                           value="@((int)PaymentMethodEnum.Adyen)"
+                           checked="@(Model.PaymentMethodId == (int)PaymentMethodEnum.Adyen)"/>
+                    <label for="adyen__checkbox">Adyen Card Payments</label>
                 </div>
                 @*<div class="checkboxwrap">
                     <input class="styled-checkbox"

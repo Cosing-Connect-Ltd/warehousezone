@@ -66,6 +66,8 @@ namespace Ganedata.Core.Models
         public bool PickByContainer { get; set; }
         public bool MandatoryPickByContainer { get; set; }
         public decimal DeliveryCharges { get; set; }
+        public decimal? DeliveryMinimumOrderValue { get; set; }
+        public decimal? DeliveryMinimumOrderValueForFree { get; set; }
         public decimal CollectionCharges { get; set; }
         public decimal EatInCharges { get; set; }
         public decimal DeliveryRadiusMiles { get; set; }
