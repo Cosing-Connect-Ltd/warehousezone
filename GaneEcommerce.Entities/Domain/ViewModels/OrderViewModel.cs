@@ -146,9 +146,6 @@ namespace Ganedata.Core.Entities.Domain
         public string PickerName { get; set; }
         public DeliveryMethods? DeliveryMethod { get; set; }
         public string TenantDeliveryServiceDescription { get; set; }
-        public string Delivery {
-            get => DeliveryMethod?.ToString() + (TenantDeliveryServiceDescription != null ? $" ({TenantDeliveryServiceDescription})" : string.Empty);
-        }
         public string ApiSiteTitle { get; set; }
         public int? PickerId { get; set; }
         public string ConsignmentType { get; set; }

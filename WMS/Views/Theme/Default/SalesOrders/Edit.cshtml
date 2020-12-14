@@ -39,6 +39,7 @@
     @Html.AntiForgeryToken()
     @Html.Hidden("selkeyhdPrddet", 100);
     @Html.HiddenFor(m => m.OrderID);
+    @Html.HiddenFor(m => m.ApiCredentialId);
     @Html.Hidden("LastShipmentAddressId", Model.ShipmentAccountAddressId)
     @Html.Hidden("orderSaveAndProcess", 0)
     @Html.Hidden("fragment", ViewBag.Fragment as string)

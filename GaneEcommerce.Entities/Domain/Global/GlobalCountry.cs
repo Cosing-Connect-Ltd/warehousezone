@@ -12,6 +12,7 @@ namespace Ganedata.Core.Entities.Domain
         public GlobalCountry()
         {
             GlobalCurrency = new HashSet<GlobalCurrency>();
+            TenantDeliveryServiceCountryMap = new HashSet<TenantDeliveryServiceCountryMap>();
         }
 
         [Key]
@@ -20,15 +21,13 @@ namespace Ganedata.Core.Entities.Domain
         [Required]
         [StringLength(4)]
         [Display(Name = "Country Code")]
-        public string CountryCode { get; set; }  
+        public string CountryCode { get; set; }
         [Required]
         [StringLength(200)]
         [Display(Name = "Country Name")]
         public string CountryName { get; set; }
-
-        public int? PrestaShopCountryId { get; set; }
+        public string AdditionalCountryCodes { get; set; }
         public virtual ICollection<GlobalCurrency> GlobalCurrency { get; set; }
-
-
+        public virtual ICollection<TenantDeliveryServiceCountryMap> TenantDeliveryServiceCountryMap { get; set; }
     }
 }

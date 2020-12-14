@@ -3395,7 +3395,7 @@ namespace Ganedata.Core.Data.Helpers
                                 order.ShipmentAccountAddressId = accountAddress.AddressID;
                                 order.ShipmentAddressLine1 = accountAddress.AddressLine1;
                                 order.ShipmentAddressLine2 = accountAddress.AddressLine2;
-                                order.ShipmentAddressLine3 = accountAddress.Town;
+                                order.ShipmentAddressTown = accountAddress.Town;
                                 order.ShipmentAddressPostcode = accountAddress.PostCode;
                                 order.ShipmentCountryId = accountAddress.CountryID;
                             }
@@ -3420,7 +3420,7 @@ namespace Ganedata.Core.Data.Helpers
                                 order.ShipmentAccountAddressId = accountAddress.AddressID;
                                 order.ShipmentAddressLine1 = accountAddress.AddressLine1;
                                 order.ShipmentAddressLine2 = accountAddress.AddressLine2;
-                                order.ShipmentAddressLine3 = accountAddress.Town;
+                                order.ShipmentAddressTown = accountAddress.Town;
                                 order.ShipmentAddressPostcode = accountAddress.PostCode;
                                 order.ShipmentCountryId = accountAddress.CountryID;
                             }
@@ -3436,10 +3436,23 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         order.SLAPriorityId = 2;
                     }
-                    if (item.Next_day_delivery > 0)
+                    else if (item.Next_day_delivery > 0)
                     {
                         order.SLAPriorityId = 1;
                     }
+
+
+                    // check country and priority and find suitable delivery service for the order
+                    var deliveryService = GetShiipingServiceForOrder(order.ShipmentCountryId, order.SLAPriorityId);
+
+                    if (deliveryService != null)
+                    {
+                        order.TenantDeliveryServiceId = deliveryService.Id;
+                        order.DeliveryMethod = deliveryService.DeliveryMethod;
+                    }
+
+
+
                     _currentDbContext.Entry(order).State = order.OrderID > 0 ? EntityState.Modified : EntityState.Added;
                     decimal? ordTotal = 0;
                     foreach (var order_row in item.Associations.Order_rows.Order_row)
@@ -3502,6 +3515,7 @@ namespace Ganedata.Core.Data.Helpers
 
             return _currentdbContext.AccountAddresses.FirstOrDefault(u => u.PrestaShopAddressId == id);
         }
+
         public async Task<List<int>> GetPrestaShopCountry(int? Id, string PrestashopUrl, string PrestashopKey)
         {
             var context = new ApplicationContext();
@@ -3533,20 +3547,16 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     foreach (var item in countries.Countries.Country)
                     {
-                        var country = context.GlobalCountries.FirstOrDefault(u => u.CountryCode == item.Iso_code.Trim() || u.CountryName == item.Name.Language.Text);
+                        var country = context.GlobalCountries.FirstOrDefault(u => u.CountryCode == item.Iso_code.Trim() || u.AdditionalCountryCodes.Contains(item.Iso_code.Trim()) || u.CountryName == item.Name.Language.Text);
                         if (country == null)
                         {
                             country = new GlobalCountry();
-                            country.PrestaShopCountryId = item.Id;
                             country.CountryName = item.Name.Language.Text;
                             country.CountryCode = item.Iso_code;
+                            context.Entry(country).State = EntityState.Added;
+                            context.SaveChanges();
                         }
-                        else
-                        {
-                            country.PrestaShopCountryId = item.Id;
-                        }
-                        context.Entry(country).State = country.CountryID > 0 ? EntityState.Modified : EntityState.Added;
-                        context.SaveChanges();
+
                         countIds.Add(country.CountryID);
                     }
                 }
@@ -4140,6 +4150,12 @@ namespace Ganedata.Core.Data.Helpers
 
                 return JsonConvert.DeserializeObject<GoogleDistanceMatrixResult>(response.Content.ReadAsStringAsync().Result);
             }
+        }
+
+        public TenantDeliveryService GetShiipingServiceForOrder(int? countryId, int? priorityId)
+        {
+            var _currentDbContext = new ApplicationContext();
+            return _currentDbContext.TenantDeliveryServices.Where(p => p.SLAPriorityId == priorityId && p.TenantDeliveryServiceCountryMap.Any(x => x.CountryId == countryId)).FirstOrDefault();
         }
     }
 
