@@ -257,14 +257,14 @@ namespace WMS.CustomBindings
 
                 foreach (var column in e.State.SortedColumns)
                 {
-                    sortString += column.FieldName + " " + column.SortOrder;
+                    sortString += "SLAPrioritySortOrder," + column.FieldName + " " + column.SortOrder;
                 }
 
                 transactions = transactions.OrderBy(sortString);
             }
             else
             {
-                transactions = transactions.OrderBy("OrderID Descending");
+                transactions = transactions.OrderBy("SLAPrioritySortOrder,DateCreated Desc");
             }
             if (e.FilterExpression != string.Empty)
             {

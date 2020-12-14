@@ -213,6 +213,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public virtual JobType JobType { get; set; }
         public virtual TenantDepartments Department { get; set; }
+        [ForeignKey("SLAPriorityId")]
         public virtual SLAPriorit SLAPriority { get; set; }
         public virtual ICollection<Appointments> Appointmentses { get; set; }
 
