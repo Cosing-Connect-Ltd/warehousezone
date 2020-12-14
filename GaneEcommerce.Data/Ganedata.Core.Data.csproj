@@ -1207,6 +1207,10 @@
     <Compile Include="Migrations\202012140148047_added-countries-for-TenantDeliveryService-and-PrestashopCountryId-removed-from-GlobalCountry-table.designer.cs">
       <DependentUpon>202012140148047_added-countries-for-TenantDeliveryService-and-PrestashopCountryId-removed-from-GlobalCountry-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012141118378_added-DefaultImageAltText-to-ProductMaster-table.cs" />
+    <Compile Include="Migrations\202012141118378_added-DefaultImageAltText-to-ProductMaster-table.designer.cs">
+      <DependentUpon>202012141118378_added-DefaultImageAltText-to-ProductMaster-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2432,6 +2436,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012140148047_added-countries-for-TenantDeliveryService-and-PrestashopCountryId-removed-from-GlobalCountry-table.resx">
       <DependentUpon>202012140148047_added-countries-for-TenantDeliveryService-and-PrestashopCountryId-removed-from-GlobalCountry-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012141118378_added-DefaultImageAltText-to-ProductMaster-table.resx">
+      <DependentUpon>202012141118378_added-DefaultImageAltText-to-ProductMaster-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

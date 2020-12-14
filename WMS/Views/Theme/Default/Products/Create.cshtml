@@ -593,6 +593,13 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.DefaultImageAltText, new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.DefaultImageAltText)
+                    @Html.ValidationMessageFor(model => model.DefaultImageAltText)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(m => m.PreferredSupplier, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     <div>

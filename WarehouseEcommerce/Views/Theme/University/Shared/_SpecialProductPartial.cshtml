@@ -32,7 +32,7 @@
 
                                 <span class="imagewrap">
                                     <a href="@Url.Action("ProductDetails", "Products", new {sku = product.SKUCode})">
-                                        <img alt="@product.Name" src="@(!string.IsNullOrEmpty(product.DefaultImage) ? ViewBag.BaseFilePath + product.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                        <img alt="@product.DefaultImageAltText" src="@(!string.IsNullOrEmpty(product.DefaultImage) ? ViewBag.BaseFilePath + product.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                                     </a>
                                 </span>
                                 <h3 class="prdName">

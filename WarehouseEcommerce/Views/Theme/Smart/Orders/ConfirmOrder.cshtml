@@ -101,7 +101,7 @@
 
                                     <tr>
 
-                                        <td> <a href=""> <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" title="@item.ProductMaster.Name" alt="@(item?.ProductMaster?.Name)"> </a> </td>
+                                        <td> <a href=""> <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" title="@item.ProductMaster.DefaultImageAltText" alt="@(item?.ProductMaster?.Name)"> </a> </td>
                                         <td>
                                             <div class="ordered-items">
                                                 <p>

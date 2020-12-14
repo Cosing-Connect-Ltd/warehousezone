@@ -28,7 +28,7 @@
 
                                 <span class="imagewrap">
                                     <a href="@Url.Action("ProductDetails", "Products", new { sku = product.SKUCode })">
-                                        <img src="@(!string.IsNullOrEmpty(product.DefaultImage) ? ViewBag.BaseFilePath + product.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                        <img src="@(!string.IsNullOrEmpty(product.DefaultImage) ? ViewBag.BaseFilePath + product.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"  alt="@product.DefaultImageAltText"/>
                                     </a>
                                 </span>
                                 <h3 class="prdName">

@@ -1075,11 +1075,13 @@ namespace Ganedata.Core.Services
 
             allProducts.AddRange(_productServices.GetAllProductInKitsByProductIds(products.Select(p => p.ProductId).ToList()));
 
-            return allProducts.SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true)
+            return allProducts.SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true &&
+                                                                                          p.ProductAttributeValues.IsDeleted != true &&
+                                                                                          p.ProductAttributeValues.ProductAttributes.IsDeleted != true)
                                                                           .Select(k => k.ProductAttributeValues))
-                              .GroupBy(a => a.ProductAttributes).Where(u => u.Key.IsDeleted != true)
-                              .OrderBy(u => u.Key.SortOrder).ThenBy(a => a.Key.AttributeName)
-                              .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder).ThenBy(a => a.Value)
+                              .OrderBy(u => u.ProductAttributes.SortOrder).ThenBy(a => a.ProductAttributes.AttributeName)
+                              .GroupBy(a => a.AttributeId)
+                              .ToDictionary(g => g.First().ProductAttributes, g => g.OrderBy(av => av.SortOrder).ThenBy(a => a.Value)
                               .GroupBy(av => av.AttributeValueId)
                               .Select(av => av.First())
                               .ToList());
