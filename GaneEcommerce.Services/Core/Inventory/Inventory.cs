@@ -75,7 +75,7 @@ namespace Ganedata.Core.Services
                 ProductId = productId,
                 WarehouseId = warehouse.WarehouseId,
                 TenentId = tenant.TenantId,
-                Quantity = quantity,
+                Quantity = GetUomQuantity(productId, quantity),
                 OrderProcessId = orderprocessId.HasValue ? orderprocessId : null,
                 OrderProcessDetailId = orderProcessDetailId.HasValue ? orderProcessDetailId : null,
                 DateCreated = DateTime.UtcNow,
@@ -87,7 +87,7 @@ namespace Ganedata.Core.Services
                 InventoryTransactionRef = transactionRef,
                 SerialID = serialId,
                 DontMonitorStock = dontMonitorStock,
-                LastQty = CalculateLastQty(productId, tenant.TenantId, warehouse.WarehouseId, quantity, transType,
+                LastQty = CalculateLastQty(productId, tenant.TenantId, warehouse.WarehouseId, GetUomQuantity(productId, quantity), transType,
                     dontMonitorStock),
                 PalletTrackingId = pallettrackingId
 
@@ -131,7 +131,7 @@ namespace Ganedata.Core.Services
                     orderId = orderId == 0 ? null : orderId;
 
                     Inventory.StockTransactionApi(goodsReturnRequestSync.ProductId,
-                        goodsReturnRequestSync.InventoryTransactionType ?? 0, goodsReturnRequestSync.Quantity ?? 0,
+                        goodsReturnRequestSync.InventoryTransactionType ?? 0, GetUomQuantity(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.Quantity ?? 0),
                         orderId, goodsReturnRequestSync.tenantId, goodsReturnRequestSync.warehouseId, user, null, null,
                         null, groupToken);
                     return 0;
@@ -144,7 +144,7 @@ namespace Ganedata.Core.Services
                     cOrder = orderservice.CreateOrderByOrderNumber(goodsReturnRequestSync.OrderNumber,
                         goodsReturnRequestSync.ProductId, goodsReturnRequestSync.tenantId,
                         goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.InventoryTransactionType ?? 0, user,
-                        (goodsReturnRequestSync.Quantity ?? 1));
+                        GetUomQuantity(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.Quantity ?? 1));
                 }
 
                 if (goodsReturnRequestSync.OrderDetailID == null || goodsReturnRequestSync.OrderDetailID < 1)
@@ -255,9 +255,6 @@ namespace Ganedata.Core.Services
 
                     StockRecalculate(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.warehouseId,
                         goodsReturnRequestSync.tenantId, user);
-
-
-
                 }
 
                 return cOrder.OrderID;
@@ -266,7 +263,6 @@ namespace Ganedata.Core.Services
             {
                 return -1;
             }
-
         }
 
         public static int StockTransaction(GoodsReturnRequestSync goodsReturnRequestSync, string groupToken = null,
@@ -274,7 +270,6 @@ namespace Ganedata.Core.Services
         {
             try
             {
-
                 var context = DependencyResolver.Current.GetService<IApplicationContext>();
                 var orderservice = DependencyResolver.Current.GetService<IOrderService>();
                 var UserId = goodsReturnRequestSync.userId;
@@ -290,7 +285,7 @@ namespace Ganedata.Core.Services
                     orderId = orderId == 0 ? null : orderId;
 
                     Inventory.StockTransactionApi(goodsReturnRequestSync.ProductId,
-                        goodsReturnRequestSync.InventoryTransactionType ?? 0, goodsReturnRequestSync.Quantity ?? 0,
+                        goodsReturnRequestSync.InventoryTransactionType ?? 0, GetUomQuantity(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.Quantity ?? 0),
                         orderId, goodsReturnRequestSync.tenantId, goodsReturnRequestSync.warehouseId, UserId, null,
                         null, null, groupToken);
                     return 0;
@@ -305,7 +300,7 @@ namespace Ganedata.Core.Services
                     cOrder = orderservice.CreateOrderByOrderNumber(goodsReturnRequestSync.OrderNumber,
                         goodsReturnRequestSync.ProductId, goodsReturnRequestSync.tenantId,
                         goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.InventoryTransactionType ?? 0,
-                        UserId, (goodsReturnRequestSync.Quantity ?? 1));
+                        UserId, GetUomQuantity(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.Quantity ?? 1));
                 }
 
                 if (goodsReturnRequestSync.OrderDetailID == null || goodsReturnRequestSync.OrderDetailID < 1)
@@ -324,7 +319,7 @@ namespace Ganedata.Core.Services
                     OrderProcessId = oprocess.OrderProcessID,
                     ProductId = goodsReturnRequestSync.ProductId,
                     TenentId = goodsReturnRequestSync.tenantId,
-                    QtyProcessed = goodsReturnRequestSync.Quantity ?? 1,
+                    QtyProcessed = GetUomQuantity(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.Quantity ?? 1),
                     OrderDetailID = goodsReturnRequestSync.OrderDetailID
                 };
 
@@ -342,13 +337,13 @@ namespace Ganedata.Core.Services
                     DateCreated = DateTime.UtcNow,
                     InventoryTransactionTypeId = goodsReturnRequestSync.InventoryTransactionType ?? 0,
                     ProductId = goodsReturnRequestSync.ProductId,
-                    Quantity = goodsReturnRequestSync.Quantity ?? 1,
+                    Quantity = GetUomQuantity(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.Quantity ?? 1),
                     InventoryTransactionRef = groupToken,
                     DontMonitorStock = dontMonitorStock,
                     OrderProcessId = oprocess?.OrderProcessID,
                     OrderProcessDetailId = xopr?.OrderProcessDetailID,
                     LastQty = CalculateLastQty(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.tenantId,
-                        goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.Quantity ?? 1,
+                        goodsReturnRequestSync.warehouseId, GetUomQuantity(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.Quantity ?? 1),
                         goodsReturnRequestSync.InventoryTransactionType ?? 0, dontMonitorStock),
                     TenentId = goodsReturnRequestSync.tenantId,
                     WarehouseId = goodsReturnRequestSync.warehouseId,
@@ -455,7 +450,7 @@ namespace Ganedata.Core.Services
                     TenentId = user.TenantId,
                     BatchNumber = model.BatchNumber ?? null,
                     ExpiryDate = model.ExpiryDate ?? null,
-                    QtyProcessed = model.Quantity,
+                    QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                     OrderDetailID = orderDetail?.OrderDetailID
                 };
 
@@ -504,7 +499,7 @@ namespace Ganedata.Core.Services
                             OrderProcessId = xopr.OrderProcessID,
                             ProductId = model.ProductId,
                             TenentId = user.TenantId,
-                            QtyProcessed = model.Quantity,
+                            QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                             OrderDetailID = AltOrderDetail?.OrderDetailID,
                             BatchNumber = model.BatchNumber ?? null,
                             ExpiryDate = model.ExpiryDate ?? null,
@@ -527,7 +522,7 @@ namespace Ganedata.Core.Services
                         altTransaction.WarehouseId = altOrder.WarehouseId == null
                             ? caCurrent.CurrentWarehouse().WarehouseId
                             : (int)altOrder.WarehouseId;
-                        altTransaction.Quantity = model.Quantity;
+                        altTransaction.Quantity = GetUomQuantity(model.ProductId, model.Quantity);
                         altTransaction.OrderProcessId = xopr.OrderProcessID;
                         altTransaction.OrderProcessDetailId = orderprocessdet?.OrderProcessDetailID;
                         altTransaction.ProductId = model.ProductId;
@@ -548,7 +543,7 @@ namespace Ganedata.Core.Services
                     OrderProcessId = oprocess.OrderProcessID,
                     ProductId = model.ProductId,
                     TenentId = user.TenantId,
-                    QtyProcessed = model.Quantity,
+                    QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                     OrderDetailID = Line_Id,
 
 
@@ -665,7 +660,7 @@ namespace Ganedata.Core.Services
                                 OrderProcessId = xopr.OrderProcessID,
                                 ProductId = model.ProductId,
                                 TenentId = user.TenantId,
-                                QtyProcessed = model.Quantity,
+                                QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                                 BatchNumber = model.BatchNumber ?? null,
                                 ExpiryDate = model.ExpiryDate ?? null,
                                 OrderDetailID = AltOrderDetail?.OrderDetailID
@@ -687,7 +682,7 @@ namespace Ganedata.Core.Services
                             altTransaction.WarehouseId = altOrder.WarehouseId == null
                                 ? caCurrent.CurrentWarehouse().WarehouseId
                                 : (int)altOrder.WarehouseId;
-                            altTransaction.Quantity = model.Quantity;
+                            altTransaction.Quantity = GetUomQuantity(model.ProductId, model.Quantity);
                             altTransaction.OrderProcessId = xopr.OrderProcessID;
                             altTransaction.OrderProcessDetailId = orderProcessDet?.OrderProcessDetailID;
                             altTransaction.ProductId = model.ProductId;
@@ -705,7 +700,7 @@ namespace Ganedata.Core.Services
                                 OrderProcessId = targetWarehouseProcess.OrderProcessID,
                                 ProductId = model.ProductId,
                                 TenentId = user.TenantId,
-                                QtyProcessed = model.Quantity,
+                                QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                                 BatchNumber = model.BatchNumber ?? null,
                                 ExpiryDate = model.ExpiryDate ?? null,
                                 OrderDetailID = AltOrderDetail.OrderDetailID
@@ -730,7 +725,7 @@ namespace Ganedata.Core.Services
                             altTransaction.WarehouseId = altOrder.WarehouseId == null
                                 ? caCurrent.CurrentWarehouse().WarehouseId
                                 : (int)altOrder.WarehouseId;
-                            altTransaction.Quantity = model.Quantity;
+                            altTransaction.Quantity = GetUomQuantity(model.ProductId, model.Quantity);
                             altTransaction.OrderProcessId = targetWarehouseProcess.OrderProcessID;
                             altTransaction.OrderProcessDetailId = det?.OrderProcessDetailID;
                             altTransaction.ProductId = model.ProductId;
@@ -778,8 +773,8 @@ namespace Ganedata.Core.Services
 
                     model.Location = context.Locations.FirstOrDefault(m => m.LocationCode == item.LocationCode);
                     model.BatchNumber = item.BatchNumber;
-                    model.Quantity = item.Quantity;
-                    model.LastQty = CalculateLastQty(model.ProductId, model.TenentId, model.WarehouseId, item.Quantity,
+                    model.Quantity = GetUomQuantity(model.ProductId, item.Quantity);
+                    model.LastQty = CalculateLastQty(model.ProductId, model.TenentId, model.WarehouseId, GetUomQuantity(model.ProductId, item.Quantity),
                         type, dontMonitorStock);
                     context.InventoryTransactions.Add(model);
                     context.SaveChanges();
@@ -788,7 +783,7 @@ namespace Ganedata.Core.Services
             }
             else
             {
-                model.LastQty = CalculateLastQty(model.ProductId, model.TenentId, model.WarehouseId, model.Quantity,
+                model.LastQty = CalculateLastQty(model.ProductId, model.TenentId, model.WarehouseId,GetUomQuantity(model.ProductId, model.Quantity),
                     type, dontMonitorStock);
 
 
@@ -801,7 +796,7 @@ namespace Ganedata.Core.Services
             {
                 model.LastQty = CalculateLastQty(AutoTransferInventoryTransaction.ProductId,
                     AutoTransferInventoryTransaction.TenentId, AutoTransferInventoryTransaction.WarehouseId,
-                    AutoTransferInventoryTransaction.Quantity,
+                    GetUomQuantity(model.ProductId, AutoTransferInventoryTransaction.Quantity),
                     AutoTransferInventoryTransaction.InventoryTransactionTypeId,
                     AutoTransferInventoryTransaction.DontMonitorStock ?? false);
                 context.InventoryTransactions.Add(AutoTransferInventoryTransaction);
@@ -841,9 +836,9 @@ namespace Ganedata.Core.Services
             transaction.ProductId = productId;
             transaction.WarehouseId = warehouseId;
             transaction.TenentId = tenantId;
-            transaction.Quantity = quantity;
+            transaction.Quantity = GetUomQuantity(productId, quantity) ;
             transaction.LastQty =
-                CalculateLastQty(productId, tenantId, warehouseId, quantity, transType, dontMonitorStock);
+                CalculateLastQty(productId, tenantId, warehouseId, GetUomQuantity(productId, quantity), transType, dontMonitorStock);
             transaction.DateCreated = DateTime.UtcNow;
             transaction.DateUpdated = DateTime.UtcNow;
             transaction.CreatedBy = userId;
@@ -1681,6 +1676,20 @@ namespace Ganedata.Core.Services
                                                         u.IsActive &&
                                                         u.KitProductMaster.WebsiteWishListItems.Any(a => a.IsDeleted != true && a.UserId == userId && a.IsNotification == isNoftification));
             }
+        }
+
+        public static decimal GetUomQuantity(int productId, decimal quantity)
+        {
+            var productService = DependencyResolver.Current.GetService<IProductServices>();
+            var product = productService.GetProductMasterById(productId);
+            int? unit = product?.UOMId;
+
+            if (unit == 1)
+            {
+                quantity = Math.Round(quantity);
+            }
+
+            return quantity;
         }
     }
 }

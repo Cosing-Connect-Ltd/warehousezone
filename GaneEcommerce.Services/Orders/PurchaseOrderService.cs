@@ -942,13 +942,18 @@ namespace Ganedata.Core.Services
                 }
                 var shelflife = _currentDbContext.Order.Find(orderId)?.Account?.AcceptedShelfLife;
                 var expiryDate = _currentDbContext.PalletTracking.FirstOrDefault(u => u.PalletSerial == serial && u.ProductId == productId)?.ExpiryDate;
-                var days = (expiryDate.Value - DateTime.Today).TotalDays;
-                if (days <= shelflife)
+
+                if (expiryDate != null)
                 {
-                    PalletTracking palletTracking = new PalletTracking();
-                    palletTracking.Comments = "[#Expired#]";
-                    return palletTracking;
+                    var days = (expiryDate.Value - DateTime.Today).TotalDays;
+                    if (days <= shelflife)
+                    {
+                        PalletTracking palletTracking = new PalletTracking();
+                        palletTracking.Comments = "[#Expired#]";
+                        return palletTracking;
+                    }
                 }
+
                 if (palletTrackingId.HasValue && palletTrackingId == (int)PalletTrackingSchemeEnum.ByExpiryMonth)
                 {
                     var month = dates.Value.Month;

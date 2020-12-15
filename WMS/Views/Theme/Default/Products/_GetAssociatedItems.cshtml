@@ -20,14 +20,13 @@
     }
 
     function OnDetailsChanged(s, e, gridName) {
-        debugger;
+
         if (gridName.name === "RelatedProductListGridView") {
             RelatedProductListGridView.UpdateEdit();
         }
         else {
             ProductEditListGridView.UpdateEdit();
         }
-
     }
 
     function OnSpecialPricesGridFocusChanged(s, e) {

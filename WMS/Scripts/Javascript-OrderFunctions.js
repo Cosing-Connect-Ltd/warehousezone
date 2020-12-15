@@ -165,7 +165,7 @@ function addDetail(action) {
     };
 
     var duplicateProduct = null;
-    debugger;
+
     if ($("#IsNewProduct").prop("checked")) {
         $.get("/purchaseorders/CheckProductExist/" + $("#divNewProductAddForm #ProductName").val(),
             function (data) {
@@ -1759,8 +1759,8 @@ var updateSOShipmentInfo = function () {
         $("#ShipmentAddressLine1").val(addressParts[0] === undefined ? '' : addressParts[0].trim());
         $("#ShipmentAddressLine2").val(addressParts[1] === undefined ? '' : addressParts[1].trim());
         $("#ShipmentAddressLine3").val(addressParts[2] === undefined ? '' : addressParts[2].trim());
-        $("#ShipmentAddressTown").val(addressParts[3] === undefined ? '' : addressParts[3].trim());
-        $("#ShipmentAddressPostcode").val(addressParts[4] === undefined ? '' : addressParts[4].trim());
+        $("#ShipmentAddressTown").val(addressParts[4] === undefined ? '' : addressParts[4].trim());
+        $("#ShipmentAddressPostcode").val(addressParts[5] === undefined ? '' : addressParts[5].trim());
     }
 };
 
