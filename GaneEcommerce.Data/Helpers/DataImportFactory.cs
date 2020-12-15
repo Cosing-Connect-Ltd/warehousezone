@@ -2137,6 +2137,9 @@ namespace Ganedata.Core.Data.Helpers
                         product.SellPrice = productData.SellPrice > 0 ? productData.SellPrice : product.SellPrice;
                         product.Serialisable = productData.Serialisable ?? product.Serialisable;
                         product.ProductType = productData.ProductType ?? product.ProductType;
+                        product.IsPreOrderAccepted = productData.IsPreOrderAccepted ?? product.IsPreOrderAccepted;
+                        product.MinDispatchDays = productData.MinDispatchDays ?? product.MinDispatchDays;
+                        product.MaxDispatchDays = productData.MaxDispatchDays ?? product.MaxDispatchDays;
                         product.DateCreated = DateTime.UtcNow;
                         product.IsActive = true;
                         product.TenantId = tenantId;
