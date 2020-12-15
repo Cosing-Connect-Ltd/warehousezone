@@ -675,7 +675,7 @@ namespace Ganedata.Core.Services
                                        palletDispatch.OrderProcess?.Order?.Account?.AccountAddresses.FirstOrDefault(u => u.AddTypeShipping == true)?.GlobalCountry?.CountryCode;
                 address2.postcode = palletDispatch.OrderProcess?.Order?.ShipmentAddressPostcode;
                 address2.street = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine1;
-                address2.town = string.IsNullOrEmpty(palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3) ? palletDispatch.OrderProcess?.Order?.ShipmentAddressLine2 : palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3;
+                address2.town = string.IsNullOrEmpty(palletDispatch.OrderProcess?.Order?.ShipmentAddressTown) ? palletDispatch.OrderProcess?.Order?.ShipmentAddressTown : palletDispatch.OrderProcess?.Order?.ShipmentAddressTown;
                 deliveryDetails.address = address2;
                 NotificationDetails notificationDetails = new NotificationDetails();
                 notificationDetails.email = palletDispatch.OrderProcess?.Order?.Account?.AccountEmail;
