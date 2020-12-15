@@ -39,8 +39,6 @@ namespace WMS.Controllers
 
             var rem = Request.UserHostName;
 
-
-
             return View();
         }
 

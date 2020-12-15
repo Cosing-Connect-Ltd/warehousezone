@@ -99,6 +99,7 @@ namespace WarehouseEcommerce
             container.RegisterType<ITenantsCurrencyRateServices, TenantsCurrencyRateServices>();
             container.RegisterType<ITenantWebsiteService, TenantWebsiteService>();
             container.RegisterType<IUISettingServices, UISettingServices>();
+            container.RegisterType<IAdyenPaymentService, AdyenPaymentService>();
 
             container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());
 

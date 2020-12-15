@@ -1,4 +1,5 @@
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Domain.Feedback;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
@@ -188,6 +189,8 @@ namespace Ganedata.Core.Data
         DbSet<WebsiteDeliveryNavigation> WebsiteDeliveryNavigations { get; set; }
         DbSet<ProductAvailabilityNotifyQueue> ProductAvailabilityNotifyQueue { get; set; }
         DbSet<AuthUserVerifyCodes> AuthUserVerifyCodes { get; set; }
+
+        DbSet<Feedback> Feedbacks  { get; set; }
 
     }
 }

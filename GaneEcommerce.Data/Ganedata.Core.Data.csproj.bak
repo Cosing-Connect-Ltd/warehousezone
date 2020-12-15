@@ -1,0 +1,2495 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ganedata.Core.Data</RootNamespace>
+    <AssemblyName>Ganedata.Core.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.15.0.6\lib\net47\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Mvc, Version=2.1.2.1389, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Entity">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions.Design">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationContext.cs" />
+    <Compile Include="Migrations\201809071139309_EnableGlobalProcessByPallet-added-in-TenantConfig.cs" />
+    <Compile Include="Migrations\201809071139309_EnableGlobalProcessByPallet-added-in-TenantConfig.Designer.cs">
+      <DependentUpon>201809071139309_EnableGlobalProcessByPallet-added-in-TenantConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809081300167_OrderProofOfDelivery.cs" />
+    <Compile Include="Migrations\201809081300167_OrderProofOfDelivery.Designer.cs">
+      <DependentUpon>201809081300167_OrderProofOfDelivery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809101420092_SortOrder-In-OrderDetails-and-in-ProductGroups.cs" />
+    <Compile Include="Migrations\201809101420092_SortOrder-In-OrderDetails-and-in-ProductGroups.Designer.cs">
+      <DependentUpon>201809101420092_SortOrder-In-OrderDetails-and-in-ProductGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809250901231_Tenant-User-TimeZoneId.cs" />
+    <Compile Include="Migrations\201809250901231_Tenant-User-TimeZoneId.Designer.cs">
+      <DependentUpon>201809250901231_Tenant-User-TimeZoneId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810120712236_payroll-employee-no.cs" />
+    <Compile Include="Migrations\201810120712236_payroll-employee-no.Designer.cs">
+      <DependentUpon>201810120712236_payroll-employee-no.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810181747530_ResourceRequestChange.cs" />
+    <Compile Include="Migrations\201810181747530_ResourceRequestChange.Designer.cs">
+      <DependentUpon>201810181747530_ResourceRequestChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810261614215_account-id-in-order.cs" />
+    <Compile Include="Migrations\201810261614215_account-id-in-order.Designer.cs">
+      <DependentUpon>201810261614215_account-id-in-order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811060806565_ShiftStatus-Removed.cs" />
+    <Compile Include="Migrations\201811060806565_ShiftStatus-Removed.Designer.cs">
+      <DependentUpon>201811060806565_ShiftStatus-Removed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811081031110_TnA-models-changes-removed-unnecessary-fields.cs" />
+    <Compile Include="Migrations\201811081031110_TnA-models-changes-removed-unnecessary-fields.Designer.cs">
+      <DependentUpon>201811081031110_TnA-models-changes-removed-unnecessary-fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811081345070_Terminal-Command-Models.cs" />
+    <Compile Include="Migrations\201811081345070_Terminal-Command-Models.Designer.cs">
+      <DependentUpon>201811081345070_Terminal-Command-Models.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811081545059_TerminalCommandQueue-model-changes.cs" />
+    <Compile Include="Migrations\201811081545059_TerminalCommandQueue-model-changes.Designer.cs">
+      <DependentUpon>201811081545059_TerminalCommandQueue-model-changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811220916383_ResourceShifts_ResourceId_NonNullable.cs" />
+    <Compile Include="Migrations\201811220916383_ResourceShifts_ResourceId_NonNullable.Designer.cs">
+      <DependentUpon>201811220916383_ResourceShifts_ResourceId_NonNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811281323516_resourcerequestandordertablemodfied.cs" />
+    <Compile Include="Migrations\201811281323516_resourcerequestandordertablemodfied.Designer.cs">
+      <DependentUpon>201811281323516_resourcerequestandordertablemodfied.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812040917292_loadingcomments-added.cs" />
+    <Compile Include="Migrations\201812040917292_loadingcomments-added.Designer.cs">
+      <DependentUpon>201812040917292_loadingcomments-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812121519547_pending-changes-to-match-clr-version.cs" />
+    <Compile Include="Migrations\201812121519547_pending-changes-to-match-clr-version.Designer.cs">
+      <DependentUpon>201812121519547_pending-changes-to-match-clr-version.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812142351267_ResourceEntitlment.cs" />
+    <Compile Include="Migrations\201812142351267_ResourceEntitlment.Designer.cs">
+      <DependentUpon>201812142351267_ResourceEntitlment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812161325583_AccountcontactId.cs" />
+    <Compile Include="Migrations\201812161325583_AccountcontactId.Designer.cs">
+      <DependentUpon>201812161325583_AccountcontactId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812190222393_email-templates-changes.cs" />
+    <Compile Include="Migrations\201812190222393_email-templates-changes.Designer.cs">
+      <DependentUpon>201812190222393_email-templates-changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812190309432_emailconfigId-removed-from-NotificationQueue.cs" />
+    <Compile Include="Migrations\201812190309432_emailconfigId-removed-from-NotificationQueue.Designer.cs">
+      <DependentUpon>201812190309432_emailconfigId-removed-from-NotificationQueue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812191130307_GlobalProcessByPallet-Moved-to-TenantLocations.cs" />
+    <Compile Include="Migrations\201812191130307_GlobalProcessByPallet-Moved-to-TenantLocations.Designer.cs">
+      <DependentUpon>201812191130307_GlobalProcessByPallet-Moved-to-TenantLocations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812192229595_custom_Email_Message_Added.cs" />
+    <Compile Include="Migrations\201812192229595_custom_Email_Message_Added.Designer.cs">
+      <DependentUpon>201812192229595_custom_Email_Message_Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812201010051_remaining-total-cases-added-in-StocktakePalletSnapshot.cs" />
+    <Compile Include="Migrations\201812201010051_remaining-total-cases-added-in-StocktakePalletSnapshot.Designer.cs">
+      <DependentUpon>201812201010051_remaining-total-cases-added-in-StocktakePalletSnapshot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812201354474_LocaionId-in-Stocktake-Detail.cs" />
+    <Compile Include="Migrations\201812201354474_LocaionId-in-Stocktake-Detail.Designer.cs">
+      <DependentUpon>201812201354474_LocaionId-in-Stocktake-Detail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812221013091_stocktake-flags-for-terminals-added.cs" />
+    <Compile Include="Migrations\201812221013091_stocktake-flags-for-terminals-added.Designer.cs">
+      <DependentUpon>201812221013091_stocktake-flags-for-terminals-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812221343388_remove_tenaentcountry.cs" />
+    <Compile Include="Migrations\201812221343388_remove_tenaentcountry.Designer.cs">
+      <DependentUpon>201812221343388_remove_tenaentcountry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812221414423_country_currencyRelation.cs" />
+    <Compile Include="Migrations\201812221414423_country_currencyRelation.Designer.cs">
+      <DependentUpon>201812221414423_country_currencyRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812231139274_EnableRelayEmailServer-moved-InvoiceStatus-Added.cs" />
+    <Compile Include="Migrations\201812231139274_EnableRelayEmailServer-moved-InvoiceStatus-Added.Designer.cs">
+      <DependentUpon>201812231139274_EnableRelayEmailServer-moved-InvoiceStatus-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901060735107_plandlord_IsdeletedColumn.cs" />
+    <Compile Include="Migrations\201901060735107_plandlord_IsdeletedColumn.Designer.cs">
+      <DependentUpon>201901060735107_plandlord_IsdeletedColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901060745296_pproperties_IsdeletedColumn.cs" />
+    <Compile Include="Migrations\201901060745296_pproperties_IsdeletedColumn.Designer.cs">
+      <DependentUpon>201901060745296_pproperties_IsdeletedColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091443457_PalletProductsBaseInfo-added.cs" />
+    <Compile Include="Migrations\201901091443457_PalletProductsBaseInfo-added.Designer.cs">
+      <DependentUpon>201901091443457_PalletProductsBaseInfo-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901171700364_IsDeleted_columnfor_palletandpalletproduct.cs" />
+    <Compile Include="Migrations\201901171700364_IsDeleted_columnfor_palletandpalletproduct.Designer.cs">
+      <DependentUpon>201901171700364_IsDeleted_columnfor_palletandpalletproduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901212321359_ConsolidateOrderProcess-and-AllowDuplicateBarcode-flags-added.cs" />
+    <Compile Include="Migrations\201901212321359_ConsolidateOrderProcess-and-AllowDuplicateBarcode-flags-added.Designer.cs">
+      <DependentUpon>201901212321359_ConsolidateOrderProcess-and-AllowDuplicateBarcode-flags-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901261608092_AutoAllowProcess_TenantLocation.cs" />
+    <Compile Include="Migrations\201901261608092_AutoAllowProcess_TenantLocation.Designer.cs">
+      <DependentUpon>201901261608092_AutoAllowProcess_TenantLocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901261939426_DirectShip_orders.cs" />
+    <Compile Include="Migrations\201901261939426_DirectShip_orders.Designer.cs">
+      <DependentUpon>201901261939426_DirectShip_orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901262107104_orderId_PalletTracking.cs" />
+    <Compile Include="Migrations\201901262107104_orderId_PalletTracking.Designer.cs">
+      <DependentUpon>201901262107104_orderId_PalletTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901271513482_batch-expiry-added-in-OrderProcessDetail.cs" />
+    <Compile Include="Migrations\201901271513482_batch-expiry-added-in-OrderProcessDetail.Designer.cs">
+      <DependentUpon>201901271513482_batch-expiry-added-in-OrderProcessDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901301705477_OrderDiscount-field-added.cs" />
+    <Compile Include="Migrations\201901301705477_OrderDiscount-field-added.Designer.cs">
+      <DependentUpon>201901301705477_OrderDiscount-field-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901311816207_tenantAgreement_TenantConfig.cs" />
+    <Compile Include="Migrations\201901311816207_tenantAgreement_TenantConfig.Designer.cs">
+      <DependentUpon>201901311816207_tenantAgreement_TenantConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902010954059_comments-in-pallet-tracking.cs" />
+    <Compile Include="Migrations\201902010954059_comments-in-pallet-tracking.Designer.cs">
+      <DependentUpon>201902010954059_comments-in-pallet-tracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902031709255_terminalId-in-InventoryTransactions-and-in-OrderProcessDetails.cs" />
+    <Compile Include="Migrations\201902031709255_terminalId-in-InventoryTransactions-and-in-OrderProcessDetails.Designer.cs">
+      <DependentUpon>201902031709255_terminalId-in-InventoryTransactions-and-in-OrderProcessDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902032138263_productcatgories-tenantconfig.cs" />
+    <Compile Include="Migrations\201902032138263_productcatgories-tenantconfig.Designer.cs">
+      <DependentUpon>201902032138263_productcatgories-tenantconfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902071310342_OrderProcessDetailId-added-in-InventroyTransaction.cs" />
+    <Compile Include="Migrations\201902071310342_OrderProcessDetailId-added-in-InventroyTransaction.Designer.cs">
+      <DependentUpon>201902071310342_OrderProcessDetailId-added-in-InventroyTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902101918557_asset-tracking-models-added.cs" />
+    <Compile Include="Migrations\201902101918557_asset-tracking-models-added.Designer.cs">
+      <DependentUpon>201902101918557_asset-tracking-models-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902111753052_allowaccountaddress-tenantlocation.cs" />
+    <Compile Include="Migrations\201902111753052_allowaccountaddress-tenantlocation.Designer.cs">
+      <DependentUpon>201902111753052_allowaccountaddress-tenantlocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902241502498_adding-productflage-forecommerce.cs" />
+    <Compile Include="Migrations\201902241502498_adding-productflage-forecommerce.Designer.cs">
+      <DependentUpon>201902241502498_adding-productflage-forecommerce.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902251607300_product-master-field-name-changes.cs" />
+    <Compile Include="Migrations\201902251607300_product-master-field-name-changes.Designer.cs">
+      <DependentUpon>201902251607300_product-master-field-name-changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902261256516_terminal-transaction-log.cs" />
+    <Compile Include="Migrations\201902261256516_terminal-transaction-log.Designer.cs">
+      <DependentUpon>201902261256516_terminal-transaction-log.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902270747157_product-group-field-length-changed.cs" />
+    <Compile Include="Migrations\201902270747157_product-group-field-length-changed.Designer.cs">
+      <DependentUpon>201902270747157_product-group-field-length-changed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902281044138_product-files-added.cs" />
+    <Compile Include="Migrations\201902281044138_product-files-added.Designer.cs">
+      <DependentUpon>201902281044138_product-files-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903052301442_nullable-false-fields.cs" />
+    <Compile Include="Migrations\201903052301442_nullable-false-fields.Designer.cs">
+      <DependentUpon>201903052301442_nullable-false-fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903070734208_credit-terms-in-accounts.cs" />
+    <Compile Include="Migrations\201903070734208_credit-terms-in-accounts.Designer.cs">
+      <DependentUpon>201903070734208_credit-terms-in-accounts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903121409406_Pallet-dispatch-model-changes.cs" />
+    <Compile Include="Migrations\201903121409406_Pallet-dispatch-model-changes.Designer.cs">
+      <DependentUpon>201903121409406_Pallet-dispatch-model-changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903140718558_AccountReceipientId-nullable-in-Pallets.cs" />
+    <Compile Include="Migrations\201903140718558_AccountReceipientId-nullable-in-Pallets.Designer.cs">
+      <DependentUpon>201903140718558_AccountReceipientId-nullable-in-Pallets.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903141059339_OrderDetailId-changed-to-OrderProcessDetailId-in-PalletProducts.cs" />
+    <Compile Include="Migrations\201903141059339_OrderDetailId-changed-to-OrderProcessDetailId-in-PalletProducts.Designer.cs">
+      <DependentUpon>201903141059339_OrderDetailId-changed-to-OrderProcessDetailId-in-PalletProducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903141752047_blind-shipment-flags-in-tenant-locations.cs" />
+    <Compile Include="Migrations\201903141752047_blind-shipment-flags-in-tenant-locations.Designer.cs">
+      <DependentUpon>201903141752047_blind-shipment-flags-in-tenant-locations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903151647417_pallet-dispatch-comments-scan-flags-added.cs" />
+    <Compile Include="Migrations\201903151647417_pallet-dispatch-comments-scan-flags-added.Designer.cs">
+      <DependentUpon>201903151647417_pallet-dispatch-comments-scan-flags-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903161324071_pallet-dispatch-sign-changed-to-string.cs" />
+    <Compile Include="Migrations\201903161324071_pallet-dispatch-sign-changed-to-string.Designer.cs">
+      <DependentUpon>201903161324071_pallet-dispatch-sign-changed-to-string.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903242134090_NoOfCases-in-OrderProofOfDelivery.cs" />
+    <Compile Include="Migrations\201903242134090_NoOfCases-in-OrderProofOfDelivery.Designer.cs">
+      <DependentUpon>201903242134090_NoOfCases-in-OrderProofOfDelivery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904040601387_market-externalid-added.cs" />
+    <Compile Include="Migrations\201904040601387_market-externalid-added.Designer.cs">
+      <DependentUpon>201904040601387_market-externalid-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904111048262_string-nullable-fields-ou-of-sync.cs" />
+    <Compile Include="Migrations\201904111048262_string-nullable-fields-ou-of-sync.Designer.cs">
+      <DependentUpon>201904111048262_string-nullable-fields-ou-of-sync.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904251515215_allow-modify-proice-flag-added.cs" />
+    <Compile Include="Migrations\201904251515215_allow-modify-proice-flag-added.Designer.cs">
+      <DependentUpon>201904251515215_allow-modify-proice-flag-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905011745000_terminal-post-geo-codes-and-vehicle-checks-flags.cs" />
+    <Compile Include="Migrations\201905011745000_terminal-post-geo-codes-and-vehicle-checks-flags.Designer.cs">
+      <DependentUpon>201905011745000_terminal-post-geo-codes-and-vehicle-checks-flags.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905130107357_OrderProcessDetailId_foreignKey_In_InInventoryTransaction.cs" />
+    <Compile Include="Migrations\201905130107357_OrderProcessDetailId_foreignKey_In_InInventoryTransaction.Designer.cs">
+      <DependentUpon>201905130107357_OrderProcessDetailId_foreignKey_In_InInventoryTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905141753412_department-groups-attiribute-to-account.cs" />
+    <Compile Include="Migrations\201905141753412_department-groups-attiribute-to-account.Designer.cs">
+      <DependentUpon>201905141753412_department-groups-attiribute-to-account.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905151409306_ShowDeliveryByGroups-added-in-TenantConfig.cs" />
+    <Compile Include="Migrations\201905151409306_ShowDeliveryByGroups-added-in-TenantConfig.Designer.cs">
+      <DependentUpon>201905151409306_ShowDeliveryByGroups-added-in-TenantConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905241828164_DefaultCustomMessage-forsalesorders-customeamil.cs" />
+    <Compile Include="Migrations\201905241828164_DefaultCustomMessage-forsalesorders-customeamil.Designer.cs">
+      <DependentUpon>201905241828164_DefaultCustomMessage-forsalesorders-customeamil.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905252313406_invoicenumber-addedin-orderprocess.cs" />
+    <Compile Include="Migrations\201905252313406_invoicenumber-addedin-orderprocess.Designer.cs">
+      <DependentUpon>201905252313406_invoicenumber-addedin-orderprocess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906081047530_adding-showingdecimalpointfororders-in-tenantconfig.cs" />
+    <Compile Include="Migrations\201906081047530_adding-showingdecimalpointfororders-in-tenantconfig.Designer.cs">
+      <DependentUpon>201906081047530_adding-showingdecimalpointfororders-in-tenantconfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906092243320_string-nullable-false-issue.cs" />
+    <Compile Include="Migrations\201906092243320_string-nullable-false-issue.Designer.cs">
+      <DependentUpon>201906092243320_string-nullable-false-issue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906101349582_added-IsCollectionFromCustomerSide-inorders.cs" />
+    <Compile Include="Migrations\201906101349582_added-IsCollectionFromCustomerSide-inorders.Designer.cs">
+      <DependentUpon>201906101349582_added-IsCollectionFromCustomerSide-inorders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906131204239_Net-and-tax-added-in-van-sales-z-reports.cs" />
+    <Compile Include="Migrations\201906131204239_Net-and-tax-added-in-van-sales-z-reports.Designer.cs">
+      <DependentUpon>201906131204239_Net-and-tax-added-in-van-sales-z-reports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906131230409_model-not-matching-fix.cs" />
+    <Compile Include="Migrations\201906131230409_model-not-matching-fix.Designer.cs">
+      <DependentUpon>201906131230409_model-not-matching-fix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906140913260_AllowSaleWithoutAccount-and-ShowFullBalanceOnPayment-flags-in-TenantLocations.cs" />
+    <Compile Include="Migrations\201906140913260_AllowSaleWithoutAccount-and-ShowFullBalanceOnPayment-flags-in-TenantLocations.Designer.cs">
+      <DependentUpon>201906140913260_AllowSaleWithoutAccount-and-ShowFullBalanceOnPayment-flags-in-TenantLocations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906171631423_TerminalSyncDays-added-in-tenant-config.cs" />
+    <Compile Include="Migrations\201906171631423_TerminalSyncDays-added-in-tenant-config.Designer.cs">
+      <DependentUpon>201906171631423_TerminalSyncDays-added-in-tenant-config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906231829354_changescontact-column-name.cs" />
+    <Compile Include="Migrations\201906231829354_changescontact-column-name.Designer.cs">
+      <DependentUpon>201906231829354_changescontact-column-name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906232214162_InventoryTransaction-AuthUser-foreign-key-added.cs" />
+    <Compile Include="Migrations\201906232214162_InventoryTransaction-AuthUser-foreign-key-added.Designer.cs">
+      <DependentUpon>201906232214162_InventoryTransaction-AuthUser-foreign-key-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906251535283_AmountPaid-and-BalanceOnPayment-fields-added-in-orders-plus-flags-in-PriceGroups.cs" />
+    <Compile Include="Migrations\201906251535283_AmountPaid-and-BalanceOnPayment-fields-added-in-orders-plus-flags-in-PriceGroups.Designer.cs">
+      <DependentUpon>201906251535283_AmountPaid-and-BalanceOnPayment-fields-added-in-orders-plus-flags-in-PriceGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906251545479_AccountPaymentModeId-added-in-orders.cs" />
+    <Compile Include="Migrations\201906251545479_AccountPaymentModeId-added-in-orders.Designer.cs">
+      <DependentUpon>201906251545479_AccountPaymentModeId-added-in-orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906291255283_opening-account-balance-added-financial-transactions.cs" />
+    <Compile Include="Migrations\201906291255283_opening-account-balance-added-financial-transactions.Designer.cs">
+      <DependentUpon>201906291255283_opening-account-balance-added-financial-transactions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907010229406_time-added-in-expected-date.cs" />
+    <Compile Include="Migrations\201907010229406_time-added-in-expected-date.Designer.cs">
+      <DependentUpon>201907010229406_time-added-in-expected-date.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907011625300_invoicemasterid-added-in-TenantEmailNotificationQueueTable.cs" />
+    <Compile Include="Migrations\201907011625300_invoicemasterid-added-in-TenantEmailNotificationQueueTable.Designer.cs">
+      <DependentUpon>201907011625300_invoicemasterid-added-in-TenantEmailNotificationQueueTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907021348168_added-IvReportFooterMsg1-inTenantConfig.cs" />
+    <Compile Include="Migrations\201907021348168_added-IvReportFooterMsg1-inTenantConfig.Designer.cs">
+      <DependentUpon>201907021348168_added-IvReportFooterMsg1-inTenantConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907022010588_OrderToken-added-in-Orders.cs" />
+    <Compile Include="Migrations\201907022010588_OrderToken-added-in-Orders.Designer.cs">
+      <DependentUpon>201907022010588_OrderToken-added-in-Orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907091917341_adding-tenantregistrationno-in-Tenant.cs" />
+    <Compile Include="Migrations\201907091917341_adding-tenantregistrationno-in-Tenant.Designer.cs">
+      <DependentUpon>201907091917341_adding-tenantregistrationno-in-Tenant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907112233362_ShowCasesPrice-and-AllowExportDatabase-flags-added-in-terminals.cs" />
+    <Compile Include="Migrations\201907112233362_ShowCasesPrice-and-AllowExportDatabase-flags-added-in-terminals.Designer.cs">
+      <DependentUpon>201907112233362_ShowCasesPrice-and-AllowExportDatabase-flags-added-in-terminals.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907151656521_EmailAutoCheckedOnEdit-addedin-tenantconfig.cs" />
+    <Compile Include="Migrations\201907151656521_EmailAutoCheckedOnEdit-addedin-tenantconfig.Designer.cs">
+      <DependentUpon>201907151656521_EmailAutoCheckedOnEdit-addedin-tenantconfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907171517502_adding-InvoiceMasterId-nullable-inaccounttransaction.cs" />
+    <Compile Include="Migrations\201907171517502_adding-InvoiceMasterId-nullable-inaccounttransaction.Designer.cs">
+      <DependentUpon>201907171517502_adding-InvoiceMasterId-nullable-inaccounttransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907171522106_adding-currencyid-in-masterinvoice.cs" />
+    <Compile Include="Migrations\201907171522106_adding-currencyid-in-masterinvoice.Designer.cs">
+      <DependentUpon>201907171522106_adding-currencyid-in-masterinvoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907172157457_foreign-keys-added-for-GlobalCurrency-and-InvoiceMasterId.cs" />
+    <Compile Include="Migrations\201907172157457_foreign-keys-added-for-GlobalCurrency-and-InvoiceMasterId.Designer.cs">
+      <DependentUpon>201907172157457_foreign-keys-added-for-GlobalCurrency-and-InvoiceMasterId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907251532244_adding-invoicedate-inorderprocess.cs" />
+    <Compile Include="Migrations\201907251532244_adding-invoicedate-inorderprocess.Designer.cs">
+      <DependentUpon>201907251532244_adding-invoicedate-inorderprocess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908012221075_more-properties-in-VanSalesDailyCashes.cs" />
+    <Compile Include="Migrations\201908012221075_more-properties-in-VanSalesDailyCashes.Designer.cs">
+      <DependentUpon>201908012221075_more-properties-in-VanSalesDailyCashes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908021210166_sale-breakdown-added-in-VanSalesDailyCashSync.cs" />
+    <Compile Include="Migrations\201908021210166_sale-breakdown-added-in-VanSalesDailyCashSync.Designer.cs">
+      <DependentUpon>201908021210166_sale-breakdown-added-in-VanSalesDailyCashSync.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908100146515_invoicemaster-realtion-addedin-tenantnotificationqueue.cs" />
+    <Compile Include="Migrations\201908100146515_invoicemaster-realtion-addedin-tenantnotificationqueue.Designer.cs">
+      <DependentUpon>201908100146515_invoicemaster-realtion-addedin-tenantnotificationqueue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908270934512_AllowDuplicateProductName-in-TenantConfig.cs" />
+    <Compile Include="Migrations\201908270934512_AllowDuplicateProductName-in-TenantConfig.Designer.cs">
+      <DependentUpon>201908270934512_AllowDuplicateProductName-in-TenantConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908281358395_jobstartdate-added-in-resources.cs" />
+    <Compile Include="Migrations\201908281358395_jobstartdate-added-in-resources.Designer.cs">
+      <DependentUpon>201908281358395_jobstartdate-added-in-resources.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291134251_holidaysstartDate-in-tenantLocation.cs" />
+    <Compile Include="Migrations\201908291134251_holidaysstartDate-in-tenantLocation.Designer.cs">
+      <DependentUpon>201908291134251_holidaysstartDate-in-tenantLocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908301047011_nominalcode-added-inProducts.cs" />
+    <Compile Include="Migrations\201908301047011_nominalcode-added-inProducts.Designer.cs">
+      <DependentUpon>201908301047011_nominalcode-added-inProducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909031154005_merge-conflict-fix0309.cs" />
+    <Compile Include="Migrations\201909031154005_merge-conflict-fix0309.Designer.cs">
+      <DependentUpon>201909031154005_merge-conflict-fix0309.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909050650081_receipt-line5-in-tenant-config.cs" />
+    <Compile Include="Migrations\201909050650081_receipt-line5-in-tenant-config.Designer.cs">
+      <DependentUpon>201909050650081_receipt-line5-in-tenant-config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909061434469_ShowCaseQtyInReports-addedin-tenantlocation.cs" />
+    <Compile Include="Migrations\201909061434469_ShowCaseQtyInReports-addedin-tenantlocation.Designer.cs">
+      <DependentUpon>201909061434469_ShowCaseQtyInReports-addedin-tenantlocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909261200545_timber-properties-added.cs" />
+    <Compile Include="Migrations\201909261200545_timber-properties-added.Designer.cs">
+      <DependentUpon>201909261200545_timber-properties-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909261339383_timber-properties-correction.cs" />
+    <Compile Include="Migrations\201909261339383_timber-properties-correction.Designer.cs">
+      <DependentUpon>201909261339383_timber-properties-correction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909292037125_TerminalId-added-in-AttLogStamps.cs" />
+    <Compile Include="Migrations\201909292037125_TerminalId-added-in-AttLogStamps.Designer.cs">
+      <DependentUpon>201909292037125_TerminalId-added-in-AttLogStamps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910012320211_VehicleDriverId-nullable-in-VehicleInspection.cs" />
+    <Compile Include="Migrations\201910012320211_VehicleDriverId-nullable-in-VehicleInspection.Designer.cs">
+      <DependentUpon>201910012320211_VehicleDriverId-nullable-in-VehicleInspection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910101444176_add-ProddeliveryType-and-OrderingNotes-in-ProdAccount.cs" />
+    <Compile Include="Migrations\201910101444176_add-ProddeliveryType-and-OrderingNotes-in-ProdAccount.Designer.cs">
+      <DependentUpon>201910101444176_add-ProddeliveryType-and-OrderingNotes-in-ProdAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910151724469_ShowDepartment-and-ShowGroup-flags-added-in-TenantLocations.cs" />
+    <Compile Include="Migrations\201910151724469_ShowDepartment-and-ShowGroup-flags-added-in-TenantLocations.Designer.cs">
+      <DependentUpon>201910151724469_ShowDepartment-and-ShowGroup-flags-added-in-TenantLocations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910210908090_Returns-Values-Properties-in-VanSalesDailyCashes.cs" />
+    <Compile Include="Migrations\201910210908090_Returns-Values-Properties-in-VanSalesDailyCashes.designer.cs">
+      <DependentUpon>201910210908090_Returns-Values-Properties-in-VanSalesDailyCashes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910221313518_OrderId-nullable-in-TenantEmailNotificationQueue.cs" />
+    <Compile Include="Migrations\201910221313518_OrderId-nullable-in-TenantEmailNotificationQueue.designer.cs">
+      <DependentUpon>201910221313518_OrderId-nullable-in-TenantEmailNotificationQueue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910251106577_bool-flags-added-awaiting-authorisation-conditions.cs" />
+    <Compile Include="Migrations\201910251106577_bool-flags-added-awaiting-authorisation-conditions.designer.cs">
+      <DependentUpon>201910251106577_bool-flags-added-awaiting-authorisation-conditions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910281400028_adding-pallettypeTable-and-pallettypeId-in-productmaser.cs" />
+    <Compile Include="Migrations\201910281400028_adding-pallettypeTable-and-pallettypeId-in-productmaser.designer.cs">
+      <DependentUpon>201910281400028_adding-pallettypeTable-and-pallettypeId-in-productmaser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911051317044_orderdetailid-and-taxId-added-ininvoicedetail.cs" />
+    <Compile Include="Migrations\201911051317044_orderdetailid-and-taxId-added-ininvoicedetail.designer.cs">
+      <DependentUpon>201911051317044_orderdetailid-and-taxId-added-ininvoicedetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911121253029_prestashop-productId-OrderId-addressId-added.cs" />
+    <Compile Include="Migrations\201911121253029_prestashop-productId-OrderId-addressId-added.designer.cs">
+      <DependentUpon>201911121253029_prestashop-productId-OrderId-addressId-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911141641590_productGroupId-added-in-orderdetailtable.cs" />
+    <Compile Include="Migrations\201911141641590_productGroupId-added-in-orderdetailtable.designer.cs">
+      <DependentUpon>201911141641590_productGroupId-added-in-orderdetailtable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912040045178_Sent-methods-removed.cs" />
+    <Compile Include="Migrations\201912040045178_Sent-methods-removed.designer.cs">
+      <DependentUpon>201912040045178_Sent-methods-removed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912291628472_ShowPriceAlertInSalesOrder-in-TenantLocations.cs" />
+    <Compile Include="Migrations\201912291628472_ShowPriceAlertInSalesOrder-in-TenantLocations.designer.cs">
+      <DependentUpon>201912291628472_ShowPriceAlertInSalesOrder-in-TenantLocations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912301811018_add-warrantyid-in-invoicedetailtable.cs" />
+    <Compile Include="Migrations\201912301811018_add-warrantyid-in-invoicedetailtable.designer.cs">
+      <DependentUpon>201912301811018_add-warrantyid-in-invoicedetailtable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001021459324_Tenant-Websites-Added.cs" />
+    <Compile Include="Migrations\202001021459324_Tenant-Websites-Added.designer.cs">
+      <DependentUpon>202001021459324_Tenant-Websites-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001040114226_removing-prestashhopid-from-productmaster.cs" />
+    <Compile Include="Migrations\202001040114226_removing-prestashhopid-from-productmaster.designer.cs">
+      <DependentUpon>202001040114226_removing-prestashhopid-from-productmaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001061200229_SiteId-added-in-ordertable.cs" />
+    <Compile Include="Migrations\202001061200229_SiteId-added-in-ordertable.designer.cs">
+      <DependentUpon>202001061200229_SiteId-added-in-ordertable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001210931050_Paypal-IPN-Fields-Added.cs" />
+    <Compile Include="Migrations\202001210931050_Paypal-IPN-Fields-Added.designer.cs">
+      <DependentUpon>202001210931050_Paypal-IPN-Fields-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001221112027_IsStockItem-flag-added.cs" />
+    <Compile Include="Migrations\202001221112027_IsStockItem-flag-added.designer.cs">
+      <DependentUpon>202001221112027_IsStockItem-flag-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001262246574_adding-accountid-in-authusers.cs" />
+    <Compile Include="Migrations\202001262246574_adding-accountid-in-authusers.designer.cs">
+      <DependentUpon>202001262246574_adding-accountid-in-authusers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001281418332_ScanVehicleLicensePlate-added-in-TerminalMetadataSync.cs" />
+    <Compile Include="Migrations\202001281418332_ScanVehicleLicensePlate-added-in-TerminalMetadataSync.designer.cs">
+      <DependentUpon>202001281418332_ScanVehicleLicensePlate-added-in-TerminalMetadataSync.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002031416590_OrderSchedule-model-added.cs" />
+    <Compile Include="Migrations\202002031416590_OrderSchedule-model-added.designer.cs">
+      <DependentUpon>202002031416590_OrderSchedule-model-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002101310559_Meraki-Properties-Added-In-AssetLog.cs" />
+    <Compile Include="Migrations\202002101310559_Meraki-Properties-Added-In-AssetLog.designer.cs">
+      <DependentUpon>202002101310559_Meraki-Properties-Added-In-AssetLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002131650240_adding-AcceptedShelfLife-inaccounttable.cs" />
+    <Compile Include="Migrations\202002131650240_adding-AcceptedShelfLife-inaccounttable.designer.cs">
+      <DependentUpon>202002131650240_adding-AcceptedShelfLife-inaccounttable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002141023547_adding-account-owner-relation-withauthuser.cs" />
+    <Compile Include="Migrations\202002141023547_adding-account-owner-relation-withauthuser.designer.cs">
+      <DependentUpon>202002141023547_adding-account-owner-relation-withauthuser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002161940028_Websites-Products-Relation-Table-Added.cs" />
+    <Compile Include="Migrations\202002161940028_Websites-Products-Relation-Table-Added.designer.cs">
+      <DependentUpon>202002161940028_Websites-Products-Relation-Table-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002210304197_pickerid-added-in-ordersTable.cs" />
+    <Compile Include="Migrations\202002210304197_pickerid-added-in-ordersTable.designer.cs">
+      <DependentUpon>202002210304197_pickerid-added-in-ordersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002211247562_productmanufacturer-added.cs" />
+    <Compile Include="Migrations\202002211247562_productmanufacturer-added.designer.cs">
+      <DependentUpon>202002211247562_productmanufacturer-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002211301531_productmanufacturerid-added-in-productmaster.cs" />
+    <Compile Include="Migrations\202002211301531_productmanufacturerid-added-in-productmaster.designer.cs">
+      <DependentUpon>202002211301531_productmanufacturerid-added-in-productmaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002251353519_adding-GlobaAPisAndDeliveryService-in-database.cs" />
+    <Compile Include="Migrations\202002251353519_adding-GlobaAPisAndDeliveryService-in-database.designer.cs">
+      <DependentUpon>202002251353519_adding-GlobaAPisAndDeliveryService-in-database.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002280651064_dpdResonsecoulmn-added-in-database.cs" />
+    <Compile Include="Migrations\202002280651064_dpdResonsecoulmn-added-in-database.designer.cs">
+      <DependentUpon>202002280651064_dpdResonsecoulmn-added-in-database.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002281453268_accountNumber-in-GlobalApi.cs" />
+    <Compile Include="Migrations\202002281453268_accountNumber-in-GlobalApi.designer.cs">
+      <DependentUpon>202002281453268_accountNumber-in-GlobalApi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003041347367_imagepath-in-tenantDepartment.cs" />
+    <Compile Include="Migrations\202003041347367_imagepath-in-tenantDepartment.designer.cs">
+      <DependentUpon>202003041347367_imagepath-in-tenantDepartment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.cs" />
+    <Compile Include="Migrations\202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.designer.cs">
+      <DependentUpon>202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003091043529_tenantRelationadded-in-productManufacturer.cs" />
+    <Compile Include="Migrations\202003091043529_tenantRelationadded-in-productManufacturer.designer.cs">
+      <DependentUpon>202003091043529_tenantRelationadded-in-productManufacturer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003111205097_productCategoriesTableAdded.cs" />
+    <Compile Include="Migrations\202003111205097_productCategoriesTableAdded.designer.cs">
+      <DependentUpon>202003111205097_productCategoriesTableAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003121110130_addedProductCategory-in-ProductMaster.cs" />
+    <Compile Include="Migrations\202003121110130_addedProductCategory-in-ProductMaster.designer.cs">
+      <DependentUpon>202003121110130_addedProductCategory-in-ProductMaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003131035333_ProductMaster-ProductCategory-Relation.cs" />
+    <Compile Include="Migrations\202003131035333_ProductMaster-ProductCategory-Relation.designer.cs">
+      <DependentUpon>202003131035333_ProductMaster-ProductCategory-Relation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003161053084_Barcode-Required-Removed.cs" />
+    <Compile Include="Migrations\202003161053084_Barcode-Required-Removed.designer.cs">
+      <DependentUpon>202003161053084_Barcode-Required-Removed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003170331126_Shipment-Label-Status-added.cs" />
+    <Compile Include="Migrations\202003170331126_Shipment-Label-Status-added.designer.cs">
+      <DependentUpon>202003170331126_Shipment-Label-Status-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003191211157_listofproductcategories-added-in-productgroup.cs" />
+    <Compile Include="Migrations\202003191211157_listofproductcategories-added-in-productgroup.designer.cs">
+      <DependentUpon>202003191211157_listofproductcategories-added-in-productgroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.cs" />
+    <Compile Include="Migrations\202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.designer.cs">
+      <DependentUpon>202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003241741303_pick-by-container-properties-added.cs" />
+    <Compile Include="Migrations\202003241741303_pick-by-container-properties-added.designer.cs">
+      <DependentUpon>202003241741303_pick-by-container-properties-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003261029318_PrestaShop-CountryId-added.cs" />
+    <Compile Include="Migrations\202003261029318_PrestaShop-CountryId-added.designer.cs">
+      <DependentUpon>202003261029318_PrestaShop-CountryId-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003261154438_groupedproduct-added.cs" />
+    <Compile Include="Migrations\202003261154438_groupedproduct-added.designer.cs">
+      <DependentUpon>202003261154438_groupedproduct-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.cs" />
+    <Compile Include="Migrations\202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.designer.cs">
+      <DependentUpon>202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003261611136_productkitrealtion-added.cs" />
+    <Compile Include="Migrations\202003261611136_productkitrealtion-added.designer.cs">
+      <DependentUpon>202003261611136_productkitrealtion-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004011733485_changes-in-terminalLog-added.cs" />
+    <Compile Include="Migrations\202004011733485_changes-in-terminalLog-added.designer.cs">
+      <DependentUpon>202004011733485_changes-in-terminalLog-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004011757182_realtionwebsiteid-added-in-terminalLog.cs" />
+    <Compile Include="Migrations\202004011757182_realtionwebsiteid-added-in-terminalLog.designer.cs">
+      <DependentUpon>202004011757182_realtionwebsiteid-added-in-terminalLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021409511_productkitTypes-table-added.cs" />
+    <Compile Include="Migrations\202004021409511_productkitTypes-table-added.designer.cs">
+      <DependentUpon>202004021409511_productkitTypes-table-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021636461_relationship-kitMap-added.cs" />
+    <Compile Include="Migrations\202004021636461_relationship-kitMap-added.designer.cs">
+      <DependentUpon>202004021636461_relationship-kitMap-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004151341083_product-movement-table-added.cs" />
+    <Compile Include="Migrations\202004151341083_product-movement-table-added.designer.cs">
+      <DependentUpon>202004151341083_product-movement-table-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004151354435_prodct-movement-Id-added-in-inventoryTrnsaction.cs" />
+    <Compile Include="Migrations\202004151354435_prodct-movement-Id-added-in-inventoryTrnsaction.designer.cs">
+      <DependentUpon>202004151354435_prodct-movement-Id-added-in-inventoryTrnsaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004161205537_renametable-stockmovement-stockId.cs" />
+    <Compile Include="Migrations\202004161205537_renametable-stockmovement-stockId.designer.cs">
+      <DependentUpon>202004161205537_renametable-stockmovement-stockId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004180236325_Theme-added-in-tenant.cs" />
+    <Compile Include="Migrations\202004180236325_Theme-added-in-tenant.designer.cs">
+      <DependentUpon>202004180236325_Theme-added-in-tenant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004251626414_website-tables-added.cs" />
+    <Compile Include="Migrations\202004251626414_website-tables-added.designer.cs">
+      <DependentUpon>202004251626414_website-tables-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004290146253_spellingCorrection.cs" />
+    <Compile Include="Migrations\202004290146253_spellingCorrection.designer.cs">
+      <DependentUpon>202004290146253_spellingCorrection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004301923264_Website-Theme-Added.cs" />
+    <Compile Include="Migrations\202004301923264_Website-Theme-Added.designer.cs">
+      <DependentUpon>202004301923264_Website-Theme-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005040512080_shipping-voucher-discount-tables-added.cs" />
+    <Compile Include="Migrations\202005040512080_shipping-voucher-discount-tables-added.designer.cs">
+      <DependentUpon>202005040512080_shipping-voucher-discount-tables-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005050106322_Auth-User-Groups-Added.cs" />
+    <Compile Include="Migrations\202005050106322_Auth-User-Groups-Added.designer.cs">
+      <DependentUpon>202005050106322_Auth-User-Groups-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005050328359_Product-Allowance-tables-added.cs" />
+    <Compile Include="Migrations\202005050328359_Product-Allowance-tables-added.designer.cs">
+      <DependentUpon>202005050328359_Product-Allowance-tables-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005052143144_Role-added-AllowanceProduct.cs" />
+    <Compile Include="Migrations\202005052143144_Role-added-AllowanceProduct.designer.cs">
+      <DependentUpon>202005052143144_Role-added-AllowanceProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005052202028_nullable-allowanceGroupId.cs" />
+    <Compile Include="Migrations\202005052202028_nullable-allowanceGroupId.designer.cs">
+      <DependentUpon>202005052202028_nullable-allowanceGroupId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005060101258_properties-add-in-tenant-websites-and-content-pages.cs" />
+    <Compile Include="Migrations\202005060101258_properties-add-in-tenant-websites-and-content-pages.designer.cs">
+      <DependentUpon>202005060101258_properties-add-in-tenant-websites-and-content-pages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005060313186_SiteID-added-in-ProductAllownceAndGroup.cs" />
+    <Compile Include="Migrations\202005060313186_SiteID-added-in-ProductAllownceAndGroup.designer.cs">
+      <DependentUpon>202005060313186_SiteID-added-in-ProductAllownceAndGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005060400443_realtionChangefor-WebsiteDiscountProductsMap.cs" />
+    <Compile Include="Migrations\202005060400443_realtionChangefor-WebsiteDiscountProductsMap.designer.cs">
+      <DependentUpon>202005060400443_realtionChangefor-WebsiteDiscountProductsMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005060433132_more-properties-added-in-content-pages.cs" />
+    <Compile Include="Migrations\202005060433132_more-properties-added-in-content-pages.designer.cs">
+      <DependentUpon>202005060433132_more-properties-added-in-content-pages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005122012474_imagecolumn-addedin-websitecontenttable.cs" />
+    <Compile Include="Migrations\202005122012474_imagecolumn-addedin-websitecontenttable.designer.cs">
+      <DependentUpon>202005122012474_imagecolumn-addedin-websitecontenttable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005141828320_Add-Tooltip-table.cs" />
+    <Compile Include="Migrations\202005141828320_Add-Tooltip-table.designer.cs">
+      <DependentUpon>202005141828320_Add-Tooltip-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005141928394_required-field-added-forwebsitecontentandnavigation.cs" />
+    <Compile Include="Migrations\202005141928394_required-field-added-forwebsitecontentandnavigation.designer.cs">
+      <DependentUpon>202005141928394_required-field-added-forwebsitecontentandnavigation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005151518010_fields-size-added-to-tooltips-table.cs" />
+    <Compile Include="Migrations\202005151518010_fields-size-added-to-tooltips-table.designer.cs">
+      <DependentUpon>202005151518010_fields-size-added-to-tooltips-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005172319586_websitecartandwishlist-Table-Added.cs" />
+    <Compile Include="Migrations\202005172319586_websitecartandwishlist-Table-Added.designer.cs">
+      <DependentUpon>202005172319586_websitecartandwishlist-Table-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005181813167_siteId-added-in-productTable.cs" />
+    <Compile Include="Migrations\202005181813167_siteId-added-in-productTable.designer.cs">
+      <DependentUpon>202005181813167_siteId-added-in-productTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005191908158_producttagAndProductTagMap-added.cs" />
+    <Compile Include="Migrations\202005191908158_producttagAndProductTagMap-added.designer.cs">
+      <DependentUpon>202005191908158_producttagAndProductTagMap-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005222237270_isactive-coulmn-add-in-productkitMap.cs" />
+    <Compile Include="Migrations\202005222237270_isactive-coulmn-add-in-productkitMap.designer.cs">
+      <DependentUpon>202005222237270_isactive-coulmn-add-in-productkitMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005232307351_producttype-added-inProductmaster.cs" />
+    <Compile Include="Migrations\202005232307351_producttype-added-inProductmaster.designer.cs">
+      <DependentUpon>202005232307351_producttype-added-inProductmaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005251805283_product-attributeMap-table-Added.cs" />
+    <Compile Include="Migrations\202005251805283_product-attributeMap-table-Added.designer.cs">
+      <DependentUpon>202005251805283_product-attributeMap-table-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005270901448_Add-UISettings-tables.cs" />
+    <Compile Include="Migrations\202005270901448_Add-UISettings-tables.designer.cs">
+      <DependentUpon>202005270901448_Add-UISettings-tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005271206092_Website-Apis-in-seperate-tables.cs" />
+    <Compile Include="Migrations\202005271206092_Website-Apis-in-seperate-tables.designer.cs">
+      <DependentUpon>202005271206092_Website-Apis-in-seperate-tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005282319067_Inventory-Transaction-Types-Table-Removed.cs" />
+    <Compile Include="Migrations\202005282319067_Inventory-Transaction-Types-Table-Removed.designer.cs">
+      <DependentUpon>202005282319067_Inventory-Transaction-Types-Table-Removed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005290413406_GlobalApi-changed-to-ApiCredentials.cs" />
+    <Compile Include="Migrations\202005290413406_GlobalApi-changed-to-ApiCredentials.designer.cs">
+      <DependentUpon>202005290413406_GlobalApi-changed-to-ApiCredentials.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006011754200_OrderStatus-table-dropped.cs" />
+    <Compile Include="Migrations\202006011754200_OrderStatus-table-dropped.designer.cs">
+      <DependentUpon>202006011754200_OrderStatus-table-dropped.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006011852551_add-DefaultValue-column-to-UISettingItems-table.cs" />
+    <Compile Include="Migrations\202006011852551_add-DefaultValue-column-to-UISettingItems-table.designer.cs">
+      <DependentUpon>202006011852551_add-DefaultValue-column-to-UISettingItems-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006030318013_Status-types-tables-dropped.cs" />
+    <Compile Include="Migrations\202006030318013_Status-types-tables-dropped.designer.cs">
+      <DependentUpon>202006030318013_Status-types-tables-dropped.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006031645372_ishomepage-field-added-in-websitecontent.cs" />
+    <Compile Include="Migrations\202006031645372_ishomepage-field-added-in-websitecontent.designer.cs">
+      <DependentUpon>202006031645372_ishomepage-field-added-in-websitecontent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006040423547_Tenant-Warehouses-Added.cs" />
+    <Compile Include="Migrations\202006040423547_Tenant-Warehouses-Added.designer.cs">
+      <DependentUpon>202006040423547_Tenant-Warehouses-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006071441185_adding-Selector-column-to-UISettingItems-table.cs" />
+    <Compile Include="Migrations\202006071441185_adding-Selector-column-to-UISettingItems-table.designer.cs">
+      <DependentUpon>202006071441185_adding-Selector-column-to-UISettingItems-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006241332071_Added-abandoned-cart-notification-related-tables.cs" />
+    <Compile Include="Migrations\202006241332071_Added-abandoned-cart-notification-related-tables.designer.cs">
+      <DependentUpon>202006241332071_Added-abandoned-cart-notification-related-tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006251859278_kitproductcart-childtable-added.cs" />
+    <Compile Include="Migrations\202006251859278_kitproductcart-childtable-added.designer.cs">
+      <DependentUpon>202006251859278_kitproductcart-childtable-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006260905517_adding-mainproduct-in-kitproductcartitems-table.cs" />
+    <Compile Include="Migrations\202006260905517_adding-mainproduct-in-kitproductcartitems-table.designer.cs">
+      <DependentUpon>202006260905517_adding-mainproduct-in-kitproductcartitems-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301522512_cartId-added-in-kitProductItem.cs" />
+    <Compile Include="Migrations\202006301522512_cartId-added-in-kitProductItem.designer.cs">
+      <DependentUpon>202006301522512_cartId-added-in-kitProductItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007010307160_added-description-to-WebsiteShippingRules-table.cs" />
+    <Compile Include="Migrations\202007010307160_added-description-to-WebsiteShippingRules-table.designer.cs">
+      <DependentUpon>202007010307160_added-description-to-WebsiteShippingRules-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007020929298_sessionkey-added-in-websitecartitem.cs" />
+    <Compile Include="Migrations\202007020929298_sessionkey-added-in-websitecartitem.designer.cs">
+      <DependentUpon>202007020929298_sessionkey-added-in-websitecartitem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007021028069_setuserid-nullable-inCartitems.cs" />
+    <Compile Include="Migrations\202007021028069_setuserid-nullable-inCartitems.designer.cs">
+      <DependentUpon>202007021028069_setuserid-nullable-inCartitems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007021231597_SiteId-in-AuthUser.cs" />
+    <Compile Include="Migrations\202007021231597_SiteId-in-AuthUser.designer.cs">
+      <DependentUpon>202007021231597_SiteId-in-AuthUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007071455247_added-WebsiteLayoutSettings-table.cs" />
+    <Compile Include="Migrations\202007071455247_added-WebsiteLayoutSettings-table.designer.cs">
+      <DependentUpon>202007071455247_added-WebsiteLayoutSettings-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007072009467_added-websitedeliveryNavigation.cs" />
+    <Compile Include="Migrations\202007072009467_added-websitedeliveryNavigation.designer.cs">
+      <DependentUpon>202007072009467_added-websitedeliveryNavigation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.cs" />
+    <Compile Include="Migrations\202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.designer.cs">
+      <DependentUpon>202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007090916421_Price-Including-Tax-added.cs" />
+    <Compile Include="Migrations\202007090916421_Price-Including-Tax-added.designer.cs">
+      <DependentUpon>202007090916421_Price-Including-Tax-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.cs" />
+    <Compile Include="Migrations\202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.designer.cs">
+      <DependentUpon>202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007111100543_sortOrdercolumn-added-in-Attributevaluemap.cs" />
+    <Compile Include="Migrations\202007111100543_sortOrdercolumn-added-in-Attributevaluemap.designer.cs">
+      <DependentUpon>202007111100543_sortOrdercolumn-added-in-Attributevaluemap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007111214279_sortorderolumn-added-in-productarrtibutes.cs" />
+    <Compile Include="Migrations\202007111214279_sortorderolumn-added-in-productarrtibutes.designer.cs">
+      <DependentUpon>202007111214279_sortorderolumn-added-in-productarrtibutes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007111736215_add-color-field-to-attributes-table.cs" />
+    <Compile Include="Migrations\202007111736215_add-color-field-to-attributes-table.designer.cs">
+      <DependentUpon>202007111736215_add-color-field-to-attributes-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007121325361_siteId-added-in-EmailTempaltes.cs" />
+    <Compile Include="Migrations\202007121325361_siteId-added-in-EmailTempaltes.designer.cs">
+      <DependentUpon>202007121325361_siteId-added-in-EmailTempaltes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007121433584_paymenttransction-and-siteId-added.cs" />
+    <Compile Include="Migrations\202007121433584_paymenttransction-and-siteId-added.designer.cs">
+      <DependentUpon>202007121433584_paymenttransction-and-siteId-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007121916411_Contact-Page-Url-added-in-TenantWebsites.cs" />
+    <Compile Include="Migrations\202007121916411_Contact-Page-Url-added-in-TenantWebsites.designer.cs">
+      <DependentUpon>202007121916411_Contact-Page-Url-added-in-TenantWebsites.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007121957165_isdeleted-flag-in-attributes.cs" />
+    <Compile Include="Migrations\202007121957165_isdeleted-flag-in-attributes.designer.cs">
+      <DependentUpon>202007121957165_isdeleted-flag-in-attributes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.cs" />
+    <Compile Include="Migrations\202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.designer.cs">
+      <DependentUpon>202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007132001335_added-ForeColorOpacity-to-WebsiteSliders-table.cs" />
+    <Compile Include="Migrations\202007132001335_added-ForeColorOpacity-to-WebsiteSliders-table.designer.cs">
+      <DependentUpon>202007132001335_added-ForeColorOpacity-to-WebsiteSliders-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007151653139_homepagedetails-added.cs" />
+    <Compile Include="Migrations\202007151653139_homepagedetails-added.designer.cs">
+      <DependentUpon>202007151653139_homepagedetails-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007222028136_added_ContactReceiverEmail_field_to_TenantWebsites_table.cs" />
+    <Compile Include="Migrations\202007222028136_added_ContactReceiverEmail_field_to_TenantWebsites_table.designer.cs">
+      <DependentUpon>202007222028136_added_ContactReceiverEmail_field_to_TenantWebsites_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007222055027_added_LinkPageUrl_field_to_WebsiteNavigations_table.cs" />
+    <Compile Include="Migrations\202007222055027_added_LinkPageUrl_field_to_WebsiteNavigations_table.designer.cs">
+      <DependentUpon>202007222055027_added_LinkPageUrl_field_to_WebsiteNavigations_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.cs" />
+    <Compile Include="Migrations\202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.designer.cs">
+      <DependentUpon>202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.cs" />
+    <Compile Include="Migrations\202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.designer.cs">
+      <DependentUpon>202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007241548414_added_ProductAvailabilityNotifyQueue_table.cs" />
+    <Compile Include="Migrations\202007241548414_added_ProductAvailabilityNotifyQueue_table.designer.cs">
+      <DependentUpon>202007241548414_added_ProductAvailabilityNotifyQueue_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007241749548_added_ProductAvailabilityNotificationSettings_table.cs" />
+    <Compile Include="Migrations\202007241749548_added_ProductAvailabilityNotificationSettings_table.designer.cs">
+      <DependentUpon>202007241749548_added_ProductAvailabilityNotificationSettings_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007262322244_Modiles-Table-Deleted-plus-delivery-collection-price-lists-added-in-tenant-locations.cs" />
+    <Compile Include="Migrations\202007262322244_Modiles-Table-Deleted-plus-delivery-collection-price-lists-added-in-tenant-locations.designer.cs">
+      <DependentUpon>202007262322244_Modiles-Table-Deleted-plus-delivery-collection-price-lists-added-in-tenant-locations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007281128311_added-Favicon-column-to-TenantWebsites-table.cs" />
+    <Compile Include="Migrations\202007281128311_added-Favicon-column-to-TenantWebsites-table.designer.cs">
+      <DependentUpon>202007281128311_added-Favicon-column-to-TenantWebsites-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007282309316_user-verification-properties-added.cs" />
+    <Compile Include="Migrations\202007282309316_user-verification-properties-added.designer.cs">
+      <DependentUpon>202007282309316_user-verification-properties-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008031230225_user-verification-codes-table-added.cs" />
+    <Compile Include="Migrations\202008031230225_user-verification-codes-table-added.designer.cs">
+      <DependentUpon>202008031230225_user-verification-codes-table-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008051214443_increase_value_field_size_in_ProductAttribiteValues_table.cs" />
+    <Compile Include="Migrations\202008051214443_increase_value_field_size_in_ProductAttribiteValues_table.designer.cs">
+      <DependentUpon>202008051214443_increase_value_field_size_in_ProductAttribiteValues_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008071924483_loyalty-fields-in-account.cs" />
+    <Compile Include="Migrations\202008071924483_loyalty-fields-in-account.designer.cs">
+      <DependentUpon>202008071924483_loyalty-fields-in-account.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008251204539_added_our_brands_relates_flags.cs" />
+    <Compile Include="Migrations\202008251204539_added_our_brands_relates_flags.designer.cs">
+      <DependentUpon>202008251204539_added_our_brands_relates_flags.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008261303239_added_sort_order_to_ProductManufacturers_table.cs" />
+    <Compile Include="Migrations\202008261303239_added_sort_order_to_ProductManufacturers_table.designer.cs">
+      <DependentUpon>202008261303239_added_sort_order_to_ProductManufacturers_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008271330560_added_preorder_feature_to_products.cs" />
+    <Compile Include="Migrations\202008271330560_added_preorder_feature_to_products.designer.cs">
+      <DependentUpon>202008271330560_added_preorder_feature_to_products.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008292031322_ApiId-relation-added-in-terminal-logs.cs" />
+    <Compile Include="Migrations\202008292031322_ApiId-relation-added-in-terminal-logs.designer.cs">
+      <DependentUpon>202008292031322_ApiId-relation-added-in-terminal-logs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008301541450_mandatory-location-scan-flag-in-tenant-config.cs" />
+    <Compile Include="Migrations\202008301541450_mandatory-location-scan-flag-in-tenant-config.designer.cs">
+      <DependentUpon>202008301541450_mandatory-location-scan-flag-in-tenant-config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.cs" />
+    <Compile Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.designer.cs">
+      <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.cs" />
+    <Compile Include="Migrations\202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.designer.cs">
+      <DependentUpon>202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.cs" />
+    <Compile Include="Migrations\202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.designer.cs">
+      <DependentUpon>202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009221131399_added_SessionId_to_AccountAddresses_table.cs" />
+    <Compile Include="Migrations\202009221131399_added_SessionId_to_AccountAddresses_table.designer.cs">
+      <DependentUpon>202009221131399_added_SessionId_to_AccountAddresses_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.cs" />
+    <Compile Include="Migrations\202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.designer.cs">
+      <DependentUpon>202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009241539597_add_TenantDeliveryServiceId_to_orders_table.cs" />
+    <Compile Include="Migrations\202009241539597_add_TenantDeliveryServiceId_to_orders_table.designer.cs">
+      <DependentUpon>202009241539597_add_TenantDeliveryServiceId_to_orders_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009281303400_rebate-percentage-added-in-ProductAccountCodes.cs" />
+    <Compile Include="Migrations\202009281303400_rebate-percentage-added-in-ProductAccountCodes.designer.cs">
+      <DependentUpon>202009281303400_rebate-percentage-added-in-ProductAccountCodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010011224279_added_ShippmentCountry_to_Orders_and_OrdersProcesses_tables.cs" />
+    <Compile Include="Migrations\202010011224279_added_ShippmentCountry_to_Orders_and_OrdersProcesses_tables.designer.cs">
+      <DependentUpon>202010011224279_added_ShippmentCountry_to_Orders_and_OrdersProcesses_tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010021724490_address-line-4-changed-into-Town.cs" />
+    <Compile Include="Migrations\202010021724490_address-line-4-changed-into-Town.designer.cs">
+      <DependentUpon>202010021724490_address-line-4-changed-into-Town.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010061534327_added-BaseOrderId-to-Orders-table.cs" />
+    <Compile Include="Migrations\202010061534327_added-BaseOrderId-to-Orders-table.designer.cs">
+      <DependentUpon>202010061534327_added-BaseOrderId-to-Orders-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.cs" />
+    <Compile Include="Migrations\202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.designer.cs">
+      <DependentUpon>202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010091552246_Notes-field-added-in-OrderProcessDetails.cs" />
+    <Compile Include="Migrations\202010091552246_Notes-field-added-in-OrderProcessDetails.designer.cs">
+      <DependentUpon>202010091552246_Notes-field-added-in-OrderProcessDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010141615404_added-AccountSectors-table.cs" />
+    <Compile Include="Migrations\202010141615404_added-AccountSectors-table.designer.cs">
+      <DependentUpon>202010141615404_added-AccountSectors-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.cs" />
+    <Compile Include="Migrations\202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.designer.cs">
+      <DependentUpon>202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010201313229_Tax-type-in-global-tax.cs" />
+    <Compile Include="Migrations\202010201313229_Tax-type-in-global-tax.designer.cs">
+      <DependentUpon>202010201313229_Tax-type-in-global-tax.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010201639171_added-order-update-notification-related-fields.cs" />
+    <Compile Include="Migrations\202010201639171_added-order-update-notification-related-fields.designer.cs">
+      <DependentUpon>202010201639171_added-order-update-notification-related-fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010231254567_added-PriceGroup-to-TenantWebsites-table.cs" />
+    <Compile Include="Migrations\202010231254567_added-PriceGroup-to-TenantWebsites-table.designer.cs">
+      <DependentUpon>202010231254567_added-PriceGroup-to-TenantWebsites-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010260115343_null-allowed-in-account-addresses.cs" />
+    <Compile Include="Migrations\202010260115343_null-allowed-in-account-addresses.designer.cs">
+      <DependentUpon>202010260115343_null-allowed-in-account-addresses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010281214104_default-order-times-and-ignore-warehouse-against-terminal.cs" />
+    <Compile Include="Migrations\202010281214104_default-order-times-and-ignore-warehouse-against-terminal.designer.cs">
+      <DependentUpon>202010281214104_default-order-times-and-ignore-warehouse-against-terminal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010281434422_order-paid-flag-added-and-food-order-type-enum-added.cs" />
+    <Compile Include="Migrations\202010281434422_order-paid-flag-added-and-food-order-type-enum-added.designer.cs">
+      <DependentUpon>202010281434422_order-paid-flag-added-and-food-order-type-enum-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010282251544_FoodOrderType-nullable-in-Orders.cs" />
+    <Compile Include="Migrations\202010282251544_FoodOrderType-nullable-in-Orders.designer.cs">
+      <DependentUpon>202010282251544_FoodOrderType-nullable-in-Orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010292213467_order-discount-added-in-invoice.cs" />
+    <Compile Include="Migrations\202010292213467_order-discount-added-in-invoice.designer.cs">
+      <DependentUpon>202010292213467_order-discount-added-in-invoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010310250024_added-ShiftSchedules-table.cs" />
+    <Compile Include="Migrations\202010310250024_added-ShiftSchedules-table.designer.cs">
+      <DependentUpon>202010310250024_added-ShiftSchedules-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011020957019_removed-Shifts-table.cs" />
+    <Compile Include="Migrations\202011020957019_removed-Shifts-table.designer.cs">
+      <DependentUpon>202011020957019_removed-Shifts-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011021642005_added-SortOrder-to-SLAPrioriries-table.cs" />
+    <Compile Include="Migrations\202011021642005_added-SortOrder-to-SLAPrioriries-table.designer.cs">
+      <DependentUpon>202011021642005_added-SortOrder-to-SLAPrioriries-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011031257262_fixed-ApiCredentials-and-Orders-relation.cs" />
+    <Compile Include="Migrations\202011031257262_fixed-ApiCredentials-and-Orders-relation.designer.cs">
+      <DependentUpon>202011031257262_fixed-ApiCredentials-and-Orders-relation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011031403039_added-new-configs-to-TenantConfigs-table.cs" />
+    <Compile Include="Migrations\202011031403039_added-new-configs-to-TenantConfigs-table.designer.cs">
+      <DependentUpon>202011031403039_added-new-configs-to-TenantConfigs-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011031458485_added-price-calculation-configs-to-TenantConfigs-table.cs" />
+    <Compile Include="Migrations\202011031458485_added-price-calculation-configs-to-TenantConfigs-table.designer.cs">
+      <DependentUpon>202011031458485_added-price-calculation-configs-to-TenantConfigs-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011091020383_added-some-LoyaltyApp-configs-to-TenantConfigs-table.cs" />
+    <Compile Include="Migrations\202011091020383_added-some-LoyaltyApp-configs-to-TenantConfigs-table.designer.cs">
+      <DependentUpon>202011091020383_added-some-LoyaltyApp-configs-to-TenantConfigs-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011200721511_address-line-4-dropped-from-PTenants-PLandlords-and-tenant-locations.cs" />
+    <Compile Include="Migrations\202011200721511_address-line-4-dropped-from-PTenants-PLandlords-and-tenant-locations.designer.cs">
+      <DependentUpon>202011200721511_address-line-4-dropped-from-PTenants-PLandlords-and-tenant-locations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011201426060_OfflineMode-flag-added-orders.cs" />
+    <Compile Include="Migrations\202011201426060_OfflineMode-flag-added-orders.designer.cs">
+      <DependentUpon>202011201426060_OfflineMode-flag-added-orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011301344316_added-Deliverect-related-fields.cs" />
+    <Compile Include="Migrations\202011301344316_added-Deliverect-related-fields.designer.cs">
+      <DependentUpon>202011301344316_added-Deliverect-related-fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.cs" />
+    <Compile Include="Migrations\202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.designer.cs">
+      <DependentUpon>202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012071404406_added-new-time-and-attendance-related-fields-to-Resources-table.cs" />
+    <Compile Include="Migrations\202012071404406_added-new-time-and-attendance-related-fields-to-Resources-table.designer.cs">
+      <DependentUpon>202012071404406_added-new-time-and-attendance-related-fields-to-Resources-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012110216160_ProductLocationStocks-table-added-for-location-stock-calculations.cs" />
+    <Compile Include="Migrations\202012110216160_ProductLocationStocks-table-added-for-location-stock-calculations.designer.cs">
+      <DependentUpon>202012110216160_ProductLocationStocks-table-added-for-location-stock-calculations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.cs" />
+    <Compile Include="Migrations\202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.designer.cs">
+      <DependentUpon>202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012140148047_added-countries-for-TenantDeliveryService-and-PrestashopCountryId-removed-from-GlobalCountry-table.cs" />
+    <Compile Include="Migrations\202012140148047_added-countries-for-TenantDeliveryService-and-PrestashopCountryId-removed-from-GlobalCountry-table.designer.cs">
+      <DependentUpon>202012140148047_added-countries-for-TenantDeliveryService-and-PrestashopCountryId-removed-from-GlobalCountry-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012141118378_added-DefaultImageAltText-to-ProductMaster-table.cs" />
+    <Compile Include="Migrations\202012141118378_added-DefaultImageAltText-to-ProductMaster-table.designer.cs">
+      <DependentUpon>202012141118378_added-DefaultImageAltText-to-ProductMaster-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyDbConfiguration.cs" />
+    <Compile Include="Helpers\DataImportFactory.cs" />
+    <Compile Include="IApplicationContext.cs" />
+    <Compile Include="IDbContext.cs" />
+    <Compile Include="Migrations\201801311929517_InitialCreate.cs" />
+    <Compile Include="Migrations\201801311929517_InitialCreate.Designer.cs">
+      <DependentUpon>201801311929517_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802011828101_RenamedResourceTitle.cs" />
+    <Compile Include="Migrations\201802011828101_RenamedResourceTitle.Designer.cs">
+      <DependentUpon>201802011828101_RenamedResourceTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802050805343_OrderNavigationToPpropertiesChanged.cs" />
+    <Compile Include="Migrations\201802050805343_OrderNavigationToPpropertiesChanged.Designer.cs">
+      <DependentUpon>201802050805343_OrderNavigationToPpropertiesChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802050904339_ForiegnKey-PproprtyId-in-Orders.cs" />
+    <Compile Include="Migrations\201802050904339_ForiegnKey-PproprtyId-in-Orders.Designer.cs">
+      <DependentUpon>201802050904339_ForiegnKey-PproprtyId-in-Orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802051421124_UpdatedMarketJobEntities.cs" />
+    <Compile Include="Migrations\201802051421124_UpdatedMarketJobEntities.Designer.cs">
+      <DependentUpon>201802051421124_UpdatedMarketJobEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802061744526_ResourceUserAssociation.cs" />
+    <Compile Include="Migrations\201802061744526_ResourceUserAssociation.Designer.cs">
+      <DependentUpon>201802061744526_ResourceUserAssociation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802161400375_AccountStatusTrackingEntity.cs" />
+    <Compile Include="Migrations\201802161400375_AccountStatusTrackingEntity.Designer.cs">
+      <DependentUpon>201802161400375_AccountStatusTrackingEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802161633009_EnableProductTaxWarranty.cs" />
+    <Compile Include="Migrations\201802161633009_EnableProductTaxWarranty.Designer.cs">
+      <DependentUpon>201802161633009_EnableProductTaxWarranty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803100938300_financial-transaction-cheque-proof.cs" />
+    <Compile Include="Migrations\201803100938300_financial-transaction-cheque-proof.Designer.cs">
+      <DependentUpon>201803100938300_financial-transaction-cheque-proof.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803111548420_MarketRouteRelationChanged.cs" />
+    <Compile Include="Migrations\201803111548420_MarketRouteRelationChanged.Designer.cs">
+      <DependentUpon>201803111548420_MarketRouteRelationChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803130952206_ProductSpecialPriceMigration.cs" />
+    <Compile Include="Migrations\201803130952206_ProductSpecialPriceMigration.Designer.cs">
+      <DependentUpon>201803130952206_ProductSpecialPriceMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803131030471_ProductSpecialPriceKeys.cs" />
+    <Compile Include="Migrations\201803131030471_ProductSpecialPriceKeys.Designer.cs">
+      <DependentUpon>201803131030471_ProductSpecialPriceKeys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803131600213_PriceGroupDetailsChangeForSpecialPrice.cs" />
+    <Compile Include="Migrations\201803131600213_PriceGroupDetailsChangeForSpecialPrice.Designer.cs">
+      <DependentUpon>201803131600213_PriceGroupDetailsChangeForSpecialPrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803161556565_Market-Scheduler-relation-Change.cs" />
+    <Compile Include="Migrations\201803161556565_Market-Scheduler-relation-Change.Designer.cs">
+      <DependentUpon>201803161556565_Market-Scheduler-relation-Change.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803161628143_Rename-RouteOrder-to-SortOrder.cs" />
+    <Compile Include="Migrations\201803161628143_Rename-RouteOrder-to-SortOrder.Designer.cs">
+      <DependentUpon>201803161628143_Rename-RouteOrder-to-SortOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803181229435_MarketRouteMap.cs" />
+    <Compile Include="Migrations\201803181229435_MarketRouteMap.Designer.cs">
+      <DependentUpon>201803181229435_MarketRouteMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803181336121_Old-RouteAssociation-Removed.cs" />
+    <Compile Include="Migrations\201803181336121_Old-RouteAssociation-Removed.Designer.cs">
+      <DependentUpon>201803181336121_Old-RouteAssociation-Removed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803211047377_RouteScheduler-Resource-filed-name-change.cs" />
+    <Compile Include="Migrations\201803211047377_RouteScheduler-Resource-filed-name-change.Designer.cs">
+      <DependentUpon>201803211047377_RouteScheduler-Resource-filed-name-change.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803221721597_TerminalWarehouseChanges.cs" />
+    <Compile Include="Migrations\201803221721597_TerminalWarehouseChanges.Designer.cs">
+      <DependentUpon>201803221721597_TerminalWarehouseChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804051526467_VanSalesDailyCashReportEntities.cs" />
+    <Compile Include="Migrations\201804051526467_VanSalesDailyCashReportEntities.Designer.cs">
+      <DependentUpon>201804051526467_VanSalesDailyCashReportEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804051532015_VanSalesDailyCashReportNavigations.cs" />
+    <Compile Include="Migrations\201804051532015_VanSalesDailyCashReportNavigations.Designer.cs">
+      <DependentUpon>201804051532015_VanSalesDailyCashReportNavigations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804060927330_UpdatedCashReport.cs" />
+    <Compile Include="Migrations\201804060927330_UpdatedCashReport.Designer.cs">
+      <DependentUpon>201804060927330_UpdatedCashReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804091127596_AddedShipmentDetailsToOrderProcess.cs" />
+    <Compile Include="Migrations\201804091127596_AddedShipmentDetailsToOrderProcess.Designer.cs">
+      <DependentUpon>201804091127596_AddedShipmentDetailsToOrderProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804111435336_AccountTransactions_AccountId_nullable.cs" />
+    <Compile Include="Migrations\201804111435336_AccountTransactions_AccountId_nullable.Designer.cs">
+      <DependentUpon>201804111435336_AccountTransactions_AccountId_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804121007024_pending-changes.cs" />
+    <Compile Include="Migrations\201804121007024_pending-changes.Designer.cs">
+      <DependentUpon>201804121007024_pending-changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804221616201_Locations_Type_and_Group_nullable.cs" />
+    <Compile Include="Migrations\201804221616201_Locations_Type_and_Group_nullable.Designer.cs">
+      <DependentUpon>201804221616201_Locations_Type_and_Group_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804221636037_LastQty_In_InventoryTransactions.cs" />
+    <Compile Include="Migrations\201804221636037_LastQty_In_InventoryTransactions.Designer.cs">
+      <DependentUpon>201804221636037_LastQty_In_InventoryTransactions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804221644007_LastQty_In_InventoryTransactions_nonNullable.cs" />
+    <Compile Include="Migrations\201804221644007_LastQty_In_InventoryTransactions_nonNullable.Designer.cs">
+      <DependentUpon>201804221644007_LastQty_In_InventoryTransactions_nonNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804231642130_account_CashOnlyAccount_flag.cs" />
+    <Compile Include="Migrations\201804231642130_account_CashOnlyAccount_flag.Designer.cs">
+      <DependentUpon>201804231642130_account_CashOnlyAccount_flag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805151039048_Terminal-GeoLocation-Added.cs" />
+    <Compile Include="Migrations\201805151039048_Terminal-GeoLocation-Added.Designer.cs">
+      <DependentUpon>201805151039048_Terminal-GeoLocation-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805181550299_PalletTracking.cs" />
+    <Compile Include="Migrations\201805181550299_PalletTracking.Designer.cs">
+      <DependentUpon>201805181550299_PalletTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805241018514_PalletTrackingModelChnages.cs" />
+    <Compile Include="Migrations\201805241018514_PalletTrackingModelChnages.Designer.cs">
+      <DependentUpon>201805241018514_PalletTrackingModelChnages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805291059282_PriceGroups-PostageTypes-Changes.cs" />
+    <Compile Include="Migrations\201805291059282_PriceGroups-PostageTypes-Changes.Designer.cs">
+      <DependentUpon>201805291059282_PriceGroups-PostageTypes-Changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805291110282_Elmah-ErrorLog.cs" />
+    <Compile Include="Migrations\201805291110282_Elmah-ErrorLog.Designer.cs">
+      <DependentUpon>201805291110282_Elmah-ErrorLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806011120531_TenantPriceGroupId-changed-to-nonNullable.cs" />
+    <Compile Include="Migrations\201806011120531_TenantPriceGroupId-changed-to-nonNullable.Designer.cs">
+      <DependentUpon>201806011120531_TenantPriceGroupId-changed-to-nonNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806011227088_DontMonitorStock-flag-added.cs" />
+    <Compile Include="Migrations\201806011227088_DontMonitorStock-flag-added.Designer.cs">
+      <DependentUpon>201806011227088_DontMonitorStock-flag-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806021308417_DontMoniterStock-flag-added-in-InventoryTransactions.cs" />
+    <Compile Include="Migrations\201806021308417_DontMoniterStock-flag-added-in-InventoryTransactions.Designer.cs">
+      <DependentUpon>201806021308417_DontMoniterStock-flag-added-in-InventoryTransactions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806081050142_TextTranslations.cs" />
+    <Compile Include="Migrations\201806081050142_TextTranslations.Designer.cs">
+      <DependentUpon>201806081050142_TextTranslations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806081208550_Culture-Added-In-Tenant.cs" />
+    <Compile Include="Migrations\201806081208550_Culture-Added-In-Tenant.Designer.cs">
+      <DependentUpon>201806081208550_Culture-Added-In-Tenant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806131621586_PallettrackingScheme-added-in-TenantLocations.cs" />
+    <Compile Include="Migrations\201806131621586_PallettrackingScheme-added-in-TenantLocations.Designer.cs">
+      <DependentUpon>201806131621586_PallettrackingScheme-added-in-TenantLocations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806140813555_PallettrackingAddedInStockTakes.cs" />
+    <Compile Include="Migrations\201806140813555_PallettrackingAddedInStockTakes.Designer.cs">
+      <DependentUpon>201806140813555_PallettrackingAddedInStockTakes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806140830183_StockTakePalletsSnapshot-added.cs" />
+    <Compile Include="Migrations\201806140830183_StockTakePalletsSnapshot-added.Designer.cs">
+      <DependentUpon>201806140830183_StockTakePalletsSnapshot-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807011432059_Minor-changes-in-AccountAddress-AccountContacts-TenantLocations.cs" />
+    <Compile Include="Migrations\201807011432059_Minor-changes-in-AccountAddress-AccountContacts-TenantLocations.Designer.cs">
+      <DependentUpon>201807011432059_Minor-changes-in-AccountAddress-AccountContacts-TenantLocations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807011440011_AddressLine4-in-AccountAddresses.cs" />
+    <Compile Include="Migrations\201807011440011_AddressLine4-in-AccountAddresses.Designer.cs">
+      <DependentUpon>201807011440011_AddressLine4-in-AccountAddresses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807091405341_OrderReceiveCount-Added.cs" />
+    <Compile Include="Migrations\201807091405341_OrderReceiveCount-Added.Designer.cs">
+      <DependentUpon>201807091405341_OrderReceiveCount-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807160816005_tenant-config-report-footer-messages.cs" />
+    <Compile Include="Migrations\201807160816005_tenant-config-report-footer-messages.Designer.cs">
+      <DependentUpon>201807160816005_tenant-config-report-footer-messages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807171732133_TenantConfig-Terminal-receipt-print-properties.cs" />
+    <Compile Include="Migrations\201807171732133_TenantConfig-Terminal-receipt-print-properties.Designer.cs">
+      <DependentUpon>201807171732133_TenantConfig-Terminal-receipt-print-properties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807231530447_JobType-IsDeleted-Added.cs" />
+    <Compile Include="Migrations\201807231530447_JobType-IsDeleted-Added.Designer.cs">
+      <DependentUpon>201807231530447_JobType-IsDeleted-Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807231553385_JobType-Rename-Name.cs" />
+    <Compile Include="Migrations\201807231553385_JobType-Rename-Name.Designer.cs">
+      <DependentUpon>201807231553385_JobType-Rename-Name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808041838103_TransferOrders-Simplified.cs" />
+    <Compile Include="Migrations\201808041838103_TransferOrders-Simplified.Designer.cs">
+      <DependentUpon>201808041838103_TransferOrders-Simplified.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808060856293_deliveryNo-ConsignmentNo-Simplified.cs" />
+    <Compile Include="Migrations\201808060856293_deliveryNo-ConsignmentNo-Simplified.Designer.cs">
+      <DependentUpon>201808060856293_deliveryNo-ConsignmentNo-Simplified.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808071013426_product-packsize.cs" />
+    <Compile Include="Migrations\201808071013426_product-packsize.Designer.cs">
+      <DependentUpon>201808071013426_product-packsize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808080800049_Serial-Warranty-Optional.cs" />
+    <Compile Include="Migrations\201808080800049_Serial-Warranty-Optional.Designer.cs">
+      <DependentUpon>201808080800049_Serial-Warranty-Optional.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808141630315_manufecturer-part-number.cs" />
+    <Compile Include="Migrations\201808141630315_manufecturer-part-number.Designer.cs">
+      <DependentUpon>201808141630315_manufecturer-part-number.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808192025467_country-of-origion.cs" />
+    <Compile Include="Migrations\201808192025467_country-of-origion.Designer.cs">
+      <DependentUpon>201808192025467_country-of-origion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808200859563_add-account-tax-status.cs" />
+    <Compile Include="Migrations\201808200859563_add-account-tax-status.Designer.cs">
+      <DependentUpon>201808200859563_add-account-tax-status.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Migrations\Scripts\Migrations-Datecreated.sql" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\Seed\Countries.csv" />
+    <Content Include="Content\Seed\AuthActivityGroupMaps.csv" />
+    <Content Include="Content\Seed\AuthActivityGroups.csv" />
+    <Content Include="Content\Seed\JobSubTypes.csv" />
+    <Content Include="Content\Seed\Products.csv" />
+    <Content Include="Content\Seed\ProductsMini.csv" />
+    <Content Include="Content\Seed\Vendors.csv" />
+    <Content Include="Content\Seed\AuthActivities.csv" />
+    <None Include="packages.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GaneEcommerce.Entities\Ganedata.Core.Entities.csproj">
+      <Project>{706892f4-49d7-4efa-a414-44b5e1d74286}</Project>
+      <Name>Ganedata.Core.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201801311929517_InitialCreate.resx">
+      <DependentUpon>201801311929517_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802011828101_RenamedResourceTitle.resx">
+      <DependentUpon>201802011828101_RenamedResourceTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802050805343_OrderNavigationToPpropertiesChanged.resx">
+      <DependentUpon>201802050805343_OrderNavigationToPpropertiesChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802050904339_ForiegnKey-PproprtyId-in-Orders.resx">
+      <DependentUpon>201802050904339_ForiegnKey-PproprtyId-in-Orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802051421124_UpdatedMarketJobEntities.resx">
+      <DependentUpon>201802051421124_UpdatedMarketJobEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802061744526_ResourceUserAssociation.resx">
+      <DependentUpon>201802061744526_ResourceUserAssociation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802161400375_AccountStatusTrackingEntity.resx">
+      <DependentUpon>201802161400375_AccountStatusTrackingEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802161633009_EnableProductTaxWarranty.resx">
+      <DependentUpon>201802161633009_EnableProductTaxWarranty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803100938300_financial-transaction-cheque-proof.resx">
+      <DependentUpon>201803100938300_financial-transaction-cheque-proof.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803111548420_MarketRouteRelationChanged.resx">
+      <DependentUpon>201803111548420_MarketRouteRelationChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803130952206_ProductSpecialPriceMigration.resx">
+      <DependentUpon>201803130952206_ProductSpecialPriceMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803131030471_ProductSpecialPriceKeys.resx">
+      <DependentUpon>201803131030471_ProductSpecialPriceKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803131600213_PriceGroupDetailsChangeForSpecialPrice.resx">
+      <DependentUpon>201803131600213_PriceGroupDetailsChangeForSpecialPrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803161556565_Market-Scheduler-relation-Change.resx">
+      <DependentUpon>201803161556565_Market-Scheduler-relation-Change.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803161628143_Rename-RouteOrder-to-SortOrder.resx">
+      <DependentUpon>201803161628143_Rename-RouteOrder-to-SortOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803181229435_MarketRouteMap.resx">
+      <DependentUpon>201803181229435_MarketRouteMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803181336121_Old-RouteAssociation-Removed.resx">
+      <DependentUpon>201803181336121_Old-RouteAssociation-Removed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803211047377_RouteScheduler-Resource-filed-name-change.resx">
+      <DependentUpon>201803211047377_RouteScheduler-Resource-filed-name-change.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803221721597_TerminalWarehouseChanges.resx">
+      <DependentUpon>201803221721597_TerminalWarehouseChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804051526467_VanSalesDailyCashReportEntities.resx">
+      <DependentUpon>201804051526467_VanSalesDailyCashReportEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804051532015_VanSalesDailyCashReportNavigations.resx">
+      <DependentUpon>201804051532015_VanSalesDailyCashReportNavigations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804060927330_UpdatedCashReport.resx">
+      <DependentUpon>201804060927330_UpdatedCashReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804091127596_AddedShipmentDetailsToOrderProcess.resx">
+      <DependentUpon>201804091127596_AddedShipmentDetailsToOrderProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804111435336_AccountTransactions_AccountId_nullable.resx">
+      <DependentUpon>201804111435336_AccountTransactions_AccountId_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804121007024_pending-changes.resx">
+      <DependentUpon>201804121007024_pending-changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804221616201_Locations_Type_and_Group_nullable.resx">
+      <DependentUpon>201804221616201_Locations_Type_and_Group_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804221636037_LastQty_In_InventoryTransactions.resx">
+      <DependentUpon>201804221636037_LastQty_In_InventoryTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804221644007_LastQty_In_InventoryTransactions_nonNullable.resx">
+      <DependentUpon>201804221644007_LastQty_In_InventoryTransactions_nonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804231642130_account_CashOnlyAccount_flag.resx">
+      <DependentUpon>201804231642130_account_CashOnlyAccount_flag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805151039048_Terminal-GeoLocation-Added.resx">
+      <DependentUpon>201805151039048_Terminal-GeoLocation-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805181550299_PalletTracking.resx">
+      <DependentUpon>201805181550299_PalletTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805241018514_PalletTrackingModelChnages.resx">
+      <DependentUpon>201805241018514_PalletTrackingModelChnages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805291059282_PriceGroups-PostageTypes-Changes.resx">
+      <DependentUpon>201805291059282_PriceGroups-PostageTypes-Changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805291110282_Elmah-ErrorLog.resx">
+      <DependentUpon>201805291110282_Elmah-ErrorLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806011120531_TenantPriceGroupId-changed-to-nonNullable.resx">
+      <DependentUpon>201806011120531_TenantPriceGroupId-changed-to-nonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806011227088_DontMonitorStock-flag-added.resx">
+      <DependentUpon>201806011227088_DontMonitorStock-flag-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806021308417_DontMoniterStock-flag-added-in-InventoryTransactions.resx">
+      <DependentUpon>201806021308417_DontMoniterStock-flag-added-in-InventoryTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806081050142_TextTranslations.resx">
+      <DependentUpon>201806081050142_TextTranslations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806081208550_Culture-Added-In-Tenant.resx">
+      <DependentUpon>201806081208550_Culture-Added-In-Tenant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806131621586_PallettrackingScheme-added-in-TenantLocations.resx">
+      <DependentUpon>201806131621586_PallettrackingScheme-added-in-TenantLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806140813555_PallettrackingAddedInStockTakes.resx">
+      <DependentUpon>201806140813555_PallettrackingAddedInStockTakes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806140830183_StockTakePalletsSnapshot-added.resx">
+      <DependentUpon>201806140830183_StockTakePalletsSnapshot-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807011432059_Minor-changes-in-AccountAddress-AccountContacts-TenantLocations.resx">
+      <DependentUpon>201807011432059_Minor-changes-in-AccountAddress-AccountContacts-TenantLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807011440011_AddressLine4-in-AccountAddresses.resx">
+      <DependentUpon>201807011440011_AddressLine4-in-AccountAddresses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807091405341_OrderReceiveCount-Added.resx">
+      <DependentUpon>201807091405341_OrderReceiveCount-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807160816005_tenant-config-report-footer-messages.resx">
+      <DependentUpon>201807160816005_tenant-config-report-footer-messages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807171732133_TenantConfig-Terminal-receipt-print-properties.resx">
+      <DependentUpon>201807171732133_TenantConfig-Terminal-receipt-print-properties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807231530447_JobType-IsDeleted-Added.resx">
+      <DependentUpon>201807231530447_JobType-IsDeleted-Added.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807231553385_JobType-Rename-Name.resx">
+      <DependentUpon>201807231553385_JobType-Rename-Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808041838103_TransferOrders-Simplified.resx">
+      <DependentUpon>201808041838103_TransferOrders-Simplified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808060856293_deliveryNo-ConsignmentNo-Simplified.resx">
+      <DependentUpon>201808060856293_deliveryNo-ConsignmentNo-Simplified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808071013426_product-packsize.resx">
+      <DependentUpon>201808071013426_product-packsize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808080800049_Serial-Warranty-Optional.resx">
+      <DependentUpon>201808080800049_Serial-Warranty-Optional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808141630315_manufecturer-part-number.resx">
+      <DependentUpon>201808141630315_manufecturer-part-number.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808192025467_country-of-origion.resx">
+      <DependentUpon>201808192025467_country-of-origion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808200859563_add-account-tax-status.resx">
+      <DependentUpon>201808200859563_add-account-tax-status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809071139309_EnableGlobalProcessByPallet-added-in-TenantConfig.resx">
+      <DependentUpon>201809071139309_EnableGlobalProcessByPallet-added-in-TenantConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809081300167_OrderProofOfDelivery.resx">
+      <DependentUpon>201809081300167_OrderProofOfDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809101420092_SortOrder-In-OrderDetails-and-in-ProductGroups.resx">
+      <DependentUpon>201809101420092_SortOrder-In-OrderDetails-and-in-ProductGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809250901231_Tenant-User-TimeZoneId.resx">
+      <DependentUpon>201809250901231_Tenant-User-TimeZoneId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810120712236_payroll-employee-no.resx">
+      <DependentUpon>201810120712236_payroll-employee-no.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810181747530_ResourceRequestChange.resx">
+      <DependentUpon>201810181747530_ResourceRequestChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810261614215_account-id-in-order.resx">
+      <DependentUpon>201810261614215_account-id-in-order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811060806565_ShiftStatus-Removed.resx">
+      <DependentUpon>201811060806565_ShiftStatus-Removed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811081031110_TnA-models-changes-removed-unnecessary-fields.resx">
+      <DependentUpon>201811081031110_TnA-models-changes-removed-unnecessary-fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811081345070_Terminal-Command-Models.resx">
+      <DependentUpon>201811081345070_Terminal-Command-Models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811081545059_TerminalCommandQueue-model-changes.resx">
+      <DependentUpon>201811081545059_TerminalCommandQueue-model-changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811220916383_ResourceShifts_ResourceId_NonNullable.resx">
+      <DependentUpon>201811220916383_ResourceShifts_ResourceId_NonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811281323516_resourcerequestandordertablemodfied.resx">
+      <DependentUpon>201811281323516_resourcerequestandordertablemodfied.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812040917292_loadingcomments-added.resx">
+      <DependentUpon>201812040917292_loadingcomments-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812121519547_pending-changes-to-match-clr-version.resx">
+      <DependentUpon>201812121519547_pending-changes-to-match-clr-version.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812142351267_ResourceEntitlment.resx">
+      <DependentUpon>201812142351267_ResourceEntitlment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812161325583_AccountcontactId.resx">
+      <DependentUpon>201812161325583_AccountcontactId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812190222393_email-templates-changes.resx">
+      <DependentUpon>201812190222393_email-templates-changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812190309432_emailconfigId-removed-from-NotificationQueue.resx">
+      <DependentUpon>201812190309432_emailconfigId-removed-from-NotificationQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812191130307_GlobalProcessByPallet-Moved-to-TenantLocations.resx">
+      <DependentUpon>201812191130307_GlobalProcessByPallet-Moved-to-TenantLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812192229595_custom_Email_Message_Added.resx">
+      <DependentUpon>201812192229595_custom_Email_Message_Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812201010051_remaining-total-cases-added-in-StocktakePalletSnapshot.resx">
+      <DependentUpon>201812201010051_remaining-total-cases-added-in-StocktakePalletSnapshot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812201354474_LocaionId-in-Stocktake-Detail.resx">
+      <DependentUpon>201812201354474_LocaionId-in-Stocktake-Detail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812221013091_stocktake-flags-for-terminals-added.resx">
+      <DependentUpon>201812221013091_stocktake-flags-for-terminals-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812221343388_remove_tenaentcountry.resx">
+      <DependentUpon>201812221343388_remove_tenaentcountry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812221414423_country_currencyRelation.resx">
+      <DependentUpon>201812221414423_country_currencyRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812231139274_EnableRelayEmailServer-moved-InvoiceStatus-Added.resx">
+      <DependentUpon>201812231139274_EnableRelayEmailServer-moved-InvoiceStatus-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901060735107_plandlord_IsdeletedColumn.resx">
+      <DependentUpon>201901060735107_plandlord_IsdeletedColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901060745296_pproperties_IsdeletedColumn.resx">
+      <DependentUpon>201901060745296_pproperties_IsdeletedColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091443457_PalletProductsBaseInfo-added.resx">
+      <DependentUpon>201901091443457_PalletProductsBaseInfo-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901171700364_IsDeleted_columnfor_palletandpalletproduct.resx">
+      <DependentUpon>201901171700364_IsDeleted_columnfor_palletandpalletproduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901212321359_ConsolidateOrderProcess-and-AllowDuplicateBarcode-flags-added.resx">
+      <DependentUpon>201901212321359_ConsolidateOrderProcess-and-AllowDuplicateBarcode-flags-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901261608092_AutoAllowProcess_TenantLocation.resx">
+      <DependentUpon>201901261608092_AutoAllowProcess_TenantLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901261939426_DirectShip_orders.resx">
+      <DependentUpon>201901261939426_DirectShip_orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901262107104_orderId_PalletTracking.resx">
+      <DependentUpon>201901262107104_orderId_PalletTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901271513482_batch-expiry-added-in-OrderProcessDetail.resx">
+      <DependentUpon>201901271513482_batch-expiry-added-in-OrderProcessDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901301705477_OrderDiscount-field-added.resx">
+      <DependentUpon>201901301705477_OrderDiscount-field-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901311816207_tenantAgreement_TenantConfig.resx">
+      <DependentUpon>201901311816207_tenantAgreement_TenantConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902010954059_comments-in-pallet-tracking.resx">
+      <DependentUpon>201902010954059_comments-in-pallet-tracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902031709255_terminalId-in-InventoryTransactions-and-in-OrderProcessDetails.resx">
+      <DependentUpon>201902031709255_terminalId-in-InventoryTransactions-and-in-OrderProcessDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902032138263_productcatgories-tenantconfig.resx">
+      <DependentUpon>201902032138263_productcatgories-tenantconfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902071310342_OrderProcessDetailId-added-in-InventroyTransaction.resx">
+      <DependentUpon>201902071310342_OrderProcessDetailId-added-in-InventroyTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902101918557_asset-tracking-models-added.resx">
+      <DependentUpon>201902101918557_asset-tracking-models-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902111753052_allowaccountaddress-tenantlocation.resx">
+      <DependentUpon>201902111753052_allowaccountaddress-tenantlocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902241502498_adding-productflage-forecommerce.resx">
+      <DependentUpon>201902241502498_adding-productflage-forecommerce.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902251607300_product-master-field-name-changes.resx">
+      <DependentUpon>201902251607300_product-master-field-name-changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902261256516_terminal-transaction-log.resx">
+      <DependentUpon>201902261256516_terminal-transaction-log.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902270747157_product-group-field-length-changed.resx">
+      <DependentUpon>201902270747157_product-group-field-length-changed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902281044138_product-files-added.resx">
+      <DependentUpon>201902281044138_product-files-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903052301442_nullable-false-fields.resx">
+      <DependentUpon>201903052301442_nullable-false-fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903070734208_credit-terms-in-accounts.resx">
+      <DependentUpon>201903070734208_credit-terms-in-accounts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903121409406_Pallet-dispatch-model-changes.resx">
+      <DependentUpon>201903121409406_Pallet-dispatch-model-changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903140718558_AccountReceipientId-nullable-in-Pallets.resx">
+      <DependentUpon>201903140718558_AccountReceipientId-nullable-in-Pallets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903141059339_OrderDetailId-changed-to-OrderProcessDetailId-in-PalletProducts.resx">
+      <DependentUpon>201903141059339_OrderDetailId-changed-to-OrderProcessDetailId-in-PalletProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903141752047_blind-shipment-flags-in-tenant-locations.resx">
+      <DependentUpon>201903141752047_blind-shipment-flags-in-tenant-locations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903151647417_pallet-dispatch-comments-scan-flags-added.resx">
+      <DependentUpon>201903151647417_pallet-dispatch-comments-scan-flags-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903161324071_pallet-dispatch-sign-changed-to-string.resx">
+      <DependentUpon>201903161324071_pallet-dispatch-sign-changed-to-string.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903242134090_NoOfCases-in-OrderProofOfDelivery.resx">
+      <DependentUpon>201903242134090_NoOfCases-in-OrderProofOfDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904040601387_market-externalid-added.resx">
+      <DependentUpon>201904040601387_market-externalid-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904111048262_string-nullable-fields-ou-of-sync.resx">
+      <DependentUpon>201904111048262_string-nullable-fields-ou-of-sync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904251515215_allow-modify-proice-flag-added.resx">
+      <DependentUpon>201904251515215_allow-modify-proice-flag-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905011745000_terminal-post-geo-codes-and-vehicle-checks-flags.resx">
+      <DependentUpon>201905011745000_terminal-post-geo-codes-and-vehicle-checks-flags.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905130107357_OrderProcessDetailId_foreignKey_In_InInventoryTransaction.resx">
+      <DependentUpon>201905130107357_OrderProcessDetailId_foreignKey_In_InInventoryTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905141753412_department-groups-attiribute-to-account.resx">
+      <DependentUpon>201905141753412_department-groups-attiribute-to-account.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905151409306_ShowDeliveryByGroups-added-in-TenantConfig.resx">
+      <DependentUpon>201905151409306_ShowDeliveryByGroups-added-in-TenantConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905241828164_DefaultCustomMessage-forsalesorders-customeamil.resx">
+      <DependentUpon>201905241828164_DefaultCustomMessage-forsalesorders-customeamil.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905252313406_invoicenumber-addedin-orderprocess.resx">
+      <DependentUpon>201905252313406_invoicenumber-addedin-orderprocess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906081047530_adding-showingdecimalpointfororders-in-tenantconfig.resx">
+      <DependentUpon>201906081047530_adding-showingdecimalpointfororders-in-tenantconfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906092243320_string-nullable-false-issue.resx">
+      <DependentUpon>201906092243320_string-nullable-false-issue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906101349582_added-IsCollectionFromCustomerSide-inorders.resx">
+      <DependentUpon>201906101349582_added-IsCollectionFromCustomerSide-inorders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906131204239_Net-and-tax-added-in-van-sales-z-reports.resx">
+      <DependentUpon>201906131204239_Net-and-tax-added-in-van-sales-z-reports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906131230409_model-not-matching-fix.resx">
+      <DependentUpon>201906131230409_model-not-matching-fix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906140913260_AllowSaleWithoutAccount-and-ShowFullBalanceOnPayment-flags-in-TenantLocations.resx">
+      <DependentUpon>201906140913260_AllowSaleWithoutAccount-and-ShowFullBalanceOnPayment-flags-in-TenantLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906171631423_TerminalSyncDays-added-in-tenant-config.resx">
+      <DependentUpon>201906171631423_TerminalSyncDays-added-in-tenant-config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906231829354_changescontact-column-name.resx">
+      <DependentUpon>201906231829354_changescontact-column-name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906232214162_InventoryTransaction-AuthUser-foreign-key-added.resx">
+      <DependentUpon>201906232214162_InventoryTransaction-AuthUser-foreign-key-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906251535283_AmountPaid-and-BalanceOnPayment-fields-added-in-orders-plus-flags-in-PriceGroups.resx">
+      <DependentUpon>201906251535283_AmountPaid-and-BalanceOnPayment-fields-added-in-orders-plus-flags-in-PriceGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906251545479_AccountPaymentModeId-added-in-orders.resx">
+      <DependentUpon>201906251545479_AccountPaymentModeId-added-in-orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906291255283_opening-account-balance-added-financial-transactions.resx">
+      <DependentUpon>201906291255283_opening-account-balance-added-financial-transactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907010229406_time-added-in-expected-date.resx">
+      <DependentUpon>201907010229406_time-added-in-expected-date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907011625300_invoicemasterid-added-in-TenantEmailNotificationQueueTable.resx">
+      <DependentUpon>201907011625300_invoicemasterid-added-in-TenantEmailNotificationQueueTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907021348168_added-IvReportFooterMsg1-inTenantConfig.resx">
+      <DependentUpon>201907021348168_added-IvReportFooterMsg1-inTenantConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907022010588_OrderToken-added-in-Orders.resx">
+      <DependentUpon>201907022010588_OrderToken-added-in-Orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907091917341_adding-tenantregistrationno-in-Tenant.resx">
+      <DependentUpon>201907091917341_adding-tenantregistrationno-in-Tenant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907112233362_ShowCasesPrice-and-AllowExportDatabase-flags-added-in-terminals.resx">
+      <DependentUpon>201907112233362_ShowCasesPrice-and-AllowExportDatabase-flags-added-in-terminals.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907151656521_EmailAutoCheckedOnEdit-addedin-tenantconfig.resx">
+      <DependentUpon>201907151656521_EmailAutoCheckedOnEdit-addedin-tenantconfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907171517502_adding-InvoiceMasterId-nullable-inaccounttransaction.resx">
+      <DependentUpon>201907171517502_adding-InvoiceMasterId-nullable-inaccounttransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907171522106_adding-currencyid-in-masterinvoice.resx">
+      <DependentUpon>201907171522106_adding-currencyid-in-masterinvoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907172157457_foreign-keys-added-for-GlobalCurrency-and-InvoiceMasterId.resx">
+      <DependentUpon>201907172157457_foreign-keys-added-for-GlobalCurrency-and-InvoiceMasterId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907251532244_adding-invoicedate-inorderprocess.resx">
+      <DependentUpon>201907251532244_adding-invoicedate-inorderprocess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908012221075_more-properties-in-VanSalesDailyCashes.resx">
+      <DependentUpon>201908012221075_more-properties-in-VanSalesDailyCashes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908021210166_sale-breakdown-added-in-VanSalesDailyCashSync.resx">
+      <DependentUpon>201908021210166_sale-breakdown-added-in-VanSalesDailyCashSync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908100146515_invoicemaster-realtion-addedin-tenantnotificationqueue.resx">
+      <DependentUpon>201908100146515_invoicemaster-realtion-addedin-tenantnotificationqueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908270934512_AllowDuplicateProductName-in-TenantConfig.resx">
+      <DependentUpon>201908270934512_AllowDuplicateProductName-in-TenantConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281358395_jobstartdate-added-in-resources.resx">
+      <DependentUpon>201908281358395_jobstartdate-added-in-resources.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291134251_holidaysstartDate-in-tenantLocation.resx">
+      <DependentUpon>201908291134251_holidaysstartDate-in-tenantLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908301047011_nominalcode-added-inProducts.resx">
+      <DependentUpon>201908301047011_nominalcode-added-inProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909031154005_merge-conflict-fix0309.resx">
+      <DependentUpon>201909031154005_merge-conflict-fix0309.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909050650081_receipt-line5-in-tenant-config.resx">
+      <DependentUpon>201909050650081_receipt-line5-in-tenant-config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909061434469_ShowCaseQtyInReports-addedin-tenantlocation.resx">
+      <DependentUpon>201909061434469_ShowCaseQtyInReports-addedin-tenantlocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909261200545_timber-properties-added.resx">
+      <DependentUpon>201909261200545_timber-properties-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909261339383_timber-properties-correction.resx">
+      <DependentUpon>201909261339383_timber-properties-correction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909292037125_TerminalId-added-in-AttLogStamps.resx">
+      <DependentUpon>201909292037125_TerminalId-added-in-AttLogStamps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910012320211_VehicleDriverId-nullable-in-VehicleInspection.resx">
+      <DependentUpon>201910012320211_VehicleDriverId-nullable-in-VehicleInspection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910101444176_add-ProddeliveryType-and-OrderingNotes-in-ProdAccount.resx">
+      <DependentUpon>201910101444176_add-ProddeliveryType-and-OrderingNotes-in-ProdAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910151724469_ShowDepartment-and-ShowGroup-flags-added-in-TenantLocations.resx">
+      <DependentUpon>201910151724469_ShowDepartment-and-ShowGroup-flags-added-in-TenantLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910210908090_Returns-Values-Properties-in-VanSalesDailyCashes.resx">
+      <DependentUpon>201910210908090_Returns-Values-Properties-in-VanSalesDailyCashes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910221313518_OrderId-nullable-in-TenantEmailNotificationQueue.resx">
+      <DependentUpon>201910221313518_OrderId-nullable-in-TenantEmailNotificationQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910251106577_bool-flags-added-awaiting-authorisation-conditions.resx">
+      <DependentUpon>201910251106577_bool-flags-added-awaiting-authorisation-conditions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910281400028_adding-pallettypeTable-and-pallettypeId-in-productmaser.resx">
+      <DependentUpon>201910281400028_adding-pallettypeTable-and-pallettypeId-in-productmaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911051317044_orderdetailid-and-taxId-added-ininvoicedetail.resx">
+      <DependentUpon>201911051317044_orderdetailid-and-taxId-added-ininvoicedetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911121253029_prestashop-productId-OrderId-addressId-added.resx">
+      <DependentUpon>201911121253029_prestashop-productId-OrderId-addressId-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911141641590_productGroupId-added-in-orderdetailtable.resx">
+      <DependentUpon>201911141641590_productGroupId-added-in-orderdetailtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912040045178_Sent-methods-removed.resx">
+      <DependentUpon>201912040045178_Sent-methods-removed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912291628472_ShowPriceAlertInSalesOrder-in-TenantLocations.resx">
+      <DependentUpon>201912291628472_ShowPriceAlertInSalesOrder-in-TenantLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912301811018_add-warrantyid-in-invoicedetailtable.resx">
+      <DependentUpon>201912301811018_add-warrantyid-in-invoicedetailtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001021459324_Tenant-Websites-Added.resx">
+      <DependentUpon>202001021459324_Tenant-Websites-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001040114226_removing-prestashhopid-from-productmaster.resx">
+      <DependentUpon>202001040114226_removing-prestashhopid-from-productmaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001061200229_SiteId-added-in-ordertable.resx">
+      <DependentUpon>202001061200229_SiteId-added-in-ordertable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001210931050_Paypal-IPN-Fields-Added.resx">
+      <DependentUpon>202001210931050_Paypal-IPN-Fields-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001221112027_IsStockItem-flag-added.resx">
+      <DependentUpon>202001221112027_IsStockItem-flag-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001262246574_adding-accountid-in-authusers.resx">
+      <DependentUpon>202001262246574_adding-accountid-in-authusers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001281418332_ScanVehicleLicensePlate-added-in-TerminalMetadataSync.resx">
+      <DependentUpon>202001281418332_ScanVehicleLicensePlate-added-in-TerminalMetadataSync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002031416590_OrderSchedule-model-added.resx">
+      <DependentUpon>202002031416590_OrderSchedule-model-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002101310559_Meraki-Properties-Added-In-AssetLog.resx">
+      <DependentUpon>202002101310559_Meraki-Properties-Added-In-AssetLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002131650240_adding-AcceptedShelfLife-inaccounttable.resx">
+      <DependentUpon>202002131650240_adding-AcceptedShelfLife-inaccounttable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002141023547_adding-account-owner-relation-withauthuser.resx">
+      <DependentUpon>202002141023547_adding-account-owner-relation-withauthuser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002161940028_Websites-Products-Relation-Table-Added.resx">
+      <DependentUpon>202002161940028_Websites-Products-Relation-Table-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002210304197_pickerid-added-in-ordersTable.resx">
+      <DependentUpon>202002210304197_pickerid-added-in-ordersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002211247562_productmanufacturer-added.resx">
+      <DependentUpon>202002211247562_productmanufacturer-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002211301531_productmanufacturerid-added-in-productmaster.resx">
+      <DependentUpon>202002211301531_productmanufacturerid-added-in-productmaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002251353519_adding-GlobaAPisAndDeliveryService-in-database.resx">
+      <DependentUpon>202002251353519_adding-GlobaAPisAndDeliveryService-in-database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002280651064_dpdResonsecoulmn-added-in-database.resx">
+      <DependentUpon>202002280651064_dpdResonsecoulmn-added-in-database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002281453268_accountNumber-in-GlobalApi.resx">
+      <DependentUpon>202002281453268_accountNumber-in-GlobalApi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003041347367_imagepath-in-tenantDepartment.resx">
+      <DependentUpon>202003041347367_imagepath-in-tenantDepartment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.resx">
+      <DependentUpon>202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003091043529_tenantRelationadded-in-productManufacturer.resx">
+      <DependentUpon>202003091043529_tenantRelationadded-in-productManufacturer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003111205097_productCategoriesTableAdded.resx">
+      <DependentUpon>202003111205097_productCategoriesTableAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003121110130_addedProductCategory-in-ProductMaster.resx">
+      <DependentUpon>202003121110130_addedProductCategory-in-ProductMaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003131035333_ProductMaster-ProductCategory-Relation.resx">
+      <DependentUpon>202003131035333_ProductMaster-ProductCategory-Relation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003161053084_Barcode-Required-Removed.resx">
+      <DependentUpon>202003161053084_Barcode-Required-Removed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003170331126_Shipment-Label-Status-added.resx">
+      <DependentUpon>202003170331126_Shipment-Label-Status-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003191211157_listofproductcategories-added-in-productgroup.resx">
+      <DependentUpon>202003191211157_listofproductcategories-added-in-productgroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.resx">
+      <DependentUpon>202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003241741303_pick-by-container-properties-added.resx">
+      <DependentUpon>202003241741303_pick-by-container-properties-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003261029318_PrestaShop-CountryId-added.resx">
+      <DependentUpon>202003261029318_PrestaShop-CountryId-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003261154438_groupedproduct-added.resx">
+      <DependentUpon>202003261154438_groupedproduct-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.resx">
+      <DependentUpon>202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003261611136_productkitrealtion-added.resx">
+      <DependentUpon>202003261611136_productkitrealtion-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004011733485_changes-in-terminalLog-added.resx">
+      <DependentUpon>202004011733485_changes-in-terminalLog-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004011757182_realtionwebsiteid-added-in-terminalLog.resx">
+      <DependentUpon>202004011757182_realtionwebsiteid-added-in-terminalLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021409511_productkitTypes-table-added.resx">
+      <DependentUpon>202004021409511_productkitTypes-table-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021636461_relationship-kitMap-added.resx">
+      <DependentUpon>202004021636461_relationship-kitMap-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004151341083_product-movement-table-added.resx">
+      <DependentUpon>202004151341083_product-movement-table-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004151354435_prodct-movement-Id-added-in-inventoryTrnsaction.resx">
+      <DependentUpon>202004151354435_prodct-movement-Id-added-in-inventoryTrnsaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004161205537_renametable-stockmovement-stockId.resx">
+      <DependentUpon>202004161205537_renametable-stockmovement-stockId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004180236325_Theme-added-in-tenant.resx">
+      <DependentUpon>202004180236325_Theme-added-in-tenant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004251626414_website-tables-added.resx">
+      <DependentUpon>202004251626414_website-tables-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004290146253_spellingCorrection.resx">
+      <DependentUpon>202004290146253_spellingCorrection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004301923264_Website-Theme-Added.resx">
+      <DependentUpon>202004301923264_Website-Theme-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005040512080_shipping-voucher-discount-tables-added.resx">
+      <DependentUpon>202005040512080_shipping-voucher-discount-tables-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005050106322_Auth-User-Groups-Added.resx">
+      <DependentUpon>202005050106322_Auth-User-Groups-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005050328359_Product-Allowance-tables-added.resx">
+      <DependentUpon>202005050328359_Product-Allowance-tables-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005052143144_Role-added-AllowanceProduct.resx">
+      <DependentUpon>202005052143144_Role-added-AllowanceProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005052202028_nullable-allowanceGroupId.resx">
+      <DependentUpon>202005052202028_nullable-allowanceGroupId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005060101258_properties-add-in-tenant-websites-and-content-pages.resx">
+      <DependentUpon>202005060101258_properties-add-in-tenant-websites-and-content-pages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005060313186_SiteID-added-in-ProductAllownceAndGroup.resx">
+      <DependentUpon>202005060313186_SiteID-added-in-ProductAllownceAndGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005060400443_realtionChangefor-WebsiteDiscountProductsMap.resx">
+      <DependentUpon>202005060400443_realtionChangefor-WebsiteDiscountProductsMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005060433132_more-properties-added-in-content-pages.resx">
+      <DependentUpon>202005060433132_more-properties-added-in-content-pages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122012474_imagecolumn-addedin-websitecontenttable.resx">
+      <DependentUpon>202005122012474_imagecolumn-addedin-websitecontenttable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005141828320_Add-Tooltip-table.resx">
+      <DependentUpon>202005141828320_Add-Tooltip-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005141928394_required-field-added-forwebsitecontentandnavigation.resx">
+      <DependentUpon>202005141928394_required-field-added-forwebsitecontentandnavigation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005151518010_fields-size-added-to-tooltips-table.resx">
+      <DependentUpon>202005151518010_fields-size-added-to-tooltips-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005172319586_websitecartandwishlist-Table-Added.resx">
+      <DependentUpon>202005172319586_websitecartandwishlist-Table-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005181813167_siteId-added-in-productTable.resx">
+      <DependentUpon>202005181813167_siteId-added-in-productTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005191908158_producttagAndProductTagMap-added.resx">
+      <DependentUpon>202005191908158_producttagAndProductTagMap-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005222237270_isactive-coulmn-add-in-productkitMap.resx">
+      <DependentUpon>202005222237270_isactive-coulmn-add-in-productkitMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005232307351_producttype-added-inProductmaster.resx">
+      <DependentUpon>202005232307351_producttype-added-inProductmaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005251805283_product-attributeMap-table-Added.resx">
+      <DependentUpon>202005251805283_product-attributeMap-table-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005270901448_Add-UISettings-tables.resx">
+      <DependentUpon>202005270901448_Add-UISettings-tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005271206092_Website-Apis-in-seperate-tables.resx">
+      <DependentUpon>202005271206092_Website-Apis-in-seperate-tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005282319067_Inventory-Transaction-Types-Table-Removed.resx">
+      <DependentUpon>202005282319067_Inventory-Transaction-Types-Table-Removed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005290413406_GlobalApi-changed-to-ApiCredentials.resx">
+      <DependentUpon>202005290413406_GlobalApi-changed-to-ApiCredentials.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006011754200_OrderStatus-table-dropped.resx">
+      <DependentUpon>202006011754200_OrderStatus-table-dropped.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006011852551_add-DefaultValue-column-to-UISettingItems-table.resx">
+      <DependentUpon>202006011852551_add-DefaultValue-column-to-UISettingItems-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006030318013_Status-types-tables-dropped.resx">
+      <DependentUpon>202006030318013_Status-types-tables-dropped.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006031645372_ishomepage-field-added-in-websitecontent.resx">
+      <DependentUpon>202006031645372_ishomepage-field-added-in-websitecontent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006040423547_Tenant-Warehouses-Added.resx">
+      <DependentUpon>202006040423547_Tenant-Warehouses-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006071441185_adding-Selector-column-to-UISettingItems-table.resx">
+      <DependentUpon>202006071441185_adding-Selector-column-to-UISettingItems-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006241332071_Added-abandoned-cart-notification-related-tables.resx">
+      <DependentUpon>202006241332071_Added-abandoned-cart-notification-related-tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006251859278_kitproductcart-childtable-added.resx">
+      <DependentUpon>202006251859278_kitproductcart-childtable-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006260905517_adding-mainproduct-in-kitproductcartitems-table.resx">
+      <DependentUpon>202006260905517_adding-mainproduct-in-kitproductcartitems-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301522512_cartId-added-in-kitProductItem.resx">
+      <DependentUpon>202006301522512_cartId-added-in-kitProductItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007010307160_added-description-to-WebsiteShippingRules-table.resx">
+      <DependentUpon>202007010307160_added-description-to-WebsiteShippingRules-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007020929298_sessionkey-added-in-websitecartitem.resx">
+      <DependentUpon>202007020929298_sessionkey-added-in-websitecartitem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007021028069_setuserid-nullable-inCartitems.resx">
+      <DependentUpon>202007021028069_setuserid-nullable-inCartitems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007021231597_SiteId-in-AuthUser.resx">
+      <DependentUpon>202007021231597_SiteId-in-AuthUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007071455247_added-WebsiteLayoutSettings-table.resx">
+      <DependentUpon>202007071455247_added-WebsiteLayoutSettings-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007072009467_added-websitedeliveryNavigation.resx">
+      <DependentUpon>202007072009467_added-websitedeliveryNavigation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.resx">
+      <DependentUpon>202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007090916421_Price-Including-Tax-added.resx">
+      <DependentUpon>202007090916421_Price-Including-Tax-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.resx">
+      <DependentUpon>202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007111100543_sortOrdercolumn-added-in-Attributevaluemap.resx">
+      <DependentUpon>202007111100543_sortOrdercolumn-added-in-Attributevaluemap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007111214279_sortorderolumn-added-in-productarrtibutes.resx">
+      <DependentUpon>202007111214279_sortorderolumn-added-in-productarrtibutes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007111736215_add-color-field-to-attributes-table.resx">
+      <DependentUpon>202007111736215_add-color-field-to-attributes-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007121325361_siteId-added-in-EmailTempaltes.resx">
+      <DependentUpon>202007121325361_siteId-added-in-EmailTempaltes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007121433584_paymenttransction-and-siteId-added.resx">
+      <DependentUpon>202007121433584_paymenttransction-and-siteId-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007121916411_Contact-Page-Url-added-in-TenantWebsites.resx">
+      <DependentUpon>202007121916411_Contact-Page-Url-added-in-TenantWebsites.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007121957165_isdeleted-flag-in-attributes.resx">
+      <DependentUpon>202007121957165_isdeleted-flag-in-attributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.resx">
+      <DependentUpon>202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007132001335_added-ForeColorOpacity-to-WebsiteSliders-table.resx">
+      <DependentUpon>202007132001335_added-ForeColorOpacity-to-WebsiteSliders-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007151653139_homepagedetails-added.resx">
+      <DependentUpon>202007151653139_homepagedetails-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007222028136_added_ContactReceiverEmail_field_to_TenantWebsites_table.resx">
+      <DependentUpon>202007222028136_added_ContactReceiverEmail_field_to_TenantWebsites_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007222055027_added_LinkPageUrl_field_to_WebsiteNavigations_table.resx">
+      <DependentUpon>202007222055027_added_LinkPageUrl_field_to_WebsiteNavigations_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.resx">
+      <DependentUpon>202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.resx">
+      <DependentUpon>202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007241548414_added_ProductAvailabilityNotifyQueue_table.resx">
+      <DependentUpon>202007241548414_added_ProductAvailabilityNotifyQueue_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007241749548_added_ProductAvailabilityNotificationSettings_table.resx">
+      <DependentUpon>202007241749548_added_ProductAvailabilityNotificationSettings_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007262322244_Modiles-Table-Deleted-plus-delivery-collection-price-lists-added-in-tenant-locations.resx">
+      <DependentUpon>202007262322244_Modiles-Table-Deleted-plus-delivery-collection-price-lists-added-in-tenant-locations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007281128311_added-Favicon-column-to-TenantWebsites-table.resx">
+      <DependentUpon>202007281128311_added-Favicon-column-to-TenantWebsites-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007282309316_user-verification-properties-added.resx">
+      <DependentUpon>202007282309316_user-verification-properties-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008031230225_user-verification-codes-table-added.resx">
+      <DependentUpon>202008031230225_user-verification-codes-table-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008051214443_increase_value_field_size_in_ProductAttribiteValues_table.resx">
+      <DependentUpon>202008051214443_increase_value_field_size_in_ProductAttribiteValues_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008071924483_loyalty-fields-in-account.resx">
+      <DependentUpon>202008071924483_loyalty-fields-in-account.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008251204539_added_our_brands_relates_flags.resx">
+      <DependentUpon>202008251204539_added_our_brands_relates_flags.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008261303239_added_sort_order_to_ProductManufacturers_table.resx">
+      <DependentUpon>202008261303239_added_sort_order_to_ProductManufacturers_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008271330560_added_preorder_feature_to_products.resx">
+      <DependentUpon>202008271330560_added_preorder_feature_to_products.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008292031322_ApiId-relation-added-in-terminal-logs.resx">
+      <DependentUpon>202008292031322_ApiId-relation-added-in-terminal-logs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008301541450_mandatory-location-scan-flag-in-tenant-config.resx">
+      <DependentUpon>202008301541450_mandatory-location-scan-flag-in-tenant-config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.resx">
+      <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.resx">
+      <DependentUpon>202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.resx">
+      <DependentUpon>202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009221131399_added_SessionId_to_AccountAddresses_table.resx">
+      <DependentUpon>202009221131399_added_SessionId_to_AccountAddresses_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.resx">
+      <DependentUpon>202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009241539597_add_TenantDeliveryServiceId_to_orders_table.resx">
+      <DependentUpon>202009241539597_add_TenantDeliveryServiceId_to_orders_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009281303400_rebate-percentage-added-in-ProductAccountCodes.resx">
+      <DependentUpon>202009281303400_rebate-percentage-added-in-ProductAccountCodes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010011224279_added_ShippmentCountry_to_Orders_and_OrdersProcesses_tables.resx">
+      <DependentUpon>202010011224279_added_ShippmentCountry_to_Orders_and_OrdersProcesses_tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010021724490_address-line-4-changed-into-Town.resx">
+      <DependentUpon>202010021724490_address-line-4-changed-into-Town.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010061534327_added-BaseOrderId-to-Orders-table.resx">
+      <DependentUpon>202010061534327_added-BaseOrderId-to-Orders-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.resx">
+      <DependentUpon>202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010091552246_Notes-field-added-in-OrderProcessDetails.resx">
+      <DependentUpon>202010091552246_Notes-field-added-in-OrderProcessDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010141615404_added-AccountSectors-table.resx">
+      <DependentUpon>202010141615404_added-AccountSectors-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.resx">
+      <DependentUpon>202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010201313229_Tax-type-in-global-tax.resx">
+      <DependentUpon>202010201313229_Tax-type-in-global-tax.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010201639171_added-order-update-notification-related-fields.resx">
+      <DependentUpon>202010201639171_added-order-update-notification-related-fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010231254567_added-PriceGroup-to-TenantWebsites-table.resx">
+      <DependentUpon>202010231254567_added-PriceGroup-to-TenantWebsites-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010260115343_null-allowed-in-account-addresses.resx">
+      <DependentUpon>202010260115343_null-allowed-in-account-addresses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010281214104_default-order-times-and-ignore-warehouse-against-terminal.resx">
+      <DependentUpon>202010281214104_default-order-times-and-ignore-warehouse-against-terminal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010281434422_order-paid-flag-added-and-food-order-type-enum-added.resx">
+      <DependentUpon>202010281434422_order-paid-flag-added-and-food-order-type-enum-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010282251544_FoodOrderType-nullable-in-Orders.resx">
+      <DependentUpon>202010282251544_FoodOrderType-nullable-in-Orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010292213467_order-discount-added-in-invoice.resx">
+      <DependentUpon>202010292213467_order-discount-added-in-invoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010310250024_added-ShiftSchedules-table.resx">
+      <DependentUpon>202010310250024_added-ShiftSchedules-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011020957019_removed-Shifts-table.resx">
+      <DependentUpon>202011020957019_removed-Shifts-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011021642005_added-SortOrder-to-SLAPrioriries-table.resx">
+      <DependentUpon>202011021642005_added-SortOrder-to-SLAPrioriries-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011031257262_fixed-ApiCredentials-and-Orders-relation.resx">
+      <DependentUpon>202011031257262_fixed-ApiCredentials-and-Orders-relation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011031403039_added-new-configs-to-TenantConfigs-table.resx">
+      <DependentUpon>202011031403039_added-new-configs-to-TenantConfigs-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011031458485_added-price-calculation-configs-to-TenantConfigs-table.resx">
+      <DependentUpon>202011031458485_added-price-calculation-configs-to-TenantConfigs-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011091020383_added-some-LoyaltyApp-configs-to-TenantConfigs-table.resx">
+      <DependentUpon>202011091020383_added-some-LoyaltyApp-configs-to-TenantConfigs-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011200721511_address-line-4-dropped-from-PTenants-PLandlords-and-tenant-locations.resx">
+      <DependentUpon>202011200721511_address-line-4-dropped-from-PTenants-PLandlords-and-tenant-locations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011201426060_OfflineMode-flag-added-orders.resx">
+      <DependentUpon>202011201426060_OfflineMode-flag-added-orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011301344316_added-Deliverect-related-fields.resx">
+      <DependentUpon>202011301344316_added-Deliverect-related-fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.resx">
+      <DependentUpon>202012011310158_added-IsInternalWebsite-field-to-TenantWebsites-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012071404406_added-new-time-and-attendance-related-fields-to-Resources-table.resx">
+      <DependentUpon>202012071404406_added-new-time-and-attendance-related-fields-to-Resources-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012110216160_ProductLocationStocks-table-added-for-location-stock-calculations.resx">
+      <DependentUpon>202012110216160_ProductLocationStocks-table-added-for-location-stock-calculations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.resx">
+      <DependentUpon>202012111107472_changed-PalletDispatchId-to-OrderId-in-OrderSchedules-Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012140148047_added-countries-for-TenantDeliveryService-and-PrestashopCountryId-removed-from-GlobalCountry-table.resx">
+      <DependentUpon>202012140148047_added-countries-for-TenantDeliveryService-and-PrestashopCountryId-removed-from-GlobalCountry-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012141118378_added-DefaultImageAltText-to-ProductMaster-table.resx">
+      <DependentUpon>202012141118378_added-DefaultImageAltText-to-ProductMaster-table.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52438</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52438/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

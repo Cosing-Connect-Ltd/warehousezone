@@ -352,6 +352,7 @@
     <Compile Include="AccountSectors\IAccountSectorService.cs" />
     <Compile Include="Activity\ActivityServices.cs" />
     <Compile Include="Activity\IActivityServices.cs" />
+    <Compile Include="Adyen\IAdyenPaymentService.cs" />
     <Compile Include="Assets\AssetServices.cs" />
     <Compile Include="Assets\IAssetServices.cs" />
     <Compile Include="Core\Auth\caCurrencyDetail.cs" />
@@ -370,6 +371,8 @@
     <Compile Include="Emails\IEmailServices.cs" />
     <Compile Include="Emails\EmailSender.cs" />
     <Compile Include="Employees\ResourceHolidayServices.cs" />
+    <Compile Include="Feedbacks\FeedbackService.cs" />
+    <Compile Include="Feedbacks\IFeedbackService.cs" />
     <Compile Include="Helpers\GaneConfigurationsHelper.cs" />
     <Compile Include="Helpers\IGaneConfigurationsHelper.cs" />
     <Compile Include="Markets\IVanSalesService.cs" />

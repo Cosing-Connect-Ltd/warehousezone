@@ -453,7 +453,8 @@ namespace Ganedata.Core.Entities.Enums
         PrestaShop = 3,
         PayPal = 4,
         SagePay = 5,
-        GetAddress = 6
+        GetAddress = 6,
+        Adyen = 7
     }
 
     public enum ProductKitTypeEnum
@@ -583,7 +584,8 @@ namespace Ganedata.Core.Entities.Enums
         PayPal = 1,
         Cash = 2,
         SagePay = 3,
-        PurchaseOrder = 4
+        PurchaseOrder = 4,
+        Adyen=5
     }
 
     public enum OrderProgressStep
