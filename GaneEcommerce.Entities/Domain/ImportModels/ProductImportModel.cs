@@ -21,6 +21,9 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string Department { get; set; }
         public string Group { get; set; }
         public string WeightGroup { get; set; }
+        public bool? IsPreOrderAccepted { get; set; }
+        public int? MinDispatchDays { get; set; }
+        public int? MaxDispatchDays { get; set; }
         public ProductKitTypeEnum? ProductType { get; set; }
     }
 }
