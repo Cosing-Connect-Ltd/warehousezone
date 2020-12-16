@@ -9,6 +9,7 @@ namespace Ganedata.Core.Models.AdyenPayments
 {
     public class AdyenCreatePayLinkRequestModel
     {
+        [JsonIgnore]
         public int OrderID { get; set; }
 
         [JsonProperty("reference")]
@@ -26,6 +27,14 @@ namespace Ganedata.Core.Models.AdyenPayments
         public string MerchantAccount { get; set; }
         [JsonProperty("shopperLocale")]
         public string ShopperLocale { get; set; } = "en-GB";
+
+        [JsonProperty("storePaymentMethod")] 
+        public bool StorePaymentMethod { get; set; } = true;
+
+        [JsonProperty("recurringProcessingModel")]
+        public string RecurringProcessingModel { get; set; } = "CardOnFile";
+        [JsonProperty("billingAddress")]
+        public AdyenBillingAddress BillingAddress { get; set; }
     }
     public class AdyenCreatePayLinkResponseModel : AdyenCreatePayLinkRequestModel
     {
@@ -43,7 +52,23 @@ namespace Ganedata.Core.Models.AdyenPayments
         {
             CurrencyCode = "GBP";
         }
+        [JsonProperty("value")]
         public decimal Value { get; set; }
+        [JsonProperty("currency")]
         public string CurrencyCode { get; set; }
+    }
+
+    public class AdyenBillingAddress
+    {
+        [JsonProperty("city")]
+        public string City { get; set; }
+        [JsonProperty("country")]
+        public string Country { get; set; }
+        [JsonProperty("houseNumberOrName")]
+        public string houseNumberOrName { get; set; }
+        [JsonProperty("postalCode")]
+        public string PostalCode { get; set; }
+        [JsonProperty("street")]
+        public string Street { get; set; }
     }
 }

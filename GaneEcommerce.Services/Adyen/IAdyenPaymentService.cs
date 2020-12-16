@@ -36,15 +36,12 @@ namespace Ganedata.Core.Services
         {
             using (var httpClient = new HttpClient())
             {
-
+                var tokenRequestUri = new Uri(AdyenPaylinkCreateEndpoint);
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                httpClient.DefaultRequestHeaders.Add("x-api-key", AdyenApiKey);
                 var body = JsonConvert.SerializeObject(model);
-                var httpRequest = new HttpRequestMessage(HttpMethod.Post, AdyenPaylinkCreateEndpoint)
-                {
-                    Content = new StringContent(body, Encoding.UTF8, "application/json")
-                };
-                httpRequest.Headers.Add("x-API-key", AdyenApiKey);
-           
-                var response = await httpClient.SendAsync(httpRequest);
+                var response = await httpClient.PostAsync(tokenRequestUri, new StringContent(body, Encoding.UTF8, "application/json"));
                 if (response.IsSuccessStatusCode)
                 {
                     return JsonConvert.DeserializeObject<AdyenCreatePayLinkResponseModel>(await response.Content.ReadAsStringAsync());
