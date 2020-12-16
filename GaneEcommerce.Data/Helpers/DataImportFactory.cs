@@ -2108,9 +2108,9 @@ namespace Ganedata.Core.Data.Helpers
                             }
                         }
 
-                        if (isNewProduct && productData.InventoryLevel != null && productData.InventoryLevel > 0)
+                        if (productData.InventoryLevel != null && productData.InventoryLevel > 0)
                         {
-                            product.InventoryTransactions.Add(new InventoryTransaction()
+                            var inventoryTransaction = new InventoryTransaction()
                             {
                                 WarehouseId = warehouseId,
                                 TenentId = tenantId,
@@ -2121,7 +2121,17 @@ namespace Ganedata.Core.Data.Helpers
                                 LastQty = context.InventoryStocks.FirstOrDefault(x => x.ProductId == product.ProductId && x.TenantId == tenantId && x.WarehouseId == warehouseId)?.InStock ?? 0,
                                 IsCurrentLocation = true,
                                 InventoryTransactionTypeId = InventoryTransactionTypeEnum.AdjustmentIn
-                            });
+                            };
+
+                            if (isNewProduct)
+                            {
+                                product.InventoryTransactions.Add(inventoryTransaction);
+                            }
+                            else
+                            {
+                                inventoryTransaction.ProductId = product.ProductId;
+                                context.InventoryTransactions.Add(inventoryTransaction);
+                            }
                         }
 
                         var UnitOfMeasurementId = context.GlobalUOM.FirstOrDefault(u => (u.UOMId == productData.UnitOfMeasurementId || productData.UnitOfMeasurementId == null))?.UOMId ?? 1;
@@ -2147,8 +2157,8 @@ namespace Ganedata.Core.Data.Helpers
                         product.CreatedBy = userId ?? adminUserId;
                         product.UOMId = UnitOfMeasurementId;
                         product.DimensionUOMId = UnitOfMeasurementId;
-                        product.ProductGroupId = groups[productData.Group] ?? product.ProductGroupId;
-                        product.DepartmentId = departments[productData.Department] ?? product.DepartmentId;
+                        product.ProductGroupId = !string.IsNullOrEmpty(productData.Group?.Trim()) || isNewProduct ? groups[productData.Group] : product.ProductGroupId;
+                        product.DepartmentId = !string.IsNullOrEmpty(productData.Department?.Trim()) || isNewProduct ? departments[productData.Department] ?? product.DepartmentId : product.DepartmentId;
                         product.TaxID = taxId;
                         product.WeightGroupId = !string.IsNullOrEmpty(productData.WeightGroup?.Trim()) || isNewProduct ? weightGroups[productData.WeightGroup] : product.WeightGroupId;
                         product.LotOptionCodeId = productLotOptionId;
@@ -2246,102 +2256,111 @@ namespace Ganedata.Core.Data.Helpers
 
         private static Dictionary<string, int?> GetProductsImportDepartments(int tenantId, ApplicationContext context, List<ProductImportModel> allDataRecords)
         {
-            return allDataRecords.Select(p => p.Department).Distinct().ToDictionary(p => p, p =>
-            {
-                if (int.TryParse(p, out int departmentId))
-                {
-                    return context.TenantDepartments.Any(d => d.DepartmentId == departmentId && d.IsDeleted != true) ? departmentId : (int?)null;
-                }
+            return allDataRecords.Where(p => !string.IsNullOrEmpty(p.Department?.Trim()))
+                                 .Select(p => p.Department)
+                                 .Distinct()
+                                 .ToDictionary(p => p, p =>
+                                                        {
+                                                            if (int.TryParse(p, out int departmentId))
+                                                            {
+                                                                return context.TenantDepartments.Any(d => d.DepartmentId == departmentId && d.IsDeleted != true) ? departmentId : (int?)null;
+                                                            }
 
-                var department = context.TenantDepartments.FirstOrDefault(x => x.DepartmentName.Equals(p));
+                                                            var department = context.TenantDepartments.FirstOrDefault(x => x.DepartmentName.Equals(p));
 
-                if (department == null)
-                {
-                    department = new TenantDepartments()
-                    {
-                        DepartmentName = p,
-                        DateCreated = DateTime.UtcNow,
-                        TenantId = tenantId
+                                                            if (department == null)
+                                                            {
+                                                                department = new TenantDepartments()
+                                                                {
+                                                                    DepartmentName = p,
+                                                                    DateCreated = DateTime.UtcNow,
+                                                                    TenantId = tenantId
 
-                    };
-                    context.TenantDepartments.Add(department);
-                    context.SaveChanges();
-                }
+                                                                };
+                                                                context.TenantDepartments.Add(department);
+                                                                context.SaveChanges();
+                                                            }
 
-                return department.DepartmentId;
-            });
+                                                            return department.DepartmentId;
+                                                        });
         }
 
         private static Dictionary<string, int?> GetProductsImportGroups(int tenantId, ApplicationContext context, List<ProductImportModel> allDataRecords, int userId)
         {
-            return allDataRecords.Select(p => p.Group).Distinct().ToDictionary(p => p, p =>
-            {
-                if (int.TryParse(p, out int groupId))
-                {
-                    return context.ProductGroups.Any(d => d.ProductGroupId == groupId && d.IsDeleted != true) ? groupId : (int?)null;
-                }
+            return allDataRecords.Where(p => !string.IsNullOrEmpty(p.Group?.Trim()))
+                                 .Select(p => p.Group)
+                                 .Distinct()
+                                 .ToDictionary(p => p, p =>
+                                                        {
+                                                            if (int.TryParse(p, out int groupId))
+                                                            {
+                                                                return context.ProductGroups.Any(d => d.ProductGroupId == groupId && d.IsDeleted != true) ? groupId : (int?)null;
+                                                            }
 
-                var group = context.ProductGroups.FirstOrDefault(x => x.ProductGroup.Equals(p));
+                                                            var group = context.ProductGroups.FirstOrDefault(x => x.ProductGroup.Equals(p));
 
-                if (group == null)
-                {
-                    group = new ProductGroups()
-                    {
-                        ProductGroup = p,
-                        CreatedBy = userId,
-                        DateCreated = DateTime.UtcNow,
-                        IsActive = true,
-                        TenentId = tenantId
-                    };
-                    context.ProductGroups.Add(group);
-                    context.SaveChanges();
-                }
+                                                            if (group == null)
+                                                            {
+                                                                group = new ProductGroups()
+                                                                {
+                                                                    ProductGroup = p,
+                                                                    CreatedBy = userId,
+                                                                    DateCreated = DateTime.UtcNow,
+                                                                    IsActive = true,
+                                                                    TenentId = tenantId
+                                                                };
+                                                                context.ProductGroups.Add(group);
+                                                                context.SaveChanges();
+                                                            }
 
-                return group.ProductGroupId;
-            });
+                                                            return group.ProductGroupId;
+                                                        });
         }
 
         private static Dictionary<string, int> GetProductsImportWeightGroups(ApplicationContext context, List<ProductImportModel> allDataRecords)
         {
-            return allDataRecords.Select(p => p.WeightGroup).Distinct().ToDictionary(p => p, p =>
-            {
-                GlobalWeightGroups weightGroup = null;
+            return allDataRecords.Where(p => !string.IsNullOrEmpty(p.WeightGroup?.Trim()))
+                                 .Select(p => p.WeightGroup)
+                                 .Distinct()
+                                 .ToDictionary(p => p, p =>
+                                                        {
+                                                            GlobalWeightGroups weightGroup = null;
 
-                if (int.TryParse(p, out int weightGroupId))
-                {
-                    weightGroup = context.GlobalWeightGroups.Find(weightGroupId);
+                                                            if (int.TryParse(p, out int weightGroupId))
+                                                            {
+                                                                weightGroup = context.GlobalWeightGroups.Find(weightGroupId);
 
-                    if (weightGroup == null)
-                    {
-                        weightGroup = new GlobalWeightGroups()
-                        {
-                            WeightGroupId = 1,
-                            Weight = 0,
-                            Description = "Imported Weight Group"
-                        };
-                        context.GlobalWeightGroups.Add(weightGroup);
-                        context.SaveChanges();
-                    }
-                }
-                else
-                {
-                    weightGroup = context.GlobalWeightGroups.FirstOrDefault(x => x.Description.Equals(p));
+                                                                if (weightGroup == null)
+                                                                {
+                                                                    weightGroup = new GlobalWeightGroups()
+                                                                    {
+                                                                        WeightGroupId = 1,
+                                                                        Weight = 0,
+                                                                        Description = "Imported Weight Group"
+                                                                    };
+                                                                    context.GlobalWeightGroups.Add(weightGroup);
+                                                                    context.SaveChanges();
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                weightGroup = context.GlobalWeightGroups.FirstOrDefault(x => x.Description.Equals(p));
 
-                    if (weightGroup == null)
-                    {
-                        weightGroup = new GlobalWeightGroups()
-                        {
-                            WeightGroupId = 1,
-                            Weight = 0,
-                            Description = p
+                                                                if (weightGroup == null)
+                                                                {
+                                                                    weightGroup = new GlobalWeightGroups()
+                                                                    {
+                                                                        WeightGroupId = 1,
+                                                                        Weight = 0,
+                                                                        Description = p
 
-                        };
-                        context.GlobalWeightGroups.Add(weightGroup);
-                        context.SaveChanges();
-                    }
-                }
-                return weightGroup.WeightGroupId;
-            });
+                                                                    };
+                                                                    context.GlobalWeightGroups.Add(weightGroup);
+                                                                    context.SaveChanges();
+                                                                }
+                                                            }
+                                                            return weightGroup.WeightGroupId;
+                                                        });
         }
 
         public string ImportProductsPrice(string importPath, int tenantId, int warehouseId, ApplicationContext context = null, int? userId = null, int pricegroupId = 0, int actiondetail = 1)
