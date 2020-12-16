@@ -65,11 +65,15 @@ namespace WMS.Controllers.WebAPI
                 case 124:   // PARSE FAILED
                     return OrderStatusEnum.Hold;
                 case 50:  // PREPARING 
+                case 60:  // PREPARED
+                case 70:  // READY FOR PICKUP
                     return OrderStatusEnum.Preparing;
                 case 80:   // IN DELIVERY
-                    return OrderStatusEnum.Hold;
+                    return OrderStatusEnum.OutForDelivery;
                 case 110:  // CANCELED
                     return OrderStatusEnum.Cancelled;
+                case 90:  // FINALIZED
+                    return OrderStatusEnum.Complete;
             }
 
             return null;
