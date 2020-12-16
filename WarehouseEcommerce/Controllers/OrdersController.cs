@@ -298,7 +298,7 @@ namespace WarehouseEcommerce.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConfirmOrder(CheckoutViewModel data)
+        public async Task<ActionResult> ConfirmOrder(CheckoutViewModel data)
         {
             var model = Session["CheckoutViewModel"] as CheckoutViewModel;
             model = _tenantWebsiteService.SetCheckOutProcessModel(model, CurrentTenantWebsite.SiteID, CurrentTenantId, CurrentUserId, Session.SessionID);
@@ -313,22 +313,28 @@ namespace WarehouseEcommerce.Controllers
                 }
             }
 
-
-            Session["CheckoutViewModel"] = model;
-
-            var paymentLink = _adyenPaymentService.GenerateOrderPaymentLink(new AdyenCreatePayLinkRequestModel()
+            try
             {
-                Amount = new AdyenAmount(){ Value = model.TotalOrderAmount },
-                MerchantAccount = AdyenPaymentService.AdyenMerchantAccountName,
-                OrderDescription = model.CartItems.First().ProductMaster.Description,
-                PaymentReference = Guid.NewGuid().ToString("N"),
-                ShopperUniqueReference = model.OrderNumber+"_"+DateTime.Now.ToFileTime()
-            }).ConfigureAwait(false).GetAwaiter().GetResult();
-
-            Session[data.OrderNumber + "_AdyenPaylink"] = paymentLink.Url;
-
-            //Todo: Record the Adyen request and response and payment status, create web hooks
-
+                Session["CheckoutViewModel"] = model;
+                if (Session["_AdyenPaylink"] == null)
+                {
+                    var paymentLink = await _adyenPaymentService.GenerateOrderPaymentLink(
+                        new AdyenCreatePayLinkRequestModel()
+                        {
+                            Amount = new AdyenAmount() {Value = model.TotalOrderAmount},
+                            MerchantAccount = AdyenPaymentService.AdyenMerchantAccountName,
+                            OrderDescription = model.CartItems.First().ProductMaster.Description,
+                            PaymentReference = Guid.NewGuid().ToString("N"),
+                            ShopperUniqueReference = model.OrderNumber + "_" + DateTime.Now.ToFileTime()
+                        });
+                    Session["_AdyenPaylink"] = paymentLink.Url;
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(nameof(model.OrderNumber), "Order ");
+                return View("ConfirmOrder", model);
+            }
 
             switch (model.PaymentMethodId)
             {

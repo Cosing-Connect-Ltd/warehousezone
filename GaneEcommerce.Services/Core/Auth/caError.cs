@@ -22,7 +22,7 @@ namespace Ganedata.Core.Services
             ErrorMessage = "Something went wrong and we couldn't complete your request";
             ErrorDetail = "";
             ErrorController = "";
-            ErrorAction = "";
+             ErrorAction = "";
         }
 
         // log application errors 

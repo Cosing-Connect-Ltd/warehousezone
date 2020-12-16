@@ -14,10 +14,10 @@ namespace Ganedata.Core.Entities.Domain.Feedback
         public int Id { get; set; }
         public int AccountID { get; set; }
         public int OrderID { get; set; }
-        public string ServiceRate { get; set; }
+        public decimal? ServiceRate { get; set; }
         public string CustomerName{ get; set; }
-        public string FoodRate { get; set; }
-        public string AppRate { get; set; }
+        public decimal? FoodRate { get; set; }
+        public decimal? AppRate { get; set; }
         public string FeedbackMessage { get; set; }
         public int TenantID { get; set; }
         public int TenantLocationID { get; set; }
