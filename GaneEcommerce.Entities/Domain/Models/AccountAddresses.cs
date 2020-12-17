@@ -64,32 +64,17 @@ namespace Ganedata.Core.Entities.Domain
         public virtual GlobalCountry GlobalCountry { get; set; }
         [ForeignKey("AccountID")]
         public virtual Account Account { get; set; }
-
-        public string FullAddressText
-        {
-            get
-            {
-
-                var fullAddress = "";
-                fullAddress += string.IsNullOrEmpty(AddressLine1) ? "" : AddressLine1;
-                fullAddress += string.IsNullOrEmpty(AddressLine2) ? "" : ", " + AddressLine2;
-                fullAddress += string.IsNullOrEmpty(AddressLine3) ? "" : ", " + AddressLine3;
-                fullAddress += string.IsNullOrEmpty(Town) ? "" : ", " + Town;
-                fullAddress += string.IsNullOrEmpty(PostCode) ? "" : ", " + PostCode;
-                return fullAddress;
-            }
-        }
         public string FullAddressValue
         {
             get
             {
-
                 var fullAddress = "";
-                fullAddress += string.IsNullOrEmpty(AddressLine1) ? "," : AddressLine1;
-                fullAddress += string.IsNullOrEmpty(AddressLine2) ? "," : ", " + AddressLine2;
-                fullAddress += string.IsNullOrEmpty(AddressLine3) ? "," : ", " + AddressLine3;
-                fullAddress += string.IsNullOrEmpty(Town) ? "," : ", " + Town;
-                fullAddress += string.IsNullOrEmpty(PostCode) ? "," : ", " + PostCode;
+                fullAddress += string.IsNullOrEmpty(Name) ? ";" : Name;
+                fullAddress += string.IsNullOrEmpty(AddressLine1) ? ";" : "; " + AddressLine1;
+                fullAddress += string.IsNullOrEmpty(AddressLine2) ? ";" : "; " + AddressLine2;
+                fullAddress += string.IsNullOrEmpty(AddressLine3) ? ";" : "; " + AddressLine3;
+                fullAddress += string.IsNullOrEmpty(Town) ? ";" : "; " + Town;
+                fullAddress += string.IsNullOrEmpty(PostCode) ? ";" : "; " + PostCode;
                 return fullAddress;
             }
         }

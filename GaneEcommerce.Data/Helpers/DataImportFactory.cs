@@ -3182,6 +3182,7 @@ namespace Ganedata.Core.Data.Helpers
                             AccountID = accountId,
                             CreatedBy = UserId,
                             PrestaShopAddressId = mainId,
+                            Telephone = item.Phone
                         };
                     }
                     else
@@ -3194,6 +3195,7 @@ namespace Ganedata.Core.Data.Helpers
                         currentAddress.DateUpdated = DateTime.UtcNow;
                         currentAddress.UpdatedBy = UserId;
                         currentAddress.CountryID = countryId;
+                        currentAddress.Telephone = item.Phone;
                     }
 
                     if ((mainId == DeliveryAddressId || mainId == InvoiceAdressId) && DeliveryAddressId == InvoiceAdressId)
@@ -3260,6 +3262,7 @@ namespace Ganedata.Core.Data.Helpers
                         account.CompanyName = string.IsNullOrEmpty(item.Company) ? item.Firstname + " " + item.Lastname : item.Company;
                         account.AccountCode = item.Secure_key;
                         account.website = item.Website;
+                        account.AccountEmail = item.Email;
                         account.AccountStatusID = AccountStatusEnum.Active;
                         account.DateCreated = DateTime.UtcNow;
                         account.AccountTypeCustomer = true;
@@ -3414,6 +3417,7 @@ namespace Ganedata.Core.Data.Helpers
                             var accountAddress = GetAccountAddressesByPrestaShopAddressId(item.Id_address_delivery.Text);
                             if (accountAddress != null)
                             {
+                                order.ShipmentAddressName = accountAddress.Name;
                                 order.ShipmentAccountAddressId = accountAddress.AddressID;
                                 order.ShipmentAddressLine1 = accountAddress.AddressLine1;
                                 order.ShipmentAddressLine2 = accountAddress.AddressLine2;

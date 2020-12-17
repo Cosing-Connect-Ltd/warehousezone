@@ -55,14 +55,6 @@ $(document).ready(function () {
                             $('#emailWithaccount').append('<option value=' + item.Value + '>' + item.Text + '</option>');
                         }
                         $("#emailWithaccount").trigger("chosen:updated");
-                        //if (id > 0 && $("#SendEmailWithAttachment").prop('checked')) {
-                        //    $("#emailWithaccount").val(id);
-                        //    $("#emailWithaccount").trigger("chosen:updated")
-                        //} var id = $("#AccountContactId :selected").val();
-                        //else {
-                        //    $("#emailWithaccount").val($("#emailWithaccount option:first").val());
-                        //
-                        //}
                     });
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

@@ -96,6 +96,13 @@
     </div>
     <div class="col-md-6 pull-left">
         <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ShipmentAddressName, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.ShipmentAddressName, new { placeholder = "Address Name", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ShipmentAddressName)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(m => m.ShipmentAddressLine1, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
                 @Html.TextBoxFor(m => m.ShipmentAddressLine1, new { placeholder = "Address Line1", @class = "form-control" })

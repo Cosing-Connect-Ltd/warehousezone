@@ -5,10 +5,10 @@
     <div id="so-shipment-info" style="visibility: @(ViewBag.IsShipmentToAccountAddress == true ? "visible" : "hidden")">
         <div class="order-shipmentinfo-panes">
             <div class="input-group h-100 justify-content-center align-items-center">
-                <div class ="col-md-4 pull-left">
+                <div class="col-md-4 pull-left">
                     <label class="checkbox-inline"><input type="radio" value="1" @(ViewBag.IsShipmentToAccountAddress == true ? "checked" : "") name="SOShipmentDestination" /> Existing Address </label>
                 </div>
-                <div class ="col-md-4 pull-left">
+                <div class="col-md-4 pull-left">
                     <label class="checkbox-inline"><input type="radio" value="2" name="SOShipmentDestination" @(ViewBag.IsShipmentToCustomAddress == true ? "checked" : "") /> New address </label>
                 </div>
             </div>
@@ -21,6 +21,7 @@
         <div class="col-md-12 order-shipmentinfo-panes" id="divCustomShipmentAddress">
             <h2><span>Shipment Address</span></h2>
             <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.TextBoxFor(m => m.ShipmentAddressName, new { placeholder = "Name", @class = "form-control" })
                 @Html.TextBoxFor(m => m.ShipmentAddressLine1, new { placeholder = "Address Line1", @class = "form-control" })
                 @Html.TextBoxFor(m => m.ShipmentAddressLine2, new { placeholder = "Address Line2", @class = "form-control" })
                 @Html.TextBoxFor(m => m.ShipmentAddressLine3, new { placeholder = "Address Line3", @class = "form-control" })
@@ -31,7 +32,7 @@
                 <div class="mt-1">
                     @Html.CheckBox("AddAddressToAccount", false)
                 </div>
-                <div class ="col-md-4 pull-left">
+                <div class="col-md-4 pull-left">
                     <label class="checkbox-inline control-label">Tick to add this Account Shipment Addresses</label>
                 </div>
 

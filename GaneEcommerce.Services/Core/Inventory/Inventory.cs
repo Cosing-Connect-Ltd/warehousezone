@@ -421,6 +421,7 @@ namespace Ganedata.Core.Services
 
                 if (shipmentInfo != null)
                 {
+                    opr.ShipmentAddressName = shipmentInfo.ShipmentAddressName;
                     opr.ShipmentAddressLine1 = shipmentInfo.ShipmentAddressLine1;
                     opr.ShipmentAddressLine2 = shipmentInfo.ShipmentAddressLine2;
                     opr.ShipmentAddressLine3 = shipmentInfo.ShipmentAddressLine3;
@@ -430,6 +431,7 @@ namespace Ganedata.Core.Services
                 }
                 else
                 {
+                    opr.ShipmentAddressName = order.ShipmentAddressName;
                     opr.ShipmentAddressLine1 = order.ShipmentAddressLine1;
                     opr.ShipmentAddressLine2 = order.ShipmentAddressLine2;
                     opr.ShipmentAddressLine3 = order.ShipmentAddressLine3;
@@ -484,6 +486,7 @@ namespace Ganedata.Core.Services
                             WarehouseId = altOrder.WarehouseId ?? 0,
                             DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
                             InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId,
+                            ShipmentAddressName = altOrder.ShipmentAddressName,
                             ShipmentAddressLine1 = altOrder.ShipmentAddressLine1,
                             ShipmentAddressLine2 = altOrder.ShipmentAddressLine2,
                             ShipmentAddressLine3 = altOrder.ShipmentAddressLine3,
@@ -604,6 +607,7 @@ namespace Ganedata.Core.Services
                     oprocess.OrderProcessDetail.Add(odet);
                     if (shipmentInfo != null)
                     {
+                        oprocess.ShipmentAddressName = shipmentInfo.ShipmentAddressName ?? "";
                         oprocess.ShipmentAddressLine1 = shipmentInfo.ShipmentAddressLine1 ?? "";
                         oprocess.ShipmentAddressLine2 = shipmentInfo.ShipmentAddressLine2 ?? "";
                         oprocess.ShipmentAddressLine3 = shipmentInfo.ShipmentAddressLine3 ?? "";
@@ -645,6 +649,7 @@ namespace Ganedata.Core.Services
                                 WarehouseId = altOrder.WarehouseId ?? 0,
                                 DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
                                 InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId,
+                                ShipmentAddressName = altOrder.ShipmentAddressName,
                                 ShipmentAddressLine1 = altOrder.ShipmentAddressLine1,
                                 ShipmentAddressLine2 = altOrder.ShipmentAddressLine2,
                                 ShipmentAddressLine3 = altOrder.ShipmentAddressLine3,
@@ -783,7 +788,7 @@ namespace Ganedata.Core.Services
             }
             else
             {
-                model.LastQty = CalculateLastQty(model.ProductId, model.TenentId, model.WarehouseId,GetUomQuantity(model.ProductId, model.Quantity),
+                model.LastQty = CalculateLastQty(model.ProductId, model.TenentId, model.WarehouseId, GetUomQuantity(model.ProductId, model.Quantity),
                     type, dontMonitorStock);
 
 
@@ -836,7 +841,7 @@ namespace Ganedata.Core.Services
             transaction.ProductId = productId;
             transaction.WarehouseId = warehouseId;
             transaction.TenentId = tenantId;
-            transaction.Quantity = GetUomQuantity(productId, quantity) ;
+            transaction.Quantity = GetUomQuantity(productId, quantity);
             transaction.LastQty =
                 CalculateLastQty(productId, tenantId, warehouseId, GetUomQuantity(productId, quantity), transType, dontMonitorStock);
             transaction.DateCreated = DateTime.UtcNow;

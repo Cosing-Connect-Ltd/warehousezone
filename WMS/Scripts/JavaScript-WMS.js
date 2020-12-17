@@ -923,10 +923,6 @@ $(function () {
                     }
                 });
                 $("#emailWithaccount").trigger("chosen:updated");
-                //for (var i = 0; i < selectedId.length; i++) {
-                //    $('#emailWithaccount').val(selectedId[i]);
-                //}
-                //$("#emailWithaccount").trigger("chosen:updated");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 // alert(xhr.status);

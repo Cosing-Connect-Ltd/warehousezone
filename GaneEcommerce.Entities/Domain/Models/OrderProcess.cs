@@ -53,6 +53,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual Order Order { get; set; }
         public virtual ICollection<OrderProcessDetail> OrderProcessDetail { get; set; }
         public virtual ICollection<OrderProofOfDelivery> OrderProofOfDelivery { get; set; }
+        public string ShipmentAddressName { get; set; }
         [Display(Name = "Shipment Address Line1")]
         public string ShipmentAddressLine1 { get; set; }
         [Display(Name = "Shipment Address Line2")]

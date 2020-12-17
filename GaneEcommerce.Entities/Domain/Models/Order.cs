@@ -159,6 +159,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual TenantLocations Warehouse { get; set; }
 
         public virtual AccountContacts AccountContacts { get; set; }
+        public string ShipmentAddressName { get; set; }
         public string ShipmentAddressLine1 { get; set; }
         public string ShipmentAddressLine2 { get; set; }
         public string ShipmentAddressLine3 { get; set; }
