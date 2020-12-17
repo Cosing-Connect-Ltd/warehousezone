@@ -85,7 +85,8 @@ namespace Ganedata.Core.Services
             return _currentDbContext.PalletProducts.Where(m => m.PalletID == palletId && m.IsDeleted != true)
                                          .ToList()
                                          .GroupBy(p => p.ProductID)
-                                         .Select(p => {
+                                         .Select(p =>
+                                         {
                                              var palletProduct = p.FirstOrDefault();
                                              palletProduct.Quantity = p.Sum(q => q.Quantity);
                                              return palletProduct;
@@ -658,7 +659,8 @@ namespace Ganedata.Core.Services
                 address1.countryCode = palletDispatch.OrderProcess?.Order?.Tenant?.Country?.CountryCode;
                 address1.county = palletDispatch.OrderProcess?.Order?.Tenant?.TenantStateCounty;
                 address1.postcode = palletDispatch.OrderProcess?.Order?.Tenant?.TenantPostalCode;
-                address1.street = palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress1;
+                address1.street = palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress1 + " " + palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress2
+                    + " " + palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress3;
                 address1.town = palletDispatch.OrderProcess?.Order?.Tenant?.TenantCity;
                 address1.county = palletDispatch.OrderProcess?.Order?.Tenant?.TenantStateCounty;
                 collectionDetails.address = address1;
@@ -666,16 +668,15 @@ namespace Ganedata.Core.Services
                 collectionDetails.address = address1;
                 DeliveryDetails deliveryDetails = new DeliveryDetails();
                 ContactDetails2 contactDetails2 = new ContactDetails2();
-                contactDetails2.contactName = palletDispatch.OrderProcess?.Order?.Account?.AccountContacts.FirstOrDefault()?.ContactName;
+                contactDetails2.contactName = palletDispatch.OrderProcess?.ShipmentAddressName;
                 contactDetails2.telephone = palletDispatch.OrderProcess?.Order?.Account?.AccountContacts.FirstOrDefault()?.TenantContactPhone;
                 deliveryDetails.contactDetails = contactDetails2;
                 Address2 address2 = new Address2();
-                address2.countryCode = palletDispatch.OrderProcess.ShipmentCountry?.CountryCode ??
-                                       palletDispatch.OrderProcess?.Order?.ShipmentCountry?.CountryCode ??
-                                       palletDispatch.OrderProcess?.Order?.Account?.AccountAddresses.FirstOrDefault(u => u.AddTypeShipping == true)?.GlobalCountry?.CountryCode;
-                address2.postcode = palletDispatch.OrderProcess?.Order?.ShipmentAddressPostcode;
-                address2.street = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine1;
-                address2.town = string.IsNullOrEmpty(palletDispatch.OrderProcess?.Order?.ShipmentAddressTown) ? palletDispatch.OrderProcess?.Order?.ShipmentAddressTown : palletDispatch.OrderProcess?.Order?.ShipmentAddressTown;
+                address2.countryCode = palletDispatch.OrderProcess.ShipmentCountry?.CountryCode;
+                address2.postcode = palletDispatch.OrderProcess?.ShipmentAddressPostcode;
+                address2.street = palletDispatch.OrderProcess?.ShipmentAddressLine1 + " " + palletDispatch.OrderProcess?.ShipmentAddressLine2;
+                address2.locality = palletDispatch.OrderProcess?.ShipmentAddressLine3;
+                address2.town = palletDispatch.OrderProcess?.ShipmentAddressTown;
                 deliveryDetails.address = address2;
                 NotificationDetails notificationDetails = new NotificationDetails();
                 notificationDetails.email = palletDispatch.OrderProcess?.Order?.Account?.AccountEmail;
@@ -684,7 +685,7 @@ namespace Ganedata.Core.Services
                 consignment.collectionDetails = collectionDetails;
                 consignment.deliveryDetails = deliveryDetails;
                 consignment.networkCode = NetworkCode;
-                consignment.numberOfParcels = _currentDbContext.Pallets.Count(u => u.PalletsDispatchID == DispatchId);
+                consignment.numberOfParcels = _currentDbContext.Pallets.Count(u => u.PalletsDispatchID == DispatchId && u.IsDeleted != true);
 
                 consignment.totalWeight = GetPalltedProductWeight(DispatchId);
                 consignment.shippingRef1 = palletDispatch.OrderProcess?.Order?.OrderID.ToString();
@@ -700,8 +701,8 @@ namespace Ganedata.Core.Services
 
         private decimal GetPalltedProductWeight(int DispatchId)
         {
-            var palletId = _currentDbContext.Pallets.Where(u => u.PalletsDispatchID == DispatchId).Select(u => u.PalletID).ToList();
-            var productIds = _currentDbContext.PalletProducts.Where(u => palletId.Contains(u.PalletID)).Select(u => u.ProductID).ToList();
+            var palletId = _currentDbContext.Pallets.Where(u => u.PalletsDispatchID == DispatchId && u.IsDeleted != true).Select(u => u.PalletID).ToList();
+            var productIds = _currentDbContext.PalletProducts.Where(u => palletId.Contains(u.PalletID) && u.IsDeleted != true).Select(u => u.ProductID).ToList();
             var weights = _currentDbContext.ProductMaster.Where(u => productIds.Contains(u.ProductId)).Sum(u => u.Weight);
             decimal weight = decimal.Parse(weights.ToString());
             if (weight == 0) weight = 1;

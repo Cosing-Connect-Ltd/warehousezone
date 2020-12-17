@@ -26,6 +26,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public int AccountID { get; set; }
         public int OrderStatusID { get; set; }
+        public string ShipmentAddressName { get; set; }
         [Display(Name = "Shipment Address Line1")]
         public string ShipmentAddressLine1 { get; set; }
         [Display(Name = "Shipment Address Line2")]
@@ -45,6 +46,7 @@ namespace Ganedata.Core.Entities.Domain
 
     public class AccountShipmentInfo
     {
+        public string ShipmentAddressName { get; set; }
         public string ShipmentAddressLine1 { get; set; }
         public string ShipmentAddressLine2 { get; set; }
         public string ShipmentAddressLine3 { get; set; }

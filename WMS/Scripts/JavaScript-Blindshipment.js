@@ -11,12 +11,12 @@ function beginBSCallBack(s, e) {
 
     }
     e.customArgs["pid"] = pid;
-    
+
 
 }
 
 function BSsubmitProduct() {
-    
+
     var delivery = $('#DeliveryNo').val();
     var product = prdid.GetValue();
     var account = $("#AccountID option:selected").val();
@@ -34,7 +34,7 @@ function BSsubmitProduct() {
     var value = $('#delivery').val();
     var type = 13;
     var Key = $("#KeyId").val();
-    var data = { ProductId: product, IsSerial: 'False', SKU: prdid.GetText(), LocationId: $("#LocationId option:selected").val(), LocationName: $("#WarehouseId option:selected").text(), AccountId: account, Delivery: delivery, Quantity: quantity, ProductDesc: ID, FSC: FSC, PEFC: PEFC, FscPercent: FscPercent, Id: Key, ProductGroupId:ProductGroupId};
+    var data = { ProductId: product, IsSerial: 'False', SKU: prdid.GetText(), LocationId: $("#LocationId option:selected").val(), LocationName: $("#WarehouseId option:selected").text(), AccountId: account, Delivery: delivery, Quantity: quantity, ProductDesc: ID, FSC: FSC, PEFC: PEFC, FscPercent: FscPercent, Id: Key, ProductGroupId: ProductGroupId };
     $.post("/PurchaseOrders/_SubmitProduct", data, function (result) {
         $("#Edit").val(false);
         LoadingPanel.Hide();
@@ -243,34 +243,34 @@ function removeBSItem(id) {
     }
 }
 function editBsItem(id) {
-    
-        LoadingPanel.Show();
 
-        $.ajax({
-            type: "GET",
-            url: "/PurchaseOrders/_EditItem/",
-            data: { id: id },
-            success: function (data) {
-                
-                LoadingPanel.Hide();
-                ProductIdOnEdit = data.ProductId;
-                $("#Edit").val(true);
-                Ids = id;
-                ModelBS.Show();
+    LoadingPanel.Show();
 
-                
-                
+    $.ajax({
+        type: "GET",
+        url: "/PurchaseOrders/_EditItem/",
+        data: { id: id },
+        success: function (data) {
 
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                // alert(xhr.status);
-                LoadingPanel.Hide();
-                alert('Error' + textStatus + "/" + errorThrown);
+            LoadingPanel.Hide();
+            ProductIdOnEdit = data.ProductId;
+            $("#Edit").val(true);
+            Ids = id;
+            ModelBS.Show();
 
-            }
 
-        });
-    
+
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            // alert(xhr.status);
+            LoadingPanel.Hide();
+            alert('Error' + textStatus + "/" + errorThrown);
+
+        }
+
+    });
+
 }
 
 function BlindShipmentAccount() {
@@ -279,20 +279,20 @@ function BlindShipmentAccount() {
     if (blindshipment === 'True') {
         var address = $("#ShipmentAccountAddressId option:selected").text();
         if (address !== null && address !== 'Select') {
-            var addressParts = address.split(',');
-            if (addressParts.length < 4) return;
-
-            $("#ShipmentAddressLine1").val(addressParts[0] === undefined ? '' : addressParts[0].trim());
-            $("#ShipmentAddressLine2").val(addressParts[1] === undefined ? '' : addressParts[1].trim());
-            $("#ShipmentAddressLine3").val(addressParts[2] === undefined ? '' : addressParts[2].trim());
-            $("#ShipmentAddressTown").val(addressParts[3] === undefined ? '' : addressParts[3].trim());
-            $("#ShipmentAddressPostcode").val(addressParts[4] === undefined ? '' : addressParts[4].trim());
+            var addressParts = address.split(';');
+            if (addressParts.length < 1) return;
+            $("#ShipmentAddressName").val(addressParts[0] === undefined ? '' : addressParts[0].trim());
+            $("#ShipmentAddressLine1").val(addressParts[1] === undefined ? '' : addressParts[1].trim());
+            $("#ShipmentAddressLine2").val(addressParts[2] === undefined ? '' : addressParts[2].trim());
+            $("#ShipmentAddressLine3").val(addressParts[3] === undefined ? '' : addressParts[3].trim());
+            $("#ShipmentAddressTown").val(addressParts[4] === undefined ? '' : addressParts[4].trim());
+            $("#ShipmentAddressPostcode").val(addressParts[5] === undefined ? '' : addressParts[5].trim());
         }
     }
 }
 
 function CreateProduct() {
-    
+
     var delivery = $('#DeliveryNo').val();
     var product = prdid.GetValue();
     var account = $("#AccountID option:selected").val();
@@ -408,13 +408,13 @@ function RefreshDepartment(e) {
 }
 
 function onchangeDepartment() {
-    
+
     var departmentId = $(".drpPD").val();
     $('#drpPD').val(departmentId);
     $("#drpPD").trigger("chosen:updated");
 }
 function onchangeGroup() {
-    
+
     var groupId = $(".drpPG").val();
     $('#drpPG').val(groupId);
     $("#drpPG").trigger("chosen:updated");

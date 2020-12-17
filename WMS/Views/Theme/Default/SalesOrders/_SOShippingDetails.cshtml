@@ -21,6 +21,13 @@
         <div class="col-md-12 order-shipmentinfo-panes" id="divCustomShipmentAddress">
             <h2><span>Shipment Address</span></h2>
             <div class="col-md-6 float-left address-detail">
+                @Html.Label("Address Name", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.ShipmentAddressName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ShipmentAddressName)
+                </div>
+            </div>
+            <div class="col-md-6 float-left address-detail">
                 @Html.Label("Address Line 1", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
                 <div class="col-md-8">
                     @Html.TextBoxFor(m => m.ShipmentAddressLine1, new { @class = "form-control", @required = "required" })

@@ -231,6 +231,7 @@ namespace Ganedata.Core.Services
                     InventoryTransactionTypeId = order.InventoryTransactionTypeId,
                     CreatedBy = userId,
                     DateCreated = DateTime.UtcNow,
+                    ShipmentAddressName = order.ShipmentAddressName,
                     ShipmentAddressLine1 = order.ShipmentAddressLine1,
                     ShipmentAddressLine2 = order.ShipmentAddressLine2,
                     ShipmentAddressLine3 = order.ShipmentAddressLine3,
@@ -962,6 +963,7 @@ namespace Ganedata.Core.Services
                     DateCreated = createdDate ?? DateTime.UtcNow,
                     WarehouseId = warehouseId,
                     IsDeleted = false,
+                    ShipmentAddressName = order.ShipmentAddressName,
                     ShipmentAddressLine1 = order.ShipmentAddressLine1,
                     ShipmentAddressLine2 = order.ShipmentAddressLine2,
                     ShipmentAddressLine3 = order.ShipmentAddressLine3,
@@ -971,6 +973,7 @@ namespace Ganedata.Core.Services
                 };
                 if (shipmentInfo != null)
                 {
+                    receivepo.ShipmentAddressName = shipmentInfo.ShipmentAddressName;
                     receivepo.ShipmentAddressLine1 = shipmentInfo.ShipmentAddressLine1;
                     receivepo.ShipmentAddressLine2 = shipmentInfo.ShipmentAddressLine2;
                     receivepo.ShipmentAddressLine3 = shipmentInfo.ShipmentAddressLine3;
@@ -1015,6 +1018,7 @@ namespace Ganedata.Core.Services
                         UpdatedBy = currentUserId,
                         IsDeleted = false,
                         OrderProcessStatusId = OrderProcessStatusEnum.Active,
+                        ShipmentAddressName = po.ShipmentAddressName,
                         ShipmentAddressLine1 = po.ShipmentAddressLine1,
                         ShipmentAddressLine2 = po.ShipmentAddressLine2,
                         ShipmentAddressLine3 = po.ShipmentAddressLine3,
@@ -1282,6 +1286,7 @@ namespace Ganedata.Core.Services
                         OrderProcessStatusId = OrderProcessStatusEnum.Complete,
                         InventoryTransactionTypeId = item.InventoryTransactionTypeId,
                         OrderID = order.OrderID,
+                        ShipmentAddressName = order.ShipmentAddressName,
                         ShipmentAddressLine1 = order.ShipmentAddressLine1,
                         ShipmentAddressLine2 = order.ShipmentAddressLine2,
                         ShipmentAddressLine3 = order.ShipmentAddressLine3,
@@ -2907,6 +2912,7 @@ namespace Ganedata.Core.Services
             var orderprocess = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == accountShipmentInfo.OrderProcessId);
             if (orderprocess != null)
             {
+                orderprocess.ShipmentAddressName = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressName) ? orderprocess.ShipmentAddressName : accountShipmentInfo.ShipmentAddressName;
                 orderprocess.ShipmentAddressLine1 = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressLine1) ? orderprocess.ShipmentAddressLine1 : accountShipmentInfo.ShipmentAddressLine1;
                 orderprocess.ShipmentAddressLine2 = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressLine2) ? orderprocess.ShipmentAddressLine2 : accountShipmentInfo.ShipmentAddressLine2;
                 orderprocess.ShipmentAddressLine3 = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressLine3) ? orderprocess.ShipmentAddressLine3 : accountShipmentInfo.ShipmentAddressLine3;

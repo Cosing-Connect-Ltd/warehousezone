@@ -584,6 +584,7 @@ namespace WMS.Controllers
             var latestOrderProcess = Order.OrderProcess.OrderByDescending(m => m.DateCreated).FirstOrDefault();
             if (latestOrderProcess != null)
             {
+                orderDto.ShipmentAddressName = latestOrderProcess.ShipmentAddressName;
                 orderDto.ShipmentAddressLine1 = latestOrderProcess.ShipmentAddressLine1;
                 orderDto.ShipmentAddressLine2 = latestOrderProcess.ShipmentAddressLine2;
                 orderDto.ShipmentAddressLine3 = latestOrderProcess.ShipmentAddressLine3;
@@ -612,6 +613,7 @@ namespace WMS.Controllers
                     }
                 }
             }
+
             return View(orderDto);
         }
 
@@ -620,23 +622,6 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View();
         }
-
-        //public ActionResult _Consignments()
-        //{
-        //    var data = OrderService.GetAllSalesConsignments(CurrentTenantId, CurrentWarehouseId).OrderByDescending(x => x.DateCreated)
-        //                .Select(ops => new
-        //                {
-        //                    ops.DeliveryNO,
-        //                    ops.OrderID,
-        //                    ops.DateCreated,
-        //                    ops.OrderProcessID,
-        //                    ops.Order.OrderNumber,
-        //                    ops.Order.Account.AccountCode,
-        //                    ops.Order.Account.CompanyName
-        //                }).ToList();
-
-        //    return PartialView(data);
-        //}
 
         public ActionResult _Consignments(OrderProcessStatusEnum? consignmentId)
         {
@@ -711,6 +696,7 @@ namespace WMS.Controllers
                         select new
                         {
                             opd.OrderProcessID,
+                            opd.ShipmentAddressName,
                             opd.ShipmentAddressLine1,
                             opd.ShipmentAddressLine2,
                             opd.ShipmentAddressLine3,
