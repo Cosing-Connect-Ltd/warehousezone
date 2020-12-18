@@ -57,4 +57,14 @@ namespace Ganedata.Core.Entities.Domain
         public CollectionPointViewModel CollectionPoint { get; set; }
         public SagePayPaymentResponseViewModel SagePayPaymentResponse { get; set; }
     }
+
+    public class ReviewOrderViewModel
+    {
+        public List<WebsiteCartItemViewModel> CartItems { get; set; } = new List<WebsiteCartItemViewModel>();
+        public decimal CartTotalAmount => Math.Round(CartItems.Sum(c => c.ProductTotalAmount), 2) + (ShippingRule?.Price ?? 0);
+        public WebsiteShippingRulesViewModel ShippingRule { get; set; }
+        public List<ProductMaster> RelatedProducts { get; set; } = new List<ProductMaster>();
+        public bool IsStandardDelivery { get; set; }
+        public List<AddressViewModel> Addresses { get; set; }
+    }
 }

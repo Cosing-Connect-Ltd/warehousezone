@@ -1470,6 +1470,10 @@
     <Content Include="Scripts\jquery-3.5.1.min.map" />
     <Content Include="Views\Theme\University\Products\_ProductAvailability.cshtml" />
     <Content Include="Views\Theme\University\Shared\_ProductListItemActionsButtons.cshtml" />
+    <Content Include="Views\Theme\Smart\Orders\Payments\ReviewOrder.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\ReviewOrder.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\_OrderProgressBar.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\_CartItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

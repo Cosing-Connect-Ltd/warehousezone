@@ -608,5 +608,22 @@ namespace WarehouseEcommerce.Controllers
 
             return Json(false, JsonRequestBehavior.AllowGet);
         }
+
+        #region Payments
+        public ActionResult ReviewOrder()
+        {
+            var model = new ReviewOrderViewModel
+            {
+                CartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID).ToList(),
+            };
+
+            foreach (var item in model.CartItems)
+            {
+                model.RelatedProducts.AddRange(_productServices.GetRelatedProductsByProductId(item.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID));
+            }
+
+            return View("Payments/ReviewOrder", model);
+        }
+        #endregion
     }
 }
