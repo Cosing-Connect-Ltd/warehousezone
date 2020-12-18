@@ -17,15 +17,21 @@ namespace WMS.Controllers.WebAPI
         {
             _deliverectSyncService = deliverectSyncService;
         }
-        public IHttpActionResult ChannelStatusUpdated(DeliverectChannelRegisterWebhookRequest request)
+        public async Task<IHttpActionResult> ChannelStatusUpdated(DeliverectChannelRegisterWebhookRequest request)
         {
             var currentHostUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
             var response = new DeliverectChannelRegisterWebhookResponse
             {
                 MenuUpdateURL = currentHostUrl + "/api/deliverect/menuPushed",
                 SnoozeUnsnoozeURL = currentHostUrl + "/api/deliverect/productSnoozeChanged",
-                StatusUpdateURL = currentHostUrl + "/api/deliverect/orderStatusUpdated"
+                StatusUpdateURL = currentHostUrl + "/api/deliverect/orderStatusUpdated",
+                BusyModeURL = string.Empty,
+                DisabledProductsURL = string.Empty
             };
+
+            await _deliverectSyncService.SyncChannelLinks();
+            await _deliverectSyncService.SyncProducts(null, 0);
+
             return Json(response);
         }
         public async Task<IHttpActionResult> MenuPushed(List<DeliverectMenuUpdatedWebhookRequest> request)
