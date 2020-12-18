@@ -1,0 +1,19 @@
+﻿@model Ganedata.Core.Entities.Enums.OrderProgressStep
+@using Ganedata.Core.Entities.Enums;
+
+<div class="progressBarStep ordConfirmationPgStepsec">
+    <ul id="progressList">        
+        <li class="@((int)Model >= (int)OrderProgressStep.ReviewItems ? "active" : "")">
+            <div class="HalfCircle"></div>
+            <span class="txt">Review Order</span><span class="count"><i class="icon-review-items"></i></span>
+        </li>
+        <li class="@((int)Model >= (int)OrderProgressStep.Payment ? "active" : "")">
+            <div class="HalfCircle"></div>
+            <span class="txt">Payments</span><span class="count"><i class="icon-credit-card"></i></span>
+        </li>
+        <li class="@((int)Model >= (int)OrderProgressStep.OrderConfirmation ? "active" : "")">
+            <div class="HalfCircle"></div>
+            <span class="txt">Order Confirmation</span><span class="count"><i class="icon-tick1"></i></span>
+        </li>
+    </ul>
+</div>

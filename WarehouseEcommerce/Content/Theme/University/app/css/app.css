@@ -7437,3 +7437,8 @@ input[type="checkbox"] {
 .product-extra-detail > * {
     white-space: nowrap
 }
+
+.text-pink,
+.text-pink:hover {
+    color: #f33655;
+}
