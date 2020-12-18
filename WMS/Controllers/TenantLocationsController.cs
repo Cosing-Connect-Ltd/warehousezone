@@ -102,6 +102,8 @@ namespace WMS.Controllers
             ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " " + m.FirstName });
             ViewBag.PriceGroups = LookupServices.GetAllPriceGroups(CurrentTenantId).Select(m => new SelectListItem() { Value = m.PriceGroupID.ToString(), Text = m.Name });
 
+            ViewBag.IsDeliverectIntegrated = _tenantsServices.GetTenantConfigById(CurrentTenantId)?.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect;
+
             return View(tenantwarehouse);
         }
 
@@ -151,6 +153,9 @@ namespace WMS.Controllers
             ViewBag.AllTerminals = _terminalServices.GetAllTerminalsWithoutMobileLocationLinks(CurrentTenantId, tenantwarehouse.SalesTerminalId).Select(m => new SelectListItem() { Value = m.TerminalId.ToString(), Text = m.TerminalName + " " + m.TermainlSerial });
             ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId, tenantwarehouse.SalesManUserId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " " + m.FirstName });
             ViewBag.PriceGroups = LookupServices.GetAllPriceGroups(CurrentTenantId).Select(m => new SelectListItem() { Value = m.PriceGroupID.ToString(), Text = m.Name });
+
+            ViewBag.IsDeliverectIntegrated = _tenantsServices.GetTenantConfigById(CurrentTenantId)?.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect;
+
             return View(tenantwarehouse);
         }
 
