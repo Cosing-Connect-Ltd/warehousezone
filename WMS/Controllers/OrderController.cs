@@ -1522,7 +1522,7 @@ namespace WMS.Controllers
         {
             var account = AccountServices.GetAccountsById(id);
 
-            var list = account.AccountAddresses.Select(m => new SelectListItem() { Text = m.FullAddressValue, Value = m.AddressID.ToString() }).ToList();
+            var list = AccountServices.GetAllValidAccountAddressesByAccountId(account.AccountID).Select(m => new SelectListItem() { Text = m.FullAddressValue, Value = m.AddressID.ToString() }).ToList();
 
             return Json(list, JsonRequestBehavior.AllowGet);
         }
