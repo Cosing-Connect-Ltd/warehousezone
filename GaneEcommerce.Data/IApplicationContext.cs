@@ -191,6 +191,6 @@ namespace Ganedata.Core.Data
         DbSet<AuthUserVerifyCodes> AuthUserVerifyCodes { get; set; }
 
         DbSet<Feedback> Feedbacks  { get; set; }
-
+        DbSet<AdyenOrderPaylink> AdyenOrderPaylinks { get; set; }
     }
 }

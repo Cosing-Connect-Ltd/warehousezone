@@ -1,10 +1,13 @@
 using System;
 using System.Configuration;
+using System.Data.Entity;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Ganedata.Core.Data;
+using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Models.AdyenPayments;
 using Newtonsoft.Json;
@@ -14,6 +17,8 @@ namespace Ganedata.Core.Services
     public interface IAdyenPaymentService
     {
         Task<AdyenCreatePayLinkResponseModel> GenerateOrderPaymentLink(AdyenCreatePayLinkRequestModel model);
+        Task<AdyenOrderPaylink> CreateOrderPaymentLink(AdyenCreatePayLinkResponseModel model);
+        Task<AdyenOrderPaylink> UpdateOrderPaymentAuthorisationHook(AdyenPaylinkHookNotificationRequest model);
     }
 
     public class AdyenPaymentService : IAdyenPaymentService
@@ -34,21 +39,73 @@ namespace Ganedata.Core.Services
 
         public async Task<AdyenCreatePayLinkResponseModel> GenerateOrderPaymentLink(AdyenCreatePayLinkRequestModel model)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                var tokenRequestUri = new Uri(AdyenPaylinkCreateEndpoint);
-                httpClient.DefaultRequestHeaders.Accept.Clear();
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                httpClient.DefaultRequestHeaders.Add("x-api-key", AdyenApiKey);
-                var body = JsonConvert.SerializeObject(model);
-                var response = await httpClient.PostAsync(tokenRequestUri, new StringContent(body, Encoding.UTF8, "application/json"));
-                if (response.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    return JsonConvert.DeserializeObject<AdyenCreatePayLinkResponseModel>(await response.Content.ReadAsStringAsync());
+                    var tokenRequestUri = new Uri(AdyenPaylinkCreateEndpoint);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json"));
+                    httpClient.DefaultRequestHeaders.Add("x-api-key", AdyenApiKey);
+                    var body = JsonConvert.SerializeObject(model);
+                    var response = await httpClient.PostAsync(tokenRequestUri,
+                        new StringContent(body, Encoding.UTF8, "application/json"));
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return JsonConvert.DeserializeObject<AdyenCreatePayLinkResponseModel>(
+                            await response.Content.ReadAsStringAsync());
+                    }
+                    else
+                    {
+                        return new AdyenCreatePayLinkResponseModel()
+                            {IsError = true, ErrorMessage = response.ReasonPhrase};
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                return new AdyenCreatePayLinkResponseModel()
+                    {IsError = true, ErrorMessage = ex.Message, ErrorMessageDetails = ex.StackTrace};
+            }
+        }
 
-            return new AdyenCreatePayLinkResponseModel();
+        public async Task<AdyenOrderPaylink> CreateOrderPaymentLink(AdyenCreatePayLinkResponseModel model)
+        {
+            var link = new AdyenOrderPaylink
+            {
+               LinkID = model.ID,
+               LinkAmount = model.Amount.Value,
+               LinkAmountCurrency = model.Amount.CurrencyCode,
+               LinkExpiryDate = model.ExpiresAt,
+               LinkMerchantAccount = model.MerchantAccount,
+               LinkOrderDescription = model.ShopperUniqueReference,
+               LinkPaymentReference = model.PaymentReference,
+               LinkRecurringProcessingModel = model.RecurringProcessingModel,
+               LinkShopperReference = model.ShopperUniqueReference,
+               LinkUrl = model.Url,
+               LinkStorePaymentMethod = model.StorePaymentMethod
+            };
+
+            _context.AdyenOrderPaylinks.Add(link);
+            await _context.SaveChangesAsync();
+            return link;
+        }
+
+        public async Task<AdyenOrderPaylink> UpdateOrderPaymentAuthorisationHook(AdyenPaylinkHookNotificationRequest model)
+        {
+            var link = await _context.AdyenOrderPaylinks.FirstAsync(m => m.LinkID.Equals(model.AdditionalData.PaymentLinkId));
+            link.HookEventCode = model.EventCode;
+            link.HookPspReference = model.PspReference;
+            link.HookSuccess = model.Success;
+            link.HookAmountCurrency = model.Amount.CurrencyCode;
+            link.HookAmountPaid = model.Amount.Value;
+            link.HookMerchantOrderReference = model.MerchantReference;
+            link.HookCreatedDate = DateTime.Now;
+            link.RawJson = model.RawJson;
+            _context.Entry(link).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return link;
         }
 
     }

@@ -327,6 +327,7 @@ namespace WarehouseEcommerce.Controllers
                             PaymentReference = Guid.NewGuid().ToString("N"),
                             ShopperUniqueReference = model.OrderNumber + "_" + DateTime.Now.ToFileTime()
                         });
+                    await _adyenPaymentService.CreateOrderPaymentLink(paymentLink);
                     Session["_AdyenPaylink"] = paymentLink.Url;
                 }
             }

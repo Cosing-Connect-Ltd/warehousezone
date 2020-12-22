@@ -17,7 +17,7 @@
     <AssemblyName>account</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -532,6 +532,7 @@
     <Compile Include="Controllers\MarketsVehicleController.cs" />
     <Compile Include="Controllers\AccountSectorsController.cs" />
     <Compile Include="Controllers\ProductAttributeValuesController.cs" />
+    <Compile Include="Controllers\WebAPI\ApiAdyenPaymentsController.cs" />
     <Compile Include="Controllers\WebAPI\ApiFeedbackController.cs" />
     <Compile Include="Controllers\WebAPI\ApiProductLocationStocksSyncController.cs" />
     <Compile Include="Controllers\WebAPI\DeliverectWebhooksController.cs" />

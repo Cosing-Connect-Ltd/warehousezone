@@ -1215,6 +1215,10 @@
     <Compile Include="Migrations\202012142213442_FeedbacksAndTenantLocationConfigs.designer.cs">
       <DependentUpon>202012142213442_FeedbacksAndTenantLocationConfigs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012221907499_AddedAdyenMetaData.cs" />
+    <Compile Include="Migrations\202012221907499_AddedAdyenMetaData.designer.cs">
+      <DependentUpon>202012221907499_AddedAdyenMetaData.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2446,6 +2450,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012142213442_FeedbacksAndTenantLocationConfigs.resx">
       <DependentUpon>202012142213442_FeedbacksAndTenantLocationConfigs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012221907499_AddedAdyenMetaData.resx">
+      <DependentUpon>202012221907499_AddedAdyenMetaData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
