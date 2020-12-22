@@ -499,7 +499,7 @@ namespace Ganedata.Core.Services
                         return LogAndRespond(request, response);
                     }
 
-                    stockDetail.Quantity = Math.Round(palletSerial.RemainingCases,2) * (product.ProductsPerCase ?? 1);
+                    stockDetail.Quantity = Math.Round(palletSerial.RemainingCases, 2) * (product.ProductsPerCase ?? 1);
                     response.ScannedQuantity = Convert.ToInt32(stockDetail.Quantity);
 
 
@@ -860,14 +860,14 @@ namespace Ganedata.Core.Services
             return stockTake;
         }
 
-        public StockTake GetStockTakeByStatus(int warehouseId, int statusId,int TenantId)
+        public StockTake GetStockTakeByStatus(int warehouseId, int statusId, int TenantId)
         {
-            return _context.StockTakes.FirstOrDefault(e => e.IsDeleted != true && e.WarehouseId == warehouseId && e.TenantId== TenantId &&
+            return _context.StockTakes.FirstOrDefault(e => e.IsDeleted != true && e.WarehouseId == warehouseId && e.TenantId == TenantId &&
                                                            (e.Status == statusId));
         }
-        public IEnumerable<StockTake> GetAllStockTakes(int warehouseId,int TenantId, DateTime? reqDate = null, bool includeIsDeleted = false)
+        public IEnumerable<StockTake> GetAllStockTakes(int warehouseId, int TenantId, DateTime? reqDate = null, bool includeIsDeleted = false)
         {
-            return _context.StockTakes.Where(e => (includeIsDeleted || e.IsDeleted != true) && (e.WarehouseId == warehouseId || (e.TenantWarehouse.IsMobile == true && e.TenantWarehouse.ParentWarehouseId == warehouseId)) && (!reqDate.HasValue || (e.DateUpdated ?? e.DateCreated) >= reqDate) && e.TenantId== TenantId);
+            return _context.StockTakes.Where(e => (includeIsDeleted || e.IsDeleted != true) && (e.WarehouseId == warehouseId || (e.TenantWarehouse.IsMobile == true && e.TenantWarehouse.ParentWarehouseId == warehouseId)) && (!reqDate.HasValue || (e.DateUpdated ?? e.DateCreated) >= reqDate) && e.TenantId == TenantId);
         }
 
         public List<StockTakeDetailsViewModel> GetStockTakeDetailsByStockTakeId(int stockTakeId)
@@ -999,7 +999,8 @@ namespace Ganedata.Core.Services
                             InventoryTransactionTypeEnum transType = 0;
                             int? locationId = null;
 
-                            var stocktakePallet = _context.StockTakeDetailsPallets.FirstOrDefault(x => x.ProductPalletId == palletSerial.PalletTrackingId);
+                            var stocktakePallet = _context.StockTakeDetailsPallets.FirstOrDefault(x => x.ProductPalletId == palletSerial.PalletTrackingId
+                            && x.StockTakeDetail.StockTakeId == request.StockTakeId);
 
                             if (stocktakePallet != null)
                             {
@@ -1007,43 +1008,44 @@ namespace Ganedata.Core.Services
 
                                 if (stocktakePallet.StockTakeDetail.Quantity > 0)
                                 {
-                                    if (stocktakePallet.StockTakeDetail.Quantity > palletSerial.RemainingCases)
+                                    var cases = stocktakePallet.StockTakeDetail.Quantity / (inventoryProduct.ProductsPerCase ?? 1);
+
+
+                                    if (palletSerial.Status == PalletTrackingStatusEnum.Created || palletSerial.Status == PalletTrackingStatusEnum.Completed)
                                     {
-                                        casesDifference = stocktakePallet.StockTakeDetail.Quantity - palletSerial.RemainingCases;
+                                        casesDifference = cases;
                                         transType = InventoryTransactionTypeEnum.AdjustmentIn;
 
-                                        palletSerial.RemainingCases = stocktakePallet.StockTakeDetail.Quantity;
+                                        palletSerial.RemainingCases = cases;
+                                        palletSerial.Status = PalletTrackingStatusEnum.Active;
+                                        palletSerial.DateUpdated = DateTime.UtcNow;
+                                        _context.Entry(palletSerial).State = EntityState.Modified;
+                                        _context.SaveChanges();
+
+                                    }
+
+                                    else if (cases > palletSerial.RemainingCases)
+                                    {
+
+                                        casesDifference = cases - palletSerial.RemainingCases;
+                                        transType = InventoryTransactionTypeEnum.AdjustmentIn;
+
+                                        palletSerial.RemainingCases = cases;
                                         palletSerial.Status = PalletTrackingStatusEnum.Active;
                                         palletSerial.DateUpdated = DateTime.UtcNow;
                                         _context.Entry(palletSerial).State = EntityState.Modified;
                                         _context.SaveChanges();
                                     }
-                                    else if (stocktakePallet.StockTakeDetail.Quantity < palletSerial.RemainingCases)
+                                    else if (cases < palletSerial.RemainingCases)
                                     {
-                                        casesDifference = palletSerial.RemainingCases - stocktakePallet.StockTakeDetail.Quantity;
+                                        casesDifference = palletSerial.RemainingCases - cases;
                                         transType = InventoryTransactionTypeEnum.AdjustmentOut;
 
-                                        palletSerial.RemainingCases = stocktakePallet.StockTakeDetail.Quantity;
+                                        palletSerial.RemainingCases = cases;
                                         palletSerial.Status = PalletTrackingStatusEnum.Active;
                                         palletSerial.DateUpdated = DateTime.UtcNow;
                                         _context.Entry(palletSerial).State = EntityState.Modified;
                                         _context.SaveChanges();
-                                    }
-                                    else
-                                    {
-                                        if (palletSerial.Status == PalletTrackingStatusEnum.Created ||
-                                            (palletSerial.Status == PalletTrackingStatusEnum.Completed && stocktakePallet.StockTakeDetail.Quantity > 0))
-                                        {
-                                            casesDifference = stocktakePallet.StockTakeDetail.Quantity;
-                                            transType = InventoryTransactionTypeEnum.AdjustmentIn;
-
-                                            palletSerial.RemainingCases = stocktakePallet.StockTakeDetail.Quantity;
-                                            palletSerial.Status = PalletTrackingStatusEnum.Active;
-                                            palletSerial.DateUpdated = DateTime.UtcNow;
-                                            _context.Entry(palletSerial).State = EntityState.Modified;
-                                            _context.SaveChanges();
-
-                                        }
                                     }
                                 }
                             }

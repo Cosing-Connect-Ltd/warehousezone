@@ -414,12 +414,5 @@ namespace WMS.Controllers
             return View("Index");
         }
 
-
-        //public ActionResult StockCheck(int ProductId, decimal inStock,bool serialize)
-        //{
-        //    return Content(_lookupServices.CheckStockIssue(ProductId, inStock,serialize).ToString());
-        //}
-
-
     }
 }
