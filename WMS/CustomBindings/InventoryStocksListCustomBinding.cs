@@ -109,18 +109,15 @@ namespace WMS.CustomBindings
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
             var data = transactions.ToList();
             var lookupService = DependencyResolver.Current.GetService<ILookupServices>();
-            // var results = new List<InventoryStockViewModel>();
+
             data.ForEach(m =>
             {
                 if (m.PalletProduct == true)
                 {
                     m.StockIssue = lookupService.CheckStockIssue(m.ProductId, m.InStock, (m.SerialProduct ?? false), (m.PalletProduct ?? true));
                 }
-                //else if (m.SerialProduct == true)
-                //{
-                //    m.SerialProduct = lookupService.CheckStockIssue(m.ProductId, m.InStock, (m.SerialProduct ?? true), (m.PalletProduct ?? false));
-                //}
             });
+
             e.Data = data;
         }
     }

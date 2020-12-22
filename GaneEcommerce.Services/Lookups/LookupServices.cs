@@ -579,6 +579,7 @@ namespace Ganedata.Core.Services
                 });
             return obj.ToList();
         }
+
         public IEnumerable<object> GetAllValidWebsites(int currentTenantId)
         {
             var obj = _currentDbContext.TenantWebsites.Where(u => u.TenantId == currentTenantId && u.IsDeleted != true).Select(
@@ -590,10 +591,12 @@ namespace Ganedata.Core.Services
             return obj.ToList();
 
         }
+
         public IQueryable<TenantEmailNotificationQueue> GetEmailNotifcationQueue(int tenantId)
         {
             return _currentDbContext.TenantEmailNotificationQueues.Where(u => u.IsNotificationCancelled != true).OrderByDescending(u => u.TenantEmailNotificationQueueId);
         }
+
         public bool CheckStockIssue(int ProductId, decimal InStock, bool serial, bool productPallet)
         {
             decimal palletstock = 0;
@@ -602,14 +605,15 @@ namespace Ganedata.Core.Services
                 palletstock = _currentDbContext.PalletTracking.Where(u => u.ProductId == ProductId && (u.RemainingCases > 0) && u.Status != PalletTrackingStatusEnum.Created).Select(u => u.RemainingCases).DefaultIfEmpty(0).Sum();
             }
 
-            //else if (serial)
-            //{
-            //   palletstock = _currentDbContext.ProductSerialization.Where(u => u.ProductId == ProductId && u.CurrentStatus == VerifySerilaStockStatusEnum.InStock).Select(u => u.RemainingCases).DefaultIfEmpty(0).Sum();
-            //}
+            var product = _currentDbContext.ProductMaster.Find(ProductId);
+
+            palletstock = palletstock * product.ProductsPerCase ?? 1;
+
             if (InStock == palletstock)
             {
                 return false;
             }
+
             return true;
         }
 
@@ -665,8 +669,4 @@ namespace Ganedata.Core.Services
             return stockMovementId;
         }
     }
-
-
-
-
 }
