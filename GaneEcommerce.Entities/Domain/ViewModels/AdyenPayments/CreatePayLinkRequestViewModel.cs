@@ -44,6 +44,13 @@ namespace Ganedata.Core.Models.AdyenPayments
         public string ID { get; set; }
         [JsonProperty("url")]
         public string Url { get; set; }
+
+        [JsonIgnore]
+        public bool IsError { get; set; }
+        [JsonIgnore]
+        public string ErrorMessage { get; set; }
+        [JsonIgnore]
+        public string ErrorMessageDetails { get; set; }
     }
 
     public class AdyenAmount
