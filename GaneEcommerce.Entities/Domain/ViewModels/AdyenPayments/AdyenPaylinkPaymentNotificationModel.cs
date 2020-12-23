@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ganedata.Core.Models.AdyenPayments
 {
@@ -33,6 +34,9 @@ namespace Ganedata.Core.Models.AdyenPayments
         public bool Success { get; set; }
         [JsonIgnore]
         public string RawJson { get; set; }
+
+        [JsonProperty("hmacSignature")]
+        public string HmacSignature { get; set; }
     }
 
     public class AdyenPaylinkHookNotificationItem
@@ -41,10 +45,13 @@ namespace Ganedata.Core.Models.AdyenPayments
         public AdyenPaylinkHookNotificationRequest NotificationRequestItem { get; set; }
     }
 
-    public class Root
+    public class AdyenPaylinkHookNotificationRequestRoot
     {
+        [JsonProperty("live")]
+        public bool IsLive { get; set; }
         [JsonProperty("notificationItems")]
         public List<AdyenPaylinkHookNotificationItem> NotificationItems { get; set; }
+
     }
 
 

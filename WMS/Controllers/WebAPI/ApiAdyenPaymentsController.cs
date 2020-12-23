@@ -1,10 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using Adyen.Model.Notification;
+using Adyen.Notification;
+using Adyen.Util;
 using Elmah;
 using Ganedata.Core.Models.AdyenPayments;
 using Ganedata.Core.Services;
 using Ganedata.Core.Services.Feedbacks;
+using Newtonsoft.Json;
 
 namespace WMS.Controllers.WebAPI
 {
@@ -18,13 +26,28 @@ namespace WMS.Controllers.WebAPI
         {
             _paymentService = paymentService;
         }
-        public async Task<IHttpActionResult> ReceiveAdyenPaymentCallback(AdyenPaylinkHookNotificationRequest paymentAuthorisationData)
+        public async Task<IHttpActionResult> PaymentSuccessHook(AdyenPaylinkHookNotificationRequestRoot paymentAuthorisationData)
         {
-            string result = await Request.Content.ReadAsStringAsync();
-            paymentAuthorisationData.RawJson = result;
-            var response = await _paymentService.UpdateOrderPaymentAuthorisationHook(paymentAuthorisationData);
-            return Ok(new { Success = true, Merchant = paymentAuthorisationData.MerchantAccountCode, AuthorisationID = response.AdyenOrderPaylinkID });
+            var json = JsonConvert.SerializeObject(paymentAuthorisationData);
+            var isValidPostFromAdyen = IsValidAdyanHmacSignature(json);
+            if (!isValidPostFromAdyen)
+            {
+                return BadRequest("Failed request source verification");
+            }
+
+            var notification = paymentAuthorisationData.NotificationItems.FirstOrDefault();
+            notification.NotificationRequestItem.RawJson = "";
+            var response = await _paymentService.UpdateOrderPaymentAuthorisationHook(notification?.NotificationRequestItem);
+            return Ok(new { Success = true, Merchant = notification?.NotificationRequestItem.MerchantAccountCode, AuthorisationID = response.AdyenOrderPaylinkID });
         }
 
+        private bool IsValidAdyanHmacSignature(string json)
+        {
+            var hmacValidator = new HmacValidator();
+            var notificationHandler = new NotificationHandler();
+            var handleNotificationRequest = notificationHandler.HandleNotificationRequest(json);
+            var notificationItem = handleNotificationRequest.NotificationItemContainers.First().NotificationItem;
+            return hmacValidator.IsValidHmac(notificationItem, AdyenPaymentService.AdyenHmacKey);
+        }
     }
 }

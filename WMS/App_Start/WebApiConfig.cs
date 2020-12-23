@@ -103,6 +103,7 @@ namespace WMS
             config.Routes.MapHttpRoute("DeliverectOrderStatusUpdated", "api/deliverect/orderStatusUpdated", new { controller = "DeliverectWebhooks", action = "OrderStatusUpdated" });
             config.Routes.MapHttpRoute("LoyaltyFeedbackCreate", "api/feedbacks/create", new { controller = "ApiFeedback", action = "PostFeedback" });
             config.Routes.MapHttpRoute("LoyaltyFeedbackList", "api/feedbacks/list", new { controller = "ApiFeedback", action = "GetFeedback" });
+            config.Routes.MapHttpRoute("AdyanPaymentSuccessHook", "api/adyen/payment-success", new { controller = "ApiAdyenPayments", action = "PaymentSuccessHook" });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
