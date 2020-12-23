@@ -31,6 +31,7 @@ namespace Ganedata.Core.Services
         public static string AdyenApiKey => ConfigurationManager.AppSettings["AdyenApiKey"] != null ? ConfigurationManager.AppSettings["AdyenApiKey"] : "AQEqhmfuXNWTK0Qc+iSXk2o9g+WPSZhODJ1mTGE6yd/OgR82Wd+/SMYBi9rlEMFdWw2+5HzctViMSCJMYAc=-3oD+dvkhz0MpGi97nyZ0YCrHCX9aQUCT9RhbqVN6FQo=-gvU2Fa33)VCb5G(a";
         public static string AdyenPaylinkCreateEndpoint => ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] != null ? ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] : "https://checkout-test.adyen.com/v65/paymentLinks";
         public static string AdyenMerchantAccountName => ConfigurationManager.AppSettings["AdyenMerchantAccountName"] != null ? ConfigurationManager.AppSettings["AdyenMerchantAccountName"] : "GaneDatascanLtdECOM";
+        public static string AdyenHmacKey => ConfigurationManager.AppSettings["AdyenHmacKey"] != null ? ConfigurationManager.AppSettings["AdyenHmacKey"] : "BF43360B5EBA10D283279FE83257B8012798A690FFBFDCE78BDCAEEBA6BC6A8B";
 
         public AdyenPaymentService(IApplicationContext context)
         {
@@ -94,7 +95,7 @@ namespace Ganedata.Core.Services
 
         public async Task<AdyenOrderPaylink> UpdateOrderPaymentAuthorisationHook(AdyenPaylinkHookNotificationRequest model)
         {
-            var link = await _context.AdyenOrderPaylinks.FirstAsync(m => m.LinkID.Equals(model.AdditionalData.PaymentLinkId));
+            var link = await _context.AdyenOrderPaylinks.FirstAsync(m => m.LinkPaymentReference.Equals(model.MerchantReference));
             link.HookEventCode = model.EventCode;
             link.HookPspReference = model.PspReference;
             link.HookSuccess = model.Success;
