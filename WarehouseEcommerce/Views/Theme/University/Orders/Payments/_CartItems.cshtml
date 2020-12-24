@@ -1,7 +1,7 @@
-﻿@model Ganedata.Core.Entities.Domain.ReviewOrderViewModel
+﻿@model Ganedata.Core.Entities.Domain.WebsiteCartItemsViewModel
 
 <div class="tableWrap">
-    @if (Model.CartItems != null && Model.CartItems.Any())
+    @if (Model.WebsiteCartItems != null && Model.WebsiteCartItems.Any())
     {
         <table class="basketTable mb-4">
             <tbody>
@@ -12,7 +12,7 @@
                     <td class="tot">Total</td>
                 </tr>
 
-                @foreach (var item in Model.CartItems)
+                @foreach (var item in Model.WebsiteCartItems)
                 {
                     <tr class="cmnRow">
                         <td class="prd">
@@ -24,7 +24,6 @@
                                     <span class="prdName">
                                         @(item.ProductMaster?.Name)
 
-
                                         @if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit && item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
                                         {
                                             foreach (var cartitem in item.KitProductCartItems)
@@ -34,7 +33,8 @@
                                                 </p>
                                             }
                                         }
-
+                                        <br />
+                                        <a href="#" class="text-pink mt-2 small"><i class="fa fa-heart"></i> Add to Wishlist</a>
                                     </span>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                     <b>Sub Total:</b>
                 </td>
                 <td class="text-center border-bottom-0">
-                    <strong>@ViewBag.CurrencySymbol@(Model.CartTotalAmount)</strong>
+                    <strong>@ViewBag.CurrencySymbol@(Model.TotalAmount)</strong>
                 </td>
             </tr>
             </tbody>

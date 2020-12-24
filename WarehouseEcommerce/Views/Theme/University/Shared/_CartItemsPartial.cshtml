@@ -205,7 +205,6 @@
                                                     <span class="prdName">
                                                         @(item.ProductMaster?.Name)
 
-
                                                         @if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit && item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
                                                         {
                                                             foreach (var cartitem in item.KitProductCartItems)
@@ -214,8 +213,7 @@
                                                                     <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name <br />
                                                                 </p>
                                                             }
-                                                        }
-
+                                                        }                                                        
                                                     </span>
                                                 </div>
                                             </div>

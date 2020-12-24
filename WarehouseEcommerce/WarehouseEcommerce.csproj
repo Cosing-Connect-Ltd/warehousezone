@@ -1474,6 +1474,7 @@
     <Content Include="Views\Theme\University\Orders\Payments\ReviewOrder.cshtml" />
     <Content Include="Views\Theme\University\Orders\Payments\_OrderProgressBar.cshtml" />
     <Content Include="Views\Theme\University\Orders\Payments\_CartItems.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\_AddressForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
