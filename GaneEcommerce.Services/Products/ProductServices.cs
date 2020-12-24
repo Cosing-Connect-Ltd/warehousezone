@@ -1433,6 +1433,11 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductMaster.FirstOrDefault(e => e.TenantId == tenantId && e.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && e.IsDeleted != true);
         }
 
+        public ProductMaster GetProductMasterBySKU(string SKU, int tenantId)
+        {
+            return _currentDbContext.ProductMaster.FirstOrDefault(e => e.TenantId == tenantId && e.SKUCode.Equals(SKU, StringComparison.CurrentCultureIgnoreCase) && e.IsDeleted != true);
+        }
+
         public string GenerateNextProductCode(int tenantId)
         {
             var tenant = _currentDbContext.Tenants.Find(tenantId);

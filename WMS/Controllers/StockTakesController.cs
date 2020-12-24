@@ -8,6 +8,11 @@ using System.Web.Mvc;
 using DevExpress.Web.Mvc;
 using WMS.CustomBindings;
 using System.Threading.Tasks;
+using DevExpress.Web;
+using System.IO;
+using System.Collections.Generic;
+using CsvHelper;
+using System.Globalization;
 
 namespace WMS.Controllers
 {
@@ -88,7 +93,7 @@ namespace WMS.Controllers
             ViewBag.Products = new SelectList(products, "Value", "Text");
 
             // check if any stocktake running
-            var model = _stockTakeService.GetStockTakeByStatus(CurrentWarehouseId, 0,CurrentTenantId);
+            var model = _stockTakeService.GetStockTakeByStatus(CurrentWarehouseId, 0, CurrentTenantId);
 
             if (model != null)
             {
@@ -152,7 +157,6 @@ namespace WMS.Controllers
 
             return RedirectToAction("Index");
         }
-
 
         public ActionResult FullReportGridPartial()
         {
@@ -230,7 +234,7 @@ namespace WMS.Controllers
         [ValidateInput(false)]
         public ActionResult StocktakeGridPartial()
         {
-            var model = _stockTakeService.GetAllStockTakes(CurrentTenantId,CurrentWarehouseId);
+            var model = _stockTakeService.GetAllStockTakes(CurrentTenantId, CurrentWarehouseId);
 
             return PartialView("_StocktakeGridPartial", model.ToList());
         }
@@ -341,6 +345,232 @@ namespace WMS.Controllers
                 ProductDescription = p.Description
             }).ToList();
             return PartialView("_StocktakeCurrentProductLookup", model);
+        }
+
+
+
+
+
+
+
+        public ActionResult ImportData(int Id)
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            ViewBag.StocktakeId = Id;
+            return View();
+        }
+
+
+
+        public ActionResult UploadStocktakeDataFile(int? StocktakeId)
+        {
+
+            ViewBag.StocktakeId = StocktakeId;
+            UploadControlExtension.GetUploadedFiles("UploadControl", ValidationSettings, uc_FileUploadComplete);
+
+            return null;
+        }
+
+        public readonly UploadControlValidationSettings ValidationSettings = new UploadControlValidationSettings
+        {
+            AllowedFileExtensions = new string[] { ".csv", },
+            MaxFileSize = 100000000,
+        };
+        public void uc_FileUploadComplete(object sender, FileUploadCompleteEventArgs e)
+        {
+            if (e.UploadedFile.IsValid)
+            {
+
+                try
+                {
+                    int stocktakeId = ViewBag.StocktakeId;
+                    string ImportType = "Stocktake";
+                    var importsDirectory = Server.MapPath("~/UploadedFiles/imports/");
+                    if (!Directory.Exists(importsDirectory))
+                    {
+                        Directory.CreateDirectory(importsDirectory);
+                    }
+                    var importFileName = Server.MapPath("~/UploadedFiles/imports/" + "/Import_" + ImportType + "_" + DateTime.UtcNow.ToString("ddMMyyyyHHMMss") + "_" + e.UploadedFile.FileName);
+                    e.UploadedFile.SaveAs(importFileName, true);
+                    string importResponse = "";
+
+                    ImportStocktakeData(importFileName, stocktakeId, CurrentTenantId, CurrentWarehouseId, CurrentUserId).ForEach(m => importResponse += "<li>" + m + "</li>");
+
+                    e.CallbackData = importResponse;
+                    e.ErrorText = importResponse;
+
+                }
+                catch (Exception ex)
+                {
+
+                    e.CallbackData = "<li>File not imported: " + ex.Message + "<li>";
+                }
+            }
+
+        }
+
+        public List<string> ImportStocktakeData(string importPath, int stockTakeId, int tenantId, int warehouseId, int? userId = null)
+        {
+
+            var stocktake = _stockTakeService.GetStockTakeById(stockTakeId);
+
+            if (stocktake == null)
+            {
+                return new List<string> { $"No Valid Stocktake found!" };
+            }
+
+
+            var headers = new List<string>();
+            List<StockTakeImportViewModel> importData = null;
+
+            try
+            {
+                using (var csv = new CsvReader(System.IO.File.OpenText(importPath), CultureInfo.InvariantCulture))
+                {
+                    csv.Read();
+                    csv.ReadHeader();
+                    headers = csv.Context.HeaderRecord.ToList(); headers = headers.ConvertAll(d => d.ToLower());
+
+                    if (!headers.Contains("sku") || !headers.Contains("name") || !headers.Contains("quantity"))
+                    {
+                        return new List<string> { $"Incorrect file headers!" };
+                    }
+
+                    importData = csv.GetRecords<StockTakeImportViewModel>().ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<string> { $"Incorrect file content!" };
+            }
+
+            if (importData == null || importData.Count() <= 0)
+            {
+                return new List<string> { $"Empty file, no values to import!" };
+            }
+
+            var exceptionsList = new List<string>();
+            var successCount = 0;
+
+            try
+            {
+                ImportDataIntoStocktake(tenantId,
+                                        warehouseId,
+                                        userId,
+                                        stockTakeId,
+                                        importData,
+                                        ref exceptionsList,
+                                        ref successCount);
+            }
+            catch (Exception ex)
+            {
+                exceptionsList.Add($"Unable to import data. Error message: {ex.Message}");
+            }
+
+            var result = new List<string>();
+
+            result.Add($"{successCount} Items imported for \"{stocktake.StockTakeDescription}\" ");
+
+            if (exceptionsList.Count > 0)
+            {
+                result.Add($"{exceptionsList.Count} Failures in import process :");
+                result.AddRange(exceptionsList);
+            }
+
+            return result;
+        }
+
+        private void ImportDataIntoStocktake(int tenantId,
+                                                        int warehouseId,
+                                                        int? userId,
+                                                        int stockTakeId,
+                                                        IEnumerable<StockTakeImportViewModel> importData,
+                                                        ref List<string> exceptionsList,
+                                                        ref int successCount)
+        {
+
+            var stocktake = _stockTakeService.GetStockTakeById(stockTakeId);
+
+            foreach (var stocktakeItem in importData)
+            {
+                var product = _productServices.GetProductMasterBySKU(stocktakeItem.SKU, tenantId);
+
+
+                if (product == null)
+                {
+                    exceptionsList.Add($"Unable to find \"{stocktakeItem.SKU} - {stocktakeItem.Name}\"");
+                    continue;
+                }
+
+                if (product.Serialisable == true)
+                {
+                    exceptionsList.Add($"Serialised SKU \"{stocktakeItem.SKU} - {stocktakeItem.Name}\" not supported");
+                    continue;
+                }
+
+            }
+
+            if (exceptionsList.Count > 0)
+            {
+                return;
+            }
+
+            foreach (var stocktakeItem in importData)
+            {
+                try
+                {
+                    var product = _productServices.GetProductMasterBySKU(stocktakeItem.SKU, tenantId);
+
+                    var stockTakeDetail = new StockTakeDetail();
+                    stockTakeDetail.StockTakeId = stocktake.StockTakeId;
+                    stockTakeDetail.ProductId = product.ProductId;
+                    stockTakeDetail.ReceivedSku = product.SKUCode;
+                    stockTakeDetail.Quantity = stocktakeItem.Quantity;
+                    stockTakeDetail.DateScanned = DateTime.Now;
+                    stockTakeDetail.TenentId = tenantId;
+                    stockTakeDetail.WarehouseId = warehouseId;
+                    stockTakeDetail = _stockTakeService.CreateStockTakeDetail(stockTakeDetail);
+
+                    if (product.ProcessByPallet)
+                    {
+
+                        PalletTracking palletTracking = new PalletTracking();
+                        palletTracking.ProductId = product.ProductId;
+
+                        palletTracking.BatchNo = stocktake.StockTakeId + "-csv-upload";
+                        palletTracking.TotalCases = Math.Ceiling(stocktakeItem.Quantity / product.ProductsPerCase ?? 1);
+                        palletTracking.RemainingCases = stocktakeItem.Quantity / product.ProductsPerCase ?? 1;
+                        palletTracking.Comments = stocktake.StockTakeDescription + " csv upload";
+                        palletTracking.Status = Ganedata.Core.Entities.Enums.PalletTrackingStatusEnum.Created;
+                        palletTracking.DateCreated = DateTime.UtcNow;
+                        palletTracking.DateUpdated = DateTime.UtcNow;
+                        palletTracking.TenantId = CurrentTenantId;
+                        palletTracking.WarehouseId = CurrentWarehouseId;
+                        string palletTrackingIds = _productServices.CreatePalletTracking(palletTracking, 1);
+                        var palletTrackingId = Convert.ToInt32(palletTrackingIds.Split(',').ToArray()[0]);
+
+                        palletTracking = _productServices.GetPalletbyPalletId(palletTrackingId);
+
+                        StockTakeDetailsPallets detailPallets = new StockTakeDetailsPallets();
+                        detailPallets.ProductPalletId = palletTrackingId;
+                        detailPallets.ProductId = product.ProductId;
+                        detailPallets.StockTakeDetailId = stockTakeDetail.StockTakeDetailId;
+                        detailPallets.PalletSerial = palletTracking.PalletSerial;
+                        detailPallets.CreatedBy = userId;
+
+                        _stockTakeService.CreateStockTakeDetailsPallets(detailPallets);
+
+                    }
+
+                    successCount++;
+
+                }
+                catch (Exception ex)
+                {
+                    exceptionsList.Add($"Unable to import items for \"{stocktakeItem.SKU} - {stocktakeItem.Name}\". Error message: {ex.Message}");
+                    continue;
+                }
+            }
         }
 
     }

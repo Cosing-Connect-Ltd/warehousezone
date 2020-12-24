@@ -268,7 +268,7 @@ namespace Ganedata.Core.Entities.Domain
         public string CustomMessage { get; set; }
 
         public int? AccountId { get; set; }
-        public DateTime?  StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
         public string ShipmentAddressLine1 { get; set; }
@@ -323,5 +323,13 @@ namespace Ganedata.Core.Entities.Domain
         public int AccountId { get; set; }
         public int InventoryTransactionTypeId { get; set; }
         public bool ThresholdAcknowledged { get; set; }
+    }
+
+    public class StockTakeImportViewModel
+    {
+        public string SKU { get; set; }
+        public string Name { get; set; }
+        public decimal Quantity { get; set; }
+
     }
 }
