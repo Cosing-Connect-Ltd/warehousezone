@@ -27,7 +27,7 @@ namespace Ganedata.Core.Entities.Domain
         public int? AccountId { get; set; }
         public int? AccountAddressId { get; set; }
         public bool? CreateAccount { get; set; }
-        public List<CountryViewModel> Countries { get; set; }
+        public List<CountryViewModel> Countries { get; set; } = new List<CountryViewModel>();
         public int? ShippingAddressId { get; set; }
         public int? BillingAddressId { get; set; }
         public bool? IsAddressSameForBilling { get; set; }
@@ -60,11 +60,19 @@ namespace Ganedata.Core.Entities.Domain
 
     public class ReviewOrderViewModel
     {
-        public List<WebsiteCartItemViewModel> CartItems { get; set; } = new List<WebsiteCartItemViewModel>();
-        public decimal CartTotalAmount => Math.Round(CartItems.Sum(c => c.ProductTotalAmount), 2) + (ShippingRule?.Price ?? 0);
+        public WebsiteCartItemsViewModel Cart { get; set; } = new WebsiteCartItemsViewModel();        
+        public decimal CartTotalAmount => Math.Round(Cart.WebsiteCartItems.Sum(c => c.ProductTotalAmount), 2) + (ShippingRule?.Price ?? 0);
         public WebsiteShippingRulesViewModel ShippingRule { get; set; }
         public List<ProductMaster> RelatedProducts { get; set; } = new List<ProductMaster>();
         public bool IsStandardDelivery { get; set; }
         public List<AddressViewModel> Addresses { get; set; }
+    }
+
+    public class AddressFormViewModel : AddressViewModel
+    {
+        public int SelectedAddressID { get; set; }
+        public List<CountryViewModel> Countries { get; set; } = new List<CountryViewModel>();
+        public List<AddressViewModel> SavedAddresses { get; set; }
+        public string DeliveryInstructions { get; set; }
     }
 }

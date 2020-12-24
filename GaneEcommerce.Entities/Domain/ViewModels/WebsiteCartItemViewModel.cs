@@ -24,7 +24,7 @@ namespace Ganedata.Core.Entities.Domain
     [Serializable]
     public class WebsiteCartItemsViewModel
     {
-        public List<WebsiteCartItemViewModel> WebsiteCartItems { get; set; }
+        public List<WebsiteCartItemViewModel> WebsiteCartItems { get; set; } = new List<WebsiteCartItemViewModel>();
         public decimal TotalAmount => Math.Round(WebsiteCartItems.Sum(c => c.ProductTotalAmount), 2);
         public bool ShowLoginPopUp { get; set; }
         public bool IsDeliveryAvailable { get; set; }

@@ -612,18 +612,37 @@ namespace WarehouseEcommerce.Controllers
 
         #region Payments
         public ActionResult ReviewOrder()
-        {
+        {            
+            var cartModel = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID).ToList() };
+
+            cartModel.ShippmentAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());            
+            cartModel.ShowLoginPopUp = CurrentUserId == 0;
+            cartModel.IsCollectionAvailable = CurrentTenantWebsite.IsCollectionAvailable;
+            cartModel.IsDeliveryAvailable = CurrentTenantWebsite.IsDeliveryAvailable;
             var model = new ReviewOrderViewModel
             {
-                CartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID).ToList(),
+                Cart = cartModel
             };
-
-            foreach (var item in model.CartItems)
+                        
+            foreach (var item in model.Cart.WebsiteCartItems)
             {
-                model.RelatedProducts.AddRange(_productServices.GetRelatedProductsByProductId(item.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID));
+                var baseProduct = _productServices.GetProductMasterByProductCode(item.ProductMaster.SKUCode, CurrentTenantId);
+                model.RelatedProducts.AddRange(_productServices.GetRelatedProductsByProductId(item.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId));
             }
+            model.RelatedProducts.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
 
             return View("Payments/ReviewOrder", model);
+        }
+
+        public ActionResult GetAddressForm()
+        {
+            var model = new AddressFormViewModel
+            {
+                SavedAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>()),
+                Countries = _lookupServices.GetAllGlobalCountries().Select(u => new CountryViewModel { CountryId = u.CountryID, CountryName = u.CountryName }).ToList()
+            };
+
+            return PartialView("Payments/_AddressForm", model);
         }
         #endregion
     }

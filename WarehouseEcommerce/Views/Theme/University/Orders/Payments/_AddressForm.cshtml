@@ -1,0 +1,78 @@
+﻿@model Ganedata.Core.Entities.Domain.AddressFormViewModel
+
+
+<h5 class="header-ul-left-pink mb-4 p-3 mt-4 clearfix">Billing Address</h5>
+<div class="form-group">
+    @foreach (var add in Model.SavedAddresses)
+    {
+        <div class="card-deck col-12">
+            <div class="card">
+                <div class="card-body d-flex align-items-center">
+                    <input type="radio" />
+                    @Html.Partial("_AddressDetail", add)
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="text-center">OR</div>
+<div class="botomBtnsec">
+    <button class="btmbtn pro" data-toggle="collapse" data-target="#divAddAddress">ADD ADDRESS</button>
+</div>
+
+<div id="divAddAddress" class="collapse">
+    <div class="form-group col-12">
+        @using (Html.BeginForm("SaveAddress", "Orders", new { }))
+        {
+            <div class="row">
+                <div class="col form-group">
+                    @Html.LabelFor(m => m.AddressLine1, "Address Line 1")
+                    <span id="required-asterisk" style="color:red"> *</span>
+                    @Html.TextBoxFor(model => model.AddressLine1, new { @class = "form-control no-asterisk", @required = "Required", @oninput = "validateAddressForm()" })
+                </div>
+                <div class="col form-group">
+                    @Html.LabelFor(m => m.Telephone, "Telephone Number")
+                    <span id="required-asterisk" style="color:red"> *</span>
+                    @Html.TextBoxFor(model => model.Telephone, new { @class = "form-control no-asterisk", @required = "Required", @oninput = "validateAddressForm()" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    @Html.LabelFor(m => m.AddressLine2, "Address Line 2")
+                    @Html.TextBoxFor(model => model.AddressLine2, new { @class = "form-control", @oninput = "validateAddressForm()" })
+                </div>
+                <div class="col form-group">
+                    @Html.LabelFor(m => m.CountryID, "Country")
+                    @Html.DropDownListFor(model => model.CountryID, new SelectList(Model.Countries, "CountryID", "CountryName"), new { @class = "form-control", @oninput = "validateAddressForm()" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    @Html.LabelFor(m => m.AddressLine3, "Address Line 3")
+                    @Html.TextBoxFor(model => model.AddressLine3, new { @class = "form-control", @oninput = "validateAddressForm()" })
+                </div>
+                <div class="col form-group">
+                    @Html.LabelFor(m => m.PostCode, "Postal Code")
+                    <span id="required-asterisk" style="color:red"> *</span>
+                    @Html.TextBoxFor(model => model.PostCode, new { @class = "form-control no-asterisk", @required = "Required", @oninput = "validateAddressForm()" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group">
+                    @Html.LabelFor(m => m.DeliveryInstructions, "Delivery Instruction")
+                    @Html.TextAreaFor(model => model.DeliveryInstructions, new { @class = "form-control", @oninput = "validateAddressForm()" })
+                </div>
+            </div>
+            <div class="checkboxwrap">
+                <input class="styled-checkbox" id="UseForDelivery" type="checkbox" name="UseForDelivery" value="1">
+                <label class="ship-type" for="UseForDelivery">Use same address for Delivery</label>
+            </div>
+        }
+    </div>
+    <div class="botomBtnsec modal-footer">
+        <button class="btmbtn pro">SAVE ADDRESS</button>
+    </div>
+</div>
+
