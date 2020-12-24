@@ -1235,5 +1235,19 @@ namespace Ganedata.Core.Services
 
         }
 
+        public StockTakeDetail CreateStockTakeDetail(StockTakeDetail detail)
+        {
+            _context.StockTakeDetails.Add(detail);
+            _context.SaveChanges();
+            return detail;
+        }
+
+        public StockTakeDetailsPallets CreateStockTakeDetailsPallets(StockTakeDetailsPallets detailPallet)
+        {
+            _context.StockTakeDetailsPallets.Add(detailPallet);
+            _context.SaveChanges();
+            return detailPallet;
+        }
+
     }
 }

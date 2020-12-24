@@ -103,6 +103,7 @@
                                 <td>
                                     @if (WMS.Helpers.LayoutHelpers.ActivityValidator("StockTakes", "Stop"))
                                     {
+                                        <a class="btn btn-success" href="javascript:void(0)" id="btnStopStockImport">Import Stocktake Data</a>
                                         <a class="btn btn-danger" href="javascript:void(0)" id="btnStopStockTakeConfirm">Stop StockTake</a>
                                     }
                                 </td>
@@ -129,18 +130,25 @@
 
             <script>
         $(function() {
-
+            debugger;
             bindStockTakeGridEvents();
 
             bindStockTakeSerialPopupEvents();
 
             bindStockTakePalletSerialPopupEvents();
 
-            $("#btnStopStockTakeConfirm").click(function() {
+            $("#btnStopStockTakeConfirm").click(function () {
+                debugger;
                 var redirectLocation = '@Url.Action("Stop", "StockTakes", new {id = ViewBag.CurrentStocktakeId})';
                 if (confirm('Are you sure, you want to cancel the current stocktaking?')) {
                     location.href = redirectLocation;
                 }
+            });
+
+            $("#btnStopStockImport").click(function () {
+                debugger;
+                var redirectLocation = '@Url.Action("ImportData", "StockTakes", new {id = ViewBag.CurrentStocktakeId})';
+                    location.href = redirectLocation;
             });
 
             window.onbeforeunload = function() {
@@ -159,7 +167,7 @@
     </div>
 
     <div id="STD">
-        @Html.Action("_StocktakeDetailGridPartial",new {Id= ViewBag.CurrentStocktakeId })
+        @Html.Action("_StocktakeDetailGridPartial", new { Id = ViewBag.CurrentStocktakeId })
     </div>
 
 
@@ -175,7 +183,6 @@
     settings.Modal = true;
     settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
     settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
-    //settings.LoadDefaultPopupControlSettings("StockTakeDetailDeleteConfirm", "Delete Stock Detail Confirmation");
     settings.SetContent(() =>
     {
         ViewContext.Writer.Write("<div class='divstocktakedetail-delete' id='divStockTakeDetailDeleteConfirm' data-id='0'><h5>Are you sure you want to delete this stock detail?</h5></div>");

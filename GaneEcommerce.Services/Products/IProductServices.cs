@@ -12,11 +12,8 @@ namespace Ganedata.Core.Services
     public interface IProductServices
     {
         IQueryable<ProductMaster> GetAllValidProductMasters(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false);
-
         IQueryable<SelectListItem> GetAllValidProductMastersForSelectList(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false);
-
         ProductMaster GetProductMasterById(int productId);
-
         PalletTracking GetPalletbyPalletId(int palletTrackingId);
         IEnumerable<ProductKitMap> GetAllProductKitMapsByProductId(int productId, ProductKitTypeEnum productKitType);
         IEnumerable<ProductMaster> GetAllProductByAttributeKitsByProductId(int productId);
@@ -25,7 +22,6 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductMaster> GetAllProductInKitsByProductId(int productId);
         IEnumerable<ProductMaster> GetParentProductsByKitProductId(int kitProductId);
         IEnumerable<ProductMaster> GetAllProductInKitsByKitProductId(int productId);
-
         IEnumerable<int> GetAllProductsInALocationFromMaps(int locationId);
         IEnumerable<int> GetAllProductLocationsFromMaps(int productId);
         IQueryable<ProductMasterViewModel> GetAllProductMasterDetail(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null, int? productId = null);
@@ -52,37 +48,29 @@ namespace Ganedata.Core.Services
         ProductMaster GetProductMasterByBarcode(string barcode, int tenantId);
         ProductMaster GetProductMasterByOuterBarcode(string outerBarcode, int tenantId);
         ProductMaster GetProductMasterByName(string name, int tenantId);
+        ProductMaster GetProductMasterBySKU(string SKU, int tenantId);
         IEnumerable<ProductMaster> GetProductMasterDropdown(int productId);
-
         IEnumerable<ProductMaster> GetProductByCategory(int siteId, int tenantId, int numberofProducts, string tagName, int? tagId = null);
-
         string GenerateNextProductCode(int tenantId);
         bool IsCodeAvailableForUse(string code, int tenantId, EnumProductCodeType codeType = EnumProductCodeType.All, int productId = 0);
-
         bool IsNameAvailableForUse(string name, int tenantId, EnumProductCodeType codeType = EnumProductCodeType.All, int productId = 0);
         IQueryable<InventoryTransaction> GetInventoryTransactionsByProductSerialId(int id);
         ProductMaster SaveProduct(ProductMaster productMaster, List<string> productAccountCodeIds,
             List<int> productAttributesIds,
             List<int> productLocationIds, List<int> attributeIds, int userId, int tenantId, List<int> siteId, List<RecipeProductItemRequest> recipeProductItems);
-
         LocationGroup SaveLocationGroup(string locationGroupName, int userId, int tenantId);
         bool AddOrderId(int? orderId, int palletTrackingId, int? type);
         ProductKitMap UpdateProductKitMap(int productId, int kitProductId, int userId, int tenantId);
-
         void SaveProductSerials(List<string> serialList, int product, string delivery, int order, int location, int tenantId, int warehouseId, int userId);
         void DeleteProductsAndKits(int productId, int kitProductId, int tenantId, int userId);
-
         void SaveSelectedProductRecipeItems(int productId, List<RecipeProductItemRequest> recipeItems, int currentUserId);
         void SaveSelectedProductKitItems(int productId, RecipeProductItemRequest kitItems, int currentUserId, int tenantId);
         void RemoveRecipeItemProduct(int KitProductId, int currentUserId);
         void UpdateRecipeItemProduct(int productId, int recipeItemProductId, decimal quantity, int currentUserId);
         void RemoveKitItemProduct(int productId, int kitItemProductId, int currentUserId);
         void UpdateKitItemProduct(int productId, int kitItemProductId, decimal quantity, int currentUserId);
-
         bool MoveStockBetweenLocations(int transactionId, int? locationId, decimal moveQuantity, int tenantId, int warehouseId, int userId);
-
         List<OrderPriceViewModel> GetPriceHistoryForProduct(int productId, int tenantId);
-
         List<ProductAttributes> GetAllProductAttributes();
         ProductAttributeValuesMap GetProductAttributeMapById(int mapId);
         ProductAttributeValuesMap UpdateProductAttributeMap(int productId, int mapId);
@@ -117,20 +105,15 @@ namespace Ganedata.Core.Services
         ProductKitMap GetProductInKitsByKitId(int KitId);
         bool UpdateDontMonitorStockFlagForLocationproducts(int currentTenantId);
         List<Tuple<string, string, decimal, bool>> AllocatedProductDetail(int productId, int WarehouseId, int detail);
-
         IEnumerable<InventoryTransaction> GetInventoryTransactionsReturns(int productId, int? orderId, string orderNumber, int inventoryTransactionType, string grouptoken);
         IQueryable<ProductMaster> GetAllValidProducts(int tenantId, string args, int OrderId, int departmentId = 0, int groupId = 0, int ProductId = 0);
-
         IEnumerable<PalletTracking> GetAllPalletByOrderProcessDetailId(int orderprocessdetailId, int tenantId);
-
         IEnumerable<ProductSerialis> GetAllProductSerialbyOrderProcessDetailId(int orderprocessdetailId, int tenantId, bool? type);
-
         ProductMaster SaveEditProduct(ProductMasterViewModel productMaster, int UserId, int TenantId);
         bool GetInventroyTransactionCountbyOrderProcessDetailId(int orderprocessdetailId, int tenantId);
         IEnumerable<ProductMaster> GetAllProductProcessByPallet(int tenantId);
         string CreatePalletTracking(PalletTracking palletTracking, int NoOfLabels);
         List<string> CreatePalletTracking(LabelPrintViewModel requestData, int tenantId, int warehouseId);
-
         ProductKitMap SaveProductKit(int KitId, decimal Quantity, int ProductId, int userId, int? ProductKitTypeId);
     }
 }

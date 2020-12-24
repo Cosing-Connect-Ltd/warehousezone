@@ -17,7 +17,7 @@
     <AssemblyName>account</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -2774,6 +2774,8 @@
     <Content Include="Views\Theme\Default\Products\PalletLabelPrintViewer.cshtml" />
     <Content Include="Views\Theme\Default\Home\Page.cshtml" />
     <Content Include="Views\Theme\Default\OrderSchedule\_OrdersToSchedule.cshtml" />
+    <Content Include="Views\Theme\Default\StockTakes\ImportData.cshtml" />
+    <Content Include="Views\Theme\Default\StockTakes\_StocktakeFileUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

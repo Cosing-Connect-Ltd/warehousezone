@@ -1,0 +1,92 @@
+﻿@model dynamic
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Import Stocktake Data";
+
+}
+<script>
+
+    function OnClick() {
+        var text = UploadControl.GetText(0);
+        var array = text.split(",");
+        var count = array.length;
+        if (text === "") {
+            alert("Please chose file first");
+        }
+        else {
+            $('#dvbusy').show();
+            UploadControl.Upload();
+        }
+    }
+
+</script>
+
+@using (Html.BeginForm("UploadFile", "StockTakes", FormMethod.Post, new { id = "DataImportUploadForm" }))
+{
+    <h2><span>@ViewBag.Title</span></h2>
+    @Html.Hidden("StocktakeId", (int)ViewBag.StocktakeId)
+    <div id="AI" class="col-md-12 pull-left">
+        <span class="clearfix">The file should be of <i style="color:red">*</i>.csv format. The file should not exceed the maximum size of 1GB</span>
+        <p class="mb-0">The file should have the columns in the order of SKU<i style="color:red">*</i>, Name, Quantity</p>
+        <p class="clearfix">Colums with <i style="color:red">*</i> are the mandatory fields </p>
+        <p class="clearfix">
+            If product is a simple product, only quantity will be added. For proces by pallet products, this import will create one pallet for each row in the file.
+            Serialised products stocktake import is not supported and only should be done via handheld app
+        </p>
+    </div>
+
+    <div class="col-md-12 pull-left">
+        <div class="data-import-upload-panel">
+            @Html.Partial("_StocktakeFileUpload")
+            @Html.DevExpress().Button(button =>
+            {
+           button.Name = "btnUploadFile";
+           button.Text = "Upload";
+           button.ControlStyle.CssClass = "btn btn-primary";
+           button.ClientSideEvents.Click = "OnClick";
+       }).GetHtml()
+
+            <div class="col-md-12 bg-warning">
+                <ul id="data-import-results">
+                    <li>Choose CSV file</li>
+                </ul>
+            </div>
+            <script id="uploaderTemplate" type="text/x-jquery-tmpl">
+                <tr>
+                    <td id="tdfileName">${FileName}</td>
+                    <td>
+                        <p>&nbsp;</p>
+                    </td>
+                    <td><a class="LRemove" onclick="removeFile('${FileName}')">Remove</a></td>
+
+                </tr>
+            </script>
+            <script id="uploaderDownloadTemplate" type="text/x-jquery-tmpl">
+                <tr>
+
+                    <td id="tdfileName">${FileName}</td>
+                    <td>
+                        <p>&nbsp;</p>
+                    </td>
+                    <td class="FileRow"><a class="LRemove" onclick="removeFile('${FileName}')">Remove</a></td>
+                    <td>
+                        <p>&nbsp;</p>
+                    </td>
+                    <td class="FileRow"><a class="LRemove" onclick="downloadFile('${FileName}')" download>Download</a></td>
+                </tr>
+            </script>
+        </div>
+    </div>
+}
