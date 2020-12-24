@@ -539,7 +539,7 @@ namespace WMS.Controllers
 
                         palletTracking.BatchNo = stocktake.StockTakeId + "-csv-upload";
                         palletTracking.TotalCases = Math.Ceiling(stocktakeItem.Quantity / product.ProductsPerCase ?? 1);
-                        palletTracking.RemainingCases = stocktakeItem.Quantity / product.ProductsPerCase ?? 1;
+                        palletTracking.RemainingCases = Math.Ceiling(stocktakeItem.Quantity / product.ProductsPerCase ?? 1);
                         palletTracking.Comments = stocktake.StockTakeDescription + " csv upload";
                         palletTracking.Status = Ganedata.Core.Entities.Enums.PalletTrackingStatusEnum.Created;
                         palletTracking.DateCreated = DateTime.UtcNow;
