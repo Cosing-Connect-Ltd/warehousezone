@@ -66,6 +66,8 @@ namespace Ganedata.Core.Entities.Domain
         public List<ProductMaster> RelatedProducts { get; set; } = new List<ProductMaster>();
         public bool IsStandardDelivery { get; set; }
         public List<AddressViewModel> Addresses { get; set; }
+        public decimal NextDayDeliveryCost { get; set; }
+        public decimal StandardDeliveryCost { get; set; }
     }
 
     public class AddressFormViewModel : AddressViewModel
@@ -74,5 +76,6 @@ namespace Ganedata.Core.Entities.Domain
         public List<CountryViewModel> Countries { get; set; } = new List<CountryViewModel>();
         public List<AddressViewModel> SavedAddresses { get; set; }
         public string DeliveryInstructions { get; set; }
+        public bool IsBillingAddress { get; set; }
     }
 }

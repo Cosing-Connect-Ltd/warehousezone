@@ -2,7 +2,7 @@
 @model Ganedata.Core.Entities.Domain.ReviewOrderViewModel
 @{
     ViewBag.Title = "Review Order";
-    var address = Model.Cart.ShippmentAddresses.FirstOrDefault();
+    var address = Model.Cart.ShippmentAddresses.FirstOrDefault(p => p.AddTypeShipping == true);
 }
 
 <section class="nb_sec nb_prdlisting_pgsec nb_sec_pb">
@@ -37,26 +37,26 @@
                     <div class="row">
                         <div class="col">
                             <h6 class="mb-2">Delivery Address <a href="#" id="linkChangeDelAddress" class="text-pink small">@(address==null?"Add": "Change")</a></h6>
-                            <div>
+                            <div id="pDelAddress">
                                 @if (address != null)
                                 {
                                     <p>
                                         @Html.Partial("_AddressDetail", address)
                                     </p>
-                                    <a href="#" class="text-pink small">Add Delivery instruction</a>
                                 }
                                 else
                                 {
                                     <span>Not available</span>
                                 }
+                                <a href="#" style="@(address != null?"":"display:none;")" class="text-pink small">Add Delivery instruction</a>
                             </div>
                         </div>
                         <div class="col">
-                            @if (address != null)
-                            {
-                                <h6 class="mb-2">Billing Address <a href="#" id="linkChangeBillAddress" class="text-pink small">Change</a></h6>
-                            }
-                            <p>
+                            <h6 class="mb-2">
+                                Billing Address
+                                <a href="#" id="linkChangeBillAddress" class="text-pink small link-bill" style="@(address != null?"":"display:none;")">Change</a>
+                            </h6>
+                            <p id="pBillAddress">
                                 @if (address != null)
                                 {
                                     @Html.Partial("_AddressDetail", address)
@@ -70,11 +70,11 @@
                         <div class="col">
                             <h6 class="mb-2">Delivery Options</h6>
                             <div class="mb-3">
-                                <div class="d-flex align-items-center">                                    
-                                    <input type="radio" name="IsStandardDelivery" id="DeliveryOpt1" @(!Model.IsStandardDelivery?"checked":"") /> <label for="DeliveryOpt1">Next Day Delivery &pound;<span>10</span></label>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" name="IsStandardDelivery" id="DeliveryOpt1" @(!Model.IsStandardDelivery ? "checked" : "") /> <label for="DeliveryOpt1">Next Day Delivery &pound;<span>@Model.NextDayDeliveryCost</span></label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" name="IsStandardDelivery" id="DeliveryOpt2" @(Model.IsStandardDelivery?"checked":"") /> <label for="DeliveryOpt2">Standard Delivery &pound;<span>10</span> (2 to 5 working days)</label>
+                                    <input type="radio" name="IsStandardDelivery" id="DeliveryOpt2" @(Model.IsStandardDelivery ? "checked" : "") /> <label for="DeliveryOpt2">Standard Delivery &pound;<span>@Model.StandardDeliveryCost</span> (2 to 5 working days)</label>
                                 </div>
                             </div>
                             <div class="d-flex">
@@ -83,7 +83,7 @@
                                     <div>(Including delivery charges)</div>
                                 </div>
 
-                                <h5 class="text-pink">&pound;244.57</h5>
+                                <h5 class="text-pink">&pound;@Model.CartTotalAmount</h5>
                             </div>
                         </div>
                     </div>
@@ -96,12 +96,13 @@
                     <!-- Modal content-->
                     <div class="modal-content basket-modal-content">
                         <div class="modal-body pl-3 pr-3">
-                            <button type="button" class="close mt-3" data-dismiss="modal">&times;</button>
-                            @Html.Action("GetAddressForm","Orders")
-                        </div>                       
+                            <button type="button" class="close mt-3" data-dismiss="modal">&times;</button>                            
+                            <div id="divAddressSection" class="content-add">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div>            
         }
 
         <div class="mt-4" id="updateCart">
@@ -117,11 +118,71 @@
         }
     </div>
 </section>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script>
     $(function () {
-        $("#linkChangeDelAddress,#linkChangeBillAddress").click(function () {
-            $("#modalAddress").modal("show");
+        $("#linkChangeDelAddress,#linkChangeBillAddress").click(function () {            
+            startLoading();
+            $.ajax({
+                url: '@Url.Action("GetAddressForm", "Orders")',
+                method: 'get',
+                data: { isBillingAddress: $(this).hasClass("link-bill") },
+                dataType: 'html',
+                success: function (data) {
+                    stopLoading();
+                    $("#modalAddress").modal("show");
+                    $("#divAddressSection").html(data);
+                }
+            });
             return false;
+        });
+
+        $("#modalAddress").on("click", "#btnSaveAddress", function () {
+            var modal = $(this).closest(".modal");
+            modal.find("#formAddAddress").validate();
+            if (modal.find("#formAddAddress").valid()) {
+                startLoading();
+                $.ajax({
+                    url: '@Url.Action("SaveNewAddress", "Orders")',
+                    method: 'post',
+                    data: modal.find("#formAddAddress").serialize(),
+                    dataType: 'html',
+                    success: function (data) {
+                        stopLoading();
+                        modal.find(".content-add:eq(0)").html(data);
+                    }
+                });
+            }
+        });
+
+        $("#modalAddress").on("click", "#btnSelectAddress", function (e) {
+            e.preventDefault();
+            var rb = $(this).closest("#divSavedAddSection").find("input[type='radio']:checked:eq(0)")
+            var addId = rb.val();
+            if (addId > 0) {
+                debugger;
+                $(rb.data("isbilling") == "True" ? "#pBillAddress" : "#pDelAddress").html(rb.closest(".card-body").find(".address-det:eq(0)").clone().html());
+                $(this).closest(".modal").find("button.close").trigger("click");
+
+                if (rb.data("isbilling") == "True")
+                    $("#linkChangeBillAddress").show();
+                $("#linkChangeDelAddress").text("Change");
+            }
+            return false;
+        });
+
+        $(".wishlist-prod").click(function () {
+            var elem = $(this);
+            $.ajax({
+                url: '@Url.Action("AddWishListItem", "Products")',
+                method: 'post',
+                data: { productId: elem.data("prodid") },
+                    dataType: 'html',
+                    success: function (data) {
+                        elem.toggleClass("text-secondary", "text-pink");
+                    }
+                });
         });
     })
 </script>

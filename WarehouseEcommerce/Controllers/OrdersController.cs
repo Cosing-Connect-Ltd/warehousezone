@@ -634,8 +634,35 @@ namespace WarehouseEcommerce.Controllers
             return View("Payments/ReviewOrder", model);
         }
 
-        public ActionResult GetAddressForm()
+        public ActionResult GetAddressForm(bool isBillingAddress = false)
         {
+            var model = new AddressFormViewModel
+            {
+                IsBillingAddress = isBillingAddress,
+                SavedAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID)
+                .Where(u => (isBillingAddress && u.AddTypeBilling == true || u.AddTypeShipping == true) && u.IsDeleted != true).ToList(), new List<AddressViewModel>()),
+                Countries = _lookupServices.GetAllGlobalCountries().Select(u => new CountryViewModel { CountryId = u.CountryID, CountryName = u.CountryName }).ToList()
+            };
+
+            return PartialView("Payments/_AddressForm", model);
+        }
+
+        public ActionResult SaveNewAddress(AddressFormViewModel modelForm)
+        {
+            var accountAddresses = _mapper.Map(modelForm, new AccountAddresses());
+            accountAddresses.Name = "Ecommerce";
+            if (accountAddresses.AccountID <= 0)
+            {
+                accountAddresses.AccountID = caCurrent.CurrentWebsiteUser().AccountId ?? 0;
+            }
+            else
+            {
+                accountAddresses.SessionId = HttpContext.Session.SessionID;
+            }
+            accountAddresses.AddTypeShipping = !modelForm.IsBillingAddress;
+            accountAddresses.AddTypeBilling = modelForm.IsBillingAddress || modelForm.AddTypeBilling.HasValue && modelForm.AddTypeBilling.Value;
+            accountAddresses = _accountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
+
             var model = new AddressFormViewModel
             {
                 SavedAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>()),
