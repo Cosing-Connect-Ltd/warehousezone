@@ -65,5 +65,7 @@ namespace Ganedata.Core.Services
         IQueryable<Account> GetAllValidAccountsCustom(int tenantId, EnumAccountType customerType = EnumAccountType.All, string searchString = null, DateTime? lastUpdated = null);
 
         bool UpdateOrderPTenantEmailRecipients(int?[] accountContactId, int OrderId, int UserId);
+
+        (string, DateTime?) PasswordResetCode(string username);
     }
 }

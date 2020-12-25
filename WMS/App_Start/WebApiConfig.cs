@@ -24,6 +24,8 @@ namespace WMS
             //Handheld Api's
             config.Routes.MapHttpRoute("UsersSync", "api/sync/users/{reqDate}/{serialNo}", new { controller = "ApiTerminalUserSync", action = "GetUsers", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountsSync", "api/sync/accounts/{reqDate}/{serialNo}", new { controller = "ApiAccountSync", action = "GetAccounts", reqDate = string.Empty, serialNo = string.Empty });
+            config.Routes.MapHttpRoute("AccountsSyncResetPassword", "api/user/reset-password", new { controller = "ApiAccountSync", action = "AccountResetPassword" });
+
             config.Routes.MapHttpRoute("UserAccountSync", "api/sync/user-account/{accountId}/{serialNo}", new { controller = "ApiAccountSync", action = "GetAccount", accountId = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountAddressesSync", "api/sync/account-addresses/{reqDate}/{serialNo}/{accountId}", new { controller = "ApiAccountSync", action = "GetAccountAddresses", reqDate = string.Empty, serialNo = string.Empty, accountId = string.Empty });
             config.Routes.MapHttpRoute("PostAccountAddress", "api/sync/post-account-address", new { controller = "ApiAccountSync", action = "PostAccountAddress" });

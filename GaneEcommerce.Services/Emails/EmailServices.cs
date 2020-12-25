@@ -26,6 +26,11 @@ namespace Ganedata.Core.Services
             return _applicationContext.TenantEmailTemplates.Where(u=>u.TenantId==tenantId && u.IsDeleted != true).ToList();
         }
 
+        public TenantEmailConfig GetFirstActiveTenantEmailConfiguration()
+        {
+            return _applicationContext.TenantEmailConfigs.AsNoTracking().Where(e =>e.IsActive && e.IsDeleted != true).FirstOrDefault();
+        }
+
         public List<TenantEmailConfig> GetAllActiveTenantEmailConfigurations(int tenantId)
         {
             return _applicationContext.TenantEmailConfigs.AsNoTracking().Where(e => e.TenantId == tenantId && e.IsActive && e.IsDeleted!= true).ToList();
