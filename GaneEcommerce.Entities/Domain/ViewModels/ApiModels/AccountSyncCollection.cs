@@ -80,6 +80,20 @@ namespace Ganedata.Core.Models
         public string SerialNo { get; set; }
     }
 
+    public class AccountPasswordResetSync
+    {
+        public string EmailAddress { get; set; }
+        public int TenantId { get; set; }
+        public int WarehouseId { get; set; }
+        public string TerminalSerialNo { get; set; }
+    }
+
+    public class AccountPasswordResetSyncResponse
+    {
+        public bool SentResetLinkSuccessfully { get; set; }
+        public string FailureMessage { get; set; }
+        public bool EmailRegistered { get; set; }
+    }
 
     public class TenantPriceGroupsSyncCollection
     {

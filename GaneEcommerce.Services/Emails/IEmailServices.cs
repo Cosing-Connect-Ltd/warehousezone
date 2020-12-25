@@ -24,5 +24,6 @@ namespace Ganedata.Core.Services
         OrderPTenantEmailRecipient DeletePropertyTenantEmailRecipient(OrderPTenantEmailRecipient notification, int userId);
         List<TenantEmailNotificationQueue> GetAllTenantEmailNotificationQueuesAwaitProcessing(DateTime targetTime);
         List<TenantEmailNotificationQueue> GetAllTenantEmailNotificationQueuesbyOrderId(int orderId, int InvoiceMasterId,int TenantId,int? TemplateId);
+        TenantEmailConfig GetFirstActiveTenantEmailConfiguration();
     }
 }

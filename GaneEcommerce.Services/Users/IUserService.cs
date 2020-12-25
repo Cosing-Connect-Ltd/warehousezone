@@ -11,6 +11,7 @@ namespace Ganedata.Core.Services
         IEnumerable<AuthUser> GetAllAuthUsers(int tenantId);
         List<AuthUserListForGridViewModel> GetAllAuthUsersForGrid(int tenantId);
         AuthUser GetAuthUserById(int userId);
+        AuthUser GetAuthUserByResetPasswordCode(string resetPasswordCode);
         IEnumerable<AuthUser> GetAuthUserByIds(int[] userIds);
         AuthUser GetAuthUserByAccountId(int? accountId);
         AuthUser GetAuthUserByUserName(string userName, int tenantId);
@@ -38,5 +39,6 @@ namespace Ganedata.Core.Services
         Task<bool> SendSmsBroadcast(string to, string from, string reference, string message);
         string GenerateVerifyRandomNo();
         IEnumerable<AuthUser> GetUsersAgainstPermission(int tenantId, int warehouseId,string controller, string action);
+        AuthUser UpdateUserPassword(int authUserId, string resetPasswordCode, string newPassword);
     }
 }

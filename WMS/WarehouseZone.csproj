@@ -549,6 +549,12 @@
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.2.7\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.2.3\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase">
       <Private>True</Private>
     </Reference>
@@ -2811,8 +2817,14 @@
     <Content Include="Views\Theme\Default\Products\PalletLabelPrintViewer.cshtml" />
     <Content Include="Views\Theme\Default\Home\Page.cshtml" />
     <Content Include="Views\Theme\Default\OrderSchedule\_OrdersToSchedule.cshtml" />
-    <Content Include="Views\Theme\Default\StockTakes\ImportData.cshtml" />
-    <Content Include="Views\Theme\Default\StockTakes\_StocktakeFileUpload.cshtml" />
+    <Content Include="Views\Theme\Modern\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Theme\Modern\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\Modern\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Theme\Modern\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\Default\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Theme\Default\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\Default\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Theme\Default\Account\ResetPasswordConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

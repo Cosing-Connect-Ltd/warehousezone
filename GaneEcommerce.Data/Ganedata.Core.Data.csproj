@@ -1227,6 +1227,12 @@
     <Compile Include="Migrations\202012221907499_AddedAdyenMetaData.cs" />
     <Compile Include="Migrations\202012221907499_AddedAdyenMetaData.designer.cs">
       <DependentUpon>202012221907499_AddedAdyenMetaData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012251414441_AddedResetPasswordFields.cs" />
+    <Compile Include="Migrations\202012251414441_AddedResetPasswordFields.designer.cs">
+      <DependentUpon>202012251414441_AddedResetPasswordFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
     <Compile Include="IDbContext.cs" />
@@ -2463,6 +2469,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101020032229_DeliverectCategoryId-and-SortOrder-added.resx">
       <DependentUpon>202101020032229_DeliverectCategoryId-and-SortOrder-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012251414441_AddedResetPasswordFields.resx">
+      <DependentUpon>202012251414441_AddedResetPasswordFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -15,14 +15,16 @@ namespace WMS.Controllers.WebAPI
         private readonly IAccountServices _accountServices;
         private readonly IProductPriceService _productPriceService;
         private readonly IMapper _mapper;
+        private readonly IEmailServices _emailServices;
 
         public ApiAccountSyncController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService,
-            IProductServices productServices, IUserService userService, IAccountServices accountServices, IProductPriceService productPriceService, IMapper mapper)
+            IProductServices productServices, IUserService userService, IAccountServices accountServices, IProductPriceService productPriceService, IMapper mapper, IEmailServices emailServices)
             : base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _accountServices = accountServices;
             _productPriceService = productPriceService;
             _mapper = mapper;
+            _emailServices = emailServices;
         }
         // GET http://localhost:8005/api/sync/accounts/{reqDate}/{serialNo}
         // GET http://localhost:8005/api/sync/accounts/2014-11-23/920013c000814
@@ -141,6 +143,8 @@ namespace WMS.Controllers.WebAPI
             }
         }
 
+       
+
         [HttpPost]
         public IHttpActionResult PostAccountAddress(AccountAddressSync address)
         {
@@ -229,6 +233,34 @@ namespace WMS.Controllers.WebAPI
             result.TerminalLogId = TerminalServices.CreateTerminalLog(reqDate, terminal.TenantId, groupDetails.Count(), terminal.TerminalId, TerminalLogTypeEnum.TenantPriceGroupDetailsSync).TerminalLogId;
             result.TenantPriceGroupDetailSync = groupDetails;
             return Ok(result);
+        }
+        [HttpPost]
+        public IHttpActionResult AccountResetPassword(AccountPasswordResetSync model)
+        {
+            var (token, expiryDate) = _accountServices.PasswordResetCode(model.EmailAddress);
+            if (token == null)
+            {
+                var response = model.EmailAddress + " is not a valid registered email address";
+                var result = new {SentResetLinkSuccessfully= false, FailureMessage= response, EmailRegistered= false};
+                return Ok(result);//Other type of responses will require change in response handling 
+            }
+            else
+            {
+                var lnkHref = "<a href='" + Url.Link("AccountsSyncResetPasswordGet", new { Controller= "Account", Action= "ResetPassword", email = model.EmailAddress, code = token }) + "'>Reset Password</a>";
+                string subject = "Your changed password - " + Request.RequestUri.Host.ToUpper();
+                string body = "<b>Please find the Password Reset Link. </b><br/>" + lnkHref;
+                body += "<br>Link will expire on " + expiryDate.Value.ToString("dd/MM/yyyy HH:mm");
+                var emailconfig = _emailServices.GetFirstActiveTenantEmailConfiguration();
+                body = "<div style='text-align:center;padding: 40px;background-color: #ebf7f7;'>" + body + "</div>";
+                var emailSender = new EmailSender(emailconfig, body, subject, model.EmailAddress);
+                emailSender.SendMail();
+
+                var result = new { SentResetLinkSuccessfully = true, FailureMessage = "", EmailRegistered = true };
+                return Ok(result);
+
+            }
+
+
         }
 
     }
