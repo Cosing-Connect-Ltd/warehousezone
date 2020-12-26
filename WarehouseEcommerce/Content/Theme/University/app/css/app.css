@@ -7455,7 +7455,7 @@ input[type="checkbox"] {
 .header-ul-center-pink::after {
     content: "";
     position: absolute;
-    bottom: 12px;
+    bottom: -20%;
     left: 50%;
     transform: translateX(-50%);
     width: 20%;
