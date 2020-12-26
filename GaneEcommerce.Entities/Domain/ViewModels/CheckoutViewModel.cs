@@ -65,9 +65,13 @@ namespace Ganedata.Core.Entities.Domain
         public WebsiteShippingRulesViewModel ShippingRule { get; set; }
         public List<ProductMaster> RelatedProducts { get; set; } = new List<ProductMaster>();
         public bool IsStandardDelivery { get; set; }
-        public List<AddressViewModel> Addresses { get; set; }
+        public List<AddressViewModel> ShippingAddresses { get; set; }
+        public List<AddressViewModel> BillingAddresses { get; set; }
         public decimal NextDayDeliveryCost { get; set; }
         public decimal StandardDeliveryCost { get; set; }
+        public string DeliveryInstruction { get; set; }
+        public int BillingAddressId { get; set; }
+        public int ShippingAddressId { get; set; }
     }
 
     public class AddressFormViewModel : AddressViewModel
@@ -77,5 +81,13 @@ namespace Ganedata.Core.Entities.Domain
         public List<AddressViewModel> SavedAddresses { get; set; }
         public string DeliveryInstructions { get; set; }
         public bool IsBillingAddress { get; set; }
+    }
+
+    public class OrderPaymentViewModel
+    {
+        public bool IsStandardDelivery { get; set; }
+        public int BillingAddressId { get; set; }
+        public int ShippingAddressId { get; set; }
+        //TODO
     }
 }

@@ -33,7 +33,7 @@ function searchPoducts() {
 
 function SearchPostCode() {
     var searchString = $(".text-search-postcode").val();
-
+    startLoading();
     $.ajax({
         url: basePath + '/Orders/GetApiAddressAsync',
         method: 'post',
@@ -56,9 +56,11 @@ function SearchPostCode() {
                     });
                 });
             }
+            stopLoading();
         },
         error: function (err) {
             alert(err);
+            stopLoading();
         }
     });
 }
@@ -286,9 +288,11 @@ function removeCartItem(id) {
                     data: { cartId: id },
                     dataType: 'json',
                     success: function (data) {
-                        var cardItemsValue = parseInt($("#cart-total").text());
+                        var cardItemsValue = parseInt($("#cart-total").text());                        
                         $("#cart-total").text(cardItemsValue - 1);
                         getCartitems(null);
+                        if ((cardItemsValue - 1) <= 0)
+                            location.reload();
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('Error' + textStatus + "/" + errorThrown);
@@ -484,7 +488,7 @@ function LoggedIn() {
         url: basePath + "/User/LoginUsers/",
         data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: placecheck },
         dataType: 'json',
-        success: function (data) {
+        success: function (data) {            
             stopLoading();
             if (!data.status) {
                 $(".alert-message-login").html("User name or password is not correct").show().delay(2000).fadeOut();
