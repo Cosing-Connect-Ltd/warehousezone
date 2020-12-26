@@ -2081,4 +2081,6 @@ input[type=text].serial {
 .validation-summary-errors {
     color: red;
 }
- 
+.field-validation-error {
+    color: red;
+}

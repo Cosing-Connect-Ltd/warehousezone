@@ -7462,3 +7462,44 @@ input[type="checkbox"] {
     height: 2px;
     background-color: #f33655;
 }
+
+
+.login {
+    width: 40%;
+    margin: auto;
+    background-color: #eceef1;
+    padding: 20px 50px;
+    min-width: 600px;
+    margin-top: 100px;
+}
+    .login #Email {
+        font-size: 15px;
+    }
+
+.bg-angle {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #eceef1 !important;
+    padding: 30px;
+    -webkit-clip-path: polygon(0 0, 100% 2%, 100% 98%, 0 100%);
+    clip-path: polygon(0 0, 100% 2%, 100% 98%, 0 100%);
+}
+
+.bg-angle .btn {
+    border: 1px solid #fff;
+}
+
+.bg-angle label {
+    color: black;
+}
+
+.bg-angle .form-control {
+    border-color: #ff9500 !important;
+}
+
+.validation-summary-errors {
+    color: red;
+}
+.field-validation-error {
+    color: red;
+}
