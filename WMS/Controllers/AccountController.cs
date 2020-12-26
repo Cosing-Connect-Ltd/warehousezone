@@ -8,6 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Ganedata.Core.Models;
+using WebMatrix.WebData;
 using WMS.CustomBindings;
 
 namespace WMS.Controllers
@@ -19,6 +21,9 @@ namespace WMS.Controllers
         private readonly ILookupServices _lookupServices;
         private readonly IMarketServices _marketServices;
         private readonly IAccountSectorService _accountSectorService;
+        private readonly IEmailServices _emailService;
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+        private readonly IAccountServices _accountService;
 
         public AccountController(ICoreOrderService orderService,
                                 IMarketServices marketServices,
@@ -27,7 +32,7 @@ namespace WMS.Controllers
                                 ILookupServices lookupServices,
                                 IUserService userService,
                                 IInvoiceService invoiceService,
-                                IAccountSectorService accountSectorService)
+                                IAccountSectorService accountSectorService, IEmailServices emailService, ITenantWebsiteService tenantWebsiteService, IAccountServices accountService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _marketServices = marketServices;
@@ -35,6 +40,9 @@ namespace WMS.Controllers
             _invoiceService = invoiceService;
             _lookupServices = lookupServices;
             _accountSectorService = accountSectorService;
+            _emailService = emailService;
+            _tenantWebsiteService = tenantWebsiteService;
+            _accountService = accountService;
         }
         public ActionResult Index()
         {
@@ -46,8 +54,7 @@ namespace WMS.Controllers
             }
             ViewBag.marketId = marketId;
             ViewBag.MarketDetailId = new SelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName", marketId);
-
-
+             
             return View();
         }
 
@@ -538,6 +545,70 @@ namespace WMS.Controllers
             var Market = _marketServices.GetMarketName(AccountID, MarketId);
             return Market;
 
+        }
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ForgotPassword(ForgotViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                    var (token, expiryDate) = _accountService.PasswordResetCode(model.Email);
+                    if (token == null)
+                    {
+                        ModelState.AddModelError("Email", "Please enter a valid registered email address.");
+                        return View();
+                    }
+                    else
+                    {
+                        var lnkHref = "<a href='" + Url.Action("ResetPassword", "Account", new { email = model.Email, code = token }, "http") + "'>Reset Password</a>";
+                        string subject = "Your changed password - " + Request.Url.Host.ToUpper();
+                        string body = "<b>Please find the Password Reset Link. </b><br/>" + lnkHref;
+                        body += "<br>Link will expire on " +expiryDate.Value.ToString("dd/MM/yyyy HH:mm");
+                        var emailconfig = _emailService.GetFirstActiveTenantEmailConfiguration();
+                        body = "<div style='text-align:center;padding: 40px;background-color: #ebf7f7;'>" + body + "</div>";
+                         var emailSender =new EmailSender(emailconfig, body, subject, model.Email);
+                         emailSender.SendMail();
+                    }
+                }
+        
+            return View("ForgotPasswordConfirmation");
+        }
+        public ActionResult ResetPassword(string code, string email)
+        {
+            var model = new ResetPasswordViewModel();
+            model.ReturnToken = code;
+            model.Email = email;
+            var user = _userService.GetAuthUserByResetPasswordCode(code);
+            if (user == null || (user.ResetPasswordCodeExpiry.HasValue && user.ResetPasswordCodeExpiry.Value< DateTime.Now))
+            {
+                ViewData["UserError"] = "Link has expired. Please try forgot password option again to regenerate code.";
+            }
+
+            return View(model);
+        }
+        [HttpPost]
+
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _userService.GetAuthUserByResetPasswordCode(model.ReturnToken);
+                var resetResponse = _userService.UpdateUserPassword(user.UserId, model.ReturnToken, model.Password);
+                if (resetResponse!=null)
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Password couldn't be reset. Please try forgot password option again to regenerate code.";
+                    return View(model);
+                }
+            }
+            return View(model);
         }
     }
 }

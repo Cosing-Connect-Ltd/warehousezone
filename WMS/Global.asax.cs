@@ -8,14 +8,19 @@ using StackExchange.Profiling;
 using StackExchange.Profiling.EntityFramework6;
 using StackExchange.Profiling.Mvc;
 using System;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Net;
 using System.Net.Http.Formatting;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Ganedata.Core.Data;
 using WarehouseZone;
+using WebMatrix.WebData;
 using WMS.App_Start;
 using WMS.CustomBindings;
 
@@ -135,8 +140,36 @@ namespace WMS
                                                 // If using EntityFrameworkCore, here's where it'd go.
                                                 // .AddEntityFramework()        // Extension method in the MiniProfiler.EntityFrameworkCore package
                );
+            LazyInitializer.EnsureInitialized(ref _initializer, ref _isInitialized, ref _initializerLock);
         }
+        private static SimpleMembershipInitializer _initializer;
+        private static object _initializerLock = new object();
+        private static bool _isInitialized;
+        private class SimpleMembershipInitializer
+        {
+            public SimpleMembershipInitializer()
+            {
+                Database.SetInitializer<ApplicationContext>(null);
 
+                try
+                {
+                    using (var context = new ApplicationContext())
+                    {
+                        if (!context.Database.Exists())
+                        {
+                            // Create the SimpleMembership database without Entity Framework migration schema
+                            ((IObjectContextAdapter)context).ObjectContext.CreateDatabase();
+                        }
+                    }
+
+                    WebSecurity.InitializeDatabaseConnection("ApplicationContext", "AuthUsers", "UserId", "UserName", autoCreateTables: true);
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("The ASP.NET Simple Membership database could not be initialized. For more information, please see http://go.microsoft.com/fwlink/?LinkId=256588", ex);
+                }
+            }
+        }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             HttpContext.Current.Response.Headers.Remove("Server");

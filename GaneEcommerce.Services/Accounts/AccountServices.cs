@@ -749,5 +749,17 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.Account.AsNoTracking().Where(x => accountIds.Contains(x.AccountID) && x.IsDeleted != true).ToList();
         }
+
+        public (string, DateTime?) PasswordResetCode(string username)
+        {
+            var resetCode = Guid.NewGuid().ToString("N");
+            var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserName.Equals(username) || m.UserEmail.Equals(username));
+            if(user == null) return (null, null);
+            user.ResetPasswordCode = resetCode;
+            user.ResetPasswordCodeExpiry = DateTime.Now.AddHours(24);
+            _currentDbContext.Entry(user).State = EntityState.Modified;
+            _currentDbContext.SaveChanges();
+            return (resetCode, user.ResetPasswordCodeExpiry);
+        }
     }
 }
