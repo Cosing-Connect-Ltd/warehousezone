@@ -1481,6 +1481,11 @@
     <Content Include="Views\Theme\Smart\Orders\Payments\OrderPayment.cshtml" />
     <Content Include="Views\Theme\Smart\Orders\Payments\ReviewOrder.cshtml" />
   </ItemGroup>
+    <Content Include="Views\Theme\University\User\ForgotPassword.cshtml" />
+    <Content Include="Views\Theme\University\User\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\University\User\ResetPassword.cshtml" />
+    <Content Include="Views\Theme\University\User\ResetPasswordConfirmation.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
