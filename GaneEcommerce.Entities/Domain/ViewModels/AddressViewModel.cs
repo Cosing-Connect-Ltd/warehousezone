@@ -38,7 +38,6 @@ namespace Ganedata.Core.Models
 
         public bool? AddTypeShipping { get; set; }
 
-        public bool? AddTypeBilling { get; set; }
-
+        public bool? AddTypeBilling { get; set; }        
     }
 }

@@ -611,17 +611,27 @@ namespace WarehouseEcommerce.Controllers
         }
 
         #region Payments
-        public ActionResult ReviewOrder()
+        public ActionResult ReviewOrder(bool isStandardDelivery = true)
         {            
-            var cartModel = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID).ToList() };
-
-            cartModel.ShippmentAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());            
+            var cartModel = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID).ToList() };                        
             cartModel.ShowLoginPopUp = CurrentUserId == 0;
             cartModel.IsCollectionAvailable = CurrentTenantWebsite.IsCollectionAvailable;
             cartModel.IsDeliveryAvailable = CurrentTenantWebsite.IsDeliveryAvailable;
+            var addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+
+            var tenantConfig = _tenantServices.GetAllTenantConfig(CurrentTenantId).FirstOrDefault();
+
             var model = new ReviewOrderViewModel
             {
-                Cart = cartModel
+                Cart = cartModel,
+                ShippingAddresses = addresses.Where(p => p.AddTypeShipping == true).ToList(),
+                BillingAddresses = addresses.Where(p => p.AddTypeBilling == true).ToList(),
+                DeliveryInstruction = Session["DeliveryInstruction"] != null ? Session["DeliveryInstruction"].ToString() : "",
+                BillingAddressId = Session["BillingAddressID"] != null ? Convert.ToInt32(Session["BillingAddressID"].ToString()) : 0,
+                ShippingAddressId = Session["ShippingAddressID"] != null ? Convert.ToInt32(Session["ShippingAddressID"].ToString()) : 0,
+                IsStandardDelivery = isStandardDelivery,
+                StandardDeliveryCost = tenantConfig.StandardDeliveryCost??0,
+                NextDayDeliveryCost = tenantConfig.NextDayDeliveryCost?? 0
             };
                         
             foreach (var item in model.Cart.WebsiteCartItems)
@@ -635,16 +645,32 @@ namespace WarehouseEcommerce.Controllers
         }
 
         public ActionResult GetAddressForm(bool isBillingAddress = false)
+        {            
+            return PartialView("Payments/_AddressForm", GetAddressFormViewModel(isBillingAddress));
+        }
+
+        private AddressFormViewModel GetAddressFormViewModel(bool isBillingAddress)
         {
+            var addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.IsDeleted != true).ToList(), new List<AddressViewModel>());
             var model = new AddressFormViewModel
             {
                 IsBillingAddress = isBillingAddress,
-                SavedAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID)
-                .Where(u => (isBillingAddress && u.AddTypeBilling == true || u.AddTypeShipping == true) && u.IsDeleted != true).ToList(), new List<AddressViewModel>()),
-                Countries = _lookupServices.GetAllGlobalCountries().Select(u => new CountryViewModel { CountryId = u.CountryID, CountryName = u.CountryName }).ToList()
+                Countries = _lookupServices.GetAllGlobalCountries().Select(u => new CountryViewModel { CountryId = u.CountryID, CountryName = u.CountryName }).ToList(),
+                SavedAddresses = isBillingAddress ? addresses.Where(p => p.AddTypeBilling == true).ToList() : addresses.Where(p => p.AddTypeShipping == true).ToList()
             };
+            return model;
+        }
 
-            return PartialView("Payments/_AddressForm", model);
+        public ActionResult CaptureDeliveryInstruction(string instruction)
+        {
+            Session["DeliveryInstruction"] = instruction;
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CaptureAddress(int addressId, bool isBillingAddress = false)
+        {
+            Session[isBillingAddress? "BillingAddressID" : "ShippingAddressID"] = addressId;
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult SaveNewAddress(AddressFormViewModel modelForm)
@@ -663,13 +689,15 @@ namespace WarehouseEcommerce.Controllers
             accountAddresses.AddTypeBilling = modelForm.IsBillingAddress || modelForm.AddTypeBilling.HasValue && modelForm.AddTypeBilling.Value;
             accountAddresses = _accountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
 
-            var model = new AddressFormViewModel
-            {
-                SavedAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>()),
-                Countries = _lookupServices.GetAllGlobalCountries().Select(u => new CountryViewModel { CountryId = u.CountryID, CountryName = u.CountryName }).ToList()
-            };
+            if (!string.IsNullOrEmpty(modelForm.DeliveryInstructions))
+                Session["DeliveryInstruction"] = modelForm.DeliveryInstructions;
 
-            return PartialView("Payments/_AddressForm", model);
+            return PartialView("Payments/_AddressForm", GetAddressFormViewModel(modelForm.IsBillingAddress));
+        }
+
+        public ActionResult OrderPayment(OrderPaymentViewModel model)
+        {
+            return View("Payments/OrderPayment", model);
         }
         #endregion
     }
