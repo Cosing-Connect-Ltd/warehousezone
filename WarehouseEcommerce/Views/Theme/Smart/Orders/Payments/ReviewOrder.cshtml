@@ -37,13 +37,15 @@
                                 {
                                     <input type="hidden" name="BillingAddressId" value="@Model.BillingAddressId" />
                                     <input type="hidden" name="ShippingAddressId" value="@Model.ShippingAddressId" />
-                                    <input type="hidden" name="IsStandardDelivery" value="@(Model.IsStandardDelivery?"True":"False")" />
+                                    <input type="hidden" name="IsStandardDelivery" value="@(Model.IsStandardDelivery ? "True" : "False")" />
                                     <button type="submit" class="btmbtn pro">PROCEED TO PAYMENT</button>
                                 }
                             }
                             else
                             {
-                                <button type="button" disabled class="btmbtn">PROCEED TO PAYMENT</button>
+                        <div class="botomBtnsec">
+                            <button type="button" disabled class="btmbtn">PROCEED TO PAYMENT</button>
+                        </div>                                
                             }
                         </div>
                     </div>
@@ -225,6 +227,7 @@
         });
 
         $("#modalAddress").on("click", "#btnSelectAddress", function (e) {
+            debugger;
             e.preventDefault();
             var rb = $(this).closest("#divSavedAddSection").find("input[type='radio']:checked:eq(0)")
             var addId = rb.val();
@@ -233,7 +236,7 @@
                 $.ajax({
                     url: '@Url.Action("CaptureAddress", "Orders")',
                     method: 'get',
-                    data: { addressId: addId, isBillingAddress: rb.data("isbilling") == "True" },
+                    data: { addressId: addId, isBillingAddress: rb.data("isbilling") == "True", useForBilling: rb.data("useforbilling") == "True" },
                     dataType: 'html',
                     success: function (data) {
                         stopLoading();

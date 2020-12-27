@@ -12,12 +12,14 @@
             @foreach (var add in Model.SavedAddresses)
             {
                 <div class="card">
-                    <div class="card-body d-flex align-items-center">
-                        <input type="radio" name="rbAddress" value="@add.AddressID" data-isbilling="@Model.IsBillingAddress" />
-                        <div class="address-det">
-                            @Html.HiddenFor(p => add.AddressID)
-                            @Html.Partial("_AddressDetail", add)
-                        </div>
+                    <div class="card-body">
+                        <div class="d-inline-flex align-items-center">
+                            <input type="radio" name="rbAddress" id="rbAddress@(add.AddressID)" value="@add.AddressID" data-isbilling="@Model.IsBillingAddress" data-useforbilling="@(add.AddTypeBilling)" />
+                            <label class="address-det" for="rbAddress@(add.AddressID)">
+                                @Html.HiddenFor(p => add.AddressID)
+                                @Html.Partial("_AddressDetail", add)
+                            </label>
+                        </div>                        
                     </div>
                 </div>
             }
