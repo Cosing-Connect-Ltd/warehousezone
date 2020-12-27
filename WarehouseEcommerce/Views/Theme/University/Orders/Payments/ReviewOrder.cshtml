@@ -251,7 +251,7 @@
             if ($(this).is(":checked")) {
                 var costOfDel = $(this).val();
                 var cartTotal = $("#spnTotalAmount").data("total");
-                $("#spnTotalAmount").text(parseInt(costOfDel) + parseInt(cartTotal));
+                $("#spnTotalAmount").text(((parseFloat(costOfDel) + parseFloat(cartTotal))).toFixed(2));
 
                 $("#formGoToPayments input[name='IsStandardDelivery']").val($(this).data("isstand"));
             }
