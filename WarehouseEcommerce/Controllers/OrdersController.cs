@@ -667,9 +667,12 @@ namespace WarehouseEcommerce.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CaptureAddress(int addressId, bool isBillingAddress = false)
-        {
+        public ActionResult CaptureAddress(int addressId, bool isBillingAddress = false, bool useForBilling = false)
+        {            
             Session[isBillingAddress? "BillingAddressID" : "ShippingAddressID"] = addressId;
+            if(!isBillingAddress && useForBilling)
+                Session["BillingAddressID"] = addressId;
+
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
