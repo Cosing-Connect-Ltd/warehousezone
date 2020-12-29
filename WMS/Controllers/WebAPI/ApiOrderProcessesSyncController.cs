@@ -21,7 +21,7 @@ namespace WMS.Controllers.WebAPI
 
         public ApiOrderProcessesSyncController(ITerminalServices terminalServices, IDeliverectSyncService deliverectSyncService,
             ITenantLocationServices tenantLocationServices, IOrderService orderService, ITenantsServices tenantsServices,
-            IProductServices productServices, IUserService userService, IAccountServices accountServices, 
+            IProductServices productServices, IUserService userService, IAccountServices accountServices,
             IGaneConfigurationsHelper configHelper, IMapper mapper) :
             base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
@@ -122,15 +122,15 @@ namespace WMS.Controllers.WebAPI
 
                         var deliverectSyncResult = true;
                         var tenantConfig = _tenantServices.GetTenantConfigById(terminal.TenantId);
-                        if (tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect && 
-                            !string.IsNullOrEmpty(order.DeliverectChannelLinkId?.Trim()) && 
+                        if (tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect &&
+                            !string.IsNullOrEmpty(order.DeliverectChannelLinkId?.Trim()) &&
                             !string.IsNullOrEmpty(order.DeliverectChannel?.Trim()))
                         {
                             deliverectSyncResult = await _deliverectSyncService.SendOrderToDeliverect(order);
 
                             if (!deliverectSyncResult)
                             {
-                                OrderService.UpdateOrderStatus(order.OrderID, OrderStatusEnum.Hold, 0);
+                                OrderService.UpdateOrderStatus(order.OrderID, OrderStatusEnum.Hold, 1);
                             }
                         }
 

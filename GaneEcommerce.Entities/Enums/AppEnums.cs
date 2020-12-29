@@ -172,7 +172,14 @@ namespace Ganedata.Core.Entities.Enums
         QualityChecks = 16,
         [Display(Name = "Out For Delivery")]
         OutForDelivery = 17,
-        Delivered = 18
+        Delivered = 18,
+        Rejected = 19,
+        Failed = 20,
+        PosFailed = 21,
+        ParseFailed = 22,
+        Prepared = 23,
+        ReadyForPickup = 24
+
     }
 
     public enum PalletStatusEnum
@@ -585,7 +592,7 @@ namespace Ganedata.Core.Entities.Enums
         Cash = 2,
         SagePay = 3,
         PurchaseOrder = 4,
-        Adyen=5
+        Adyen = 5
     }
 
     public enum OrderProgressStep

@@ -55,6 +55,7 @@ namespace Ganedata.Core.Services
                     return httpClient;
                 }
             }
+
             return null;
         }
 
@@ -76,12 +77,13 @@ namespace Ganedata.Core.Services
 
                         foreach (var deliverectChannelLink in result.ChannelLinks.Where(c => c.ChannelSettings?.ChannelLocationId != null))
                         {
-                            var changedLocations = _context.TenantWarehouses.Where(w => w.IsDeleted != true && 
+                            var changedLocations = _context.TenantWarehouses.Where(w => w.IsDeleted != true &&
                                                                                         w.WarehouseId != deliverectChannelLink.ChannelSettings.ChannelLocationId.Value &&
                                                                                         w.DeliverectChannelLinkId == deliverectChannelLink.Id)
                                                                             .ToList();
 
-                            changedLocations.ForEach(l => {
+                            changedLocations.ForEach(l =>
+                            {
                                 l.DeliverectChannelLinkId = null;
                                 l.DeliverectChannelLinkName = null;
                                 l.DeliverectChannel = null;
@@ -113,6 +115,18 @@ namespace Ganedata.Core.Services
         public async Task SyncProducts(int? tenantId, int currentUserId)
         {
             tenantId = tenantId ?? _context.Tenants.First(t => t.IsActive && t.IsDeleted != true).TenantId;
+
+            // Mark all product IsDeleted true where Deliverect Id doesn't exist.
+            var products = _context.ProductMaster.Where(w => w.IsDeleted != true && String.IsNullOrEmpty(w.DeliverectProductId));
+
+            foreach (var item in products)
+            {
+                item.DateUpdated = DateTime.UtcNow;
+                item.IsDeleted = true;
+                item.UpdatedBy = currentUserId;
+            }
+
+            // Sync with deliverect
             using (var client = await GetHttpClient())
             {
                 var requestUri = new Uri(_deliverectApiUrl + "/products");
@@ -145,7 +159,24 @@ namespace Ganedata.Core.Services
 
         private void SaveProduct(int tenantId, int currentUserId, DeliverectProduct deliverectProduct)
         {
-            var product = _context.ProductMaster.FirstOrDefault(w => w.IsDeleted != true && w.DeliverectProductId == deliverectProduct.Id);
+            var product = _context.ProductMaster.FirstOrDefault(w => w.DeliverectProductId == deliverectProduct.Id);
+            var productTaxpercent = Convert.ToInt32((deliverectProduct.DeliveryTax / 1000));
+            var tax = _context.GlobalTax.Where(x => x.PercentageOfAmount == productTaxpercent).FirstOrDefault();
+
+            if (tax == null)
+            {
+                tax = new GlobalTax
+                {
+                    TaxName = "Tax " + productTaxpercent.ToString() + " Percent",
+                    CountryID = 1,
+                    PercentageOfAmount = productTaxpercent
+                };
+
+                _context.GlobalTax.Add(tax);
+                _context.SaveChanges();
+            }
+
+
             if (product == null)
             {
                 product = new ProductMaster
@@ -156,9 +187,10 @@ namespace Ganedata.Core.Services
                     DeliverectProductId = deliverectProduct.Id,
                     DeliverectProductType = deliverectProduct.Type,
                     Description = deliverectProduct.Description,
-                    SellPrice = deliverectProduct.Price,
+                    SellPrice = deliverectProduct.Price / 100,
                     TenantId = tenantId,
                     DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
                     CreatedBy = currentUserId,
                     UOMId = 1,
                     Serialisable = false,
@@ -169,7 +201,8 @@ namespace Ganedata.Core.Services
                     Width = 0,
                     Depth = 0,
                     Weight = 0,
-                    TaxID = 1,
+                    TaxID = tax.TaxID,
+                    EnableTax = true,
                     WeightGroupId = 1,
                     PercentMargin = 0,
                     ProductType = ProductKitTypeEnum.Simple,
@@ -180,6 +213,7 @@ namespace Ganedata.Core.Services
                     ProcessByCase = false,
                     ProcessByPallet = false,
                     IsStockItem = false,
+                    IsDeleted = false,
                 };
 
                 _context.ProductMaster.Add(product);
@@ -191,33 +225,62 @@ namespace Ganedata.Core.Services
                 product.DeliverectPLU = deliverectProduct.PLU;
                 product.DeliverectProductId = deliverectProduct.Id;
                 product.Description = deliverectProduct.Description;
-                product.SellPrice = deliverectProduct.Price;
+                product.SellPrice = deliverectProduct.Price / 100;
+                product.DateUpdated = DateTime.UtcNow;
+                product.IsDeleted = false;
+                product.TaxID = tax.TaxID;
+                product.EnableTax = true;
             }
+
+            _context.SaveChanges();
+
+            // add product tags
+            var productTags = _context.ProductTags.Where(u => u.TagName == "Delivery" || u.TagName == "Collection" || u.TagName == "Eat In" && u.IsDeleted != true).ToList();
+            if (productTags != null)
+            {
+                foreach (var item in productTags)
+                {
+                    var tag = new ProductTagMap();
+                    tag.ProductId = product.ProductId;
+                    tag.TagId = item.Id;
+                    tag.TenantId = tenantId;
+                    tag.UpdateCreatedInfo(currentUserId);
+                    _context.ProductTagMaps.Add(tag);
+
+                }
+
+            }
+
+            _context.SaveChanges();
+
         }
 
         public async Task<bool> SendOrderToDeliverect(OrdersSync order)
         {
             var productIds = order.OrderDetails.Select(o => o.ProductId).ToList();
             var products = _context.ProductMaster.Where(p => productIds.Contains(p.ProductId)).ToList();
+            var accountUser = _context.AuthUsers.Where(x => x.AccountId == order.AccountID).FirstOrDefault();
 
             using (var client = await GetHttpClient())
             {
-                var deliverectOrder = new DeliverectOrder { 
+                var deliverectOrder = new DeliverectOrder
+                {
                     ChannelLinkId = order.DeliverectChannelLinkId,
                     ChannelOrderId = order.OrderID.ToString(),
                     ChannelOrderDisplayId = order.OrderNumber,
                     OrderType = order.FoodOrderType == FoodOrderTypeEnum.Collection ? 1 : (order.FoodOrderType == FoodOrderTypeEnum.Delivery ? 2 : (int)FoodOrderTypeEnum.EatIn),
                     Channel = "10000",
                     CreatedBy = order.CreatedBy.ToString(),
-                    Customer = new DeliverectOrderCustomer { 
-                        PhoneNumber = order.MobileNumber,
-                        Email = order.CustomEmailRecipient,
-                        Name = order.FullName
+                    Customer = new DeliverectOrderCustomer
+                    {
+                        PhoneNumber = accountUser?.UserMobileNumber,
+                        Email = accountUser?.UserEmail,
+                        Name = accountUser?.DisplayName
                     },
                     decimalDigits = 2,
                     DeliveryAddress = new DeliverectOrderDeliveryAddress
                     {
-                        Street = order.ShipmentAddressLine1 + 
+                        Street = order.ShipmentAddressLine1 +
                                 (!string.IsNullOrEmpty(order.ShipmentAddressLine2?.Trim()) ? ", " + order.ShipmentAddressLine2 : string.Empty) +
                                 (!string.IsNullOrEmpty(order.ShipmentAddressLine3?.Trim()) ? ", " + order.ShipmentAddressLine3 : string.Empty),
                         City = order.ShipmentAddressTown,
@@ -225,7 +288,7 @@ namespace Ganedata.Core.Services
                     },
                     DeliveryIsAsap = true,
                     DeliveryCost = 0,
-                    DiscountTotal = 0,
+                    DiscountTotal = order.OrderDiscount * 100,
                     Courier = order.TransferWarehouseName,
                     NumberOfCustomers = 1,
                     ServiceCharge = 0,
@@ -237,19 +300,20 @@ namespace Ganedata.Core.Services
                     Note = order.Note,
                     Payment = new DeliverectOrderPayment
                     {
-                        Amount = order.OrderCost ?? order.AmountPaidByAccount ?? 0,
+                        Amount = (order.AmountPaidByAccount * 100) ?? 0,
                         Type = GetDeliverectPaymentType(order.AccountPaymentModeId)
                     },
-                    Items = order.OrderDetails.Select(o => {
+                    Items = order.OrderDetails.Select(o =>
+                    {
                         var product = products.FirstOrDefault(p => p.ProductId == o.ProductId);
                         if (product == null) return null;
 
                         return new DeliverectOrderItem
                         {
                             Name = product.Name,
-                            Price = o.Price,
+                            Price = (o.Price * 100) + ((o.TaxAmount / o.Qty) * 100),
                             Quantity = o.Qty,
-                            Remark = string.Empty,
+                            Remark = o.Notes,
                             PLU = product.DeliverectPLU,
                             ProductType = product.DeliverectProductType,
                             SubItems = new List<DeliverectOrderItem>()
