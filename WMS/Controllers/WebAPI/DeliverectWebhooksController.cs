@@ -30,14 +30,14 @@ namespace WMS.Controllers.WebAPI
             };
 
             await _deliverectSyncService.SyncChannelLinks();
-            await _deliverectSyncService.SyncProducts(null, 0);
+            await _deliverectSyncService.SyncProducts(null, 1);
 
             return Json(response);
         }
         public async Task<IHttpActionResult> MenuPushed(List<DeliverectMenuUpdatedWebhookRequest> request)
         {
             await _deliverectSyncService.SyncChannelLinks();
-            await _deliverectSyncService.SyncProducts(null, 0);
+            await _deliverectSyncService.SyncProducts(null, 1);
             return Ok();
         }
 
@@ -45,7 +45,7 @@ namespace WMS.Controllers.WebAPI
         {
             //TODO: snooz and unsnooz feature should be based on channels/locations, meaning thet a product could be snoozed in one location(store) but not in the other location(store).
             await _deliverectSyncService.SyncChannelLinks();
-            await _deliverectSyncService.SyncProducts(null, 0);
+            await _deliverectSyncService.SyncProducts(null, 1);
             return Ok();
         }
 
@@ -55,7 +55,7 @@ namespace WMS.Controllers.WebAPI
 
             if (orderStatus != null)
             {
-                OrderService.UpdateOrderStatus(int.Parse(request.ChannelOrderId), orderStatus.Value, 0);
+                OrderService.UpdateOrderStatus(int.Parse(request.ChannelOrderId), orderStatus.Value, 1);
             }
 
             return Ok();
@@ -66,12 +66,17 @@ namespace WMS.Controllers.WebAPI
             switch (status)
             {
                 case 30:   // REJECTED
+                    return OrderStatusEnum.Rejected;
                 case 120:   // FAILED
+                    return OrderStatusEnum.Failed;
                 case 121:   // POS RECEIVED FAILED
+                    return OrderStatusEnum.PosFailed;
                 case 124:   // PARSE FAILED
-                    return OrderStatusEnum.Hold;
+                    return OrderStatusEnum.ParseFailed;
                 case 50:  // PREPARING 
+                    return OrderStatusEnum.Preparing;
                 case 60:  // PREPARED
+                    return OrderStatusEnum.Prepared;
                 case 70:  // READY FOR PICKUP
                     return OrderStatusEnum.Preparing;
                 case 80:   // IN DELIVERY
