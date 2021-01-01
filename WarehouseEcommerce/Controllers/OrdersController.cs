@@ -616,7 +616,7 @@ namespace WarehouseEcommerce.Controllers
             var cartModel = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID).ToList() };                        
             cartModel.ShowLoginPopUp = CurrentUserId == 0;
             cartModel.IsCollectionAvailable = CurrentTenantWebsite.IsCollectionAvailable;
-            cartModel.IsDeliveryAvailable = CurrentTenantWebsite.IsDeliveryAvailable;
+            //cartModel.IsDeliveryAvailable = CurrentTenantWebsite.IsDeliveryAvailable;
             var addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.IsDeleted != true).ToList(), new List<AddressViewModel>());
 
             var tenantConfig = _tenantServices.GetAllTenantConfig(CurrentTenantId).FirstOrDefault();

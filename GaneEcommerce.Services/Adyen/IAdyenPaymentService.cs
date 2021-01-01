@@ -78,14 +78,15 @@ namespace Ganedata.Core.Services
                LinkID = model.ID,
                LinkAmount = model.Amount.Value,
                LinkAmountCurrency = model.Amount.CurrencyCode,
-               LinkExpiryDate = model.ExpiresAt,
+               LinkExpiryDate = string.IsNullOrWhiteSpace(model.ExpiresAt)? (DateTime?)null: DateTime.Parse(model.ExpiresAt),
                LinkMerchantAccount = model.MerchantAccount,
                LinkOrderDescription = model.ShopperUniqueReference,
                LinkPaymentReference = model.PaymentReference,
                LinkRecurringProcessingModel = model.RecurringProcessingModel,
                LinkShopperReference = model.ShopperUniqueReference,
                LinkUrl = model.Url,
-               LinkStorePaymentMethod = model.StorePaymentMethod
+               LinkStorePaymentMethod = model.StorePaymentMethod,
+               OrderID = model.OrderID>0?model.OrderID:999
             };
 
             _context.AdyenOrderPaylinks.Add(link);
