@@ -153,14 +153,14 @@
         }
 
         <div class="mt-4 col-12" id="updateCart">
-            @Html.Partial("Payments/_CartItems", Model.Cart)
+            @Html.Partial("_CartItemsPartial", Model.Cart)
         </div>
 
         @if (Model.RelatedProducts != null && Model.RelatedProducts.Any())
         {
             <div class="mt-10 col-12">
                 <h5 class="text-center font-weight-bold">RELATED PRODUCTS</h5>
-                @Html.Partial("~/Views/Theme/University/Products/_RelatedProducts.cshtml", Model.RelatedProducts)
+                @Html.Partial("Products/_RelatedProducts.cshtml", Model.RelatedProducts.OrderBy(m=>m.SellPrice.Value))
             </div>
         }
     </div>
@@ -168,6 +168,28 @@
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script>
+    
+        function increseQuantity(cartItemId) {
+            var element = document.getElementById("counter_" + cartItemId);
+            var quantity = parseInt(element.value);
+
+            quantity++;
+
+            element.value = quantity;
+
+            updateCartItem(cartItemId, quantity);
+        }
+
+    function reduceQuantity(cartItemId) {
+        var element = document.getElementById("counter_" + cartItemId);
+        var quantity = parseInt(element.value);
+        if (quantity > 1) {
+            quantity--;
+            element.value = quantity;
+            updateCartItem(cartItemId, quantity)
+        }
+    }
+
     $(function () {
         $("#linkChangeDelAddress,#linkChangeBillAddress").click(function () {
             startLoading();
@@ -221,6 +243,7 @@
                     success: function (data) {
                         stopLoading();
                         modal.find(".content-add:eq(0)").html(data);
+                        debugger;
                     }
                 });
             }

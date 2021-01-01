@@ -39,7 +39,7 @@ namespace Ganedata.Core.Models.AdyenPayments
     public class AdyenCreatePayLinkResponseModel : AdyenCreatePayLinkRequestModel
     {
         [JsonProperty("expiresAt")]
-        public DateTime ExpiresAt { get; set; }
+        public string ExpiresAt { get; set; }
         [JsonProperty("id")]
         public string ID { get; set; }
         [JsonProperty("url")]

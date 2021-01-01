@@ -49,5 +49,10 @@ namespace WMS.Controllers.WebAPI
             var notificationItem = handleNotificationRequest.NotificationItemContainers.First().NotificationItem;
             return hmacValidator.IsValidHmac(notificationItem, AdyenPaymentService.AdyenHmacKey);
         }
+        public async Task<IHttpActionResult> CreateOrderPaymentLink(AdyenCreatePayLinkResponseModel model)
+        {
+            var response = await _paymentService.CreateOrderPaymentLink(model);
+            return Ok(response);
+        }
     }
 }
