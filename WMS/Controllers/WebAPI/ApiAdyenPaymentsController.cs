@@ -60,5 +60,16 @@ namespace WMS.Controllers.WebAPI
             await _paymentService.CreateOrderPaymentLink(response, model.OrderID);
             return Ok(response);
         }
+
+        public async Task<IHttpActionResult> GetPaymentStatus(string linkId)
+        {
+            var response = await _paymentService.GetPaymentStatus(linkId);
+            if (response.IsError)
+            {
+                return BadRequest(response.ErrorMessage);
+            }
+            return Ok(response);
+        }
+
     }
 }

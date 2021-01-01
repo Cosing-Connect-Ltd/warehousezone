@@ -107,6 +107,7 @@ namespace WMS
             config.Routes.MapHttpRoute("LoyaltyFeedbackList", "api/feedbacks/list", new { controller = "ApiFeedback", action = "GetFeedback" });
             config.Routes.MapHttpRoute("AdyanPaymentSuccessHook", "api/adyen/payment-success", new { controller = "ApiAdyenPayments", action = "PaymentSuccessHook" });
             config.Routes.MapHttpRoute("AdyanPaymentLinkCreate", "api/adyen/payment-link-create", new { controller = "ApiAdyenPayments", action = "CreateOrderPaymentLink" });
+            config.Routes.MapHttpRoute("AdyanPaymentLinkStatus", "api/adyen/payment-link-status/{linkid}", new { controller = "ApiAdyenPayments", action = "GetPaymentStatus", linkid = string.Empty });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
