@@ -1243,7 +1243,9 @@ namespace Ganedata.Core.Services
                     ShipmentAddressPostcode = item.ShipmentAddressPostcode,
                     ExpectedDate = expectedDate,
                     FoodOrderType = item.FoodOrderType,
-                    OfflineSale = item.OfflineSale
+                    OfflineSale = item.OfflineSale,
+                    DeliveryAccountAddressID = item.DeliveryAccountAddressID,
+                    BillingAccountAddressID = item.BillingAccountAddressID
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
@@ -1288,7 +1290,9 @@ namespace Ganedata.Core.Services
                         ShipmentAddressTown = order.ShipmentAddressTown,
                         ShipmentAddressPostcode = order.ShipmentAddressPostcode,
                         ShipmentCountryId = order.ShipmentCountryId,
-                        CreatedBy = item.CreatedBy
+                        CreatedBy = item.CreatedBy,
+                        DeliveryAccountAddressID = item.DeliveryAccountAddressID,
+                        BillingAccountAddressID = item.BillingAccountAddressID
                     };
 
                     if (item.AccountTransactionInfo != null)

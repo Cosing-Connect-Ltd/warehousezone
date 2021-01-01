@@ -17,7 +17,7 @@ namespace Ganedata.Core.Services
     public interface IAdyenPaymentService
     {
         Task<AdyenCreatePayLinkResponseModel> GenerateOrderPaymentLink(AdyenCreatePayLinkRequestModel model);
-        Task<AdyenOrderPaylink> CreateOrderPaymentLink(AdyenCreatePayLinkResponseModel model);
+        Task<AdyenOrderPaylink> CreateOrderPaymentLink(AdyenCreatePayLinkResponseModel model, int orderId);
         Task<AdyenOrderPaylink> UpdateOrderPaymentAuthorisationHook(AdyenPaylinkHookNotificationRequest model);
     }
 
@@ -29,7 +29,7 @@ namespace Ganedata.Core.Services
         public static string AdyenUsername => ConfigurationManager.AppSettings["AdyenUsername"] != null ? ConfigurationManager.AppSettings["AdyenUsername"] : "ws@Company.GaneDatascanLtd";
         public static string AdyenClientKey => ConfigurationManager.AppSettings["AdyenClientKey"] != null ? ConfigurationManager.AppSettings["AdyenClientKey"] : "test_6DC3WWEE2VDVJOBWTBCJCAGP3UDX57BX";
         public static string AdyenApiKey => ConfigurationManager.AppSettings["AdyenApiKey"] != null ? ConfigurationManager.AppSettings["AdyenApiKey"] : "AQEqhmfuXNWTK0Qc+iSXk2o9g+WPSZhODJ1mTGE6yd/OgR82Wd+/SMYBi9rlEMFdWw2+5HzctViMSCJMYAc=-3oD+dvkhz0MpGi97nyZ0YCrHCX9aQUCT9RhbqVN6FQo=-gvU2Fa33)VCb5G(a";
-        public static string AdyenPaylinkCreateEndpoint => ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] != null ? ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] : "https://checkout-test.adyen.com/v65/paymentLinks";
+        public static string AdyenPaylinkCreateEndpoint => ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] != null ? ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] : "https://checkout-test.adyen.com/v66/paymentLinks";
         public static string AdyenMerchantAccountName => ConfigurationManager.AppSettings["AdyenMerchantAccountName"] != null ? ConfigurationManager.AppSettings["AdyenMerchantAccountName"] : "GaneDatascanLtdECOM";
         public static string AdyenHmacKey => ConfigurationManager.AppSettings["AdyenHmacKey"] != null ? ConfigurationManager.AppSettings["AdyenHmacKey"] : "BF43360B5EBA10D283279FE83257B8012798A690FFBFDCE78BDCAEEBA6BC6A8B";
 
@@ -71,7 +71,7 @@ namespace Ganedata.Core.Services
             }
         }
 
-        public async Task<AdyenOrderPaylink> CreateOrderPaymentLink(AdyenCreatePayLinkResponseModel model)
+        public async Task<AdyenOrderPaylink> CreateOrderPaymentLink(AdyenCreatePayLinkResponseModel model, int orderID)
         {
             var link = new AdyenOrderPaylink
             {
@@ -86,7 +86,7 @@ namespace Ganedata.Core.Services
                LinkShopperReference = model.ShopperUniqueReference,
                LinkUrl = model.Url,
                LinkStorePaymentMethod = model.StorePaymentMethod,
-               OrderID = model.OrderID>0?model.OrderID:999
+               OrderID = orderID
             };
 
             _context.AdyenOrderPaylinks.Add(link);

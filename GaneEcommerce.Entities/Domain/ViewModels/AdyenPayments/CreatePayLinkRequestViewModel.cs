@@ -7,10 +7,12 @@ using Newtonsoft.Json;
 
 namespace Ganedata.Core.Models.AdyenPayments
 {
+
+ 
     public class AdyenCreatePayLinkRequestModel
     {
-        [JsonIgnore]
-        public int OrderID { get; set; }
+        //[JsonIgnore]
+        //public int OrderID { get; set; }
 
         [JsonProperty("reference")]
         public string PaymentReference { get; set; }
@@ -36,6 +38,31 @@ namespace Ganedata.Core.Models.AdyenPayments
         [JsonProperty("billingAddress")]
         public AdyenBillingAddress BillingAddress { get; set; }
     }
+
+    public class AdyenApiCreatePayLinkRequestModel : AdyenCreatePayLinkRequestModel
+    {
+        public int OrderID { get; set; }
+
+        public AdyenCreatePayLinkRequestModel GetBase()
+        {
+            //var orderId = this.OrderID;
+            var obj = new AdyenCreatePayLinkRequestModel();
+            obj.PaymentReference = this.PaymentReference;
+            obj.Amount = this.Amount;
+            obj.BillingAddress = this.BillingAddress;
+            obj.CountryCode = this.CountryCode;
+            obj.MerchantAccount = this.MerchantAccount;
+            obj.OrderDescription = this.OrderDescription;
+            obj.RecurringProcessingModel = this.RecurringProcessingModel;
+            obj.ShopperLocale = this.ShopperLocale;
+            obj.PaymentReference = this.PaymentReference;
+            obj.ShopperUniqueReference = this.ShopperUniqueReference;
+            obj.StorePaymentMethod = this.StorePaymentMethod;
+            return obj;
+        }
+
+    }
+
     public class AdyenCreatePayLinkResponseModel : AdyenCreatePayLinkRequestModel
     {
         [JsonProperty("expiresAt")]

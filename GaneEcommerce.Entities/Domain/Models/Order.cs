@@ -272,5 +272,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public virtual IEnumerable<Order> RelatedOrders { get; set; }
         public bool OfflineSale { get; set; }
+        public int? DeliveryAccountAddressID { get; set; }
+        public int? BillingAccountAddressID { get; set; }
     }
 }
