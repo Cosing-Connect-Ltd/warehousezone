@@ -60,7 +60,47 @@ namespace Ganedata.Core.Models.AdyenPayments
             obj.StorePaymentMethod = this.StorePaymentMethod;
             return obj;
         }
+    }
 
+    public class AdyenApiPaymentStatusResponseModel
+    {
+        [JsonProperty("amount")]
+        public AdyenAmount Amount { get; set; } = new AdyenAmount();
+        [JsonProperty("countryCode")]
+        public string CountryCode { get; set; } = "GB";
+
+        [JsonProperty("description")]
+        public string OrderDescription { get; set; }
+        [JsonProperty("expiresAt")]
+        public string ExpiresAt { get; set; }
+
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("merchantAccount")]
+        public string MerchantAccount { get; set; }
+
+        [JsonProperty("reference")]
+        public string PaymentReference { get; set; }
+
+        [JsonProperty("shopperLocale")]
+        public string ShopperLocale { get; set; } = "en-GB";
+
+        [JsonProperty("shopperReference")]
+        public string ShopperUniqueReference { get; set; }
+
+        [JsonProperty("status")]
+        public string Status { get; set; }
+
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
+        [JsonIgnore]
+        public bool IsError { get; set; }
+        [JsonIgnore]
+        public string ErrorMessage { get; set; }
+        [JsonIgnore]
+        public string ErrorMessageDetails { get; set; }
     }
 
     public class AdyenCreatePayLinkResponseModel : AdyenCreatePayLinkRequestModel
@@ -79,6 +119,7 @@ namespace Ganedata.Core.Models.AdyenPayments
         [JsonIgnore]
         public string ErrorMessageDetails { get; set; }
     }
+
 
     public class AdyenAmount
     {

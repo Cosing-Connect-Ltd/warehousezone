@@ -19,6 +19,7 @@ namespace Ganedata.Core.Services
         Task<AdyenCreatePayLinkResponseModel> GenerateOrderPaymentLink(AdyenCreatePayLinkRequestModel model);
         Task<AdyenOrderPaylink> CreateOrderPaymentLink(AdyenCreatePayLinkResponseModel model, int orderId);
         Task<AdyenOrderPaylink> UpdateOrderPaymentAuthorisationHook(AdyenPaylinkHookNotificationRequest model);
+        Task<AdyenApiPaymentStatusResponseModel> GetPaymentStatus(string linkId);
     }
 
     public class AdyenPaymentService : IAdyenPaymentService
@@ -68,6 +69,35 @@ namespace Ganedata.Core.Services
             {
                 return new AdyenCreatePayLinkResponseModel()
                     {IsError = true, ErrorMessage = ex.Message, ErrorMessageDetails = ex.StackTrace};
+            }
+        }
+        public async Task<AdyenApiPaymentStatusResponseModel> GetPaymentStatus(string linkId)
+        {
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    var tokenRequestUri = new Uri(AdyenPaylinkCreateEndpoint+"/"+ linkId);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    httpClient.DefaultRequestHeaders.Add("x-api-key", AdyenApiKey);
+                    var response = await httpClient.GetAsync(tokenRequestUri);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return JsonConvert.DeserializeObject<AdyenApiPaymentStatusResponseModel>(
+                            await response.Content.ReadAsStringAsync());
+                    }
+                    else
+                    {
+                        return new AdyenApiPaymentStatusResponseModel()
+                            { IsError = true, ErrorMessage = response.ReasonPhrase };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new AdyenApiPaymentStatusResponseModel()
+                    { IsError = true, ErrorMessage = ex.Message, ErrorMessageDetails = ex.StackTrace };
             }
         }
 
