@@ -78,6 +78,8 @@ namespace Ganedata.Core.Entities.Domain
         public string FSC { get; set; }
         public string PEFC { get; set; }
         public string PickContainerCode { get; set; }
+        public int? DeliveryAccountAddressID { get; set; }
+        public int? BillingAccountAddressID { get; set; }
     }
 
 }

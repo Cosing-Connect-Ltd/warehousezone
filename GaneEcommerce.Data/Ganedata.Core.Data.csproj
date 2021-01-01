@@ -1236,6 +1236,10 @@
     <Compile Include="Migrations\202012262013058_EntityUpdatesDeliveryCharges.designer.cs">
       <DependentUpon>202012262013058_EntityUpdatesDeliveryCharges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101011302365_AccountBillingAndDeliveryAddressInfo.cs" />
+    <Compile Include="Migrations\202101011302365_AccountBillingAndDeliveryAddressInfo.designer.cs">
+      <DependentUpon>202101011302365_AccountBillingAndDeliveryAddressInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2479,6 +2483,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012262013058_EntityUpdatesDeliveryCharges.resx">
       <DependentUpon>202012262013058_EntityUpdatesDeliveryCharges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101011302365_AccountBillingAndDeliveryAddressInfo.resx">
+      <DependentUpon>202101011302365_AccountBillingAndDeliveryAddressInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
