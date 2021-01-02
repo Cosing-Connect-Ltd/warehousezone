@@ -330,11 +330,12 @@ function getCartitems(cartId) {
     startLoading();
     $.ajax({
         type: "GET",
-        url: basePath + "/Products/_CartItemsPartial/",
+        url: basePath + "/Orders/_CartItemsPartial/",
         data: { cartId: cartId },
         dataType: 'html',
         success: function (data) {
             stopLoading();
+            
             if (cartId != null) {
                 $('.cart-item-data').html("");
                 $('.cart-item-data').html(data);
@@ -344,6 +345,7 @@ function getCartitems(cartId) {
                 $('#updateCart').html("");
                 $('#updateCart').html(data);
             }
+            UpdateDeliveryCosts();
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {
             stopLoading();

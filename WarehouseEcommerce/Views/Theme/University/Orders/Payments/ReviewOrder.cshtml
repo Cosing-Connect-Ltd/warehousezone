@@ -95,7 +95,7 @@
                                 }
                             </div>
                         </div>
-                        <div class="col-lg-4 mt-2">
+                        <div class="col-lg-4 mt-2" id="dvDeliveryOptions">
                             <h6 class="mb-2">Delivery Options</h6>
                             <div class="mb-3">
                                 <div class="d-flex align-items-center">
@@ -152,8 +152,8 @@
             </div>
         }
 
-        <div class="mt-4 col-12" id="updateCart">
-            @Html.Partial("_CartItemsPartial", Model.Cart)
+        <div class="mt-4 col-12" id="updateCart" >
+            @Html.Partial("Payments/_CartItems", Model.Cart)
         </div>
 
         @if (Model.RelatedProducts != null && Model.RelatedProducts.Any())
@@ -168,17 +168,24 @@
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script>
-    
-        function increseQuantity(cartItemId) {
-            var element = document.getElementById("counter_" + cartItemId);
-            var quantity = parseInt(element.value);
 
-            quantity++;
+    function UpdateDeliveryCosts() {
+        var $chk = $("#dvDeliveryOptions input[type=radio]:checked");
+        var costOfDel = parseFloat($chk.val());
+        var cartTotal = parseFloat($("#CartTotalAmount").val());
+        $("#spnTotalAmount").text((costOfDel + parseFloat(cartTotal)).toFixed(2));
+    }
 
-            element.value = quantity;
+    function increseQuantity(cartItemId) {
+        var element = document.getElementById("counter_" + cartItemId);
+        var quantity = parseInt(element.value);
 
-            updateCartItem(cartItemId, quantity);
-        }
+        quantity++;
+
+        element.value = quantity;
+
+        updateCartItem(cartItemId, quantity);
+    }
 
     function reduceQuantity(cartItemId) {
         var element = document.getElementById("counter_" + cartItemId);
@@ -240,7 +247,7 @@
                     method: 'post',
                     data: modal.find("#formAddAddress").serialize(),
                     dataType: 'html',
-                    success: function (data) {
+                    success: function(data) {
                         stopLoading();
                         modal.find(".content-add:eq(0)").html(data);
                         debugger;
@@ -249,35 +256,30 @@
             }
         });
 
-        $("#modalAddress").on("click", "#btnSelectAddress", function (e) {
-            debugger;
-            e.preventDefault();
-            var rb = $(this).closest("#divSavedAddSection").find("input[type='radio']:checked:eq(0)")
-            var addId = rb.val();
-            if (addId > 0) {
-                startLoading();
-                $.ajax({
-                    url: '@Url.Action("CaptureAddress", "Orders")',
-                    method: 'get',
-                    data: { addressId: addId, isBillingAddress: rb.data("isbilling") == "True", useForBilling: rb.data("useforbilling") == "True" },
-                    dataType: 'html',
-                    success: function (data) {
-                        stopLoading();
-                        window.location.reload();
-                    }
-                });
-            }
-            return false;
-        });
-
+        $("#modalAddress").on("click",
+            "#btnSelectAddress",
+            function(e) {
+                e.preventDefault();
+                var rb = $(this).closest("#divSavedAddSection").find("input[type='radio']:checked:eq(0)");
+                var addId = rb.val();
+                if (addId > 0) {
+                    startLoading();
+                    $.ajax({
+                        url: '@Url.Action("CaptureAddress", "Orders")',
+                        method: 'get',
+                        data: { addressId: addId, isBillingAddress: rb.data("isbilling") == "True", useForBilling: rb.data("useforbilling") == "True" },
+                        dataType: 'html',
+                        success: function (data) {
+                            stopLoading();
+                            window.location.reload();
+                        }
+                    });
+                }
+                return false;
+            });
+       
         $("input[name='IsStandardDelivery']").click(function () {
-            if ($(this).is(":checked")) {
-                var costOfDel = $(this).val();
-                var cartTotal = $("#spnTotalAmount").data("total");
-                $("#spnTotalAmount").text(((parseFloat(costOfDel) + parseFloat(cartTotal))).toFixed(2));
-
-                $("#formGoToPayments input[name='IsStandardDelivery']").val($(this).data("isstand"));
-            }
+            UpdateDeliveryCosts();
         });
 
         @*$(".wishlist-prod").click(function () {

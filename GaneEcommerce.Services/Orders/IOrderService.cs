@@ -85,6 +85,7 @@ namespace Ganedata.Core.Services
 
         InventoryTransaction GetLastInventoryTransactionsForSerial(string serial, int tenantId);
         Order CreateOrderByOrderNumber(string orderNumber, int productId, int tenantId, int warehouseId, InventoryTransactionTypeEnum transType, int userId, decimal Quantity);
+        Order GetOrderByOrderNumber(string orderNumber);
         IQueryable<Order> GetAllPendingOrdersForProcessingForDate();
 
         Order DeleteOrderById(int orderId, int userId);
