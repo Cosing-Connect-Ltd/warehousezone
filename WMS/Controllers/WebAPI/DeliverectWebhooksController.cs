@@ -38,6 +38,14 @@ namespace WMS.Controllers.WebAPI
         {
             await _deliverectSyncService.SyncChannelLinks();
             await _deliverectSyncService.SyncProducts(null, 1);
+
+            //update products in the menu
+
+            foreach(var item in request)
+            {
+                //iterate through the items
+            }
+
             return Ok();
         }
 

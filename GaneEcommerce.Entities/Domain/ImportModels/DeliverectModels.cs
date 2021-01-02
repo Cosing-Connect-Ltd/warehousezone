@@ -91,12 +91,6 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string BusyModeURL { get; set; }
     }
 
-    public class DeliverectMenuUpdatedWebhookRequest
-    {
-        [JsonProperty("channelLinkId")]
-        public string ChannelLinkId { get; set; }
-    }
-
     public class DeliverectProductSnoozeChangedWebhookRequest
     {
         [JsonProperty("channelLinkId")]
@@ -314,5 +308,236 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string City { get; set; }
         [JsonProperty("extraAddressInfo")]
         public string ExtraAddressInfo { get; set; }
+    }
+
+
+    // deliverect menu push classes
+
+    public class Availability
+    {
+        [JsonProperty("dayOfWeek")]
+        public string DayOfWeek { get; set; }
+
+        [JsonProperty("startTime")]
+        public string StartTime { get; set; }
+
+        [JsonProperty("endTime")]
+        public string EndTime { get; set; }
+    }
+
+    public class Category
+    {
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("account")]
+        public string Account { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("availabilities")]
+        public List<object> Availabilities { get; set; }
+
+        [JsonProperty("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty("products")]
+        public List<string> Products { get; set; }
+
+        [JsonProperty("menu")]
+        public string Menu { get; set; }
+
+        [JsonProperty("level")]
+        public int? Level { get; set; }
+    }
+
+    public class DeliverectMenuProduct
+    {
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("account")]
+        public string Account { get; set; }
+
+        [JsonProperty("location")]
+        public string Location { get; set; }
+
+        [JsonProperty("productType")]
+        public int ProductType { get; set; }
+
+        [JsonProperty("plu")]
+        public string Plu { get; set; }
+
+        [JsonProperty("price")]
+        public int Price { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("deliveryTax")]
+        public int DeliveryTax { get; set; }
+
+        [JsonProperty("subProducts")]
+        public List<string> SubProducts { get; set; }
+
+        [JsonProperty("productTags")]
+        public List<int> ProductTags { get; set; }
+
+        [JsonProperty("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("max")]
+        public string Max { get; set; }
+
+        [JsonProperty("min")]
+        public string Min { get; set; }
+
+        [JsonProperty("channel")]
+        public int Channel { get; set; }
+    }
+
+    public class ModifierGroup
+    {
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("account")]
+        public string Account { get; set; }
+
+        [JsonProperty("location")]
+        public string Location { get; set; }
+
+        [JsonProperty("productType")]
+        public int ProductType { get; set; }
+
+        [JsonProperty("plu")]
+        public string Plu { get; set; }
+
+        [JsonProperty("price")]
+        public int Price { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("deliveryTax")]
+        public int DeliveryTax { get; set; }
+
+        [JsonProperty("subProducts")]
+        public List<string> SubProducts { get; set; }
+
+        [JsonProperty("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("max")]
+        public int Max { get; set; }
+
+        [JsonProperty("min")]
+        public int Min { get; set; }
+
+        [JsonProperty("multiMax")]
+        public int MultiMax { get; set; }
+
+        [JsonProperty("channel")]
+        public int Channel { get; set; }
+    }
+
+    public class Modifier
+    {
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("account")]
+        public string Account { get; set; }
+
+        [JsonProperty("location")]
+        public string Location { get; set; }
+
+        [JsonProperty("productType")]
+        public int ProductType { get; set; }
+
+        [JsonProperty("plu")]
+        public string Plu { get; set; }
+
+        [JsonProperty("price")]
+        public int Price { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("deliveryTax")]
+        public int DeliveryTax { get; set; }
+
+        [JsonProperty("subProducts")]
+        public List<object> SubProducts { get; set; }
+
+        [JsonProperty("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("max")]
+        public string Max { get; set; }
+
+        [JsonProperty("min")]
+        public string Min { get; set; }
+
+        [JsonProperty("channel")]
+        public int Channel { get; set; }
+    }
+
+    public class SnoozedProduct
+    {
+        [JsonProperty("location")]
+        public string Location { get; set; }
+
+        [JsonProperty("plu")]
+        public string Plu { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("snoozeStart")]
+        public string SnoozeStart { get; set; }
+
+        [JsonProperty("snoozeEnd")]
+        public string SnoozeEnd { get; set; }
+    }
+
+    public class DeliverectMenuUpdatedWebhookRequest
+    {
+        [JsonProperty("menu")]
+        public string Menu { get; set; }
+
+        [JsonProperty("availabilities")]
+        public List<Availability> Availabilities { get; set; }
+
+        [JsonProperty("categories")]
+        public List<Category> Categories { get; set; }
+
+        [JsonProperty("products")]
+        public Dictionary<string, DeliverectMenuProduct> Products { get; set; }
+
+        [JsonProperty("modifierGroups")]
+        public Dictionary<string, ModifierGroup> ModifierGroups { get; set; }
+
+        [JsonProperty("modifiers")]
+        public Dictionary<string, Modifier> Modifiers { get; set; }
+
+        [JsonProperty("snoozedProducts")]
+        public Dictionary<string, SnoozedProduct> SnoozedProducts { get; set; }
+
+        [JsonProperty("channelLinkId")]
+        public string ChannelLinkId { get; set; }
     }
 }
