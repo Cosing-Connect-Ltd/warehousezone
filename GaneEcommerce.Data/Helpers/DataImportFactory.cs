@@ -2051,6 +2051,7 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         csv.Read();
                         csv.ReadHeader();
+                        csv.Configuration.MissingFieldFound = null;
                         headers = csv.Context.HeaderRecord.ToList(); headers = headers.ConvertAll(d => d.ToLower());
                         allDataRecords = csv.GetRecords<ProductImportModel>().ToList();
                     }
@@ -2076,6 +2077,14 @@ namespace Ganedata.Core.Data.Helpers
                         lineNumber++;
                         var product = context.ProductMaster.FirstOrDefault(m => m.SKUCode == productData.SkuCode);
                         var isNewProduct = product == null;
+                        int weightGroupId = context.GlobalWeightGroups.FirstOrDefault().WeightGroupId;
+
+                        if (weightGroups.Count() > 0)
+                        {
+                            int.TryParse((weightGroups[productData.WeightGroup].ToString()), out weightGroupId);
+                        }
+
+
                         if (isNewProduct)
                         {
                             product = new ProductMaster
@@ -2147,7 +2156,7 @@ namespace Ganedata.Core.Data.Helpers
                         product.SellPrice = productData.SellPrice > 0 ? productData.SellPrice : product.SellPrice;
                         product.Serialisable = productData.Serialisable ?? product.Serialisable;
                         product.ProductType = productData.ProductType ?? product.ProductType;
-                        product.IsPreOrderAccepted = productData.IsPreOrderAccepted ?? product.IsPreOrderAccepted;
+                        product.IsPreOrderAccepted = productData?.IsPreOrderAccepted ?? product?.IsPreOrderAccepted;
                         product.MinDispatchDays = productData.MinDispatchDays ?? product.MinDispatchDays;
                         product.MaxDispatchDays = productData.MaxDispatchDays ?? product.MaxDispatchDays;
                         product.DateCreated = DateTime.UtcNow;
@@ -2160,7 +2169,7 @@ namespace Ganedata.Core.Data.Helpers
                         product.ProductGroupId = !string.IsNullOrEmpty(productData.Group?.Trim()) || isNewProduct ? groups[productData.Group] : product.ProductGroupId;
                         product.DepartmentId = !string.IsNullOrEmpty(productData.Department?.Trim()) || isNewProduct ? departments[productData.Department] ?? product.DepartmentId : product.DepartmentId;
                         product.TaxID = taxId;
-                        product.WeightGroupId = !string.IsNullOrEmpty(productData.WeightGroup?.Trim()) || isNewProduct ? weightGroups[productData.WeightGroup] : product.WeightGroupId;
+                        product.WeightGroupId = (!string.IsNullOrEmpty(productData.WeightGroup?.Trim()) || isNewProduct) ? weightGroupId : product.WeightGroupId;
                         product.LotOptionCodeId = productLotOptionId;
                         product.LotProcessTypeCodeId = productLotProcessId;
 
