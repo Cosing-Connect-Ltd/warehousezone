@@ -318,6 +318,7 @@ namespace WarehouseEcommerce.Controllers
                 Session["CheckoutViewModel"] = model;
                 if (Session["_AdyenPaylink"] == null)
                 {
+                    var order = _orderService.GetOrderByOrderNumber(model.OrderNumber);
                     var paymentLink = await _adyenPaymentService.GenerateOrderPaymentLink(
                         new AdyenCreatePayLinkRequestModel()
                         {
@@ -327,7 +328,7 @@ namespace WarehouseEcommerce.Controllers
                             PaymentReference = Guid.NewGuid().ToString("N"),
                             ShopperUniqueReference = model.OrderNumber + "_" + DateTime.Now.ToFileTime()
                         });
-                    await _adyenPaymentService.CreateOrderPaymentLink(paymentLink);
+                    await _adyenPaymentService.CreateOrderPaymentLink(paymentLink, order.OrderID);
                     Session["_AdyenPaylink"] = paymentLink.Url;
                 }
             }
@@ -697,7 +698,17 @@ namespace WarehouseEcommerce.Controllers
 
             return PartialView("Payments/_AddressForm", GetAddressFormViewModel(modelForm.IsBillingAddress));
         }
+        public PartialViewResult _CartItemsPartial(int? cartId = null)
+        {
+            var model = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList() };
 
+            model.ShippmentAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+            
+            model.ShowCartPopUp = cartId.HasValue;
+            model.ShowLoginPopUp = CurrentUserId == 0;
+             
+            return PartialView("Payments/_CartItems",model);
+        }
         public ActionResult OrderPayment(OrderPaymentViewModel model)
         {
             return View("Payments/OrderPayment", model);

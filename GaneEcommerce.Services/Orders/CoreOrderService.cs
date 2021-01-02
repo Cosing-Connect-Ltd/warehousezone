@@ -121,6 +121,11 @@ namespace Ganedata.Core.Services
             return OrderService.GetPalletOrdersDetails(id, tenantId, excludeProcessed);
         }
 
+        public Order GetOrderByOrderNumber(string orderNumber)
+        {
+            return OrderService.GetOrderByOrderNumber(orderNumber);
+        }
+
         public List<OrderDetailsViewModel> GetSalesOrderDetails(int id, int tenantId)
         {
             return OrderService.GetSalesOrderDetails(id, tenantId);

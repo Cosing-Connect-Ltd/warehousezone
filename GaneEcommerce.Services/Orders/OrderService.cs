@@ -500,6 +500,11 @@ namespace Ganedata.Core.Services
             return order;
         }
 
+        public Order GetOrderByOrderNumber(string orderNumber)
+        {
+            return _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.ToLower().Equals(orderNumber.ToLower()));
+        }
+
         public List<OrderDetailsViewModel> GetSalesOrderDetails(int id, int tenantId)
         {
             var model = _currentDbContext.OrderDetail.Where(a => a.OrderID == id && a.IsDeleted != true && a.TenentId == tenantId).ToList();
