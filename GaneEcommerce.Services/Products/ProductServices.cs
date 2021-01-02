@@ -1408,12 +1408,15 @@ namespace Ganedata.Core.Services
                                       e.BarCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase) ||
                                       e.ManufacturerPartNo.Equals(productCode, StringComparison.CurrentCultureIgnoreCase)));
 
-            product.ProductKitItems = product.ProductKitItems.Where(k => k.IsActive &&
+            if (product != null)
+            {
+                product.ProductKitItems = product.ProductKitItems.Where(k => k.IsActive &&
                                                                          k.IsDeleted != true &&
                                                                          _currentDbContext.ProductsWebsitesMap.Any(m => m.ProductId == k.KitProductId &&
                                                                                                                         m.IsActive &&
                                                                                                                         m.IsDeleted != true))
-                                                             .ToList();
+                                                                                                                        .ToList();
+            }
 
             return product;
         }
