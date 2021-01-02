@@ -611,10 +611,12 @@ function addToNotifyList(productId, parentProductId, addRemoveAction) {
                 if (!!parentProductId && parentProductId > 0) {
                     $(currentParentClass).find(".list-icon").css({ "color": "red" });
                 }
-
-                SetWishListElementsStyle(productId, parentProductId);
+                                
                 if (emailId)
                     $("#modalNotificationEmail button.close").trigger("click");
+                else {
+                    SetWishListElementsStyle(productId, parentProductId);
+                }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert('Error' + textStatus + "/" + errorThrown);
