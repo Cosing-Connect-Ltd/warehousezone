@@ -5,7 +5,7 @@
 }
 
 <div class="footSec">
-    @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
+    @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && !u.IsNotification) == null)
     {
         <button id="btnwish_@Model.ProductId" onclick="addToWishList(@Model.ProductId)" class="addtowishlistbtn">Add to Wishlist</button>
         <a href="javascript:;" class="addtowishlist " id="wish_@Model.ProductId" onclick="addToWishList(@Model.ProductId)"><i class="icon-love list-icon" style="color:black;"></i></a>

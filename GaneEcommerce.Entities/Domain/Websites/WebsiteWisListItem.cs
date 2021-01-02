@@ -10,14 +10,14 @@ namespace Ganedata.Core.Entities.Domain
     {
         public int Id { get; set; }
         public int SiteID { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
+        public string EmailId { get; set; }
         public int ProductId{ get; set; }
         public bool IsNotification { get; set; }
         [ForeignKey("SiteID")]
         public virtual TenantWebsites TenantWebsites { get; set; }
         [ForeignKey("ProductId")]
         public virtual ProductMaster ProductMaster { get; set; }
-
         [ForeignKey("UserId")]
         public virtual AuthUser AuthUser { get; set; }
     }
