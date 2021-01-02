@@ -247,6 +247,7 @@ namespace Ganedata.Core.Entities.Domain
 
         [Display(Name = "Default Image alt Text")]
         public string DefaultImageAltText { get; set; }
+        public int SortOrder { get; set; }
 
         [ForeignKey("ManufacturerId")]
         public ProductManufacturer ProductManufacturer { get; set; }

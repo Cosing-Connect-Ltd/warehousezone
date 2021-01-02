@@ -1219,6 +1219,10 @@
     <Compile Include="Migrations\202012162338233_shipment-address-name-added-in-orders-tables.designer.cs">
       <DependentUpon>202012162338233_shipment-address-name-added-in-orders-tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101020032229_DeliverectCategoryId-and-SortOrder-added.cs" />
+    <Compile Include="Migrations\202101020032229_DeliverectCategoryId-and-SortOrder-added.designer.cs">
+      <DependentUpon>202101020032229_DeliverectCategoryId-and-SortOrder-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2453,6 +2457,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012162338233_shipment-address-name-added-in-orders-tables.resx">
       <DependentUpon>202012162338233_shipment-address-name-added-in-orders-tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101020032229_DeliverectCategoryId-and-SortOrder-added.resx">
+      <DependentUpon>202101020032229_DeliverectCategoryId-and-SortOrder-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
