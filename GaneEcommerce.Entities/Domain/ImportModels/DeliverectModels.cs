@@ -57,6 +57,15 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string[] ProductTags { get; set; }
         [JsonProperty("isInternal")]
         public bool IsInternal { get; set; }
+        [JsonProperty("max")]
+        public string Max { get; set; }
+        [JsonProperty("min")]
+        public string Min { get; set; }
+        [JsonProperty("channel")]
+        public int Channel { get; set; }
+        [JsonProperty("subProducts")]
+        public List<string> SubProducts { get; set; }
+        public int SortOrder { get; set; }
     }
 
     public class DeliverectChannelLinks
@@ -325,7 +334,7 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string EndTime { get; set; }
     }
 
-    public class Category
+    public class DeliverectCategory
     {
         [JsonProperty("_id")]
         public string Id { get; set; }
@@ -355,55 +364,7 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public int? Level { get; set; }
     }
 
-    public class DeliverectMenuProduct
-    {
-        [JsonProperty("_id")]
-        public string Id { get; set; }
-
-        [JsonProperty("account")]
-        public string Account { get; set; }
-
-        [JsonProperty("location")]
-        public string Location { get; set; }
-
-        [JsonProperty("productType")]
-        public int ProductType { get; set; }
-
-        [JsonProperty("plu")]
-        public string Plu { get; set; }
-
-        [JsonProperty("price")]
-        public int Price { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("deliveryTax")]
-        public int DeliveryTax { get; set; }
-
-        [JsonProperty("subProducts")]
-        public List<string> SubProducts { get; set; }
-
-        [JsonProperty("productTags")]
-        public List<int> ProductTags { get; set; }
-
-        [JsonProperty("imageUrl")]
-        public string ImageUrl { get; set; }
-
-        [JsonProperty("description")]
-        public string Description { get; set; }
-
-        [JsonProperty("max")]
-        public string Max { get; set; }
-
-        [JsonProperty("min")]
-        public string Min { get; set; }
-
-        [JsonProperty("channel")]
-        public int Channel { get; set; }
-    }
-
-    public class ModifierGroup
+    public class DeliverectModifierGroup
     {
         [JsonProperty("_id")]
         public string Id { get; set; }
@@ -451,7 +412,7 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public int Channel { get; set; }
     }
 
-    public class Modifier
+    public class DeliverectModifier
     {
         [JsonProperty("_id")]
         public string Id { get; set; }
@@ -496,7 +457,7 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public int Channel { get; set; }
     }
 
-    public class SnoozedProduct
+    public class DeliverectSnoozedProduct
     {
         [JsonProperty("location")]
         public string Location { get; set; }
@@ -523,19 +484,19 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public List<Availability> Availabilities { get; set; }
 
         [JsonProperty("categories")]
-        public List<Category> Categories { get; set; }
+        public List<DeliverectCategory> Categories { get; set; }
 
         [JsonProperty("products")]
-        public Dictionary<string, DeliverectMenuProduct> Products { get; set; }
+        public Dictionary<string, DeliverectProduct> Products { get; set; }
 
         [JsonProperty("modifierGroups")]
-        public Dictionary<string, ModifierGroup> ModifierGroups { get; set; }
+        public Dictionary<string, DeliverectModifierGroup> ModifierGroups { get; set; }
 
         [JsonProperty("modifiers")]
-        public Dictionary<string, Modifier> Modifiers { get; set; }
+        public Dictionary<string, DeliverectModifier> Modifiers { get; set; }
 
         [JsonProperty("snoozedProducts")]
-        public Dictionary<string, SnoozedProduct> SnoozedProducts { get; set; }
+        public Dictionary<string, DeliverectSnoozedProduct> SnoozedProducts { get; set; }
 
         [JsonProperty("channelLinkId")]
         public string ChannelLinkId { get; set; }

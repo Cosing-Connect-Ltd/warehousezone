@@ -1,4 +1,5 @@
-﻿using Ganedata.Core.Data;
+﻿using Elmah;
+using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ImportModels;
 using Ganedata.Core.Entities.Enums;
@@ -7,12 +8,15 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Ganedata.Core.Services
 {
@@ -116,15 +120,8 @@ namespace Ganedata.Core.Services
         {
             tenantId = tenantId ?? _context.Tenants.First(t => t.IsActive && t.IsDeleted != true).TenantId;
 
-            // Mark all product IsDeleted true where Deliverect Id doesn't exist.
-            var products = _context.ProductMaster.Where(w => w.IsDeleted != true && String.IsNullOrEmpty(w.DeliverectProductId));
-
-            foreach (var item in products)
-            {
-                item.DateUpdated = DateTime.UtcNow;
-                item.IsDeleted = true;
-                item.UpdatedBy = currentUserId;
-            }
+            //delete all non deliverect products
+            DeleteProductsExceptDeliverect(currentUserId);
 
             // Sync with deliverect
             using (var client = await GetHttpClient())
@@ -157,7 +154,7 @@ namespace Ganedata.Core.Services
             }
         }
 
-        private void SaveProduct(int tenantId, int currentUserId, DeliverectProduct deliverectProduct)
+        public void SaveProduct(int tenantId, int currentUserId, DeliverectProduct deliverectProduct, int? sortOrder = null)
         {
             var product = _context.ProductMaster.FirstOrDefault(w => w.DeliverectProductId == deliverectProduct.Id);
             var productTaxpercent = Convert.ToInt32((deliverectProduct.DeliveryTax / 1000));
@@ -214,9 +211,11 @@ namespace Ganedata.Core.Services
                     ProcessByPallet = false,
                     IsStockItem = false,
                     IsDeleted = false,
+                    SortOrder = sortOrder ?? 0
                 };
 
                 _context.ProductMaster.Add(product);
+                _context.SaveChanges();
             }
             else
             {
@@ -230,9 +229,32 @@ namespace Ganedata.Core.Services
                 product.IsDeleted = false;
                 product.TaxID = tax.TaxID;
                 product.EnableTax = true;
+                product.SortOrder = sortOrder ?? 0;
             }
 
+
+            //remove previous images
+            _context.ProductFiles.RemoveRange(_context.ProductFiles.Where(x => x.ProductId == product.ProductId));
             _context.SaveChanges();
+
+            // save product image
+            string path = DownloadImage(deliverectProduct.ImageUrl, product.ProductId);
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                var productFile = new ProductFiles
+                {
+                    ProductId = product.ProductId,
+                    FilePath = path,
+                    TenantId = tenantId,
+                    CreatedBy = currentUserId,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
+
+                _context.ProductFiles.Add(productFile);
+
+            }
 
             // add product tags
             var productTags = _context.ProductTags.Where(u => u.TagName == "Delivery" || u.TagName == "Collection" || u.TagName == "Eat In" && u.IsDeleted != true).ToList();
@@ -246,9 +268,100 @@ namespace Ganedata.Core.Services
                     tag.TenantId = tenantId;
                     tag.UpdateCreatedInfo(currentUserId);
                     _context.ProductTagMaps.Add(tag);
-
                 }
+            }
 
+            _context.SaveChanges();
+
+        }
+
+        public void SaveCategory(int tenantId, int currentUserId, DeliverectCategory deliverectCategory, int? sortOrder)
+        {
+            var category = _context.TenantDepartments.FirstOrDefault(w => w.DeliverectCategoryId == deliverectCategory.Id);
+
+            if (category == null)
+            {
+                category = new TenantDepartments
+                {
+                    DepartmentName = deliverectCategory.Name,
+                    DeliverectCategoryId = deliverectCategory.Id,
+                    ImagePath = DownloadImage(deliverectCategory.ImageUrl, category.DepartmentId, true),
+                    TenantId = tenantId,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
+                    CreatedBy = currentUserId,
+                    IsDeleted = false,
+                    SortOrder = sortOrder ?? 0
+                };
+
+                _context.TenantDepartments.Add(category);
+            }
+            else
+            {
+                category.DepartmentName = deliverectCategory.Name;
+                category.ImagePath = deliverectCategory.ImageUrl;
+                category.DateUpdated = DateTime.UtcNow;
+                category.IsDeleted = false;
+                category.SortOrder = sortOrder ?? 0;
+                category.ImagePath = DownloadImage(deliverectCategory.ImageUrl, category.DepartmentId, true);
+            }
+
+            _context.SaveChanges();
+
+            foreach (var product in deliverectCategory.Products)
+            {
+                UpdateProductCategory(product, category.DepartmentId, 1);
+            }
+
+        }
+
+        public void DeleteProductsExceptDeliverect(int currentUserId, List<string> menuProducts = null)
+        {
+            var products = _context.ProductMaster.Where(w => w.IsDeleted != true && String.IsNullOrEmpty(w.DeliverectProductId));
+
+            if (menuProducts != null)
+            {
+                products = _context.ProductMaster.Where(w => w.IsDeleted != true && !menuProducts.Any(x => x.Contains(w.DeliverectProductId)));
+            }
+
+            foreach (var item in products)
+            {
+                item.DateUpdated = DateTime.UtcNow;
+                item.IsDeleted = true;
+                item.UpdatedBy = currentUserId;
+            }
+
+            _context.SaveChanges();
+        }
+
+        public void DeleteDepartmentsExceptDeliverect(int currentUserId, List<string> menuCategories = null)
+        {
+            var category = _context.TenantDepartments.Where(w => w.IsDeleted != true && String.IsNullOrEmpty(w.DeliverectCategoryId));
+
+            if (menuCategories != null)
+            {
+                category = _context.TenantDepartments.Where(w => w.IsDeleted != true && !menuCategories.Any(x => x.Contains(w.DeliverectCategoryId)));
+            }
+
+            foreach (var item in category)
+            {
+                item.DateUpdated = DateTime.UtcNow;
+                item.IsDeleted = true;
+                item.UpdatedBy = currentUserId;
+            }
+
+            _context.SaveChanges();
+        }
+
+        public void UpdateProductCategory(string deliverectProductId, int categoryId, int currentUserId)
+        {
+            var product = _context.ProductMaster.Where(w => w.IsDeleted != true && w.DeliverectProductId == deliverectProductId).FirstOrDefault();
+
+            if (product != null)
+            {
+                product.DateUpdated = DateTime.UtcNow;
+                product.DepartmentId = categoryId;
+                product.UpdatedBy = currentUserId;
             }
 
             _context.SaveChanges();
@@ -327,6 +440,62 @@ namespace Ganedata.Core.Services
                 var response = await client.PostAsync(requestUri, stringContent);
 
                 return response.IsSuccessStatusCode;
+            }
+        }
+
+        public string DownloadImage(string path, int ItemId, bool category = false)
+        {
+            var value = "";
+            string UploadDirectory = @"~/UploadedFiles/Products/";
+            string type = "Product";
+
+            if (category == true)
+            {
+                UploadDirectory = @"~/UploadedFiles/Departments/";
+                type = "Departments";
+            }
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                if (RemoteFileExists(path))
+                {
+                    try
+                    {
+                        if (!Directory.Exists(HttpContext.Current.Server.MapPath(UploadDirectory + ItemId.ToString())))
+                        {
+                            Directory.CreateDirectory(HttpContext.Current.Server.MapPath(UploadDirectory + ItemId.ToString()));
+                        }
+
+                        string resFileName = HttpContext.Current.Server.MapPath(UploadDirectory + ItemId.ToString() + @"/" + type + ItemId + ".jpg");
+
+                        WebClient webClient = new WebClient();
+                        webClient.DownloadFile(path, resFileName);
+                        value = (UploadDirectory.Remove(0, 1) + ItemId.ToString() + @"/" + type + ItemId + ".jpg");
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorSignal.FromCurrentContext().Raise(ex);
+                    }
+                }
+            }
+
+            return value;
+
+        }
+
+        private bool RemoteFileExists(string url)
+        {
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                request.Method = "HEAD";
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                response.Close();
+                return (response.StatusCode == HttpStatusCode.OK);
+            }
+            catch
+            {
+                return false;
             }
         }
 

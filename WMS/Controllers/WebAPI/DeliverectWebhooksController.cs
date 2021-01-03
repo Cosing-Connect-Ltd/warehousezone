@@ -3,6 +3,7 @@ using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -41,9 +42,29 @@ namespace WMS.Controllers.WebAPI
 
             //update products in the menu
 
-            foreach(var item in request)
+            foreach (var menu in request)
             {
-                //iterate through the items
+                int productSortOrder = 1;
+                int categorySortOrder = 1;
+
+                List<string> menuProducts = menu.Products.Values.Select(x => x.Id).ToList();
+                List<string> menuCategories = menu.Categories.Select(x => x.Id).ToList();
+
+                _deliverectSyncService.DeleteProductsExceptDeliverect(1, menuProducts);
+                _deliverectSyncService.DeleteDepartmentsExceptDeliverect(1, menuCategories);
+
+                foreach (var deliverectProduct in menu.Products.Values.Where(p => p.Type == 1))
+                {
+                    _deliverectSyncService.SaveProduct(1, 1, deliverectProduct, productSortOrder);
+                    productSortOrder++;
+                }
+
+                foreach (var category in menu.Categories)
+                {
+                    _deliverectSyncService.SaveCategory(1, 1, category, categorySortOrder);
+                    categorySortOrder++;
+                }
+
             }
 
             return Ok();
