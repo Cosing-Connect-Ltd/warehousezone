@@ -88,6 +88,10 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsStandardDelivery { get; set; }
         public int BillingAddressId { get; set; }
         public int ShippingAddressId { get; set; }
+        public string AdyenPaymentLink { get; set; }
+        public string AdyenPaymentLinkID { get; set; }
+        public int DeliveryOption { get; set; }
+        public string AdyenStatusApiEndpoint { get; set; }
         //TODO
     }
 }

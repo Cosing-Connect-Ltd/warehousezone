@@ -275,5 +275,11 @@ namespace Ganedata.Core.Entities.Domain
         public bool OfflineSale { get; set; }
         public int? DeliveryAccountAddressID { get; set; }
         public int? BillingAccountAddressID { get; set; }
+
+        [ForeignKey("BillingAccountAddressID")]
+        public AccountAddresses BillingAccountAddress { get; set; }
+
+        [ForeignKey("DeliveryAccountAddressID")]
+        public AccountAddresses DeliveryAccountAddress { get; set; }
     }
 }

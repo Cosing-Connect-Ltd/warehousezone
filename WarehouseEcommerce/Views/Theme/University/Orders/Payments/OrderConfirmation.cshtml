@@ -1,0 +1,111 @@
+﻿@model Ganedata.Core.Entities.Domain.Order
+@using Ganedata.Core.Entities.Enums;
+@{
+    ViewBag.Title = "Order Confirmation";
+    int j = 1;
+}
+
+<div class="about bg-white confirm-order-page">
+    <div class="container custom-max-width ">
+        <div class="row">
+            <div class="col-md-8 col-sm-8 bg-white my-account login confirm-order-addresses">
+                <div class="about-cnt">
+                    <div class="content-wrapper select">
+                        <div class="col-md-6 col-sm-6">
+                            <h2 class="text-uppercase"> Shipping Address</h2>
+                            <hr class="custom-hr">
+                            <p>
+                                <b>@Model.DeliveryAccountAddress.AddressLine1</b> <br />
+                                @Model.DeliveryAccountAddress.AddressLine2 <br />
+                                @Model.DeliveryAccountAddress.AddressLine3 @Model.DeliveryAccountAddress.PostCode <br />
+                                @Model.DeliveryAccountAddress.GlobalCountry.CountryName <br />
+                                <b> Phone:</b> @Model.DeliveryAccountAddress.Telephone <br />
+                            </p>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <h2 class="text-uppercase"> Billing Address</h2>
+                            <hr class="custom-hr">
+                            <p>
+                                <b>@Model.BillingAccountAddress.AddressLine1</b> <br />
+                                @Model.BillingAccountAddress.AddressLine2 <br />
+                                @Model.BillingAccountAddress.AddressLine3 @Model.BillingAccountAddress.PostCode <br />
+                                @Model.BillingAccountAddress.GlobalCountry.CountryName <br />
+                                <b> Phone:</b> @Model.BillingAccountAddress.Telephone <br />
+                            </p>
+                        </div>
+                        <br />
+                    </div>
+
+
+                    <div class="tableWrap">
+                        @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                        {
+                            <table class="basketTable mb-4">
+                                <tbody>
+                                    <tr class="headRow cmnRow">
+                                        <td class="prd">Product</td>
+                                        <td class="price">Price</td>
+                                        <td class="qty">Quantity</td>
+                                        <td class="tot">Total</td>
+                                    </tr>
+
+                                    @foreach (var item in Model.OrderDetails)
+                                    {
+                                        <tr class="cmnRow">
+                                            <td class="prd">
+                                                <div class="prdCellwrap">
+                                                    <div class="inrow">
+                                                        <span class="imgWrap">
+                                                            <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                                        </span>
+                                                        <span class="prdName">
+                                                            @(item.ProductMaster?.Name)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="price">
+                                                <div class="priceWrapinner">
+                                                    <b class="price-b">Price:</b> <span>@ViewBag.CurrencySymbol@item.Price</span>
+                                                </div>
+                                            </td>
+                                            <td class="qty">
+                                                <div class="QtyWrap">
+                                                    <div class="QtyWrapinner">
+                                                        @item.ProcessedQty
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="tot">
+                                                <div id="total_amnt" class="priceTotal">
+                                                    <b class="price-b">Total:</b> <span>@ViewBag.CurrencySymbol@item.TotalAmount</span>
+                                                </div> 
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr class="subTotRow">
+                                        <td class="prd"></td>
+                                        <td class="price"></td>
+                                        <td class="price text-right">
+                                            <b>Sub Total:</b>
+                                        </td>
+                                        <td class="text-center border-bottom-0">
+                                            <strong>@ViewBag.CurrencySymbol@(Model.OrderCost)</strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="text-center m-4">Oops, Your Basket Is Empty!</div>
+                        }
+                    </div>
+                </div>
+            </div>
+             
+            </div>
+        }
+    </div>
+</div>
+

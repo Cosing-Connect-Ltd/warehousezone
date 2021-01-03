@@ -709,10 +709,62 @@ namespace WarehouseEcommerce.Controllers
              
             return PartialView("Payments/_CartItems",model);
         }
-        public ActionResult OrderPayment(OrderPaymentViewModel model)
+        public async Task<ActionResult> OrderPayment(OrderPaymentViewModel data)
         {
-            return View("Payments/OrderPayment", model);
+            var checkoutModel = new CheckoutViewModel();
+            checkoutModel.BillingAddressId = data.BillingAddressId;
+            checkoutModel.ShippingAddressId = data.ShippingAddressId;
+
+            var cart = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, null).ToList() };
+            checkoutModel.CartItems = cart.WebsiteCartItems;
+             
+            var order = _orderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID, (StandardDeliveryTypeEnum)data.DeliveryOption);
+            checkoutModel.OrderNumber = order.OrderNumber;
+            //await _configurationsHelper.CreateTenantEmailNotificationQueue("Order Confirmed", _mapper.Map(order, new OrderViewModel()), sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.WebsiteOrderConfirmation, TenantId: CurrentTenantId, accountId: order.AccountID, UserEmail: CurrentUser.UserEmail, userId: CurrentUser.UserId, siteId: CurrentTenantWebsite.SiteID);
+
+            try
+            {
+                Session["CheckoutViewModel"] = checkoutModel;
+                if (Session["_AdyenPaylink"] == null)
+                {
+                    var paymentLink = await _adyenPaymentService.GenerateOrderPaymentLink(
+                        new AdyenCreatePayLinkRequestModel()
+                        {
+                            Amount = new AdyenAmount() { Value = checkoutModel.TotalOrderAmount },
+                            MerchantAccount = AdyenPaymentService.AdyenMerchantAccountName,
+                            OrderDescription = checkoutModel.CartItems.First().ProductMaster.Description,
+                            PaymentReference = Guid.NewGuid().ToString("N"),
+                            ShopperUniqueReference = checkoutModel.OrderNumber + "_" + DateTime.Now.ToFileTime()
+                        });
+                    if (!string.IsNullOrEmpty(paymentLink.Url))
+                    {
+                        await _adyenPaymentService.CreateOrderPaymentLink(paymentLink, order.OrderID);
+                        data.AdyenPaymentLink = paymentLink.Url;
+                        data.AdyenPaymentLinkID = paymentLink.ID;
+                        Session["_AdyenPaylink"] = paymentLink.Url;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(nameof(checkoutModel.OrderNumber), "Order ");
+            }
+
+            data.AdyenStatusApiEndpoint = GaneStaticAppExtensions.AdyenStatusApiEndpoint;
+            return View("Payments/OrderPayment", data);
         }
+
+        public ActionResult OrderConfirmation(string id)
+        {
+            var order = _adyenPaymentService.GetOrderNumberByAdyenPaylinkID(id);
+            if (order != null)
+            {
+                _orderService.UpdateOrderStatus(order.OrderID, OrderStatusEnum.Approved, 0);
+            }
+
+            return View("Payments/OrderConfirmation", order);
+        }
+
         #endregion
     }
 }

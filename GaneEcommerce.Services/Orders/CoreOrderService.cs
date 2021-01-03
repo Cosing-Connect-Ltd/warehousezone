@@ -659,9 +659,9 @@ namespace Ganedata.Core.Services
             return OrderService.GetDiscountOnTotalCost(accountId, OrdersTotal);
         }
 
-        public Order CreateShopOrder(CheckoutViewModel orderDetail, int tenantId, int UserId, int warehouseId, int SiteId)
+        public Order CreateShopOrder(CheckoutViewModel orderDetail, int tenantId, int UserId, int warehouseId, int SiteId, StandardDeliveryTypeEnum deliveryType = StandardDeliveryTypeEnum.Standard)
         {
-            return OrderService.CreateShopOrder(orderDetail, tenantId, UserId, warehouseId, SiteId);
+            return OrderService.CreateShopOrder(orderDetail, tenantId, UserId, warehouseId, SiteId, deliveryType);
         }
 
         public IQueryable<Order> GetOrdersHistory(int UserId, int SiteId)
