@@ -123,7 +123,6 @@ namespace WMS.Controllers.WebAPI
             catch (Exception ex)
             {
                 throw new Exception("Exception while getting user sync collection - " + ex.Message.ToString(), ex.InnerException);
-
             }
         }
 

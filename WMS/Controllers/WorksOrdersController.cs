@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Elmah;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
@@ -194,11 +195,12 @@ namespace WMS.Controllers
                         throw new Exception("Exception while creating tenant email notification queue - " + ex.Message.ToString(), ex.InnerException);
                     }
                 }
+
                 ViewBag.Fragment = Request.Form["fragment"];
+
                 if (orderSaveAndProcess == "1")
                 {
                     return Redirect(Url.RouteUrl(new { controller = "WorksOrders", action = "ProcessOrder", id = Order.OrderID }) + "?fragment=" + ViewBag.Fragment as string);
-
                 }
 
                 return AnchoredOrderIndex("WorksOrders", "Index", ViewBag.Fragment as string);
@@ -278,6 +280,7 @@ namespace WMS.Controllers
                         }
                         catch (Exception ex)
                         {
+                            ErrorSignal.FromCurrentContext().Raise(ex);
                             throw ex;
                         }
                     }
@@ -610,7 +613,6 @@ namespace WMS.Controllers
             catch (Exception exp)
             {
                 return Json(new { error = true, msg = exp.Message });
-
             }
         }
         public ActionResult _PTenent()
@@ -627,7 +629,6 @@ namespace WMS.Controllers
             catch (Exception exp)
             {
                 return Json(new { error = true, msg = exp.Message });
-
             }
         }
         #endregion

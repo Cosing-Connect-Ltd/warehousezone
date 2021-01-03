@@ -113,7 +113,6 @@ namespace WMS.Controllers
         {
             if (e.UploadedFile.IsValid)
             {
-
                 try
                 {
                     int? ProductGroupId = ViewBag.ProductGroupId;
@@ -153,21 +152,16 @@ namespace WMS.Controllers
                             break;
 
                     }
+
                     e.CallbackData = importResponse;
                     e.ErrorText = importResponse;
 
                 }
                 catch (Exception ex)
                 {
-
                     e.CallbackData = "<li>File not imported: " + ex.Message + "<li>";
                 }
             }
-
         }
-
-
-
     }
-
 }

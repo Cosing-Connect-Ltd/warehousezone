@@ -39,9 +39,7 @@ namespace WMS.Controllers.TA
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_EmptyResult");
             }
         }
@@ -69,9 +67,7 @@ namespace WMS.Controllers.TA
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_ErrorResult");
             }
         }
@@ -92,9 +88,7 @@ namespace WMS.Controllers.TA
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_EmptyResult");
             }
         }
@@ -120,9 +114,7 @@ namespace WMS.Controllers.TA
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_EmptyResult");
             }
         }
@@ -175,9 +167,7 @@ namespace WMS.Controllers.TA
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_ErrorResult");
             }
         }
@@ -200,10 +190,9 @@ namespace WMS.Controllers.TA
             }
             catch (Exception e)
             {
-                //catch error here
                 var err = e.Message;
-
             }
+
             return Json(new { success = false });
         }
     }

@@ -71,10 +71,10 @@ namespace WMS.Controllers
             _inspectionService.SaveInspection(inspection, CurrentUserId, tickedInspections);
             return RedirectToAction("Index");
         }
+
         [HttpPost]
         public JsonResult Delete(int id)
         {
-
             try
             {
                 _inspectionService.DeleteInspection(id, CurrentUserId);
@@ -85,6 +85,5 @@ namespace WMS.Controllers
                 return Json(new { success = false, message = e.InnerException });
             }
         }
-
     }
 }

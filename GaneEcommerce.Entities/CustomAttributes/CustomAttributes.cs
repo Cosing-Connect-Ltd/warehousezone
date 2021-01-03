@@ -40,7 +40,7 @@ namespace Ganedata.Core.Entities.Domain
                         {
                             con.Open();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             return s;
                         }
