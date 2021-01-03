@@ -326,6 +326,15 @@ function updateCartItem(id, quantity) {
     }
 }
 
+function UpdateDeliveryCosts() {
+    var $chk = $("#dvDeliveryOptions input[type=radio]:checked");
+    var costOfDel = parseFloat($chk.val());
+    var cartTotal = parseFloat($("#CartTotalAmount").val());
+    $("#spnTotalAmount").text((costOfDel + parseFloat(cartTotal)).toFixed(2));
+
+    var stdDel = $("#DeliveryOpt1").prop('checked') ? '1' : '2';
+    $("#DeliveryOption").val(stdDel);
+}
 function getCartitems(cartId) {
     startLoading();
     $.ajax({
@@ -335,17 +344,13 @@ function getCartitems(cartId) {
         dataType: 'html',
         success: function (data) {
             stopLoading();
-            
-            if (cartId != null) {
-                $('.cart-item-data').html("");
-                $('.cart-item-data').html(data);
+            $('.cart-item-data').html("");
+            $('.cart-item-data').html(data);
+            if ($("#IsOrderReviewPage").length < 1) {
                 $('#myModal').modal('show');
+            } else {
+                UpdateDeliveryCosts();
             }
-            else {
-                $('#updateCart').html("");
-                $('#updateCart').html(data);
-            }
-            UpdateDeliveryCosts();
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {
             stopLoading();

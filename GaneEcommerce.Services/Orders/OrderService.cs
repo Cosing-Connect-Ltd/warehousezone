@@ -3251,7 +3251,7 @@ namespace Ganedata.Core.Services
             return discount;
         }
 
-        public Order CreateShopOrder(CheckoutViewModel orderDetails, int tenantId, int UserId, int warehouseId, int SiteId)
+        public Order CreateShopOrder(CheckoutViewModel orderDetails, int tenantId, int UserId, int warehouseId, int SiteId, StandardDeliveryTypeEnum deliveryType = StandardDeliveryTypeEnum.Standard)
         {
             Order order = new Order();
             decimal total = 0;
@@ -3260,7 +3260,17 @@ namespace Ganedata.Core.Services
                 order.OrderNumber = GenerateNextOrderNumber(InventoryTransactionTypeEnum.SalesOrder, tenantId);
             }
 
+            decimal deliveryCost = 0;
+            var tenantConfig = _currentDbContext.TenantConfigs.FirstOrDefault(m => m.TenantId == tenantId);
+
+            if (tenantConfig !=null)
+            {
+                deliveryCost = deliveryType == StandardDeliveryTypeEnum.NextDay? (tenantConfig.NextDayDeliveryCost ?? 0) : (tenantConfig.StandardDeliveryCost??0);
+                total = total + deliveryCost;
+            }
+
             var duplicateOrder = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.Equals(order.OrderNumber, StringComparison.CurrentCultureIgnoreCase));
+            
             if (duplicateOrder != null)
             {
                 throw new Exception($"Order Number {order.OrderNumber} already associated with another Order. Please regenerate order number.", new Exception("Duplicate Order Number"));
@@ -3278,6 +3288,8 @@ namespace Ganedata.Core.Services
             order.WarehouseId = warehouseId;
             order.SiteID = SiteId;
             order.OrderStatusID = OrderStatusEnum.Hold;
+            order.ShipmentAccountAddressId = orderDetails.ShippingAddressId;
+            order.BillingAccountAddressID = orderDetails.BillingAddressId;
 
             _currentDbContext.Order.Add(order);
             _currentDbContext.SaveChanges();
@@ -3312,23 +3324,26 @@ namespace Ganedata.Core.Services
                     cartItemsList.ForEach(u => u.IsDeleted = true);
                 };
                 _currentDbContext.SaveChanges();
-                var accountTransaction = new AccountTransaction()
-                {
-                    AccountId = orderDetails.AccountId,
-                    AccountTransactionTypeId = AccountTransactionTypeEnum.PaidByAccount,
-                    AccountPaymentModeId = AccountPaymentModeEnum.OnlineTransfer,
-                    CreatedBy = UserId,
-                    Notes = "Paid : " + orderDetails.OrderNumber.Trim(),
-                    DateCreated = DateTime.UtcNow,
-                    Amount = total,
-                    TenantId = tenantId,
-                    FinalBalance = total,
-                    OrderId = order.OrderID,
-                    PaymentTransactionId = orderDetails.SagePayPaymentResponse.transactionId
-                };
 
-                _currentDbContext.AccountTransactions.Add(accountTransaction);
-                _currentDbContext.SaveChanges();
+                if (orderDetails.AccountId > 0)
+                {
+                    var accountTransaction = new AccountTransaction()
+                    {
+                        AccountId = orderDetails.AccountId,
+                        AccountTransactionTypeId = AccountTransactionTypeEnum.PaidByAccount,
+                        AccountPaymentModeId = AccountPaymentModeEnum.OnlineTransfer,
+                        CreatedBy = UserId,
+                        Notes = "Paid : " + orderDetails.OrderNumber.Trim(),
+                        DateCreated = DateTime.UtcNow,
+                        Amount = total,
+                        TenantId = tenantId,
+                        FinalBalance = total,
+                        OrderId = order.OrderID,
+                        PaymentTransactionId = orderDetails.SagePayPaymentResponse.transactionId
+                    };
+                    _currentDbContext.AccountTransactions.Add(accountTransaction);
+                    _currentDbContext.SaveChanges();
+                }
             }
 
             return order;

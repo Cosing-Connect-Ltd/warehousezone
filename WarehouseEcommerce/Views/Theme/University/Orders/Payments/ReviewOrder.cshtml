@@ -37,15 +37,15 @@
                                 {
                                     <input type="hidden" name="BillingAddressId" value="@Model.BillingAddressId" />
                                     <input type="hidden" name="ShippingAddressId" value="@Model.ShippingAddressId" />
-                                    <input type="hidden" name="IsStandardDelivery" value="@(Model.IsStandardDelivery ? "True" : "False")" />
-                                    <button type="submit" class="btmbtn pro">PROCEED TO PAYMENT</button>
+                                    <input type="hidden" name="DeliveryOption" value="@(Model.IsStandardDelivery ? "1" : "2")" />
+                                    <button type="submit" class="btmbtn pro">CONFIRM & PAY</button>
                                 }
                             }
                             else
                             {
-                        <div class="botomBtnsec">
-                            <button type="button" disabled class="btmbtn">PROCEED TO PAYMENT</button>
-                        </div>                                
+                                <div class="botomBtnsec">
+                                    <button type="button" disabled class="btmbtn">PROCEED TO PAYMENT</button>
+                                </div>                                
                             }
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                                     <input type="radio" name="IsStandardDelivery" data-isstand="True" value="@Model.StandardDeliveryCost" id="DeliveryOpt2" @(Model.IsStandardDelivery ? "checked" : "") /> <label for="DeliveryOpt2">Standard Delivery &pound;<span>@Model.StandardDeliveryCost</span> (2 to 5 working days)</label>
                                 </div>
                             </div>
-                            <div class="row d-flex">
+                            <div class="row d-flex div-order-review-total">
                                 <div class="col-lg-8">
                                     <h6>Total Cost</h6>
                                     <div>(Including delivery charges)</div>
@@ -152,7 +152,7 @@
             </div>
         }
 
-        <div class="mt-4 col-12" id="updateCart" >
+        <div class="mt-4 col-12 cart-item-data" id="updateCart" >
             @Html.Partial("Payments/_CartItems", Model.Cart)
         </div>
 
@@ -164,17 +164,12 @@
             </div>
         }
     </div>
+    @Html.Hidden("IsOrderReviewPage", true)
 </section>
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script>
 
-    function UpdateDeliveryCosts() {
-        var $chk = $("#dvDeliveryOptions input[type=radio]:checked");
-        var costOfDel = parseFloat($chk.val());
-        var cartTotal = parseFloat($("#CartTotalAmount").val());
-        $("#spnTotalAmount").text((costOfDel + parseFloat(cartTotal)).toFixed(2));
-    }
 
     function increseQuantity(cartItemId) {
         var element = document.getElementById("counter_" + cartItemId);
@@ -250,7 +245,6 @@
                     success: function(data) {
                         stopLoading();
                         modal.find(".content-add:eq(0)").html(data);
-                        debugger;
                     }
                 });
             }
@@ -281,19 +275,7 @@
         $("input[name='IsStandardDelivery']").click(function () {
             UpdateDeliveryCosts();
         });
-
-        @*$(".wishlist-prod").click(function () {
-            var elem = $(this);
-            $.ajax({
-                url: '@Url.Action("AddWishListItem", "Products")',
-                method: 'post',
-                data: { productId: elem.data("prodid") },
-                    dataType: 'html',
-                    success: function (data) {
-                        elem.toggleClass("text-secondary", "text-pink");
-                    }
-                });
-        });*@
+         
     })
 </script>
 

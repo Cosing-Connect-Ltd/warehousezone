@@ -20,6 +20,8 @@ namespace Ganedata.Core.Services
         Task<AdyenOrderPaylink> CreateOrderPaymentLink(AdyenCreatePayLinkResponseModel model, int orderId);
         Task<AdyenOrderPaylink> UpdateOrderPaymentAuthorisationHook(AdyenPaylinkHookNotificationRequest model);
         Task<AdyenApiPaymentStatusResponseModel> GetPaymentStatus(string linkId);
+        
+        Order GetOrderNumberByAdyenPaylinkID(string linkId);
     }
 
     public class AdyenPaymentService : IAdyenPaymentService
@@ -138,6 +140,17 @@ namespace Ganedata.Core.Services
             _context.Entry(link).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return link;
+        }
+
+        public Order GetOrderNumberByAdyenPaylinkID(string linkId)
+        {
+            var link = _context.AdyenOrderPaylinks.FirstOrDefault(m => m.LinkID.Equals(linkId));
+            if (link != null)
+            {
+                return _context.Order.FirstOrDefault(m => m.OrderID == link.OrderID);
+            }
+
+            return null;
         }
 
     }

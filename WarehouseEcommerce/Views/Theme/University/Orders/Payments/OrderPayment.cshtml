@@ -29,7 +29,39 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="p-5 text-pink text-center">Under development</div>
+            <div class="mb-4 col-12">
+                <iframe src="@Model.AdyenPaymentLink" class="div-order-payment-iframe"></iframe>
+            </div>
         }
+        @Html.HiddenFor(m=> m.AdyenPaymentLink)
+        @Html.HiddenFor(m=> m.AdyenPaymentLinkID)
+        
+        <script>
+
+            function UpdatePaymentStatus() {
+                var linkId = $("#AdyenPaymentLinkID").val();
+                var url = '@Model.AdyenStatusApiEndpoint' + linkId;
+                $.get(url, function (data) {
+                    debugger;
+                    if (data.status === 'completed' || data.status === 'paid') {
+                        var linkId = data.id;
+                        NavigateToOrderConfirmation(linkId);
+                    }
+                });
+            }
+
+            function NavigateToOrderConfirmation(linkId) {
+                location.href = '@Url.Action("OrderConfirmation","Orders")'+'/'+linkId;
+            }
+
+            $(document).ready(function () {
+                setTimeout(function() {
+                setInterval(function() {
+                        UpdatePaymentStatus();
+                    },
+                    2000);
+                });
+            }, 5000);
+        </script>
     </div>
 </section>

@@ -1488,6 +1488,7 @@
     <Content Include="Views\Theme\Smart\User\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Theme\Smart\User\ResetPassword.cshtml" />
     <Content Include="Views\Theme\Smart\User\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\OrderConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
