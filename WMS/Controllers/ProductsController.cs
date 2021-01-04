@@ -1694,7 +1694,6 @@ namespace WMS.Controllers
             }
             catch (Exception exp)
             {
-
                 ModelState.AddModelError("", exp.Message);
                 return View();
             }

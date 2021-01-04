@@ -105,7 +105,6 @@ namespace WarehouseEcommerce.Controllers
             {
                 var err = "Ganedata Sync Service - Writing logs :" + ex.Source;
                 EventLog.WriteEntry(err, ex.Message);
-                Console.WriteLine(err);
             }
         }
     }

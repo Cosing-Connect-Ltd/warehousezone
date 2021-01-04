@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -95,6 +96,8 @@ namespace WarehouseDpdLabelPrint
             }
             catch (Exception ex)
             {
+                EventLog.WriteEntry(ex.Source, ex.Message);
+
                 label3.Text = "failed: " + ex.Message;
                 label3.Visible = true;
                 label3.ForeColor = Color.Red;
@@ -124,8 +127,9 @@ namespace WarehouseDpdLabelPrint
                     labelPrintData = JsonConvert.DeserializeObject<PalletDispatchLabelPrintViewModel>(result);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 return;
             }
 
@@ -187,9 +191,9 @@ namespace WarehouseDpdLabelPrint
                         var result = streamReader.ReadToEnd();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //log exceptions
+                    EventLog.WriteEntry(ex.Source, ex.Message);
                     return;
                 }
             }

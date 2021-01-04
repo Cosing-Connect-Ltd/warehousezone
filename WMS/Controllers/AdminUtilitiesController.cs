@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using ClosedXML.Report.Utils;
 using System.Data.Entity;
+using Elmah;
 
 namespace WMS.Controllers
 {
@@ -102,6 +103,7 @@ namespace WMS.Controllers
                 }
                 catch (Exception e)
                 {
+                    ErrorSignal.FromCurrentContext().Raise(e);
                     ViewData["EditError"] = e.Message;
                 }
             }
@@ -123,6 +125,7 @@ namespace WMS.Controllers
                 }
                 catch (Exception e)
                 {
+                    ErrorSignal.FromCurrentContext().Raise(e);
                     ViewData["EditError"] = e.Message;
                 }
             }

@@ -75,10 +75,12 @@ namespace WMS.Controllers
                 {
                     ModelState.AddModelError("", exp.Message);
                 }
+
                 ViewBag.ForceRegeneratePageToken = "True";
                 ViewBag.ForceRegeneratedPageToken = pageSessionToken ?? Guid.NewGuid().ToString();
                 SetViewBagItems();
                 return View(Order);
+
             }
         }
         public ActionResult Edit(int? id, string pageSessionToken)

@@ -1,3 +1,4 @@
+using Elmah;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
@@ -1266,8 +1267,9 @@ namespace Ganedata.Core.Services
 
                 return 0;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 return -1;
             }
         }

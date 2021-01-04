@@ -278,8 +278,9 @@ namespace Ganedata.Core.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                ErrorSignal.FromCurrentContext().Raise(ex);
             }
+
             if (orderDetails != null)
             {
                 decimal? ordTotal = 0;
@@ -307,6 +308,7 @@ namespace Ganedata.Core.Services
                     order.OrderTotal = (decimal)ordTotal;
                 }
             }
+
             if (orderNotes != null)
             {
                 foreach (var item in orderNotes)
@@ -318,8 +320,10 @@ namespace Ganedata.Core.Services
                     order.OrderNotes.Add(item);
                 }
             }
+
             _currentDbContext.SaveChanges();
             return _currentDbContext.Order.Find(order.OrderID);
+
         }
 
         public Order SaveOrder(Order order, int tenantId, int warehouseId, int userId,
@@ -811,8 +815,9 @@ namespace Ganedata.Core.Services
                 status = true;
                 return status;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 return status;
             }
         }

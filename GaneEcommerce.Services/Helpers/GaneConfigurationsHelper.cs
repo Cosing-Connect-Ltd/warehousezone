@@ -948,8 +948,10 @@ namespace Ganedata.Core.Services
                 }
                 catch (Exception ex)
                 {
+                    ErrorSignal.FromCurrentContext().Raise(ex);
                     throw ex;
                 }
+
                 translatedResult = translatedResult.Replace(variable, replaceWith);
             }
 
@@ -1150,6 +1152,7 @@ namespace Ganedata.Core.Services
             }
             catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 throw ex;
             }
             return variableValue;
@@ -1256,10 +1259,8 @@ namespace Ganedata.Core.Services
 
             catch (Exception ex)
             {
-                // handle exception
                 ErrorSignal.FromCurrentContext().Raise(ex);
                 res = false;
-
             }
 
             return res;

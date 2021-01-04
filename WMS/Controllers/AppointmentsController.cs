@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DevExpress.Web.Mvc;
+using Elmah;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
@@ -98,6 +99,7 @@ namespace WMS.Controllers
             }
             catch (Exception e)
             {
+                ErrorSignal.FromCurrentContext().Raise(e);
                 ViewData["SchedulerErrorText"] = e.Message;
             }
 

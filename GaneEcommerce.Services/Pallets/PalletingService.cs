@@ -1,4 +1,5 @@
 using AutoMapper;
+using Elmah;
 using Ganedata.Core.Data;
 using Ganedata.Core.Data.Helpers;
 using Ganedata.Core.Entities.Domain;
@@ -595,8 +596,9 @@ namespace Ganedata.Core.Services
                     _currentDbContext.SaveChanges();
                     palletId = palletproduct.PalletID;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    ErrorSignal.FromCurrentContext().Raise(ex);
                     return palletId;
                 }
             }

@@ -13,7 +13,6 @@ namespace Ganedata.Core.Models
         public List<ProductMasterSync> Products { get; set; }
     }
 
-
     public class ProductMasterSync
     {
         public int ProductId { get; set; }
@@ -61,6 +60,7 @@ namespace Ganedata.Core.Models
         public List<ProductKitMapViewModel> ProductKitMapViewModelList { get; set; }
         public string MainImage { get; set; }
         public List<string> ProductTags { get; set; }
+        public int SortOrder { get; set; }
     }
 
     [Serializable]

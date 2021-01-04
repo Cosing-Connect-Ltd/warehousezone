@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Ganedata.Core.Entities.Domain.ImportModels
@@ -57,6 +58,15 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string[] ProductTags { get; set; }
         [JsonProperty("isInternal")]
         public bool IsInternal { get; set; }
+        [JsonProperty("max")]
+        public string Max { get; set; }
+        [JsonProperty("min")]
+        public string Min { get; set; }
+        [JsonProperty("channel")]
+        public int Channel { get; set; }
+        [JsonProperty("subProducts")]
+        public List<string> SubProducts { get; set; }
+        public int SortOrder { get; set; }
     }
 
     public class DeliverectChannelLinks
@@ -89,18 +99,6 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string SnoozeUnsnoozeURL { get; set; }
         [JsonProperty("busyModeURL")]
         public string BusyModeURL { get; set; }
-    }
-
-    public class DeliverectMenuUpdatedWebhookRequest
-    {
-        [JsonProperty("channelLinkId")]
-        public string ChannelLinkId { get; set; }
-    }
-
-    public class DeliverectProductSnoozeChangedWebhookRequest
-    {
-        [JsonProperty("channelLinkId")]
-        public string ChannelLinkId { get; set; }
     }
 
     public class DeliverectOrderStatusUpdatedWebhookRequest
@@ -314,5 +312,214 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string City { get; set; }
         [JsonProperty("extraAddressInfo")]
         public string ExtraAddressInfo { get; set; }
+    }
+
+
+    // deliverect menu push classes
+
+    public class Availability
+    {
+        [JsonProperty("dayOfWeek")]
+        public string DayOfWeek { get; set; }
+
+        [JsonProperty("startTime")]
+        public string StartTime { get; set; }
+
+        [JsonProperty("endTime")]
+        public string EndTime { get; set; }
+    }
+
+    public class DeliverectCategory
+    {
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("account")]
+        public string Account { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("availabilities")]
+        public List<object> Availabilities { get; set; }
+
+        [JsonProperty("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty("products")]
+        public List<string> Products { get; set; }
+
+        [JsonProperty("menu")]
+        public string Menu { get; set; }
+
+        [JsonProperty("level")]
+        public int? Level { get; set; }
+    }
+
+    public class DeliverectModifierGroup
+    {
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("account")]
+        public string Account { get; set; }
+
+        [JsonProperty("location")]
+        public string Location { get; set; }
+
+        [JsonProperty("productType")]
+        public int ProductType { get; set; }
+
+        [JsonProperty("plu")]
+        public string Plu { get; set; }
+
+        [JsonProperty("price")]
+        public int Price { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("deliveryTax")]
+        public int DeliveryTax { get; set; }
+
+        [JsonProperty("subProducts")]
+        public List<string> SubProducts { get; set; }
+
+        [JsonProperty("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("max")]
+        public int Max { get; set; }
+
+        [JsonProperty("min")]
+        public int Min { get; set; }
+
+        [JsonProperty("multiMax")]
+        public int MultiMax { get; set; }
+
+        [JsonProperty("channel")]
+        public int Channel { get; set; }
+    }
+
+    public class DeliverectModifier
+    {
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("account")]
+        public string Account { get; set; }
+
+        [JsonProperty("location")]
+        public string Location { get; set; }
+
+        [JsonProperty("productType")]
+        public int ProductType { get; set; }
+
+        [JsonProperty("plu")]
+        public string Plu { get; set; }
+
+        [JsonProperty("price")]
+        public int Price { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("deliveryTax")]
+        public int DeliveryTax { get; set; }
+
+        [JsonProperty("subProducts")]
+        public List<object> SubProducts { get; set; }
+
+        [JsonProperty("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("max")]
+        public string Max { get; set; }
+
+        [JsonProperty("min")]
+        public string Min { get; set; }
+
+        [JsonProperty("channel")]
+        public int Channel { get; set; }
+    }
+
+    public class DeliverectMenuUpdatedWebhookRequest
+    {
+        [JsonProperty("menu")]
+        public string Menu { get; set; }
+
+        [JsonProperty("availabilities")]
+        public List<Availability> Availabilities { get; set; }
+
+        [JsonProperty("categories")]
+        public List<DeliverectCategory> Categories { get; set; }
+
+        [JsonProperty("products")]
+        public Dictionary<string, DeliverectProduct> Products { get; set; }
+
+        [JsonProperty("modifierGroups")]
+        public Dictionary<string, DeliverectModifierGroup> ModifierGroups { get; set; }
+
+        [JsonProperty("modifiers")]
+        public Dictionary<string, DeliverectModifier> Modifiers { get; set; }
+
+        [JsonProperty("channelLinkId")]
+        public string ChannelLinkId { get; set; }
+    }
+
+    // Deliverect snooze / unsnooz classes
+
+    public class DeliverectSnoozeItem
+    {
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("plu")]
+        public string Plu { get; set; }
+
+        [JsonProperty("snoozeStart")]
+        public DateTime SnoozeStart { get; set; }
+
+        [JsonProperty("snoozeEnd")]
+        public DateTime SnoozeEnd { get; set; }
+    }
+
+    public class DeliverectSnoozeData
+    {
+        [JsonProperty("items")]
+        public List<DeliverectSnoozeItem> Items { get; set; }
+    }
+
+    public class DeliverectSnoozeOperation
+    {
+        [JsonProperty("action")]
+        public string Action { get; set; }
+
+        [JsonProperty("data")]
+        public DeliverectSnoozeData Data { get; set; }
+    }
+
+    public class DeliverectSnoozeWebhookRequest
+    {
+        [JsonProperty("accountId")]
+        public string AccountId { get; set; }
+
+        [JsonProperty("locationId")]
+        public string LocationId { get; set; }
+
+        [JsonProperty("channelLinkId")]
+        public string ChannelLinkId { get; set; }
+
+        [JsonProperty("operations")]
+        public List<DeliverectSnoozeOperation> Operations { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Elmah;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Helpers;
@@ -123,8 +124,10 @@ namespace Ganedata.Core.Services
             }
             catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 var message = ex.Message;
             }
+
             return processedTenants;
         }
 
@@ -247,14 +250,17 @@ namespace Ganedata.Core.Services
                     processedProperties.Add(property);
                 }
             }
+
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 var message = ex.Message;
             }
+
             return processedProperties;
         }
 
@@ -277,6 +283,7 @@ namespace Ganedata.Core.Services
             }
             catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 var message = ex.Message + processedTenants.Count + " processed";
             }
 

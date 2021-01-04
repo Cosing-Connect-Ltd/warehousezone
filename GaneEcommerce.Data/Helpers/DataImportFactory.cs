@@ -699,7 +699,6 @@ namespace Ganedata.Core.Data.Helpers
                     }
                     catch (Exception)
                     {
-
                         return $"File headers mismatch! Please add required headers";
                     }
                 }
@@ -1299,7 +1298,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 throw;
             }
 
@@ -2051,6 +2050,7 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         csv.Read();
                         csv.ReadHeader();
+                        csv.Configuration.MissingFieldFound = null;
                         headers = csv.Context.HeaderRecord.ToList(); headers = headers.ConvertAll(d => d.ToLower());
                         allDataRecords = csv.GetRecords<ProductImportModel>().ToList();
                     }
@@ -2076,6 +2076,14 @@ namespace Ganedata.Core.Data.Helpers
                         lineNumber++;
                         var product = context.ProductMaster.FirstOrDefault(m => m.SKUCode == productData.SkuCode);
                         var isNewProduct = product == null;
+                        int weightGroupId = context.GlobalWeightGroups.FirstOrDefault().WeightGroupId;
+
+                        if (weightGroups.Count() > 0)
+                        {
+                            int.TryParse((weightGroups[productData.WeightGroup].ToString()), out weightGroupId);
+                        }
+
+
                         if (isNewProduct)
                         {
                             product = new ProductMaster
@@ -2147,7 +2155,7 @@ namespace Ganedata.Core.Data.Helpers
                         product.SellPrice = productData.SellPrice > 0 ? productData.SellPrice : product.SellPrice;
                         product.Serialisable = productData.Serialisable ?? product.Serialisable;
                         product.ProductType = productData.ProductType ?? product.ProductType;
-                        product.IsPreOrderAccepted = productData.IsPreOrderAccepted ?? product.IsPreOrderAccepted;
+                        product.IsPreOrderAccepted = productData?.IsPreOrderAccepted ?? product?.IsPreOrderAccepted;
                         product.MinDispatchDays = productData.MinDispatchDays ?? product.MinDispatchDays;
                         product.MaxDispatchDays = productData.MaxDispatchDays ?? product.MaxDispatchDays;
                         product.DateCreated = DateTime.UtcNow;
@@ -2160,7 +2168,7 @@ namespace Ganedata.Core.Data.Helpers
                         product.ProductGroupId = !string.IsNullOrEmpty(productData.Group?.Trim()) || isNewProduct ? groups[productData.Group] : product.ProductGroupId;
                         product.DepartmentId = !string.IsNullOrEmpty(productData.Department?.Trim()) || isNewProduct ? departments[productData.Department] ?? product.DepartmentId : product.DepartmentId;
                         product.TaxID = taxId;
-                        product.WeightGroupId = !string.IsNullOrEmpty(productData.WeightGroup?.Trim()) || isNewProduct ? weightGroups[productData.WeightGroup] : product.WeightGroupId;
+                        product.WeightGroupId = (!string.IsNullOrEmpty(productData.WeightGroup?.Trim()) || isNewProduct) ? weightGroupId : product.WeightGroupId;
                         product.LotOptionCodeId = productLotOptionId;
                         product.LotProcessTypeCodeId = productLotProcessId;
 
@@ -2607,13 +2615,11 @@ namespace Ganedata.Core.Data.Helpers
                                     }
                                 }
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
-
+                                ErrorSignal.FromCurrentContext().Raise(ex);
                                 throw;
                             }
-
-
                         }
 
                         context.SaveChanges();
@@ -2622,11 +2628,8 @@ namespace Ganedata.Core.Data.Helpers
                 }
             }
 
-
-
-
-
             return $"Product details imported successfully. Added : Updated";
+
         }
 
 
@@ -2810,10 +2813,12 @@ namespace Ganedata.Core.Data.Helpers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 throw;
             }
+
             return status;
         }
 
@@ -2836,8 +2841,9 @@ namespace Ganedata.Core.Data.Helpers
                     return productSearch;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 throw;
             }
 
@@ -2861,8 +2867,9 @@ namespace Ganedata.Core.Data.Helpers
                     return productDetail;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 throw;
             }
         }
@@ -2899,8 +2906,9 @@ namespace Ganedata.Core.Data.Helpers
 
                     return result;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    ErrorSignal.FromCurrentContext().Raise(ex);
                     throw;
                 }
             }
@@ -2928,10 +2936,10 @@ namespace Ganedata.Core.Data.Helpers
                         WebClient webClient = new WebClient();
                         webClient.DownloadFile(path, resFileName);
                         values.Add((UploadDirectory.Remove(0, 1) + productId.ToString() + @"/" + "Product" + i + ".jpg"));
-                        //SaveProductFile((UploadDirectory.Remove(0, 1) + productId.ToString() + @"/" + "Product" + i + ".jpg"), productId, tenantId, userId);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        ErrorSignal.FromCurrentContext().Raise(ex);
                     }
                 }
 
@@ -2953,44 +2961,13 @@ namespace Ganedata.Core.Data.Helpers
                         WebClient webClient = new WebClient();
                         webClient.DownloadFile(itemImage, resFileName);
                         values.Add((UploadDirectory.Remove(0, 1) + productId.ToString() + @"/" + "Product" + i + ".jpg"));
-                        //SaveProductFile((UploadDirectory.Remove(0, 1) + productId.ToString() + @"/" + "Product" + i + ".jpg"), productId, tenantId, userId);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        ErrorSignal.FromCurrentContext().Raise(ex);
                     }
-
                 }
-
             }
-            //if (productMedia.Count > 0)
-            //{
-
-            //    foreach (var item in productMedia)
-            //    {
-            //        i++;
-            //        if (RemoteFileExists(item.URL))
-            //        {
-            //            if (!Directory.Exists(HttpContext.Current.Server.MapPath(UploadDirectory + productId.ToString())))
-            //                Directory.CreateDirectory(HttpContext.Current.Server.MapPath(UploadDirectory + productId.ToString()));
-            //            string resFileName = HttpContext.Current.Server.MapPath(UploadDirectory + productId.ToString() + @"/" + "Product" + i + ".jpg");
-            //            try
-            //            {
-            //                WebClient webClient = new WebClient();
-            //                webClient.DownloadFile(item.URL, resFileName);
-            //                values.Add((UploadDirectory.Remove(0, 1) + productId.ToString() + @"/" + "Product" + i + ".jpg"));
-            //                //SaveProductFile((UploadDirectory.Remove(0, 1) + productId.ToString() + @"/" + "Product" + i + ".jpg"), productId, tenantId, userId);
-            //            }
-            //            catch (Exception ex)
-            //            {
-
-
-            //            }
-            //        }
-
-            //    }
-
-            //}
-
 
             return values;
 
@@ -3030,9 +3007,9 @@ namespace Ganedata.Core.Data.Helpers
                 _currentDbContext.ProductFiles.Add(productFiles);
                 _currentDbContext.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 throw;
             }
         }
@@ -3121,6 +3098,7 @@ namespace Ganedata.Core.Data.Helpers
 
             catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 throw ex;
             }
         }
@@ -3329,6 +3307,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 throw ex;
             }
         }
@@ -3530,8 +3509,10 @@ namespace Ganedata.Core.Data.Helpers
             catch (Exception ex)
             {
                 CreateWebSiteSyncLog(requestTime, "Error", false, 0, requestSentTime, ApiId, tenantId);
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 return ex.Message;
             }
+
             return "All data synced successfully";
         }
 
@@ -3591,6 +3572,7 @@ namespace Ganedata.Core.Data.Helpers
 
             catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 throw ex;
             }
 
@@ -3684,12 +3666,11 @@ namespace Ganedata.Core.Data.Helpers
             catch (Exception e)
             {
                 CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, SiteId, tenantId);
-
+                ErrorSignal.FromCurrentContext().Raise(e);
                 return "Stock levels update failed";
             }
 
             return "Stock levels updated successfully";
-
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Elmah;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
@@ -259,8 +260,9 @@ namespace Ganedata.Core.Services
 
                 return cOrder.OrderID;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 return -1;
             }
         }
@@ -364,8 +366,9 @@ namespace Ganedata.Core.Services
                 return cOrder.OrderID;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorSignal.FromCurrentContext().Raise(ex);
                 return -1;
             }
 

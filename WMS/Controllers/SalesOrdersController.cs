@@ -276,8 +276,7 @@ namespace WMS.Controllers
                 var accountaddress = _accountServices.GetAllValidAccountContactsByAccountId(ids, CurrentTenantId);
                 ViewBag.AccountContactes = new SelectList(accountaddress, "AccountContactId", "ContactEmail", accountaddress.Select(x => x.AccountID).FirstOrDefault());
                 ViewBag.IsShipmentToAccountAddress = true;
-                ViewBag.AccountAddresses = new List<SelectListItem>() { new SelectListItem() { Text = "Select", Value = "0" }
-    };
+                ViewBag.AccountAddresses = new List<SelectListItem>() { new SelectListItem() { Text = "Select", Value = "0" } };
                 ViewBag.ShipmentAccountAddressId = 0;
                 ViewBag.IsShipmentToCustomAddress = false;
 

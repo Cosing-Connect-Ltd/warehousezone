@@ -39,9 +39,7 @@ namespace Ganedata.Core.Controllers
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_EmptyResult");
             }
         }
@@ -69,9 +67,7 @@ namespace Ganedata.Core.Controllers
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_ErrorResult");
             }
         }
@@ -85,9 +81,7 @@ namespace Ganedata.Core.Controllers
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_EmptyResult");
             }
         }
@@ -113,9 +107,7 @@ namespace Ganedata.Core.Controllers
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_EmptyResult");
             }
         }
@@ -171,9 +163,7 @@ namespace Ganedata.Core.Controllers
             }
             catch (Exception e)
             {
-                //log exception
                 var err = e.Message;
-
                 return View("_ErrorResult");
             }
         }
@@ -196,10 +186,9 @@ namespace Ganedata.Core.Controllers
             }
             catch (Exception e)
             {
-                //catch error here
                 var err = e.Message;
-
             }
+
             return Json(new { success = false });
         }
     }

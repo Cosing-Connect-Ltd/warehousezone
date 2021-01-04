@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DevExpress.Web.Mvc;
 using DevExpress.XtraReports.UI;
+using Elmah;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
@@ -1217,6 +1218,7 @@ namespace WMS.Controllers
             }
             catch (Exception exp)
             {
+                ErrorSignal.FromCurrentContext().Raise(exp);
                 throw exp;
             }
         }
@@ -1276,6 +1278,7 @@ namespace WMS.Controllers
             }
             catch (Exception exp)
             {
+                ErrorSignal.FromCurrentContext().Raise(exp);
                 throw exp;
             }
         }
