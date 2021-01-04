@@ -576,39 +576,61 @@ function addToWishList(productId, parentProductId) {
     });
 }
 
-function addToNotifyList(productId, parentProductId, addRemoveAction) {
-    if (userStatus === "Login") {
-        GetLoggedIn(false);
-        return;
-    }
-    var currentClass = $("#notification-bell_" + productId);
-    var notifyBtnClass = $("#notification-bell__button_" + productId);
-    if (!!parentProductId && parentProductId > 0) {
-        var currentParentClass = $("#notification-bell_" + parentProductId);
-    }
+function ShowNotificationEmailModal(callback) {    
+    var $modal = $("#modalNotificationEmail");    
+    $modal.modal("show");
 
-    $.ajax({
-        type: "GET",
-        url: basePath + "/Products/AddNotifyListItem/",
-        data: { ProductId: productId },
-        dataType: 'json',
-        success: function (data) {
-            $(currentClass).find(".list-icon").css({ "color": "red" });
-            $(currentClass).removeAttr("onclick", null);
-            $(currentClass).attr("onclick", addRemoveAction ? "removeNotifyListItemByConfirmation(" + productId + "," + parentProductId + ")" : "redirectToWishListByConfirmation()");
-            $(notifyBtnClass).css({ "background-color": "red" });
-            $(notifyBtnClass).removeAttr("onclick", null);
-            $(notifyBtnClass).attr("onclick", addRemoveAction ? "removeNotifyListItemByConfirmation(" + productId + "," + parentProductId + ")" : "redirectToWishListByConfirmation()");
-            if (!!parentProductId && parentProductId > 0) {
-                $(currentParentClass).find(".list-icon").css({ "color": "red" });
-            }
-
-            SetWishListElementsStyle(productId, parentProductId);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert('Error' + textStatus + "/" + errorThrown);
-        }
+    $modal.on("click", "#btnNotifyProd", function () {        
+        $modal.find("form:eq(0)").validate();
+        if ($modal.find("form:eq(0)").valid()) {
+            callback($modal.find("#EmailId").val());
+        }        
     });
+}
+
+function addToNotifyList(productId, parentProductId, addRemoveAction) {        
+    var callBack = function (emailId) {
+        var currentClass = $("#notification-bell_" + productId);
+        var notifyBtnClass = $("#notification-bell__button_" + productId);
+        if (!!parentProductId && parentProductId > 0) {
+            var currentParentClass = $("#notification-bell_" + parentProductId);
+        }
+
+        $.ajax({
+            type: "GET",
+            url: basePath + "/Products/AddNotifyListItem/",
+            data: { ProductId: productId, EmailId: emailId },
+            dataType: 'json',
+            success: function (data) {
+                $(currentClass).find(".list-icon").css({ "color": "red" });
+                $(currentClass).removeAttr("onclick", null);
+                $(currentClass).attr("onclick", addRemoveAction ? "removeNotifyListItemByConfirmation(" + productId + "," + parentProductId + ")" : "redirectToWishListByConfirmation()");
+                $(notifyBtnClass).css({ "background-color": "red" });
+                $(notifyBtnClass).removeAttr("onclick", null);
+                $(notifyBtnClass).attr("onclick", addRemoveAction ? "removeNotifyListItemByConfirmation(" + productId + "," + parentProductId + ")" : "redirectToWishListByConfirmation()");
+                if (!!parentProductId && parentProductId > 0) {
+                    $(currentParentClass).find(".list-icon").css({ "color": "red" });
+                }
+                                
+                if (emailId)
+                    $("#modalNotificationEmail button.close").trigger("click");
+                else {
+                    SetWishListElementsStyle(productId, parentProductId);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+    }
+
+    if (userStatus === "Login") {
+        //GetLoggedIn(false);
+        ShowNotificationEmailModal(callBack);
+        return;
+    }    
+
+    callBack();
 }
 
 function SetWishListElementsStyle(productId, parentProductId) {
@@ -670,7 +692,15 @@ function removeWishListItemAndUpdateTheList(productId) {
 
 function redirectToWishListByConfirmation() {
     if (userStatus === "Login") {
-        GetLoggedIn(false);
+        $.alert({            
+            title: 'Notification Already Subscribed!',
+            content: 'You will be notified when this item is available.',
+            confirmText: 'OK',
+            confirmStyle: 'black',
+            callback: null
+        });
+
+        //GetLoggedIn(false);
         return;
     }
 

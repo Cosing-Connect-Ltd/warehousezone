@@ -1231,6 +1231,10 @@
     <Compile Include="Migrations\202101011302365_AccountBillingAndDeliveryAddressInfo.designer.cs">
       <DependentUpon>202101011302365_AccountBillingAndDeliveryAddressInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101021209004_NotificationEmailCh.cs" />
+    <Compile Include="Migrations\202101021209004_NotificationEmailCh.designer.cs">
+      <DependentUpon>202101021209004_NotificationEmailCh.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\202101021600220_AddedForeignKeysForAccountAddresses.cs" />
     <Compile Include="Migrations\202101021600220_AddedForeignKeysForAccountAddresses.designer.cs">
       <DependentUpon>202101021600220_AddedForeignKeysForAccountAddresses.cs</DependentUpon>
@@ -2478,6 +2482,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101011302365_AccountBillingAndDeliveryAddressInfo.resx">
       <DependentUpon>202101011302365_AccountBillingAndDeliveryAddressInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101021209004_NotificationEmailCh.resx">
+      <DependentUpon>202101021209004_NotificationEmailCh.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101021600220_AddedForeignKeysForAccountAddresses.resx">
       <DependentUpon>202101021600220_AddedForeignKeysForAccountAddresses.cs</DependentUpon>

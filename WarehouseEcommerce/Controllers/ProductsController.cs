@@ -463,11 +463,11 @@ namespace WarehouseEcommerce.Controllers
             return Json(itemsCount, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult AddNotifyListItem(int productId)
+        public JsonResult AddNotifyListItem(int productId, string emailId)
         {
             ViewBag.CartModal = false;
-
-            var itemsCount = _tenantWebsiteService.AddOrUpdateNotifyListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, productId);
+            var itemsCount = _tenantWebsiteService.AddOrUpdateNotifyListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, productId, emailId);
+            
             return Json(itemsCount, JsonRequestBehavior.AllowGet);
         }
 
