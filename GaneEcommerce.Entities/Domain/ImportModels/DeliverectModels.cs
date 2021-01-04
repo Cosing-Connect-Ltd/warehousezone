@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Ganedata.Core.Entities.Domain.ImportModels
@@ -98,12 +99,6 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string SnoozeUnsnoozeURL { get; set; }
         [JsonProperty("busyModeURL")]
         public string BusyModeURL { get; set; }
-    }
-
-    public class DeliverectProductSnoozeChangedWebhookRequest
-    {
-        [JsonProperty("channelLinkId")]
-        public string ChannelLinkId { get; set; }
     }
 
     public class DeliverectOrderStatusUpdatedWebhookRequest
@@ -457,24 +452,6 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public int Channel { get; set; }
     }
 
-    public class DeliverectSnoozedProduct
-    {
-        [JsonProperty("location")]
-        public string Location { get; set; }
-
-        [JsonProperty("plu")]
-        public string Plu { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("snoozeStart")]
-        public string SnoozeStart { get; set; }
-
-        [JsonProperty("snoozeEnd")]
-        public string SnoozeEnd { get; set; }
-    }
-
     public class DeliverectMenuUpdatedWebhookRequest
     {
         [JsonProperty("menu")]
@@ -495,10 +472,54 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         [JsonProperty("modifiers")]
         public Dictionary<string, DeliverectModifier> Modifiers { get; set; }
 
-        [JsonProperty("snoozedProducts")]
-        public Dictionary<string, DeliverectSnoozedProduct> SnoozedProducts { get; set; }
+        [JsonProperty("channelLinkId")]
+        public string ChannelLinkId { get; set; }
+    }
+
+    // Deliverect snooze / unsnooz classes
+
+    public class DeliverectSnoozeItem
+    {
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("plu")]
+        public string Plu { get; set; }
+
+        [JsonProperty("snoozeStart")]
+        public DateTime SnoozeStart { get; set; }
+
+        [JsonProperty("snoozeEnd")]
+        public DateTime SnoozeEnd { get; set; }
+    }
+
+    public class DeliverectSnoozeData
+    {
+        [JsonProperty("items")]
+        public List<DeliverectSnoozeItem> Items { get; set; }
+    }
+
+    public class DeliverectSnoozeOperation
+    {
+        [JsonProperty("action")]
+        public string Action { get; set; }
+
+        [JsonProperty("data")]
+        public DeliverectSnoozeData Data { get; set; }
+    }
+
+    public class DeliverectSnoozeWebhookRequest
+    {
+        [JsonProperty("accountId")]
+        public string AccountId { get; set; }
+
+        [JsonProperty("locationId")]
+        public string LocationId { get; set; }
 
         [JsonProperty("channelLinkId")]
         public string ChannelLinkId { get; set; }
+
+        [JsonProperty("operations")]
+        public List<DeliverectSnoozeOperation> Operations { get; set; }
     }
 }

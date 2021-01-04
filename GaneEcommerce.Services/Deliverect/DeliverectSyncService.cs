@@ -443,6 +443,18 @@ namespace Ganedata.Core.Services
             }
         }
 
+        public async Task UpdateProductStatusByDeliverectId(string deliverectProductId, bool active)
+        {
+            var products = _context.ProductMaster.FirstOrDefault(w => w.DeliverectProductId == deliverectProductId);
+
+            if (products != null)
+            {
+                products.IsActive = active;
+                products.DateUpdated = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public string DownloadImage(string path, int ItemId, bool category = false)
         {
             var value = "";

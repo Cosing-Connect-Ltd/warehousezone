@@ -1,4 +1,5 @@
-﻿using Ganedata.Core.Entities.Domain.ImportModels;
+﻿using Elmah;
+using Ganedata.Core.Entities.Domain.ImportModels;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
 using System;
@@ -37,6 +38,10 @@ namespace WMS.Controllers.WebAPI
         }
         public async Task<IHttpActionResult> MenuPushed(List<DeliverectMenuUpdatedWebhookRequest> request)
         {
+
+            //TODO: in deliverect, menu are based on location and also location can have multiple menus. Currently just one menu is implemented 
+            //      in warehouse system. So single menu will serve for all locations. May be consider multiple menus against location in future
+
             await _deliverectSyncService.SyncChannelLinks();
             await _deliverectSyncService.SyncProducts(null, 1);
 
@@ -70,12 +75,38 @@ namespace WMS.Controllers.WebAPI
             return Ok();
         }
 
-        public async Task<IHttpActionResult> ProductSnoozeChanged(DeliverectProductSnoozeChangedWebhookRequest request)
+        public async Task<IHttpActionResult> ProductSnoozeChanged(DeliverectSnoozeWebhookRequest request)
         {
-            //TODO: snooz and unsnooz feature should be based on channels/locations, meaning thet a product could be snoozed in one location(store) but not in the other location(store).
-            await _deliverectSyncService.SyncChannelLinks();
-            await _deliverectSyncService.SyncProducts(null, 1);
+            //TODO: snooz and unsnooz feature should be based on channels/locations, meaning thet a product could be snoozed in one location(store) 
+            //      but not in the other location(store).
+
+            try
+            {
+                foreach (var operation in request.Operations)
+                {
+                    if (operation.Action == "snooze")
+                    {
+                        foreach (var item in operation.Data.Items)
+                        {
+                            await _deliverectSyncService.UpdateProductStatusByDeliverectId(item.Id, false);
+                        }
+                    }
+                    else if (operation.Action == "unsnooze")
+                    {
+                        foreach (var item in operation.Data.Items)
+                        {
+                            await _deliverectSyncService.UpdateProductStatusByDeliverectId(item.Id, true);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorSignal.FromCurrentContext().Raise(ex);
+            }
+
             return Ok();
+
         }
 
         public IHttpActionResult OrderStatusUpdated(DeliverectOrderStatusUpdatedWebhookRequest request)
