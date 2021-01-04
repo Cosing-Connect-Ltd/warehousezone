@@ -15,7 +15,7 @@ namespace Ganedata.Core.Services
         void DeleteProductsExceptDeliverect(int currentUserId, List<string> menuProducts = null);
         void DeleteDepartmentsExceptDeliverect(int currentUserId, List<string> menuCategories = null);
         void UpdateProductCategory(string deliverectProductId, int categoryId, int currentUserId);
-        Task UpdateProductStatusByDeliverectId(string deliverectProductId, bool active);
+        Task UpdateProductStatusByPLU(string deliverectPlu, bool active);
 
     }
 }

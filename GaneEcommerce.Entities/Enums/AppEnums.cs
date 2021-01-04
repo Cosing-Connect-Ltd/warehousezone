@@ -178,7 +178,10 @@ namespace Ganedata.Core.Entities.Enums
         PosFailed = 21,
         ParseFailed = 22,
         Prepared = 23,
-        ReadyForPickup = 24
+        ReadyForPickup = 24,
+        Finalised = 25,
+        Accepted = 26
+
 
     }
 
