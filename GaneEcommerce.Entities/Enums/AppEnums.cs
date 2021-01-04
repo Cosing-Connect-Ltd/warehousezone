@@ -464,7 +464,8 @@ namespace Ganedata.Core.Entities.Enums
         PayPal = 4,
         SagePay = 5,
         GetAddress = 6,
-        Adyen = 7
+        Adyen = 7,
+        Deliverect = 8
     }
 
     public enum ProductKitTypeEnum

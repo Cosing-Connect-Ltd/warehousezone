@@ -23,44 +23,61 @@ namespace Ganedata.Core.Services
     public class DeliverectSyncService : IDeliverectSyncService
     {
         private readonly IApplicationContext _context;
-        private readonly string _deliverectApiUrl;
+        private string _deliverectApiUrl;
         private string _channelName;
 
         public DeliverectSyncService(IApplicationContext context)
         {
             _context = context;
-            _deliverectApiUrl = ConfigurationManager.AppSettings["DeliverectApiUrl"];
         }
 
         private async Task<HttpClient> GetHttpClient()
         {
-            using (var client = new HttpClient())
+            var apiCredential = _context.ApiCredentials.FirstOrDefault(u => u.ApiTypes == ApiTypes.Deliverect);
+            if (apiCredential == null || string.IsNullOrEmpty(apiCredential.ApiUrl) || string.IsNullOrEmpty(apiCredential.AccountNumber))
+            {
+                var ex = new Exception("Api Configuration is invalid, Either Api url, Api key or Api account fields are empty");
+                ErrorSignal.FromCurrentContext().Raise(ex);
+            }
+
+            _deliverectApiUrl = apiCredential.ApiUrl;
+            _channelName = "";
+
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiCredential.ApiKey);
+
+            if (string.IsNullOrEmpty(apiCredential.ApiKey) || apiCredential.ExpiryDate == null || (apiCredential.ExpiryDate.HasValue && apiCredential.ExpiryDate.Value < DateTime.Now))
             {
                 var tokenRequestUri = new Uri(_deliverectApiUrl + "/oauth/token");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
                 var parameters = new
                 {
-                    client_id = ConfigurationManager.AppSettings["DeliverectClientId"],
-                    client_secret = ConfigurationManager.AppSettings["DeliverectClientSecretKey"],
+                    client_id = apiCredential.UserName,
+                    client_secret = apiCredential.Password,
                     audience = _deliverectApiUrl,
-                    grant_type = ConfigurationManager.AppSettings["DeliverectScope"]
+                    grant_type = apiCredential.AccountNumber,
                 };
+
                 var response = await client.PostAsync(tokenRequestUri, new StringContent(JsonConvert.SerializeObject(parameters), Encoding.UTF8, "application/json"));
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var token = JsonConvert.DeserializeObject<DeliverectApiToken>(response.Content.ReadAsStringAsync().Result);
-                    _channelName = token.Scope.Replace("genericChannel:", "");
-                    var httpClient = new HttpClient();
-                    httpClient.DefaultRequestHeaders.Accept.Clear();
-                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
-                    return httpClient;
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+
+                    apiCredential.ApiKey = token.AccessToken;
+                    DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(token.ExpiresAt);
+                    apiCredential.ExpiryDate = dateTimeOffset.UtcDateTime;
+                    apiCredential.DateUpdated = DateTime.UtcNow;
+                    _context.SaveChanges();
+
                 }
             }
 
-            return null;
+            return client;
+
         }
 
         public async Task SyncChannelLinks()
@@ -479,11 +496,11 @@ namespace Ganedata.Core.Services
                             Directory.CreateDirectory(HttpContext.Current.Server.MapPath(UploadDirectory + ItemId.ToString()));
                         }
 
-                        string resFileName = HttpContext.Current.Server.MapPath(UploadDirectory + ItemId.ToString() + @"/" + type + ItemId + ".jpg");
+                        string resFileName = HttpContext.Current.Server.MapPath(UploadDirectory + ItemId.ToString() + @"/" + type + Path.GetFileName(path));
 
                         WebClient webClient = new WebClient();
                         webClient.DownloadFile(path, resFileName);
-                        value = (UploadDirectory.Remove(0, 1) + ItemId.ToString() + @"/" + type + ItemId + ".jpg");
+                        value = (UploadDirectory.Remove(0, 1) + ItemId.ToString() + @"/" + type + Path.GetFileName(path));
                     }
                     catch (Exception ex)
                     {
