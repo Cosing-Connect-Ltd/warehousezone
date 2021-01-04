@@ -88,14 +88,14 @@ namespace WMS.Controllers.WebAPI
                     {
                         foreach (var item in operation.Data.Items)
                         {
-                            await _deliverectSyncService.UpdateProductStatusByDeliverectId(item.Id, false);
+                            await _deliverectSyncService.UpdateProductStatusByPLU(item.Plu, false);
                         }
                     }
                     else if (operation.Action == "unsnooze")
                     {
                         foreach (var item in operation.Data.Items)
                         {
-                            await _deliverectSyncService.UpdateProductStatusByDeliverectId(item.Id, true);
+                            await _deliverectSyncService.UpdateProductStatusByPLU(item.Plu, true);
                         }
                     }
                 }
@@ -125,6 +125,11 @@ namespace WMS.Controllers.WebAPI
         {
             switch (status)
             {
+                case 1:
+                case 2:
+                case 10:
+                case 20:
+                    return OrderStatusEnum.Accepted;
                 case 30:   // REJECTED
                     return OrderStatusEnum.Rejected;
                 case 120:   // FAILED
@@ -138,13 +143,14 @@ namespace WMS.Controllers.WebAPI
                 case 60:  // PREPARED
                     return OrderStatusEnum.Prepared;
                 case 70:  // READY FOR PICKUP
-                    return OrderStatusEnum.Preparing;
+                    return OrderStatusEnum.ReadyForPickup;
                 case 80:   // IN DELIVERY
                     return OrderStatusEnum.OutForDelivery;
                 case 110:  // CANCELED
+                case 100:
                     return OrderStatusEnum.Cancelled;
                 case 90:  // FINALIZED
-                    return OrderStatusEnum.Complete;
+                    return OrderStatusEnum.Finalised;
             }
 
             return null;

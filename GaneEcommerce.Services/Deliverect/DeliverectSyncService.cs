@@ -285,7 +285,6 @@ namespace Ganedata.Core.Services
                 {
                     DepartmentName = deliverectCategory.Name,
                     DeliverectCategoryId = deliverectCategory.Id,
-                    ImagePath = DownloadImage(deliverectCategory.ImageUrl, category.DepartmentId, true),
                     TenantId = tenantId,
                     DateCreated = DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
@@ -295,6 +294,8 @@ namespace Ganedata.Core.Services
                 };
 
                 _context.TenantDepartments.Add(category);
+                _context.SaveChanges();
+
             }
             else
             {
@@ -303,9 +304,9 @@ namespace Ganedata.Core.Services
                 category.DateUpdated = DateTime.UtcNow;
                 category.IsDeleted = false;
                 category.SortOrder = sortOrder ?? 0;
-                category.ImagePath = DownloadImage(deliverectCategory.ImageUrl, category.DepartmentId, true);
             }
 
+            category.ImagePath = DownloadImage(deliverectCategory.ImageUrl, category.DepartmentId, true);
             _context.SaveChanges();
 
             foreach (var product in deliverectCategory.Products)
@@ -443,9 +444,9 @@ namespace Ganedata.Core.Services
             }
         }
 
-        public async Task UpdateProductStatusByDeliverectId(string deliverectProductId, bool active)
+        public async Task UpdateProductStatusByPLU(string deliverectPlu, bool active)
         {
-            var products = _context.ProductMaster.FirstOrDefault(w => w.DeliverectProductId == deliverectProductId);
+            var products = _context.ProductMaster.FirstOrDefault(w => w.DeliverectPLU == deliverectPlu);
 
             if (products != null)
             {
