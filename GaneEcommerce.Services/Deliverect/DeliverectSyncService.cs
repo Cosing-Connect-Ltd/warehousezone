@@ -38,10 +38,11 @@ namespace Ganedata.Core.Services
             {
                 var ex = new Exception("Api Configuration is invalid, Either Api url, Api key or Api account fields are empty");
                 ErrorSignal.FromCurrentContext().Raise(ex);
+                return null;
             }
 
             _deliverectApiUrl = apiCredential.ApiUrl;
-            _channelName = "";
+            _channelName = apiCredential.AccountNumber;
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
