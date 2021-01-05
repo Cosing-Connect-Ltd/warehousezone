@@ -10,6 +10,14 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string AccessToken { get; set; }
         [JsonProperty("scope")]
         public string Scope { get; set; }
+        [JsonProperty("expires_at")]
+        public long ExpiresAt { get; set; }
+
+        [JsonProperty("expires_in")]
+        public long ExpiresIn { get; set; }
+
+        [JsonProperty("token_type")]
+        public string TokenType { get; set; }
     }
 
     public class DeliverectProducts
