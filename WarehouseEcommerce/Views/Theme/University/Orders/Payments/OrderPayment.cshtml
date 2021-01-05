@@ -9,11 +9,14 @@
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li>></li>
                         <li class="breadcrumb-item">
-                            <a href="#">Basket</a>
+                            <a href="@Url.Action("ReviewOrder","Orders")">Basket</a>
                         </li>
                     </ol>
                 </nav>
             </div>
+        </div>
+        <div class="col-sm-12 col-md-12 alert alert-info" id="payment-bar">
+            Awaiting payment confirmation...
         </div>
         @if (Model != null)
         {
@@ -37,15 +40,17 @@
         @Html.HiddenFor(m=> m.AdyenPaymentLinkID)
         
         <script>
-
+            var paymentResultFetched = false;
             function UpdatePaymentStatus() {
                 var linkId = $("#AdyenPaymentLinkID").val();
                 var url = '@Model.AdyenStatusApiEndpoint' + linkId;
                 $.get(url, function (data) {
-                    debugger;
                     if (data.status === 'completed' || data.status === 'paid') {
+                        alert(JSON.stringify(data));
+                        paymentResultFetched = true;
                         var linkId = data.id;
                         NavigateToOrderConfirmation(linkId);
+                        showModalDialog('Payment complete. Please click here to view Order Confirmation . <a href="@Url.Action("OrderConfirmation","Orders")">View Confirmation</a>');
                     }
                 });
             }
@@ -55,9 +60,11 @@
             }
 
             $(document).ready(function () {
-                setTimeout(function() {
-                setInterval(function() {
-                        UpdatePaymentStatus();
+                setTimeout(function () {
+                    setInterval(function () {
+                        if (!paymentResultFetched) {
+                             UpdatePaymentStatus();
+                        }
                     },
                     2000);
                 });

@@ -21,7 +21,7 @@ namespace Ganedata.Core.Services
         Task<AdyenOrderPaylink> UpdateOrderPaymentAuthorisationHook(AdyenPaylinkHookNotificationRequest model);
         Task<AdyenApiPaymentStatusResponseModel> GetPaymentStatus(string linkId);
         
-        Order GetOrderNumberByAdyenPaylinkID(string linkId);
+        Order GetOrderByAdyenPaylinkID(string linkId);
     }
 
     public class AdyenPaymentService : IAdyenPaymentService
@@ -47,6 +47,8 @@ namespace Ganedata.Core.Services
             {
                 using (var httpClient = new HttpClient())
                 {
+                    var amountInMinorUnits = model.Amount.Value * 100;
+                    model.Amount = new AdyenAmount(){ CurrencyCode = model.Amount.CurrencyCode, Value = amountInMinorUnits };
                     var tokenRequestUri = new Uri(AdyenPaylinkCreateEndpoint);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(
@@ -142,14 +144,14 @@ namespace Ganedata.Core.Services
             return link;
         }
 
-        public Order GetOrderNumberByAdyenPaylinkID(string linkId)
+        public Order GetOrderByAdyenPaylinkID(string linkId)
         {
             var link = _context.AdyenOrderPaylinks.FirstOrDefault(m => m.LinkID.Equals(linkId));
             if (link != null)
             {
-                return _context.Order.FirstOrDefault(m => m.OrderID == link.OrderID);
+                return _context.Order.Include(m=> m.BillingAccountAddress).Include(m=> m.ShipmentAccountAddress).Include(m=>m.OrderDetails).FirstOrDefault(m => m.OrderID == link.OrderID);
             }
-
+            
             return null;
         }
 

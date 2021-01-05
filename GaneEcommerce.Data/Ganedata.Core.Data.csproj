@@ -1239,6 +1239,14 @@
     <Compile Include="Migrations\202101021600220_AddedForeignKeysForAccountAddresses.designer.cs">
       <DependentUpon>202101021600220_AddedForeignKeysForAccountAddresses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101041012256_Missing-EmailChanges.cs" />
+    <Compile Include="Migrations\202101041012256_Missing-EmailChanges.designer.cs">
+      <DependentUpon>202101041012256_Missing-EmailChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101051423080_IncludedShopDeliveryTypeToOrder.cs" />
+    <Compile Include="Migrations\202101051423080_IncludedShopDeliveryTypeToOrder.designer.cs">
+      <DependentUpon>202101051423080_IncludedShopDeliveryTypeToOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2488,6 +2496,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101021600220_AddedForeignKeysForAccountAddresses.resx">
       <DependentUpon>202101021600220_AddedForeignKeysForAccountAddresses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101041012256_Missing-EmailChanges.resx">
+      <DependentUpon>202101041012256_Missing-EmailChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101051423080_IncludedShopDeliveryTypeToOrder.resx">
+      <DependentUpon>202101051423080_IncludedShopDeliveryTypeToOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

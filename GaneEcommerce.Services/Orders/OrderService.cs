@@ -1249,7 +1249,7 @@ namespace Ganedata.Core.Services
                     ExpectedDate = expectedDate,
                     FoodOrderType = item.FoodOrderType,
                     OfflineSale = item.OfflineSale,
-                    DeliveryAccountAddressID = item.DeliveryAccountAddressID,
+                    ShipmentAccountAddressId = item.DeliveryAccountAddressID,
                     BillingAccountAddressID = item.BillingAccountAddressID
                 };
 
@@ -3251,7 +3251,7 @@ namespace Ganedata.Core.Services
             return discount;
         }
 
-        public Order CreateShopOrder(CheckoutViewModel orderDetails, int tenantId, int UserId, int warehouseId, int SiteId, StandardDeliveryTypeEnum deliveryType = StandardDeliveryTypeEnum.Standard)
+        public Order CreateShopOrder(CheckoutViewModel orderDetails, int tenantId, int UserId, int warehouseId, int SiteId, ShopDeliveryTypeEnum deliveryType = ShopDeliveryTypeEnum.Standard)
         {
             Order order = new Order();
             decimal total = 0;
@@ -3265,7 +3265,7 @@ namespace Ganedata.Core.Services
 
             if (tenantConfig !=null)
             {
-                deliveryCost = deliveryType == StandardDeliveryTypeEnum.NextDay? (tenantConfig.NextDayDeliveryCost ?? 0) : (tenantConfig.StandardDeliveryCost??0);
+                deliveryCost = deliveryType == ShopDeliveryTypeEnum.NextDay? (tenantConfig.NextDayDeliveryCost ?? 0) : (tenantConfig.StandardDeliveryCost??0);
                 total = total + deliveryCost;
             }
 
@@ -3290,6 +3290,7 @@ namespace Ganedata.Core.Services
             order.OrderStatusID = OrderStatusEnum.Hold;
             order.ShipmentAccountAddressId = orderDetails.ShippingAddressId;
             order.BillingAccountAddressID = orderDetails.BillingAddressId;
+            order.ShopDeliveryTypeID = (int)deliveryType;
 
             _currentDbContext.Order.Add(order);
             _currentDbContext.SaveChanges();
@@ -3299,6 +3300,9 @@ namespace Ganedata.Core.Services
                 var items = orderDetails.CartItems.ToList();
                 foreach (var item in items)
                 {
+                    var product = _currentDbContext.ProductMaster.First(m => m.ProductId == item.ProductId);
+                    var tax = product.GlobalTax.PercentageOfAmount * product.SellPrice;
+
                     OrderDetail detail = new OrderDetail();
                     detail.ProductId = item.ProductId;
                     detail.Qty = item.Quantity;
@@ -3311,6 +3315,8 @@ namespace Ganedata.Core.Services
                     detail.TenentId = tenantId;
                     detail.OrderID = order.OrderID;
                     total = total + (item.Price * item.Quantity);
+                    detail.TotalAmount = total;
+                    detail.TaxAmount = tax??0;
                     _currentDbContext.OrderDetail.Add(detail);
                     Inventory.StockRecalculate(item.ProductId, warehouseId, tenantId, UserId);
                 }
