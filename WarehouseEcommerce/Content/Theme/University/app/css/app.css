@@ -5376,6 +5376,36 @@ a.cashbtn {
     margin-bottom: 20px
 }
 
+.confirm-order-page .container {
+    padding: 10px 20px;
+    border: 1px solid;
+}
+    .confirm-order-page .container h1 {
+        color: #17b85f;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+    }
+    .confirm-order-page .container h2 {
+        background-color: black;
+        color: white;
+        padding: 10px 20px;
+    }
+
+.confirm-order-page .delivery-schedule {
+    margin: 10px 0px;
+    background-color: #f7f7f7;
+    padding: 10px 0px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.order-confirmation-table img {
+    max-height: 50px;
+}
+.order-confirmation-table td {
+    vertical-align: middle;
+}
+
 .get-address-page .deliveryMethod {
     padding: 1px;
     margin-bottom: 15px
