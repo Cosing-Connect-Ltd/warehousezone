@@ -553,8 +553,37 @@ namespace Ganedata.Core.Services
             }
         }
 
+        private void ClearDefaultAccountAddresses(int accountId, int userId, bool isBillingAddress)
+        {
+            var accountAddresses = _currentDbContext.AccountAddresses.Where(m => m.AccountID == accountId && m.IsDefaultBillingAddress == true && m.IsDeleted!=true);
+            foreach (var address in accountAddresses)
+            {
+                if (isBillingAddress)
+                {
+                    address.IsDefaultBillingAddress = false;
+                }
+                else
+                {
+                address.IsDefaultDeliveryAddress = false;
+                }
+                address.UpdatedBy = userId;
+                address.DateUpdated = DateTime.Now;
+                _currentDbContext.Entry(address).State = EntityState.Modified;
+            }
+            _currentDbContext.SaveChangesAsync();
+        }
+
         public AccountAddresses SaveAccountAddress(AccountAddresses customeraddresses, int currentUserId)
         {
+            if (customeraddresses.IsDefaultDeliveryAddress == true && customeraddresses.AccountID.HasValue)
+            {
+                ClearDefaultAccountAddresses(customeraddresses.AccountID.Value, currentUserId, false);
+            }
+            if (customeraddresses.IsDefaultBillingAddress == true && customeraddresses.AccountID.HasValue)
+            {
+                ClearDefaultAccountAddresses(customeraddresses.AccountID.Value, currentUserId, true);
+            }
+
             if (customeraddresses.AddressID >= 1)
             {
                 var previousAddress = _currentDbContext.AccountAddresses.FirstOrDefault(u => u.AddressID == customeraddresses.AddressID);
