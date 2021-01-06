@@ -3301,7 +3301,7 @@ namespace Ganedata.Core.Services
                 foreach (var item in items)
                 {
                     var product = _currentDbContext.ProductMaster.First(m => m.ProductId == item.ProductId);
-                    var tax = product.GlobalTax.PercentageOfAmount * product.SellPrice;
+                    var tax = product.GlobalTax.PercentageOfAmount * item.Price;
 
                     OrderDetail detail = new OrderDetail();
                     detail.ProductId = item.ProductId;
@@ -3316,7 +3316,7 @@ namespace Ganedata.Core.Services
                     detail.OrderID = order.OrderID;
                     total = total + (item.Price * item.Quantity);
                     detail.TotalAmount = total;
-                    detail.TaxAmount = tax??0;
+                    detail.TaxAmount = tax;
                     _currentDbContext.OrderDetail.Add(detail);
                     Inventory.StockRecalculate(item.ProductId, warehouseId, tenantId, UserId);
                 }

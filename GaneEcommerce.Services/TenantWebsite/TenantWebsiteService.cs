@@ -1146,6 +1146,7 @@ namespace Ganedata.Core.Services
                                                                {
                                                                    Id = u.Id,
                                                                    ProductMaster = productMaster,
+                                                                   TaxPercent = u.ProductMaster.EnableTax == true ? u.ProductMaster.GlobalTax.PercentageOfAmount : 0,
                                                                    Weight = (u.ProductMaster.Weight + u.ProductMaster.ProductKitItems.Where(p => p.ProductKitType == ProductKitTypeEnum.Kit).Sum(k => k.ProductMaster.Weight)) * (double)u.Quantity,
                                                                    Price = u.UnitPrice,
                                                                    Quantity = u.Quantity,
@@ -1216,7 +1217,8 @@ namespace Ganedata.Core.Services
         {
             var getTenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
             var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrency?.TenantCurrencyID ?? 0);
-            var productKitType = _productServices.GetProductMasterById(productId).ProductType == ProductKitTypeEnum.Kit ? true : false;
+            var productMaster = _productServices.GetProductMasterById(productId);
+            var productKitType = productMaster.ProductType == ProductKitTypeEnum.Kit ? true : false;
 
             var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == productId &&
                                                                          u.IsDeleted != true &&
