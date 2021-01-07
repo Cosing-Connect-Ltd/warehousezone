@@ -7,13 +7,13 @@ namespace Ganedata.Core.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class IncludedShopDeliveryTypeToOrder : IMigrationMetadata
+    public sealed partial class AdyenPaymentAndAddressConfigurationChangesRebased : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(IncludedShopDeliveryTypeToOrder));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AdyenPaymentAndAddressConfigurationChangesRebased));
         
         string IMigrationMetadata.Id
         {
-            get { return "202101051423080_IncludedShopDeliveryTypeToOrder"; }
+            get { return "202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased"; }
         }
         
         string IMigrationMetadata.Source
