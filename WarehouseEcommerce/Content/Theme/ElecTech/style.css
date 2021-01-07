@@ -3438,3 +3438,28 @@ font-size:14px
 .slider-text .cd-words-wrapper {
     white-space:nowrap;
 }
+
+.text-pink,
+.text-pink:hover {
+    color: #f33655;
+}
+
+.header-ul-left-pink::after {
+    content: "";
+    width: 50px;
+    height: 3px;
+    background-color: #f33655;
+    position: absolute;
+    margin-top: 10px;
+}
+
+.header-ul-center-pink::after {
+    content: "";
+    position: absolute;
+    bottom: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20%;
+    height: 2px;
+    background-color: #f33655;
+}

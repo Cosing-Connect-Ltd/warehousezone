@@ -83,7 +83,10 @@ namespace WMS
                 "OrderComplete",                                              // Route name
                 "Order/Complete/{action}/{id}/{frag}",                           // URL with parameters
                 new { controller = "Order", action = "Complete", id = UrlParameter.Optional, frag = UrlParameter.Optional }  // Parameter defaults
-            );   
+            );
+
+            routes.MapRoute("AccountsSyncResetPasswordGet", "Accounts/ResetPassword/{email}/{code}", new { controller = "Account", action = "ResetPassword", email = string.Empty, code = string.Empty });
+
             routes.MapRoute(
                 "Default",
                 "{controller}/{action}/{id}",

@@ -96,7 +96,7 @@ namespace WMS.App_Start
 
         public string GetThemeName()
         {
-            WebsiteThemeEnum ThemeName = WebsiteThemeEnum.Smart;
+            WebsiteThemeEnum ThemeName = WebsiteThemeEnum.University;
 
             if (HttpContext.Current.Session["CurrentTenantWebsites"] != null)
             {

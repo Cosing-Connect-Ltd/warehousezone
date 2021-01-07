@@ -33,7 +33,7 @@ function searchPoducts() {
 
 function SearchPostCode() {
     var searchString = $(".text-search-postcode").val();
-
+    startLoading();
     $.ajax({
         url: basePath + '/Orders/GetApiAddressAsync',
         method: 'post',
@@ -56,9 +56,11 @@ function SearchPostCode() {
                     });
                 });
             }
+            stopLoading();
         },
         error: function (err) {
             alert(err);
+            stopLoading();
         }
     });
 }
@@ -286,9 +288,11 @@ function removeCartItem(id) {
                     data: { cartId: id },
                     dataType: 'json',
                     success: function (data) {
-                        var cardItemsValue = parseInt($("#cart-total").text());
+                        var cardItemsValue = parseInt($("#cart-total").text());                        
                         $("#cart-total").text(cardItemsValue - 1);
                         getCartitems(null);
+                        if ((cardItemsValue - 1) <= 0)
+                            location.reload();
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('Error' + textStatus + "/" + errorThrown);
@@ -322,23 +326,30 @@ function updateCartItem(id, quantity) {
     }
 }
 
+function UpdateDeliveryCosts() {
+    var $chk = $("#dvDeliveryOptions input[type=radio]:checked");
+    var costOfDel = parseFloat($chk.val());
+    var cartTotal = parseFloat($("#CartTotalAmount").val());
+    $("#spnTotalAmount").text((costOfDel + parseFloat(cartTotal)).toFixed(2));
+
+    var stdDel = $("#DeliveryOpt1").prop('checked') ? '1' : '2';
+    $("#DeliveryOption").val(stdDel);
+}
 function getCartitems(cartId) {
     startLoading();
     $.ajax({
         type: "GET",
-        url: basePath + "/Products/_CartItemsPartial/",
+        url: basePath + "/Orders/_CartItemsPartial/",
         data: { cartId: cartId },
         dataType: 'html',
         success: function (data) {
             stopLoading();
-            if (cartId != null) {
-                $('.cart-item-data').html("");
-                $('.cart-item-data').html(data);
+            $('.cart-item-data').html("");
+            $('.cart-item-data').html(data);
+            if ($("#IsOrderReviewPage").length < 1) {
                 $('#myModal').modal('show');
-            }
-            else {
-                $('#updateCart').html("");
-                $('#updateCart').html(data);
+            } else {
+                UpdateDeliveryCosts();
             }
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {
@@ -484,7 +495,7 @@ function LoggedIn() {
         url: basePath + "/User/LoginUsers/",
         data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: placecheck },
         dataType: 'json',
-        success: function (data) {
+        success: function (data) {            
             stopLoading();
             if (!data.status) {
                 $(".alert-message-login").html("User name or password is not correct").show().delay(2000).fadeOut();
@@ -565,39 +576,61 @@ function addToWishList(productId, parentProductId) {
     });
 }
 
-function addToNotifyList(productId, parentProductId, addRemoveAction) {
-    if (userStatus === "Login") {
-        GetLoggedIn(false);
-        return;
-    }
-    var currentClass = $("#notification-bell_" + productId);
-    var notifyBtnClass = $("#notification-bell__button_" + productId);
-    if (!!parentProductId && parentProductId > 0) {
-        var currentParentClass = $("#notification-bell_" + parentProductId);
-    }
+function ShowNotificationEmailModal(callback) {    
+    var $modal = $("#modalNotificationEmail");    
+    $modal.modal("show");
 
-    $.ajax({
-        type: "GET",
-        url: basePath + "/Products/AddNotifyListItem/",
-        data: { ProductId: productId },
-        dataType: 'json',
-        success: function (data) {
-            $(currentClass).find(".list-icon").css({ "color": "red" });
-            $(currentClass).removeAttr("onclick", null);
-            $(currentClass).attr("onclick", addRemoveAction ? "removeNotifyListItemByConfirmation(" + productId + "," + parentProductId + ")" : "redirectToWishListByConfirmation()");
-            $(notifyBtnClass).css({ "background-color": "red" });
-            $(notifyBtnClass).removeAttr("onclick", null);
-            $(notifyBtnClass).attr("onclick", addRemoveAction ? "removeNotifyListItemByConfirmation(" + productId + "," + parentProductId + ")" : "redirectToWishListByConfirmation()");
-            if (!!parentProductId && parentProductId > 0) {
-                $(currentParentClass).find(".list-icon").css({ "color": "red" });
-            }
-
-            SetWishListElementsStyle(productId, parentProductId);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert('Error' + textStatus + "/" + errorThrown);
-        }
+    $modal.on("click", "#btnNotifyProd", function () {        
+        $modal.find("form:eq(0)").validate();
+        if ($modal.find("form:eq(0)").valid()) {
+            callback($modal.find("#EmailId").val());
+        }        
     });
+}
+
+function addToNotifyList(productId, parentProductId, addRemoveAction) {        
+    var callBack = function (emailId) {
+        var currentClass = $("#notification-bell_" + productId);
+        var notifyBtnClass = $("#notification-bell__button_" + productId);
+        if (!!parentProductId && parentProductId > 0) {
+            var currentParentClass = $("#notification-bell_" + parentProductId);
+        }
+
+        $.ajax({
+            type: "GET",
+            url: basePath + "/Products/AddNotifyListItem/",
+            data: { ProductId: productId, EmailId: emailId },
+            dataType: 'json',
+            success: function (data) {
+                $(currentClass).find(".list-icon").css({ "color": "red" });
+                $(currentClass).removeAttr("onclick", null);
+                $(currentClass).attr("onclick", addRemoveAction ? "removeNotifyListItemByConfirmation(" + productId + "," + parentProductId + ")" : "redirectToWishListByConfirmation()");
+                $(notifyBtnClass).css({ "background-color": "red" });
+                $(notifyBtnClass).removeAttr("onclick", null);
+                $(notifyBtnClass).attr("onclick", addRemoveAction ? "removeNotifyListItemByConfirmation(" + productId + "," + parentProductId + ")" : "redirectToWishListByConfirmation()");
+                if (!!parentProductId && parentProductId > 0) {
+                    $(currentParentClass).find(".list-icon").css({ "color": "red" });
+                }
+                                
+                if (emailId)
+                    $("#modalNotificationEmail button.close").trigger("click");
+                else {
+                    SetWishListElementsStyle(productId, parentProductId);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+    }
+
+    if (userStatus === "Login") {
+        //GetLoggedIn(false);
+        ShowNotificationEmailModal(callBack);
+        return;
+    }    
+
+    callBack();
 }
 
 function SetWishListElementsStyle(productId, parentProductId) {
@@ -659,7 +692,15 @@ function removeWishListItemAndUpdateTheList(productId) {
 
 function redirectToWishListByConfirmation() {
     if (userStatus === "Login") {
-        GetLoggedIn(false);
+        $.alert({            
+            title: 'Notification Already Subscribed!',
+            content: 'You will be notified when this item is available.',
+            confirmText: 'OK',
+            confirmStyle: 'black',
+            callback: null
+        });
+
+        //GetLoggedIn(false);
         return;
     }
 

@@ -10,6 +10,7 @@ namespace Ganedata.Core.Entities.Domain
     [Serializable]
     public partial class Order
     {
+
         public Order()
         {
             OrderDetails = new HashSet<OrderDetail>();
@@ -273,5 +274,11 @@ namespace Ganedata.Core.Entities.Domain
 
         public virtual IEnumerable<Order> RelatedOrders { get; set; }
         public bool OfflineSale { get; set; }
+        public int? BillingAccountAddressID { get; set; }
+        [ForeignKey("BillingAccountAddressID")]
+        public AccountAddresses BillingAccountAddress { get; set; }
+
+        public int? ShopDeliveryTypeID;
+
     }
 }

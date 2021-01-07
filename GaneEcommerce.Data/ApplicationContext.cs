@@ -220,6 +220,7 @@ namespace Ganedata.Core.Data
         public DbSet<ProductAvailabilityNotifyQueue> ProductAvailabilityNotifyQueue { get; set; }
         public DbSet<AuthUserVerifyCodes> AuthUserVerifyCodes { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<AdyenOrderPaylink> AdyenOrderPaylinks { get; set; }
 
         //#end region
     }

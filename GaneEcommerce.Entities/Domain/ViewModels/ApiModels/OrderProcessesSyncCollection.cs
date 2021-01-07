@@ -55,10 +55,15 @@ namespace Ganedata.Core.Models
         public int? OrderProcessStatusId { get; set; }
         public string TerminalInvoiceNumber { get; set; }
         public string ShipmentAddressLine1 { get; set; }
+        public string ShipmentAddressLine2 { get; set; }
         public string ShipmentAddressPostcode { get; set; }
+        public string ShipmentAddressTown { get; set; }
         public string PickContainerCode { get; set; }
         public FoodOrderTypeEnum? FoodOrderType { get; set; }
         public bool OfflineSale { get; set; }
+
+        public int? DeliveryAccountAddressID { get; set; }
+        public int? BillingAccountAddressID { get; set; }
     }
 
     public class MarketRouteProgressSync

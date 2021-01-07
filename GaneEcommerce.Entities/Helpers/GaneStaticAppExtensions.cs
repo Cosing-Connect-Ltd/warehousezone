@@ -66,6 +66,7 @@ namespace Ganedata.Core.Entities.Helpers
 
 
         public static string DevexTheme = ConfigurationManager.AppSettings["DevexTheme"] ?? "MetropolisBlue";
+        public static string AdyenStatusApiEndpoint = ConfigurationManager.AppSettings["AdyenStatusApiEndpoint"] ?? "https://icestone-staging.warehouse.zone/api/adyen/payment-link-status/";
         public static int DefaultSystemUserId = int.Parse(ConfigurationManager.AppSettings["DefaultSystemUserId"] ?? "0");
         public static bool MiniProfilerEnabled { get; set; } = ConfigurationManager.AppSettings["MiniProfilerEnabled"].ToLower() == "true";
         public static bool ForceTls12 { get; set; } = ConfigurationManager.AppSettings["ForceTls12"].ToLower() == "true";

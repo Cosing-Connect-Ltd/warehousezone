@@ -1470,6 +1470,25 @@
     <Content Include="Scripts\jquery-3.5.1.min.map" />
     <Content Include="Views\Theme\University\Products\_ProductAvailability.cshtml" />
     <Content Include="Views\Theme\University\Shared\_ProductListItemActionsButtons.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\ReviewOrder.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\_OrderProgressBar.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\_CartItems.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\_AddressForm.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\OrderPayment.cshtml" />
+    <Content Include="Views\Theme\Smart\Orders\Payments\_AddressForm.cshtml" />
+    <Content Include="Views\Theme\Smart\Orders\Payments\_CartItems.cshtml" />
+    <Content Include="Views\Theme\Smart\Orders\Payments\_OrderProgressBar.cshtml" />
+    <Content Include="Views\Theme\Smart\Orders\Payments\OrderPayment.cshtml" />
+    <Content Include="Views\Theme\Smart\Orders\Payments\ReviewOrder.cshtml" />
+    <Content Include="Views\Theme\University\User\ForgotPassword.cshtml" />
+    <Content Include="Views\Theme\University\User\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\University\User\ResetPassword.cshtml" />
+    <Content Include="Views\Theme\University\User\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\Smart\User\ForgotPassword.cshtml" />
+    <Content Include="Views\Theme\Smart\User\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\Smart\User\ResetPassword.cshtml" />
+    <Content Include="Views\Theme\Smart\User\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\University\Orders\Payments\OrderConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

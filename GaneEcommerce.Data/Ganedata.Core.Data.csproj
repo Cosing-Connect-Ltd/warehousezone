@@ -1223,6 +1223,11 @@
     <Compile Include="Migrations\202101020032229_DeliverectCategoryId-and-SortOrder-added.designer.cs">
       <DependentUpon>202101020032229_DeliverectCategoryId-and-SortOrder-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.cs" />
+    <Compile Include="Migrations\202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.designer.cs">
+      <DependentUpon>202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2460,6 +2465,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101020032229_DeliverectCategoryId-and-SortOrder-added.resx">
       <DependentUpon>202101020032229_DeliverectCategoryId-and-SortOrder-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.resx">
+      <DependentUpon>202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

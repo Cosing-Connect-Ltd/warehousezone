@@ -121,6 +121,11 @@ namespace Ganedata.Core.Services
             return OrderService.GetPalletOrdersDetails(id, tenantId, excludeProcessed);
         }
 
+        public Order GetOrderByOrderNumber(string orderNumber)
+        {
+            return OrderService.GetOrderByOrderNumber(orderNumber);
+        }
+
         public List<OrderDetailsViewModel> GetSalesOrderDetails(int id, int tenantId)
         {
             return OrderService.GetSalesOrderDetails(id, tenantId);
@@ -654,9 +659,9 @@ namespace Ganedata.Core.Services
             return OrderService.GetDiscountOnTotalCost(accountId, OrdersTotal);
         }
 
-        public Order CreateShopOrder(CheckoutViewModel orderDetail, int tenantId, int UserId, int warehouseId, int SiteId)
+        public Order CreateShopOrder(CheckoutViewModel orderDetail, int tenantId, int UserId, int warehouseId, int SiteId, ShopDeliveryTypeEnum deliveryType = ShopDeliveryTypeEnum.Standard)
         {
-            return OrderService.CreateShopOrder(orderDetail, tenantId, UserId, warehouseId, SiteId);
+            return OrderService.CreateShopOrder(orderDetail, tenantId, UserId, warehouseId, SiteId, deliveryType);
         }
 
         public IQueryable<Order> GetOrdersHistory(int UserId, int SiteId)

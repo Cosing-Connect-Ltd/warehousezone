@@ -49,6 +49,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool EmailVerified { get; set; }
         public bool MobileNumberVerified { get; set; }
         public string UserTimeZoneId { get; set; }
+        public string ResetPasswordCode { get; set; }
+        public DateTime? ResetPasswordCodeExpiry { get; set; }
         public string DisplayName
         {
             get { return UserFirstName + " " + UserLastName; }

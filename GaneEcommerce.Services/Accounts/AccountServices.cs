@@ -553,8 +553,37 @@ namespace Ganedata.Core.Services
             }
         }
 
+        private void ClearDefaultAccountAddresses(int accountId, int userId, bool isBillingAddress)
+        {
+            var accountAddresses = _currentDbContext.AccountAddresses.Where(m => m.AccountID == accountId && m.IsDefaultBillingAddress == true && m.IsDeleted!=true);
+            foreach (var address in accountAddresses)
+            {
+                if (isBillingAddress)
+                {
+                    address.IsDefaultBillingAddress = false;
+                }
+                else
+                {
+                address.IsDefaultDeliveryAddress = false;
+                }
+                address.UpdatedBy = userId;
+                address.DateUpdated = DateTime.Now;
+                _currentDbContext.Entry(address).State = EntityState.Modified;
+            }
+            _currentDbContext.SaveChangesAsync();
+        }
+
         public AccountAddresses SaveAccountAddress(AccountAddresses customeraddresses, int currentUserId)
         {
+            if (customeraddresses.IsDefaultDeliveryAddress == true && customeraddresses.AccountID.HasValue)
+            {
+                ClearDefaultAccountAddresses(customeraddresses.AccountID.Value, currentUserId, false);
+            }
+            if (customeraddresses.IsDefaultBillingAddress == true && customeraddresses.AccountID.HasValue)
+            {
+                ClearDefaultAccountAddresses(customeraddresses.AccountID.Value, currentUserId, true);
+            }
+
             if (customeraddresses.AddressID >= 1)
             {
                 var previousAddress = _currentDbContext.AccountAddresses.FirstOrDefault(u => u.AddressID == customeraddresses.AddressID);
@@ -748,6 +777,18 @@ namespace Ganedata.Core.Services
         public IEnumerable<Account> GetAllValidAccountsByAccountIds(int[] accountIds)
         {
             return _currentDbContext.Account.AsNoTracking().Where(x => accountIds.Contains(x.AccountID) && x.IsDeleted != true).ToList();
+        }
+
+        public (string, DateTime?) PasswordResetCode(string username)
+        {
+            var resetCode = Guid.NewGuid().ToString("N");
+            var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserName.Equals(username) || m.UserEmail.Equals(username));
+            if(user == null) return (null, null);
+            user.ResetPasswordCode = resetCode;
+            user.ResetPasswordCodeExpiry = DateTime.Now.AddHours(24);
+            _currentDbContext.Entry(user).State = EntityState.Modified;
+            _currentDbContext.SaveChanges();
+            return (resetCode, user.ResetPasswordCodeExpiry);
         }
     }
 }

@@ -295,52 +295,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.CartModal = true;
             ViewBag.paymentMethod = model.PaymentMethodId;
             return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult ConfirmOrder(CheckoutViewModel data)
-        {
-            var model = Session["CheckoutViewModel"] as CheckoutViewModel;
-            model = _tenantWebsiteService.SetCheckOutProcessModel(model, CurrentTenantWebsite.SiteID, CurrentTenantId, CurrentUserId, Session.SessionID);
-
-            if (CurrentUser?.AccountId == null)
-            {
-                model.Email = data.Email;
-
-                if (data.CreateAccount == true)
-                {
-                    CreateNewUserAccount(data, model);
-                }
-            }
-
-
-            Session["CheckoutViewModel"] = model;
-
-            var paymentLink = _adyenPaymentService.GenerateOrderPaymentLink(new AdyenCreatePayLinkRequestModel()
-            {
-                Amount = new AdyenAmount(){ Value = model.TotalOrderAmount },
-                MerchantAccount = AdyenPaymentService.AdyenMerchantAccountName,
-                OrderDescription = model.CartItems.First().ProductMaster.Description,
-                PaymentReference = Guid.NewGuid().ToString("N"),
-                ShopperUniqueReference = model.OrderNumber+"_"+DateTime.Now.ToFileTime()
-            }).ConfigureAwait(false).GetAwaiter().GetResult();
-
-            Session[data.OrderNumber + "_AdyenPaylink"] = paymentLink.Url;
-
-            //Todo: Record the Adyen request and response and payment status, create web hooks
-
-
-            switch (model.PaymentMethodId)
-            {
-                case (int)PaymentMethodEnum.PayPal:
-                    return RedirectToAction("PayPal");
-                case (int)PaymentMethodEnum.SagePay:
-                    return RedirectToAction("SagePay");
-                default:
-                    return null;
-            }
-        }
-
+        } 
         private void CreateNewUserAccount(CheckoutViewModel data, CheckoutViewModel model)
         {
             var user = _userService.GetAuthUserByUserName(data.Email, CurrentTenantId);
@@ -602,5 +557,211 @@ namespace WarehouseEcommerce.Controllers
 
             return Json(false, JsonRequestBehavior.AllowGet);
         }
+
+        #region Payments
+        public ActionResult ReviewOrder(bool isStandardDelivery = true)
+        {            
+            var cartModel = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID).ToList() };                        
+            cartModel.ShowLoginPopUp = CurrentUserId == 0;
+            cartModel.IsCollectionAvailable = CurrentTenantWebsite.IsCollectionAvailable;
+            var addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+
+            var tenantConfig = _tenantServices.GetAllTenantConfig(CurrentTenantId).FirstOrDefault();
+
+            var model = new ReviewOrderViewModel
+            {
+                Cart = cartModel,
+                ShippingAddresses = addresses.Where(p => p.AddTypeShipping == true).ToList(),
+                BillingAddresses = addresses.Where(p => p.AddTypeBilling == true).ToList(),
+                DeliveryInstruction = Session["DeliveryInstruction"] != null ? Session["DeliveryInstruction"].ToString() : "",
+                BillingAddressId = Session["BillingAddressID"] != null ? Convert.ToInt32(Session["BillingAddressID"].ToString()) : 0,
+                ShippingAddressId = Session["ShippingAddressID"] != null ? Convert.ToInt32(Session["ShippingAddressID"].ToString()) : 0,
+                IsStandardDelivery = isStandardDelivery,
+                StandardDeliveryCost = tenantConfig.StandardDeliveryCost??0,
+                NextDayDeliveryCost = tenantConfig.NextDayDeliveryCost?? 0
+            };
+                        
+            foreach (var item in model.Cart.WebsiteCartItems)
+            {
+                var baseProduct = _productServices.GetProductMasterByProductCode(item.ProductMaster.SKUCode, CurrentTenantId);
+                model.RelatedProducts.AddRange(_productServices.GetRelatedProductsByProductId(item.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId));
+            }
+            model.RelatedProducts.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
+
+            return View("Payments/ReviewOrder", model);
+        }
+
+        public ActionResult GetAddressForm(bool isBillingAddress = false)
+        {            
+            return PartialView("Payments/_AddressForm", GetAddressFormViewModel(isBillingAddress));
+        }
+
+        private AddressFormViewModel GetAddressFormViewModel(bool isBillingAddress)
+        {
+            var addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+            var model = new AddressFormViewModel
+            {
+                IsBillingAddress = isBillingAddress,
+                Countries = _lookupServices.GetAllGlobalCountries().Select(u => new CountryViewModel { CountryId = u.CountryID, CountryName = u.CountryName }).ToList(),
+                SavedAddresses = isBillingAddress ? addresses.Where(p => p.AddTypeBilling == true).ToList() : addresses.Where(p => p.AddTypeShipping == true).ToList()
+            };
+            return model;
+        }
+
+        public ActionResult CaptureDeliveryInstruction(string instruction)
+        {
+            Session["DeliveryInstruction"] = instruction;
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CaptureAddress(int addressId, bool isBillingAddress = false, bool useForBilling = false)
+        {            
+            Session[isBillingAddress? "BillingAddressID" : "ShippingAddressID"] = addressId;
+            if(!isBillingAddress && useForBilling)
+                Session["BillingAddressID"] = addressId;
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SaveNewAddress(AddressFormViewModel modelForm)
+        {
+            var accountAddresses = _mapper.Map(modelForm, new AccountAddresses());
+            accountAddresses.Name = "Ecommerce";
+            if (accountAddresses.AccountID <= 0)
+            {
+                accountAddresses.AccountID = caCurrent.CurrentWebsiteUser().AccountId ?? 0;
+            }
+            else
+            {
+                accountAddresses.SessionId = HttpContext.Session.SessionID;
+            }
+            accountAddresses.AddTypeShipping = !modelForm.IsBillingAddress;
+            accountAddresses.AddTypeBilling = modelForm.IsBillingAddress || modelForm.AddTypeBilling.HasValue && modelForm.AddTypeBilling.Value;
+            accountAddresses = _accountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
+
+            if (!string.IsNullOrEmpty(modelForm.DeliveryInstructions))
+                Session["DeliveryInstruction"] = modelForm.DeliveryInstructions;
+
+            return PartialView("Payments/_AddressForm", GetAddressFormViewModel(modelForm.IsBillingAddress));
+        }
+        public PartialViewResult _CartItemsPartial(int? cartId = null)
+        {
+            var model = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList() };
+
+            model.ShippmentAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+            
+            model.ShowCartPopUp = cartId.HasValue;
+            model.ShowLoginPopUp = CurrentUserId == 0;
+             
+            return PartialView("Payments/_CartItems",model);
+        }
+
+        [HttpGet]
+        public ActionResult OrderPayment()
+        {
+            var orderPaymentModel = new OrderPaymentViewModel();
+            if (Session["_AdyenPaylink"] == null)
+            {
+                return RedirectToAction("ReviewOrder");
+            }
+            var order = Session["_AdyenOrder"]  as Order;
+            if (order != null)
+            {
+                orderPaymentModel.BillingAddressId = order.BillingAccountAddressID??0;
+                orderPaymentModel.ShippingAddressId = order.ShipmentAccountAddressId??0;
+            }
+
+            orderPaymentModel.AdyenPaymentLinkID = Session["_AdyenPaylinkID"].ToString();
+            orderPaymentModel.AdyenPaymentLink = Session["_AdyenPaylink"].ToString();
+            orderPaymentModel.AdyenStatusApiEndpoint = GaneStaticAppExtensions.AdyenStatusApiEndpoint;
+            return View("Payments/OrderPayment", orderPaymentModel);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> OrderPayment(OrderPaymentViewModel data)
+        {
+            var checkoutModel = new CheckoutViewModel();
+            checkoutModel.BillingAddressId = data.BillingAddressId;
+            checkoutModel.ShippingAddressId = data.ShippingAddressId;
+
+            var cart = new WebsiteCartItemsViewModel
+            {
+                WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID,
+                    CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, null).ToList()
+            };
+            checkoutModel.CartItems = cart.WebsiteCartItems;
+
+            var order = _orderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId,
+                CurrentTenantWebsite.SiteID, (ShopDeliveryTypeEnum) data.DeliveryOption);
+            checkoutModel.OrderNumber = order.OrderNumber;
+            //await _configurationsHelper.CreateTenantEmailNotificationQueue("Order Confirmed", _mapper.Map(order, new OrderViewModel()), sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.WebsiteOrderConfirmation, TenantId: CurrentTenantId, accountId: order.AccountID, UserEmail: CurrentUser.UserEmail, userId: CurrentUser.UserId, siteId: CurrentTenantWebsite.SiteID);
+
+            var totalCost = 0.0m;
+            if (checkoutModel.CartItems == null || checkoutModel.CartItems.Count < 1)
+            {
+                return RedirectToAction("ReviewOrder");
+            }
+            else
+            {
+                totalCost += checkoutModel.CartItems.Sum(m => m.Price);
+
+                var tenantConfig = _tenantServices.GetAllTenantConfig(CurrentTenantId).FirstOrDefault();
+
+                if (data.DeliveryOption == 1)
+                {
+                    totalCost += tenantConfig.NextDayDeliveryCost ?? 30;
+                }
+                else
+                {
+                    totalCost += tenantConfig.StandardDeliveryCost ?? 10;
+                }
+            }
+
+            try
+            {
+                Session["CheckoutViewModel"] = checkoutModel;
+
+                var paymentLink = await _adyenPaymentService.GenerateOrderPaymentLink(
+                    new AdyenCreatePayLinkRequestModel()
+                    {
+                        Amount = new AdyenAmount() {Value = totalCost },
+                        MerchantAccount = AdyenPaymentService.AdyenMerchantAccountName,
+                        OrderDescription = checkoutModel.CartItems.First().ProductMaster.Description,
+                        PaymentReference = Guid.NewGuid().ToString("N"),
+                        ShopperUniqueReference = checkoutModel.OrderNumber + "_" + DateTime.Now.ToFileTime()
+                    });
+                if (!string.IsNullOrEmpty(paymentLink.Url))
+                {
+                    await _adyenPaymentService.CreateOrderPaymentLink(paymentLink, order.OrderID);
+                    data.AdyenPaymentLink = paymentLink.Url;
+                    data.AdyenPaymentLinkID = paymentLink.ID;
+                    Session["_AdyenPaylink"] = paymentLink.Url;
+                    Session["_AdyenPaylinkID"] = paymentLink.ID;
+                    Session["_AdyenOrder"] = order;
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(nameof(checkoutModel.OrderNumber), "Order ");
+            }
+
+            data.AdyenStatusApiEndpoint = GaneStaticAppExtensions.AdyenStatusApiEndpoint;
+            return View("Payments/OrderPayment", data);
+        }
+
+        public ActionResult OrderConfirmation(string id)
+        {
+            var order = _adyenPaymentService.GetOrderByAdyenPaylinkID(id);
+            if (order != null)
+            {
+                _orderService.UpdateOrderStatus(order.OrderID, OrderStatusEnum.Approved, CurrentUserId);
+                Session.Clear();
+                ViewBag.DeliveryAdvice = order.ShopDeliveryTypeID == 1 ? "Next working day if ordered before 4pm" : "3-5 working days";
+            }
+            //http://localhost:8004/Orders/OrderConfirmation/PL1C6B196232913F17
+            return View("Payments/OrderConfirmation", order);
+        }
+
+        #endregion
     }
 }

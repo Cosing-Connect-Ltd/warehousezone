@@ -72,6 +72,11 @@ namespace Ganedata.Core.Services
             return _currentDbContext.AuthUsers.Find(userId);
         }
 
+        public AuthUser GetAuthUserByResetPasswordCode(string resetPasswordCode)
+        {
+            return _currentDbContext.AuthUsers.FirstOrDefault(m => m.ResetPasswordCode.Equals(resetPasswordCode));
+        }
+
         public AuthUser GetAuthUserByAccountId(int? accountId)
         {
             return _currentDbContext.AuthUsers.Where(x => x.AccountId == accountId).FirstOrDefault();
@@ -378,6 +383,20 @@ namespace Ganedata.Core.Services
         public IEnumerable<AuthUser> GetAuthUserByIds(int[] userIds)
         {
             return _currentDbContext.AuthUsers.Where(m => userIds.Contains(m.UserId) && m.IsDeleted != true).ToList();
+        }
+
+        public AuthUser UpdateUserPassword(int authUserId, string resetPasswordCode, string newPassword)
+        {
+            var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserId == authUserId && m.ResetPasswordCode == resetPasswordCode && m.IsActive && m.IsDeleted != true);
+            if (user != null)
+            {
+                user.UserPassword = GaneStaticAppExtensions.GetMd5(newPassword);
+                user.ResetPasswordCodeExpiry = null;
+                user.ResetPasswordCode = null;
+                _currentDbContext.Entry(user).State = EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+            return user;
         }
     }
 }

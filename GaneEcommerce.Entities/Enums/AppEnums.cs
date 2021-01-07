@@ -621,4 +621,10 @@ namespace Ganedata.Core.Entities.Enums
         Products = 1,
         Accounts = 2
     }
+
+    public enum ShopDeliveryTypeEnum
+    {
+        NextDay = 1,
+        Standard = 2
+    }
 }

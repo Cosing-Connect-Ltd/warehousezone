@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Web;
+using Ganedata.Core.Entities.Domain;
 
 namespace Ganedata.Core.Services
 {
@@ -27,6 +28,20 @@ namespace Ganedata.Core.Services
         public List<string> MailErrors=new List<string>();
 
 
+
+        public EmailSender(TenantEmailConfig config, string htmlBody, string subject, string recipientEmail)
+        {
+            _logourl = @"~\Content\images\Emaillogo.jpg";
+            _mailto = recipientEmail.Trim();
+            _from = config.UserEmail.Trim();
+            _htmlBody = htmlBody;
+            _subject = subject.Trim();
+            _smtphost = config.SmtpHost.Trim();
+            _port = config.SmtpPort;
+            _username = config.UserEmail.Trim();
+            _password = config.Password.Trim();
+            _enableSsl = true;
+        }
 
         public EmailSender(string mailto,string from ,string htmlBody, string subject, string attachment, string smtphost, int port, string username, string password)
         {
@@ -71,16 +86,14 @@ namespace Ganedata.Core.Services
 
                 mailmsg.IsBodyHtml = isBodyHtml;
 
-                if (_attachment != "")
+                if (!string.IsNullOrWhiteSpace(_attachment))
                 {
-
                     mailmsg.Attachments.Add(new Attachment(HttpContext.Current.Server.MapPath(_attachment)));
                 }
 
                 if (_fileAttachment != null)
                 {
                     mailmsg.Attachments.Add(_fileAttachment);
-
                 }
 
 
@@ -116,13 +129,8 @@ namespace Ganedata.Core.Services
                 avHtml.LinkedResources.Add(pic1);
             }
 
-
             return avHtml;
         }
-
-
-
-
 
 
 

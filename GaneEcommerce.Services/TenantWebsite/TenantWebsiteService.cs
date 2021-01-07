@@ -1146,6 +1146,7 @@ namespace Ganedata.Core.Services
                                                                {
                                                                    Id = u.Id,
                                                                    ProductMaster = productMaster,
+                                                                   TaxPercent = u.ProductMaster.EnableTax == true ? u.ProductMaster.GlobalTax.PercentageOfAmount : 0,
                                                                    Weight = (u.ProductMaster.Weight + u.ProductMaster.ProductKitItems.Where(p => p.ProductKitType == ProductKitTypeEnum.Kit).Sum(k => k.ProductMaster.Weight)) * (double)u.Quantity,
                                                                    Price = u.UnitPrice,
                                                                    Quantity = u.Quantity,
@@ -1216,7 +1217,8 @@ namespace Ganedata.Core.Services
         {
             var getTenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
             var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrency?.TenantCurrencyID ?? 0);
-            var productKitType = _productServices.GetProductMasterById(productId).ProductType == ProductKitTypeEnum.Kit ? true : false;
+            var productMaster = _productServices.GetProductMasterById(productId);
+            var productKitType = productMaster.ProductType == ProductKitTypeEnum.Kit ? true : false;
 
             var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == productId &&
                                                                          u.IsDeleted != true &&
@@ -1335,31 +1337,27 @@ namespace Ganedata.Core.Services
             return AddOrUpdateWishListNotifyListItems(siteId, userId, tenantId, productId, false);
         }
 
-        public int AddOrUpdateNotifyListItems(int siteId, int userId, int tenantId, int productId)
+        public int AddOrUpdateNotifyListItems(int siteId, int userId, int tenantId, int productId, string emailId)
         {
-            return AddOrUpdateWishListNotifyListItems(siteId, userId, tenantId, productId, true);
+            return AddOrUpdateWishListNotifyListItems(siteId, userId, tenantId, productId, true, emailId);
         }
 
-        private int AddOrUpdateWishListNotifyListItems(int siteId, int userId, int tenantId, int productId, bool isNotificationItem)
+        private int AddOrUpdateWishListNotifyListItems(int siteId, int userId, int tenantId, int productId, bool isNotificationItem, string emailId = null)
         {
-            var wishListItems = _currentDbContext.WebsiteWishListItems.Where(u => u.ProductId == productId &&
-                                                                                    u.SiteID == siteId &&
-                                                                                    u.UserId == userId &&
-                                                                                    u.IsDeleted != true &&
-                                                                                    (!u.IsNotification || !isNotificationItem))
-                                                                       .ToList();
+            var wishListItems = _currentDbContext.WebsiteWishListItems
+                .Where(u => u.ProductId == productId && u.SiteID == siteId)
+                .Where(u => (!string.IsNullOrEmpty(emailId)? u.EmailId == emailId : u.UserId == userId))
+                .Where(u => u.IsDeleted != true)                
+                .ToList();
 
             if (!wishListItems.Any(w => !w.IsNotification))
             {
-                AddWishlistItem(siteId, userId, tenantId, productId, false);
-            }
+                AddWishlistItem(siteId, userId, tenantId, productId, false, emailId);
+            } 
 
-            if (isNotificationItem)
+            if (isNotificationItem && !wishListItems.Any(w => w.IsNotification))
             {
-                if (!wishListItems.Any(w => w.IsNotification))
-                {
-                    AddWishlistItem(siteId, userId, tenantId, productId, true);
-                }
+                AddWishlistItem(siteId, userId, tenantId, productId, true, emailId);
             }
 
             _currentDbContext.SaveChanges();
@@ -1367,15 +1365,16 @@ namespace Ganedata.Core.Services
             return GetAllValidWishListItemsList(siteId, userId).Count();
         }
 
-        private void AddWishlistItem(int siteId, int userId, int tenantId, int productId, bool isNotification)
+        private void AddWishlistItem(int siteId, int userId, int tenantId, int productId, bool isNotification, string emailId = null)
         {
             var wishListItem = new WebsiteWishListItem
             {
                 ProductId = productId,
                 IsNotification = isNotification,
                 SiteID = siteId,
-                UserId = userId,
-                TenantId = tenantId
+                UserId = userId <= 0? (int?)null : userId,
+                TenantId = tenantId,
+                EmailId = emailId
             };
             wishListItem.UpdateCreatedInfo(userId);
             _currentDbContext.WebsiteWishListItems.Add(wishListItem);
@@ -1559,9 +1558,10 @@ namespace Ganedata.Core.Services
 
                     foreach (var item in notificationListItems)
                     {
-                        var (body, subject) = GetEmailContent(settings, item.AuthUser, productAvailabilityNotify.Product);
+                        var user = item.AuthUser ?? new AuthUser { UserFirstName = item.EmailId, UserEmail = item.EmailId };
+                        var (body, subject) = GetEmailContent(settings, user, productAvailabilityNotify.Product);
 
-                        SendNotification(item.AuthUser.UserEmail, subject, body, emailconfig);
+                        SendNotification(user.UserEmail, subject, body, emailconfig);
 
                         item.IsDeleted = true;
                     }

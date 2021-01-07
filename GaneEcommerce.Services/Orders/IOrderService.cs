@@ -85,6 +85,7 @@ namespace Ganedata.Core.Services
 
         InventoryTransaction GetLastInventoryTransactionsForSerial(string serial, int tenantId);
         Order CreateOrderByOrderNumber(string orderNumber, int productId, int tenantId, int warehouseId, InventoryTransactionTypeEnum transType, int userId, decimal Quantity);
+        Order GetOrderByOrderNumber(string orderNumber);
         IQueryable<Order> GetAllPendingOrdersForProcessingForDate();
 
         Order DeleteOrderById(int orderId, int userId);
@@ -115,7 +116,7 @@ namespace Ganedata.Core.Services
         bool CheckOrdersAuthroization(decimal OrderTotal, InventoryTransactionTypeEnum InventoryTransactionType, int TenantId, int UserId, double? CreditLimit = null);
         decimal GetDiscountOnTotalCost(int accountId, decimal OrdersTotal);
 
-        Order CreateShopOrder(CheckoutViewModel orderDetail, int tenantId, int UserId, int warehouseId, int SiteId);
+        Order CreateShopOrder(CheckoutViewModel orderDetail, int tenantId, int UserId, int warehouseId, int SiteId, ShopDeliveryTypeEnum deliveryType = ShopDeliveryTypeEnum.Standard);
         bool UpdatePickerId(int OrderId, int? pickerId, int userId);
         bool UpdateOrdersPicker(int[] orderIds, int? pickerId, int userId);
 

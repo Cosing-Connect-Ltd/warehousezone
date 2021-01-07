@@ -78,8 +78,25 @@ namespace Ganedata.Core.Models
         public bool IsActive { get; set; }
         public bool? IsDeleted { get; set; }
         public string SerialNo { get; set; }
+        public bool? IsDefaultDeliveryAddress { get; set; } 
+        public bool? IsDefaultBillingAddress { get; set; } 
+
     }
 
+    public class AccountPasswordResetSync
+    {
+        public string EmailAddress { get; set; }
+        public int TenantId { get; set; }
+        public int WarehouseId { get; set; }
+        public string TerminalSerialNo { get; set; }
+    }
+
+    public class AccountPasswordResetSyncResponse
+    {
+        public bool SentResetLinkSuccessfully { get; set; }
+        public string FailureMessage { get; set; }
+        public bool EmailRegistered { get; set; }
+    }
 
     public class TenantPriceGroupsSyncCollection
     {

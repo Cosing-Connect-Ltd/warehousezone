@@ -505,6 +505,11 @@ namespace Ganedata.Core.Services
             return order;
         }
 
+        public Order GetOrderByOrderNumber(string orderNumber)
+        {
+            return _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.ToLower().Equals(orderNumber.ToLower()));
+        }
+
         public List<OrderDetailsViewModel> GetSalesOrderDetails(int id, int tenantId)
         {
             var model = _currentDbContext.OrderDetail.Where(a => a.OrderID == id && a.IsDeleted != true && a.TenentId == tenantId).ToList();
@@ -1228,6 +1233,23 @@ namespace Ganedata.Core.Services
 
             if (item.OrderToken.HasValue && (!item.OrderID.HasValue || item.OrderID == 0))
             {
+                if ((!item.DeliveryAccountAddressID.HasValue || item.DeliveryAccountAddressID==0) && !string.IsNullOrEmpty(item.ShipmentAddressLine1) && !string.IsNullOrEmpty(item.ShipmentAddressPostcode))
+                {
+                    var accountAddress = new AccountAddresses()
+                    {
+                        AccountID = item.AccountID,
+                        AddressLine1 = item.ShipmentAddressLine1,
+                        AddressLine2 = item.ShipmentAddressLine2,
+                        Town = item.ShipmentAddressTown,
+                        PostCode = item.ShipmentAddressPostcode,
+                        DateCreated = DateTime.Now,
+                        CountryID = warehouse.CountryID
+                    };
+                    _currentDbContext.AccountAddresses.Add(accountAddress);
+                    _currentDbContext.SaveChanges();
+                    item.DeliveryAccountAddressID = accountAddress.AddressID;
+                }
+
                 var order = new Order
                 {
                     OrderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum)item.InventoryTransactionTypeId, terminal.TenantId),
@@ -1249,10 +1271,14 @@ namespace Ganedata.Core.Services
                     OrderToken = item.OrderToken,
                     DeliveryMethod = item.DeliveryMethod,
                     ShipmentAddressLine1 = item.ShipmentAddressLine1,
+                    ShipmentAddressLine2 = item.ShipmentAddressLine2,
+                    ShipmentAddressTown = item.ShipmentAddressTown,
                     ShipmentAddressPostcode = item.ShipmentAddressPostcode,
                     ExpectedDate = expectedDate,
                     FoodOrderType = item.FoodOrderType,
-                    OfflineSale = item.OfflineSale
+                    OfflineSale = item.OfflineSale,
+                    ShipmentAccountAddressId = item.DeliveryAccountAddressID.HasValue && item.DeliveryAccountAddressID!=0?  item.DeliveryAccountAddressID:null,
+                    BillingAccountAddressID = item.BillingAccountAddressID.HasValue && item.BillingAccountAddressID != 0 ? item.BillingAccountAddressID : null,
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
@@ -1298,7 +1324,9 @@ namespace Ganedata.Core.Services
                         ShipmentAddressTown = order.ShipmentAddressTown,
                         ShipmentAddressPostcode = order.ShipmentAddressPostcode,
                         ShipmentCountryId = order.ShipmentCountryId,
-                        CreatedBy = item.CreatedBy
+                        CreatedBy = item.CreatedBy,
+                        DeliveryAccountAddressID = item.DeliveryAccountAddressID,
+                        BillingAccountAddressID = item.BillingAccountAddressID
                     };
 
                     if (item.AccountTransactionInfo != null)
@@ -3253,7 +3281,7 @@ namespace Ganedata.Core.Services
             return discount;
         }
 
-        public Order CreateShopOrder(CheckoutViewModel orderDetails, int tenantId, int UserId, int warehouseId, int SiteId)
+        public Order CreateShopOrder(CheckoutViewModel orderDetails, int tenantId, int UserId, int warehouseId, int SiteId, ShopDeliveryTypeEnum deliveryType = ShopDeliveryTypeEnum.Standard)
         {
             Order order = new Order();
             decimal total = 0;
@@ -3262,7 +3290,17 @@ namespace Ganedata.Core.Services
                 order.OrderNumber = GenerateNextOrderNumber(InventoryTransactionTypeEnum.SalesOrder, tenantId);
             }
 
+            decimal deliveryCost = 0;
+            var tenantConfig = _currentDbContext.TenantConfigs.FirstOrDefault(m => m.TenantId == tenantId);
+
+            if (tenantConfig !=null)
+            {
+                deliveryCost = deliveryType == ShopDeliveryTypeEnum.NextDay? (tenantConfig.NextDayDeliveryCost ?? 0) : (tenantConfig.StandardDeliveryCost??0);
+                total = total + deliveryCost;
+            }
+
             var duplicateOrder = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.Equals(order.OrderNumber, StringComparison.CurrentCultureIgnoreCase));
+            
             if (duplicateOrder != null)
             {
                 throw new Exception($"Order Number {order.OrderNumber} already associated with another Order. Please regenerate order number.", new Exception("Duplicate Order Number"));
@@ -3280,6 +3318,9 @@ namespace Ganedata.Core.Services
             order.WarehouseId = warehouseId;
             order.SiteID = SiteId;
             order.OrderStatusID = OrderStatusEnum.Hold;
+            order.ShipmentAccountAddressId = orderDetails.ShippingAddressId;
+            order.BillingAccountAddressID = orderDetails.BillingAddressId;
+            order.ShopDeliveryTypeID = (int)deliveryType;
 
             _currentDbContext.Order.Add(order);
             _currentDbContext.SaveChanges();
@@ -3289,6 +3330,9 @@ namespace Ganedata.Core.Services
                 var items = orderDetails.CartItems.ToList();
                 foreach (var item in items)
                 {
+                    var product = _currentDbContext.ProductMaster.First(m => m.ProductId == item.ProductId);
+                    var tax = product.GlobalTax.PercentageOfAmount * item.Price;
+
                     OrderDetail detail = new OrderDetail();
                     detail.ProductId = item.ProductId;
                     detail.Qty = item.Quantity;
@@ -3301,6 +3345,8 @@ namespace Ganedata.Core.Services
                     detail.TenentId = tenantId;
                     detail.OrderID = order.OrderID;
                     total = total + (item.Price * item.Quantity);
+                    detail.TotalAmount = total;
+                    detail.TaxAmount = tax;
                     _currentDbContext.OrderDetail.Add(detail);
                     Inventory.StockRecalculate(item.ProductId, warehouseId, tenantId, UserId);
                 }
@@ -3314,23 +3360,26 @@ namespace Ganedata.Core.Services
                     cartItemsList.ForEach(u => u.IsDeleted = true);
                 };
                 _currentDbContext.SaveChanges();
-                var accountTransaction = new AccountTransaction()
-                {
-                    AccountId = orderDetails.AccountId,
-                    AccountTransactionTypeId = AccountTransactionTypeEnum.PaidByAccount,
-                    AccountPaymentModeId = AccountPaymentModeEnum.OnlineTransfer,
-                    CreatedBy = UserId,
-                    Notes = "Paid : " + orderDetails.OrderNumber.Trim(),
-                    DateCreated = DateTime.UtcNow,
-                    Amount = total,
-                    TenantId = tenantId,
-                    FinalBalance = total,
-                    OrderId = order.OrderID,
-                    PaymentTransactionId = orderDetails.SagePayPaymentResponse.transactionId
-                };
 
-                _currentDbContext.AccountTransactions.Add(accountTransaction);
-                _currentDbContext.SaveChanges();
+                if (orderDetails.AccountId > 0)
+                {
+                    var accountTransaction = new AccountTransaction()
+                    {
+                        AccountId = orderDetails.AccountId,
+                        AccountTransactionTypeId = AccountTransactionTypeEnum.PaidByAccount,
+                        AccountPaymentModeId = AccountPaymentModeEnum.OnlineTransfer,
+                        CreatedBy = UserId,
+                        Notes = "Paid : " + orderDetails.OrderNumber.Trim(),
+                        DateCreated = DateTime.UtcNow,
+                        Amount = total,
+                        TenantId = tenantId,
+                        FinalBalance = total,
+                        OrderId = order.OrderID,
+                        PaymentTransactionId = orderDetails.SagePayPaymentResponse.transactionId
+                    };
+                    _currentDbContext.AccountTransactions.Add(accountTransaction);
+                    _currentDbContext.SaveChanges();
+                }
             }
 
             return order;

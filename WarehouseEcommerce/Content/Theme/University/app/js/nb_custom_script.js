@@ -165,7 +165,7 @@ function getAsteriskForRequiredFields() {
     /////////////// add Asteric on the required data fields in views using jquery validation attribute value///////////////////
     $('input:not([type="checkbox"])').each(function () {
         var req = $(this).attr('required');
-        if (undefined != req) {
+        if (undefined != req && !$(this).hasClass("no-asterisk")) {
             $(this).after('<span id="required-asterisk" style="color:red"> *</span>');
         }
     });

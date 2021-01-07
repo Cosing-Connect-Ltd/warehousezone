@@ -64,7 +64,7 @@ namespace WarehouseEcommerce.Controllers
 
         public int CurrentUserId
         {
-            get { return CurrentUser.UserId; }
+            get { return CurrentUser?.UserId??0; }
         }
 
         public int CurrentTenantId

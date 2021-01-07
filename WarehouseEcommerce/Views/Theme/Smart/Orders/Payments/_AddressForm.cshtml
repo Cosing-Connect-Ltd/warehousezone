@@ -1,0 +1,126 @@
+﻿@model Ganedata.Core.Entities.Domain.AddressFormViewModel
+
+@{
+    var hasSavedAddress = Model.SavedAddresses.Any();
+}
+
+<h5 class="header-ul-left-pink mb-4 p-3 mt-4 clearfix">@(Model.IsBillingAddress? "Billing Address" : "Shipping Address")</h5>
+@if (hasSavedAddress)
+{
+    <div class="form-group col-12" id="divSavedAddSection">
+        <div class="card-columns">
+            @foreach (var add in Model.SavedAddresses)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-inline-flex align-items-center">
+                            <input type="radio" name="rbAddress" id="rbAddress@(add.AddressID)" value="@add.AddressID" data-isbilling="@Model.IsBillingAddress" data-useforbilling="@(add.AddTypeBilling)" />
+                            <label class="address-det" for="rbAddress@(add.AddressID)">
+                                @Html.HiddenFor(p => add.AddressID)
+                                @Html.Partial("_AddressDetail", add)
+                            </label>
+                        </div>                        
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="botomBtnsec">
+            <button class="btmbtn pro" id="btnSelectAddress">SELECT</button>
+        </div>
+    </div>
+
+    <div class="text-center">OR</div>
+    <div class="botomBtnsec">
+        <button class="btmbtn pro" data-toggle="collapse" data-target="#divAddAddress">ADD NEW ADDRESS</button>
+    </div>
+}
+
+<div id="divAddAddress" class="collapse @(hasSavedAddress?"":"show") ">
+    <div class="form-group col-12">
+        @using (Html.BeginForm("SaveAddress", "Orders", FormMethod.Post, new { id = "formAddAddress" }))
+        {
+            @Html.HiddenFor(m => m.IsBillingAddress)
+
+            <div class="billandshipsec">
+                <div class="addNewAddrWrap">
+                    <div class="addNwAdrrFormWrap">
+                        <div class="row" id="post-code__search-box">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="findAddrWrap" style="width:100%">
+                                        <input type="text" id="postCode" name="search" class="findAddrInput text-search-postcode" placeholder="Enter Postcode" />
+                                        <button class="fadBtn" type="button" onclick="SearchPostCode();">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="selectAddresss" class="col-lg-6" style="display: none">
+                                <div class="form-group">
+                                    <select id="selectApiAddress" name="address" class="find-address-select" onchange="onAddressDropdownChange()" style="width:100%">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    @Html.LabelFor(m => m.AddressLine1, "Address Line 1")
+                    <span id="required-asterisk" style="color:red"> *</span>
+                    @Html.TextBoxFor(model => model.AddressLine1, new { @class = "form-control no-asterisk AddressLine1", @required = "Required" })
+                </div>
+                <div class="col-lg-6 form-group">
+                    @Html.LabelFor(m => m.Telephone, "Telephone Number")
+                    <span id="required-asterisk" style="color:red"> *</span>
+                    @Html.TextBoxFor(model => model.Telephone, new { @class = "form-control no-asterisk", @required = "Required" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    @Html.LabelFor(m => m.AddressLine2, "Address Line 2")
+                    @Html.TextBoxFor(model => model.AddressLine2, new { @class = "form-control AddressLine2" })
+                </div>
+                <div class="col-lg-6 form-group">
+                    @Html.LabelFor(m => m.CountryID, "Country")
+                    @Html.DropDownListFor(model => model.CountryID, new SelectList(Model.Countries, "CountryID", "CountryName"), new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    @Html.LabelFor(m => m.AddressLine3, "Address Line 3")
+                    @Html.TextBoxFor(model => model.AddressLine3, new { @class = "form-control AddressLine3" })
+                </div>
+                <div class="col-lg-6 form-group">
+                    @Html.LabelFor(m => m.PostCode, "Postal Code")
+                    <span id="required-asterisk" style="color:red"> *</span>
+                    @Html.TextBoxFor(model => model.PostCode, new { @class = "form-control no-asterisk PostCode", @required = "Required", })
+                </div>
+            </div>
+            if (!Model.IsBillingAddress)
+            {
+                <div class="row">
+                    <div class="col form-group">
+                        @Html.LabelFor(m => m.DeliveryInstructions, "Delivery Instruction")
+                        @Html.TextAreaFor(model => model.DeliveryInstructions, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="checkboxwrap">
+                    <input class="styled-checkbox" id="AddTypeBilling" type="checkbox" name="AddTypeBilling" value="False">
+                    <label class="ship-type" for="AddTypeBilling">Use same address for Billing</label>
+                </div>
+            }
+        }
+    </div>
+    <div class="botomBtnsec modal-footer">
+        <button class="btmbtn pro" type="button" id="btnSaveAddress">SAVE ADDRESS</button>
+    </div>
+</div>
+
+<script>
+    $("#AddTypeBilling").click(function () {
+        $(this).val($(this).is(":checked"));
+    });
+</script>

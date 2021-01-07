@@ -145,7 +145,7 @@
                     {
                         <table class="basketTable mb-4">
                             <tbody>
-                                @if (Model.ShowCartPopUp != true)
+                                @*@if (Model.ShowCartPopUp != true)
                                 {
                                     <tr class="store-delivery">
                                         <td class="topTd" colspan="4"></td>
@@ -191,8 +191,13 @@
                                             </td>
                                         }
                                     }
-                                </tr>
-
+                                </tr>*@
+                            <tr class="headRow cmnRow">
+                                <td class="prd">Product</td>
+                                <td class="price">Price</td>
+                                <td class="qty">Quantity</td>
+                                <td class="tot">Total</td>
+                            </tr>
                                 @foreach (var item in Model.WebsiteCartItems)
                                 {
                                     <tr class="cmnRow">
@@ -205,7 +210,6 @@
                                                     <span class="prdName">
                                                         @(item.ProductMaster?.Name)
 
-
                                                         @if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit && item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
                                                         {
                                                             foreach (var cartitem in item.KitProductCartItems)
@@ -214,8 +218,7 @@
                                                                     <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name <br />
                                                                 </p>
                                                             }
-                                                        }
-
+                                                        }                                                        
                                                     </span>
                                                 </div>
                                             </div>
@@ -245,7 +248,7 @@
                                         </td>
                                         @if (Model.ShowCartPopUp != true)
                                         {
-                                            if (Model.IsCollectionAvailable)
+                                            @*if (Model.IsCollectionAvailable)
                                             {
                                                 <td class="delivery greyBox">
                                                     <div class="greyBoxInner">
@@ -268,7 +271,7 @@
                                                         </p>
                                                     </div>
                                                 </td>
-                                            }
+                                            }*@
                                         }
                                     </tr>
                                 }
@@ -280,26 +283,6 @@
                                             <b>Sub Total:</b> <span>@ViewBag.CurrencySymbol@(Model.TotalAmount)</span>
                                         </div>
                                     </td>
-
-                                    @if (Model.ShowCartPopUp != true)
-                                    {
-                                        if (Model.IsCollectionAvailable)
-                                        {
-                                            <td class="delivery greyBox">
-                                                <div class="botomBtnsec in-table-button-section">
-                                                    <button class="btmbtn pro" onclick="proceedToPickup()">PROCEED TO PICKUP</button>
-                                                </div>
-                                            </td>
-                                        }
-                                        if (Model.IsDeliveryAvailable)
-                                        {
-                                            <td class="delivery greyBox">
-                                                <div class="botomBtnsec in-table-button-section">
-                                                    <button class="btmbtn pro" onclick="proceedToDelivery()">PROCEED TO DELIVERY</button>
-                                                </div>
-                                            </td>
-                                        }
-                                    }
                                 </tr>
                             </tbody>
                         </table>
@@ -310,40 +293,13 @@
                     }
                 </div>
                 <div class="botomBtnsec">
-                    @if (Model.ShowCartPopUp != true)
-                    {
-                        if ((Model.IsCollectionAvailable || Model.IsDeliveryAvailable) && (Model.WebsiteCartItems != null && Model.WebsiteCartItems.Count != 0))
-                        {
-                            <button class="btmbtn pro mobile-checkout" onclick="proceedToMobileCheckout()">PROCEED TO CHECKOUT</button>
-                        }
-                        <a class="btmbtn sho" href="@Url.Action("list", "Products")">CONTINUE SHOPPING</a>
-                    }
+                    <button class="btmbtn pro mobile-checkout" onclick="proceedToMobileCheckout()">PROCEED TO CHECKOUT</button>
+                    <a class="btmbtn sho" href="@Url.Action("list", "Products")">CONTINUE SHOPPING</a>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        function increseQuantity(cartItemId) {
-            var element = document.getElementById("counter_" + cartItemId);
-            var quantity = parseInt(element.value);
-
-            quantity++;
-
-            element.value = quantity;
-
-            updateCartItem(cartItemId, quantity)
-        }
-
-        function reduceQuantity(cartItemId) {
-            var element = document.getElementById("counter_" + cartItemId);
-            var quantity = parseInt(element.value);
-            if (quantity > 1) {
-                quantity--;
-                element.value = quantity;
-                updateCartItem(cartItemId, quantity)
-            }
-        }
-    </script>
+    
 
     @if (Model.IsCollectionAvailable || Model.IsDeliveryAvailable)
     {

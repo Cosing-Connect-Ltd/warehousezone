@@ -61,6 +61,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool? IsDeleted { get; set; }
         [Display(Name = "Prestashop Id")]
         public int? PrestaShopAddressId { get; set; }
+        public bool? IsDefaultDeliveryAddress { get; set; }
+        public bool? IsDefaultBillingAddress { get; set; }
         public virtual GlobalCountry GlobalCountry { get; set; }
         [ForeignKey("AccountID")]
         public virtual Account Account { get; set; }

@@ -27,7 +27,7 @@ namespace Ganedata.Core.Entities.Domain
         public int? AccountId { get; set; }
         public int? AccountAddressId { get; set; }
         public bool? CreateAccount { get; set; }
-        public List<CountryViewModel> Countries { get; set; }
+        public List<CountryViewModel> Countries { get; set; } = new List<CountryViewModel>();
         public int? ShippingAddressId { get; set; }
         public int? BillingAddressId { get; set; }
         public bool? IsAddressSameForBilling { get; set; }
@@ -56,5 +56,42 @@ namespace Ganedata.Core.Entities.Domain
         public WebsiteShippingRulesViewModel ShippingRule { get; set; }
         public CollectionPointViewModel CollectionPoint { get; set; }
         public SagePayPaymentResponseViewModel SagePayPaymentResponse { get; set; }
+    }
+
+    public class ReviewOrderViewModel
+    {
+        public WebsiteCartItemsViewModel Cart { get; set; } = new WebsiteCartItemsViewModel();        
+        public decimal CartTotalAmount => Math.Round(Cart.WebsiteCartItems.Sum(c => c.ProductTotalAmount), 2) + (ShippingRule?.Price ?? 0);
+        public WebsiteShippingRulesViewModel ShippingRule { get; set; }
+        public List<ProductMaster> RelatedProducts { get; set; } = new List<ProductMaster>();
+        public bool IsStandardDelivery { get; set; }
+        public List<AddressViewModel> ShippingAddresses { get; set; }
+        public List<AddressViewModel> BillingAddresses { get; set; }
+        public decimal NextDayDeliveryCost { get; set; }
+        public decimal StandardDeliveryCost { get; set; }
+        public string DeliveryInstruction { get; set; }
+        public int BillingAddressId { get; set; }
+        public int ShippingAddressId { get; set; }
+    }
+
+    public class AddressFormViewModel : AddressViewModel
+    {
+        public int SelectedAddressID { get; set; }
+        public List<CountryViewModel> Countries { get; set; } = new List<CountryViewModel>();
+        public List<AddressViewModel> SavedAddresses { get; set; }
+        public string DeliveryInstructions { get; set; }
+        public bool IsBillingAddress { get; set; }
+    }
+
+    public class OrderPaymentViewModel
+    {
+        public bool IsStandardDelivery { get; set; }
+        public int BillingAddressId { get; set; }
+        public int ShippingAddressId { get; set; }
+        public string AdyenPaymentLink { get; set; }
+        public string AdyenPaymentLinkID { get; set; }
+        public int DeliveryOption { get; set; }
+        public string AdyenStatusApiEndpoint { get; set; }
+        //TODO
     }
 }
