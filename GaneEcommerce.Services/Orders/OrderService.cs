@@ -1233,6 +1233,23 @@ namespace Ganedata.Core.Services
 
             if (item.OrderToken.HasValue && (!item.OrderID.HasValue || item.OrderID == 0))
             {
+                if ((!item.DeliveryAccountAddressID.HasValue || item.DeliveryAccountAddressID==0) && !string.IsNullOrEmpty(item.ShipmentAddressLine1) && !string.IsNullOrEmpty(item.ShipmentAddressPostcode))
+                {
+                    var accountAddress = new AccountAddresses()
+                    {
+                        AccountID = item.AccountID,
+                        AddressLine1 = item.ShipmentAddressLine1,
+                        AddressLine2 = item.ShipmentAddressLine2,
+                        Town = item.ShipmentAddressTown,
+                        PostCode = item.ShipmentAddressPostcode,
+                        DateCreated = DateTime.Now,
+                        CountryID = warehouse.CountryID
+                    };
+                    _currentDbContext.AccountAddresses.Add(accountAddress);
+                    _currentDbContext.SaveChanges();
+                    item.DeliveryAccountAddressID = accountAddress.AddressID;
+                }
+
                 var order = new Order
                 {
                     OrderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum)item.InventoryTransactionTypeId, terminal.TenantId),
@@ -1254,12 +1271,14 @@ namespace Ganedata.Core.Services
                     OrderToken = item.OrderToken,
                     DeliveryMethod = item.DeliveryMethod,
                     ShipmentAddressLine1 = item.ShipmentAddressLine1,
+                    ShipmentAddressLine2 = item.ShipmentAddressLine2,
+                    ShipmentAddressTown = item.ShipmentAddressTown,
                     ShipmentAddressPostcode = item.ShipmentAddressPostcode,
                     ExpectedDate = expectedDate,
                     FoodOrderType = item.FoodOrderType,
                     OfflineSale = item.OfflineSale,
-                    ShipmentAccountAddressId = item.DeliveryAccountAddressID,
-                    BillingAccountAddressID = item.BillingAccountAddressID
+                    ShipmentAccountAddressId = item.DeliveryAccountAddressID.HasValue && item.DeliveryAccountAddressID!=0?  item.DeliveryAccountAddressID:null,
+                    BillingAccountAddressID = item.BillingAccountAddressID.HasValue && item.BillingAccountAddressID != 0 ? item.BillingAccountAddressID : null,
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
