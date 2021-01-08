@@ -25,6 +25,20 @@
     }
     <div class="nb_fltr_accrd_wrap">
         <div id="accordion" class="nb_filter_accordion">
+            <div class="nb_filter_head" id="filterAvailability">
+                <h5 class="mb-0">
+                    <button id="brand_btn" class="btn btn-link">
+                        Availability
+                    </button>
+                </h5>
+            </div>
+            <div class="brand-content">
+                <div class="nb_filter_body">
+                    <ul class="nb_prd_filter_listouter">
+                        <li class="list-group-item"><input type="checkbox" id="instockonly" class="checkbox-inline" value="true" @(requestQuery.Contains("instockonly>") ? "checked" : "")>In-Stock only</li>
+                    </ul>
+                </div>
+            </div>
             @if (!string.IsNullOrEmpty(Model.MinPrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxPrice?.Trim()))
             {
                 <div class="nb_filter_head price-range-div" id="filter1">
