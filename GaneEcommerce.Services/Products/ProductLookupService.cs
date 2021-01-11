@@ -206,7 +206,8 @@ namespace Ganedata.Core.Services
                         k.KitProductMaster.ManufacturerId,
                         CategoryId = k.KitProductMaster.ProductCategoryId
                     }),
-                    p.ProductCategoryId
+                    p.ProductCategoryId,
+                    p.InventoryStocks
                 }).ToList();
 
                 if (filters.TryGetValue("prices", out List<string> pricesData))
@@ -249,6 +250,12 @@ namespace Ganedata.Core.Services
                                                     .ToList();
 
                     selectedProducts = selectedProducts.Where(p => filteredProductsIds.Contains(p.ProductId)).ToList();
+                }
+
+                if (filters.TryGetValue("instockonly", out List<string> inStockData))
+                {
+                    if(inStockData != null && inStockData.Any(s => Convert.ToBoolean(s)))
+                    selectedProducts = selectedProducts.Where(p => p.InventoryStocks != null && p.InventoryStocks.Any()).ToList();
                 }
 
                 var selectedProductsIds = selectedProducts.Select(p => p.ProductId).ToList();
@@ -349,7 +356,7 @@ namespace Ganedata.Core.Services
             return products;
         }
 
-        private static Dictionary<string, List<string>> ReadFiltersString(string filterString)
+        public Dictionary<string, List<string>> ReadFiltersString(string filterString)
         {
             if (string.IsNullOrEmpty(filterString))
             {

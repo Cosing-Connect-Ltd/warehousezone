@@ -123,6 +123,10 @@
                                     </div>
                                 </div>
                             }
+                            if (!Model.Products.Any())
+                            {
+                                <div class="d-flex align-content-center justify-content-center mt-5 ml-auto mr-auto"><span class="fa fa-info-circle text-success fa-2x mr-2"></span> No products available.</div>
+                            }
                         }
 
                         @Html.Hidden("current-filters", Model.CurrentFilters)

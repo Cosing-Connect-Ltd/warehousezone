@@ -5,6 +5,7 @@
     var Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
     var Videos = ConfigurationManager.AppSettings["VideoFormats"].Split(new char[] { ',' });
     var Files = ConfigurationManager.AppSettings["DocumentFormats"].Split(new char[] { ',' });
+    var index = 1;
 }
 <section class="nb_sec nb_prdlisting_pgsec product-details-section">
     <span id="res_filterBox_trigger"><i class="icon-filter"></i></span>
@@ -38,21 +39,23 @@
                             @foreach (var item in Model.GroupedTabs)
                             {
                                 <li role="presentation" nav-item">
-                                    <a href="#@item.ProductKitType.Name.Replace(" ", "-")" aria-controls="@item.ProductKitType.Name.Replace(" ", "-")" role="tab" data-toggle="tab" class="nav-link @(item.ProductKitType.Id == activeTabId ? "active" : "")">
+                                    <a href="#@item.ProductKitType.Name.Replace(" ", "-")" aria-controls="@item.ProductKitType.Name.Replace(" ", "-")" role="tab" data-toggle="tab" class="nav-link @(item.ProductKitType.Id == activeTabId || (activeTabId == null && index == 1) ? "active" : "")">
                                         @item.ProductKitType.Name
                                         <span class="active-tab-bar"></span>
                                     </a>
                                 </li>
+                                index++;
                             }
                         </ul>
 
                         <!-- Tab panes -->
                         <div class="tab-content grouped-product-tab-items">
                             @{
+                                index = 1;
                                 foreach (var item in Model.GroupedTabs)
                                 {
-                                    <div role="tabpanel" class="tab-pane @(item.ProductKitType.Id == activeTabId ? "active" : "")" id="@item.ProductKitType.Name.Replace(" ", "-")">
-                                        @if (item?.Products != null)
+                                    <div role="tabpanel" class="tab-pane @(item.ProductKitType.Id == activeTabId || (activeTabId == null && index == 1) ? "active" : "")" id="@item.ProductKitType.Name.Replace(" ", "-")">
+                                        @if (item?.Products != null && item.Products.Any())
                                         {
                                             foreach (var kitProductMaster in item?.Products)
                                             {
@@ -75,6 +78,7 @@
                                                             }
                                                             @Html.Partial("_ProductAvailability", kitProductMaster)
                                                             <div class="get-trade-price__link" style="display: none;">
+
                                                                 <a href="javascript:;" onclick="GetLoggedIn(false,true)">
                                                                     Get Trade Price
                                                                 </a>
@@ -89,7 +93,7 @@
                                                                 {
                                                                     <div class="prd_amnt_RRP">RRP @ViewBag.CurrencySymbol@kitProductMaster.SellPrice<span> excl VAT</span></div>
                                                                 }
-                                                            } 
+                                                            }
                                                             @Html.Partial("_ProductDetailActionsButtons", kitProductMaster)
                                                         </div>
                                                     </div>
@@ -110,7 +114,12 @@
                                                 </div>
                                             }
                                         }
+                                        else
+                                        {
+                                            <div class="d-flex align-content-center justify-content-center mt-5"><span class="fa fa-info-circle text-success fa-2x mr-2"></span> No products available.</div>
+                                        }
                                     </div>
+                                    index++;
                                 }
                             }
                         </div>

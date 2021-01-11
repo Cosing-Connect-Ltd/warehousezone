@@ -86,5 +86,6 @@ namespace Ganedata.Core.Services
 
         bool RemoveProductAttriubte(int id);
 
+        Dictionary<string, List<string>> ReadFiltersString(string filterString);
     }
 }
