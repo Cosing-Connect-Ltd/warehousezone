@@ -124,36 +124,39 @@ namespace WarehouseEcommerce.Controllers
 
                     products = _productlookupServices.ApplyAttributeFilters(products, filters, CurrentTenantWebsite.SiteID);
 
+                    if (products.Any())
+                    {
+                        products.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
+                    }
+
+                    IEnumerable<ProductMaster> prods;
+
                     switch (sort)
                     {
                         case SortProductTypeEnum.PriceByDesc:
-                            products = products.OrderByDescending(s => s.SellPrice);
+                            prods = products.ToList().OrderByDescending(s => s.SellPrice);
                             break;
-
-                        case SortProductTypeEnum.NameByDesc:
-                            products = products.OrderByDescending(s => s.Name);
-                            break;
-
                         case SortProductTypeEnum.PriceByAsc:
-                            products = products.OrderBy(s => s.SellPrice);
+                            prods = products.ToList().OrderBy(s => s.SellPrice);
                             break;
-
+                        case SortProductTypeEnum.NameByDesc:
+                            prods = products.ToList().OrderByDescending(s => s.Name);
+                            break;
                         case SortProductTypeEnum.NameByAsc:
-                            products = products.OrderBy(s => s.Name);
+                            prods = products.ToList().OrderBy(s => s.Name);
+                            break;
+                        default:
+                            prods = products;
                             break;
                     }
 
                     pageSize = pageSize ?? 12;
                     int pageNumber = (page ?? 1);
-                    var productsPagedList = products.ToPagedList(pageNumber, pageSize.Value);
+                    var productsPagedList = prods.ToPagedList(pageNumber, pageSize.Value);
                     page = pageNumber = pageNumber > productsPagedList.PageCount ? productsPagedList.PageCount : pageNumber;
-                    var pagedProductsList = products.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize.Value);
-                    if (pagedProductsList.Count > 0)
-                    {
-                        pagedProductsList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
-                    }
-
-                    model.DynamicFilters.FilteredCount = products.Count();
+                    var pagedProductsList = prods.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize.Value);
+                    
+                    model.DynamicFilters.FilteredCount = prods.Count();
                     model.Products = pagedProductsList;
                 }
                 else
