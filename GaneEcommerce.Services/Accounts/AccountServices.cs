@@ -555,7 +555,7 @@ namespace Ganedata.Core.Services
 
         private void ClearDefaultAccountAddresses(int accountId, int userId, bool isBillingAddress)
         {
-            var accountAddresses = _currentDbContext.AccountAddresses.Where(m => m.AccountID == accountId && m.IsDefaultBillingAddress == true && m.IsDeleted!=true);
+            var accountAddresses = _currentDbContext.AccountAddresses.Where(m => m.AccountID == accountId  && m.IsDeleted!=true);
             foreach (var address in accountAddresses)
             {
                 if (isBillingAddress)
@@ -570,7 +570,7 @@ namespace Ganedata.Core.Services
                 address.DateUpdated = DateTime.Now;
                 _currentDbContext.Entry(address).State = EntityState.Modified;
             }
-            _currentDbContext.SaveChangesAsync();
+            _currentDbContext.SaveChanges();
         }
 
         public AccountAddresses SaveAccountAddress(AccountAddresses customeraddresses, int currentUserId)

@@ -7,8 +7,6 @@ using Newtonsoft.Json;
 
 namespace Ganedata.Core.Models.AdyenPayments
 {
-
- 
     public class AdyenCreatePayLinkRequestModel
     {
         //[JsonIgnore]
