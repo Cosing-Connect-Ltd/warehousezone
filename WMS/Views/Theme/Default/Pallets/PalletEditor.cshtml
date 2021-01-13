@@ -77,6 +77,7 @@
             <a class="btn btn-success" id="btnQuickDispatchPallets">Quick Dispatch</a>
         }
         <a class="btn btn-success" id="btnDispatchPallets" style="display:none">Dispatch Selected Pallets</a>
+        @Html.ActionLink("Print Delivery Note", "DeliveryNotePrint", "Reports", new { id = Model.SelectedOrderProcessId }, new { @class = "btn btn-primary", target = "_blank" })
         @Html.ActionLink("Back to List", "Index", "SalesOrders", new { @class = "btn btn-primary" })
     </div>
 </div>

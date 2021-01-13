@@ -472,7 +472,7 @@ namespace WMS.Controllers
         {
             var orderDetail = OrderService.GetPalletOrdersDetails(OrderProcessId, CurrentTenantId, true);
             bool status = false;
-            if (orderDetail.Count > 0)
+            if (orderDetail?.Count > 0)
             {
                 foreach (var item in orderDetail)
                 {

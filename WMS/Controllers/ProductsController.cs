@@ -711,14 +711,10 @@ namespace WMS.Controllers
 
         }
 
-
-
-
         public JsonResult GetNextProductCode()
         {
             return Json(_productServices.GenerateNextProductCode(CurrentTenantId), JsonRequestBehavior.AllowGet);
         }
-
 
         public ActionResult ProductList()
         {

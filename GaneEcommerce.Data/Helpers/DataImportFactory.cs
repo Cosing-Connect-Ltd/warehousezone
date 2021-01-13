@@ -3353,15 +3353,17 @@ namespace Ganedata.Core.Data.Helpers
 
                 foreach (var item in orderSearch.Orders.Order)
                 {
-                    var order = _currentDbContext.Order.FirstOrDefault(u => u.PrestaShopOrderId == item.Id && u.SiteID == ApiId && u.IsDeleted != true);
+                    var order = _currentDbContext.Order.FirstOrDefault(u => u.PrestaShopOrderId == item.Id && u.ApiCredentialId == ApiId && u.IsDeleted != true);
                     if (order == null)
                     {
                         order = new Order();
-                        order.OrderNumber = item.Reference;
-                        var duplicateOrder = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.Equals(order.OrderNumber, StringComparison.CurrentCultureIgnoreCase) && m.IsDeleted != true);
+
+                        string orderNumber = $"{item.Id}-{item.Reference}";
+                        order.OrderNumber = orderNumber;
+                        var duplicateOrder = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.Equals(orderNumber, StringComparison.CurrentCultureIgnoreCase) && m.IsDeleted != true);
                         if (duplicateOrder != null)
                         {
-                            throw new Exception($"Order Number {order.OrderNumber} already associated with another Order. Please regenerate order number.", new Exception("Duplicate Order Number"));
+                            throw new Exception($"Order Number {orderNumber} already associated with another Order. Please regenerate order number.", new Exception("Duplicate Order Number"));
                         }
 
                         order.IssueDate = Convert.ToDateTime(item.Date_add);
@@ -3430,6 +3432,7 @@ namespace Ganedata.Core.Data.Helpers
                                 order.ShipmentCountryId = accountAddress.CountryID;
                             }
                         }
+
                         order.DateUpdated = DateTime.UtcNow;
                         order.TenentId = tenantId;
                         order.UpdatedBy = 1;
@@ -3444,6 +3447,10 @@ namespace Ganedata.Core.Data.Helpers
                     else if (item.Next_day_delivery > 0)
                     {
                         order.SLAPriorityId = 1;
+                    }
+                    else
+                    {
+                        order.SLAPriorityId = 3;
                     }
 
 
@@ -3499,6 +3506,7 @@ namespace Ganedata.Core.Data.Helpers
                         ordTotal = ordTotal + ((order_row.Unit_price_tax_incl * order_row.Product_quantity));
 
                     }
+
                     order.OrderTotal = (decimal)ordTotal;
                     order.OrderCost = (decimal)ordTotal;
                     order.PrestaShopOrderId = item.Id;
@@ -3627,9 +3635,6 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         InventoryStock = u.InventoryStocks,
                         SkuCode = u.SKUCode,
-
-
-
                     }).ToList();
                 if (getProductDetails.Count > 0)
                 {
@@ -3649,19 +3654,13 @@ namespace Ganedata.Core.Data.Helpers
                             stock_Available.StockAvailableId = stockdetail == null ? 0 : stockdetail.Id;
                             stock_Availables.Add(stock_Available);
                         }
-
                     }
                     if (stock_Availables.Count > 0)
                     {
-
                         url = PrestashopUrl + "stock_availables";
                         UpdatePrestaShopStock(url, PrestashopKey, stock_Availables);
-
-
                     }
                 }
-
-
             }
             catch (Exception e)
             {
@@ -3679,135 +3678,12 @@ namespace Ganedata.Core.Data.Helpers
             if (!string.IsNullOrEmpty(htmlString))
             {
                 string htmlTagPattern = "<.*?>";
-
                 htmlString = Regex.Replace(htmlString, htmlTagPattern, string.Empty);
                 htmlString = Regex.Replace(htmlString, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
             }
-            // htmlString = htmlString.Replace(" ", string.Empty);
 
             return htmlString;
-        }
-        public string GenerateNextOrderNumber(InventoryTransactionTypeEnum type, int tenantId)
-        {
 
-            var _currentDbContext = new ApplicationContext();
-            var lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == type)
-                .OrderByDescending(m => m.OrderNumber)
-                .FirstOrDefault();
-
-            var prefix = "ON-";
-            switch (type)
-            {
-                case InventoryTransactionTypeEnum.PurchaseOrder:
-                    prefix = "PO-";
-                    break;
-                case InventoryTransactionTypeEnum.SalesOrder:
-                case InventoryTransactionTypeEnum.Proforma:
-                case InventoryTransactionTypeEnum.Quotation:
-                case InventoryTransactionTypeEnum.Samples:
-                    prefix = "SO-";
-                    lastOrder = _currentDbContext.Order.Where(p =>
-                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder ||
-                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma ||
-                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation ||
-                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
-                    ).OrderByDescending(m => m.OrderNumber)
-                     .FirstOrDefault();
-                    break;
-                case InventoryTransactionTypeEnum.WorksOrder:
-                    prefix = "MO-";
-                    break;
-                case InventoryTransactionTypeEnum.DirectSales:
-                    prefix = "DO-";
-                    break;
-                case InventoryTransactionTypeEnum.TransferIn:
-                case InventoryTransactionTypeEnum.TransferOut:
-                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn ||
-                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut && p.OrderNumber.Length == 11)
-                    .OrderByDescending(m => m.OrderNumber)
-                    .FirstOrDefault();
-                    prefix = "TO-";
-                    break;
-                case InventoryTransactionTypeEnum.Returns:
-                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns && p.OrderNumber.Length == 11)
-                   .OrderByDescending(m => m.OrderNumber).FirstOrDefault();
-                    prefix = "RO-";
-                    break;
-                case InventoryTransactionTypeEnum.Wastage:
-                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage && p.OrderNumber.Length == 11)
-                  .OrderByDescending(m => m.OrderNumber).FirstOrDefault();
-                    prefix = "WO-";
-                    break;
-                case InventoryTransactionTypeEnum.AdjustmentIn:
-                case InventoryTransactionTypeEnum.AdjustmentOut:
-                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn ||
-                     p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentOut && p.OrderNumber.Length == 11)
-                     .OrderByDescending(m => m.OrderNumber)
-                     .FirstOrDefault();
-                    prefix = "AO-";
-
-                    break;
-                case InventoryTransactionTypeEnum.Exchange:
-                    prefix = "EO-";
-                    break;
-            }
-
-            if (lastOrder != null)
-            {
-
-                var lastNumber = lastOrder.OrderNumber.Replace("PO-", string.Empty);
-                lastNumber = lastNumber.Replace("SO-", string.Empty);
-                lastNumber = lastNumber.Replace("MO-", string.Empty);
-                lastNumber = lastNumber.Replace("TO-", string.Empty);
-                lastNumber = lastNumber.Replace("DO-", string.Empty);
-                lastNumber = lastNumber.Replace("RO-", string.Empty);
-                lastNumber = lastNumber.Replace("WO-", string.Empty);
-                lastNumber = lastNumber.Replace("EO-", string.Empty);
-                lastNumber = lastNumber.Replace("AO-", string.Empty);
-                lastNumber = lastNumber.Replace("ON-", string.Empty);
-
-                int n;
-                bool isNumeric = int.TryParse(lastNumber, out n);
-
-                if (isNumeric == true)
-                {
-                    var lastOrderNumber = (int.Parse(lastNumber) + 1).ToString("00000000");
-                    return prefix + lastOrderNumber;
-                }
-                else
-                {
-                    return prefix + "00000001";
-                }
-            }
-            else
-            {
-                return prefix + "00000001";
-            }
-        }
-        public string GenerateNextProductCode(int tenantId)
-        {
-            var _currentDbContext = new ApplicationContext();
-            var tenant = _currentDbContext.Tenants.Find(tenantId);
-            if (tenant != null && tenant.ProductCodePrefix != null)
-            {
-                var product = _currentDbContext.ProductMaster.Where(m => m.SKUCode.Contains(tenant.ProductCodePrefix) && m.TenantId == tenantId).OrderByDescending(m => m.SKUCode).FirstOrDefault();
-                if (product != null)
-                {
-                    int ValidSkuCode = 0;
-                    var lastCode = product.SKUCode.Split(new[] { tenant.ProductCodePrefix, tenant.ProductCodePrefix.ToLower() }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
-                    if (int.TryParse(lastCode, out ValidSkuCode))
-                    {
-                        if (lastCode != null)
-                        {
-
-                            return tenant.ProductCodePrefix + (int.Parse(lastCode) + 1).ToString("00000");
-                        }
-                    }
-                }
-                return tenant.ProductCodePrefix + "00001";
-            }
-
-            return "ITM-100001";
         }
 
         public void CreateWebSiteSyncLog(DateTime RequestTime, string ErrorCode, bool synced, int resultCount, DateTime RequestedTime, int SiteId, int TenantId)
