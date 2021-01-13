@@ -55,5 +55,36 @@ namespace Ganedata.Core.Models.AdyenPayments
     }
 
 
+    public class AdyenPaylinkRefundResponse
+    {
+        [JsonProperty("pspReference")]
+        public string PspReference { get; set; }
+
+        [JsonProperty("response")]
+        public string ResponseStatus { get; set; }
+    }
+
+    public class AdyenPaylinkRefundRequest
+    {
+        [JsonProperty("modificationAmount")]
+        public AdyenAmount Amount { get; set; }
+         
+        [JsonProperty("merchantAccount")]
+        public string MerchantAccountName { get; set; }
+         
+        [JsonProperty("pspReference")]
+        public string PspReference { get; set; }
+
+        [JsonProperty("reference")]
+        public string RefundReference { get; set; }
+        
+        [JsonIgnore]
+        public int OrderID { get; set; }
+        [JsonIgnore]
+        public string PayLinkID { get; set; }
+        [JsonIgnore]
+        public int? RequestedUserID { get; set; }
+
+    }
 
 }

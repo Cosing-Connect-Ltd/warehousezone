@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Ganedata.Core.Models.AdyenPayments;
 
 namespace Ganedata.Core.Entities.Domain
 {
@@ -35,8 +36,25 @@ namespace Ganedata.Core.Entities.Domain
         public string HookAmountCurrency { get; set; }
         public decimal HookAmountPaid { get; set; }
         public string HookMerchantOrderReference { get; set; }
-
         public DateTime HookCreatedDate { get; set; }
-        public string RawJson { get; set; }
+        public string HookRawJson { get; set; }
+
+        public int? RefundRequestedUserID { get; set; }
+        public string RefundMerchantReference { get; set; }
+        public string RefundOriginalMerchantReference { get; set; }
+        public decimal? RefundRequestedAmount { get; set; } 
+        public string RefundRequestedAmountCurrency{ get; set; }
+        public DateTime? RefundRequestedDateTime { get; set; }
+        public DateTime? RefundProcessedDateTime { get; set; }
+
+        public string RefundHookEventCode { get; set; }
+        public string RefundHookPspReference { get; set; }
+        public bool? RefundHookSuccess { get; set; }
+        public string RefundHookAmountCurrency { get; set; }
+        public decimal? RefundHookAmountPaid { get; set; }
+        public string RefundHookMerchantOrderReference { get; set; }
+        public DateTime? RefundHookCreatedDate { get; set; }
+        public string RefundHookReason { get; set; }
+
     }
 }

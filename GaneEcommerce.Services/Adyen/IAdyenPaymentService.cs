@@ -22,6 +22,8 @@ namespace Ganedata.Core.Services
         Task<AdyenApiPaymentStatusResponseModel> GetPaymentStatus(string linkId);
         
         Order GetOrderByAdyenPaylinkID(string linkId);
+
+        Task<AdyenOrderPaylink> RequestRefundForPaymentLink(AdyenPaylinkRefundRequest model);
     }
 
     public class AdyenPaymentService : IAdyenPaymentService
@@ -138,7 +140,7 @@ namespace Ganedata.Core.Services
             link.HookAmountPaid = model.Amount.Value;
             link.HookMerchantOrderReference = model.MerchantReference;
             link.HookCreatedDate = DateTime.Now;
-            link.RawJson = model.RawJson;
+            link.HookRawJson = model.RawJson;
             _context.Entry(link).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return link;
@@ -155,5 +157,22 @@ namespace Ganedata.Core.Services
             return null;
         }
 
+        public async Task<AdyenOrderPaylink> RequestRefundForPaymentLink(AdyenPaylinkRefundRequest model)
+        {
+            var link = _context.AdyenOrderPaylinks.FirstOrDefault(m => m.OrderID == model.OrderID);
+            link.RefundMerchantReference = model.RefundReference;
+            link.RefundOriginalMerchantReference = model.PspReference;
+            link.RefundRequestedUserID = model.RequestedUserID;
+            link.RefundRequestedDateTime = DateTime.Now;
+            link.RefundRequestedAmount = model.Amount.Value;
+            link.RefundRequestedAmountCurrency = model.Amount.CurrencyCode;
+
+            
+            _context.Entry(link).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return link;
+        }
+
+        //TODO: Code to post the json to adyen
     }
 }
