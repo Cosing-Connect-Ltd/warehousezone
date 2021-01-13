@@ -1279,6 +1279,8 @@ namespace Ganedata.Core.Services
                     OfflineSale = item.OfflineSale,
                     ShipmentAccountAddressId = item.DeliveryAccountAddressID.HasValue && item.DeliveryAccountAddressID!=0?  item.DeliveryAccountAddressID:null,
                     BillingAccountAddressID = item.BillingAccountAddressID.HasValue && item.BillingAccountAddressID != 0 ? item.BillingAccountAddressID : null,
+                    VoucherCode = item.VoucherCode,
+                    VoucherCodeDiscount = item.VoucherCodeDiscount
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()

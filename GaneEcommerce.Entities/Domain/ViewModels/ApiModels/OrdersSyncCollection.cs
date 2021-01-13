@@ -95,6 +95,7 @@ namespace Ganedata.Core.Models
         public string FullName { get; set; }
         public string MobileNumber { get; set; }
         public bool OfflineSale { get; set; }
+        public string VoucherCode { get; set; }
     }
 
     public class OrderDetailSync

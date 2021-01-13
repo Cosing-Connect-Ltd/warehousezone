@@ -1227,6 +1227,10 @@
     <Compile Include="Migrations\202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.designer.cs">
       <DependentUpon>202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101131614172_ShoppingVoucherAndUsageModels.cs" />
+    <Compile Include="Migrations\202101131614172_ShoppingVoucherAndUsageModels.designer.cs">
+      <DependentUpon>202101131614172_ShoppingVoucherAndUsageModels.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2468,6 +2472,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.resx">
       <DependentUpon>202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101131614172_ShoppingVoucherAndUsageModels.resx">
+      <DependentUpon>202101131614172_ShoppingVoucherAndUsageModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

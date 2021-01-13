@@ -3,7 +3,7 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Services;
 using LazyCache;
 using System;
-
+using Ganedata.Core.Services.Feedbacks;
 using Unity;
 using Unity.Injection;
 
@@ -100,6 +100,8 @@ namespace WarehouseEcommerce
             container.RegisterType<ITenantWebsiteService, TenantWebsiteService>();
             container.RegisterType<IUISettingServices, UISettingServices>();
             container.RegisterType<IAdyenPaymentService, AdyenPaymentService>();
+            container.RegisterType<IFeedbackService, FeedbackService>();
+            container.RegisterType<IShoppingVoucherService, ShoppingVoucherService>();
 
             container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());
 

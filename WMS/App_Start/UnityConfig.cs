@@ -105,6 +105,7 @@ namespace WMS
             container.RegisterType<IDeliverectSyncService, DeliverectSyncService>();
             container.RegisterType<IAdyenPaymentService, AdyenPaymentService>();
             container.RegisterType<IFeedbackService, FeedbackService>();
+            container.RegisterType<IShoppingVoucherService, ShoppingVoucherService>();
 
             container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());
 
