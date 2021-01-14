@@ -164,6 +164,15 @@
 
             settings.Columns.Add(c =>
             {
+                c.FieldName = "ShipmentCountry";
+                c.Caption = "Shipment Country";
+                c.Width = Unit.Percentage(10);
+                c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                c.Settings.AllowSort = DefaultBoolean.True;
+            });
+
+            settings.Columns.Add(c =>
+            {
                 c.FieldName = "TenantDeliveryServiceDescription";
                 c.Caption = "Delivery Service";
                 c.Width = Unit.Percentage(10);

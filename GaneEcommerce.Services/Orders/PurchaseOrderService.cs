@@ -133,6 +133,7 @@ namespace Ganedata.Core.Services
                     order.ShipmentAddressLine1 = location.AddressLine1;
                     order.ShipmentAddressLine2 = location.AddressLine2;
                     order.ShipmentAddressLine3 = location.AddressLine3;
+                    order.ShipmentAddressTown = location.City;
                     order.ShipmentAddressPostcode = location.PostalCode;
                     order.ShipmentAccountAddressId = null;
                 }
