@@ -41,14 +41,17 @@ namespace Ganedata.Core.Services
             {
                 response.Status = (int)ShoppingVoucherStatus.Expired;
             }
-            if (voucher.VoucherUsedDate.HasValue)
+
+            if (voucher.MaximumAllowedUse > 0)
+            {
+                if (voucher.VoucherUsedCount >= voucher.MaximumAllowedUse)
+                {
+                    response.Status = (int) ShoppingVoucherStatus.UsedMaximum;
+                }
+            }
+            else if (voucher.VoucherUsedDate.HasValue)
             {
                 response.Status = (int)ShoppingVoucherStatus.Applied;
-            }
-
-            if (voucher.MaximumAllowedUse > 0 && voucher.VoucherUsedCount >= voucher.MaximumAllowedUse)
-            {
-                response.Status = (int)ShoppingVoucherStatus.UsedMaximum;
             }
 
             if (response.Status == (int) ShoppingVoucherStatus.Active)
