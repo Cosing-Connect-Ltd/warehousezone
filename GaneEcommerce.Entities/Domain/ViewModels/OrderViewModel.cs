@@ -150,6 +150,7 @@ namespace Ganedata.Core.Entities.Domain
         public int? PickerId { get; set; }
         public string ConsignmentType { get; set; }
         public int SLAPrioritySortOrder { get; set; }
+        public string ShipmentCountry { get; set; }
         public List<OrderNotesViewModel> OrderNotesList { get; set; }
 
 

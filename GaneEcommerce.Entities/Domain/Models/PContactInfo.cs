@@ -8,7 +8,6 @@ namespace Ganedata.Core.Entities.Domain
     {
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
-        [Display(Name = "City/Town")]
         public string AddressLine3 { get; set; }
         [Display(Name = "City/Town")]
         public string AddressTown { get; set; }
@@ -30,11 +29,11 @@ namespace Ganedata.Core.Entities.Domain
         public string FullAddress()
         {
             var fullAddress = "";
-            fullAddress += string.IsNullOrEmpty(AddressLine1) ? "" : AddressLine1;
-            fullAddress += string.IsNullOrEmpty(AddressLine2) ? "" : ", " + AddressLine2;
-            fullAddress += string.IsNullOrEmpty(AddressLine3) ? "" : ", " + AddressLine3;
-            fullAddress += string.IsNullOrEmpty(AddressTown) ? "" : ", " + AddressTown;
-            fullAddress += string.IsNullOrEmpty(AddressPostcode) ? "" : ", " + AddressPostcode;
+            fullAddress += string.IsNullOrEmpty(AddressLine1) ? ";" : AddressLine1;
+            fullAddress += string.IsNullOrEmpty(AddressLine2) ? ";" : "; " + AddressLine2;
+            fullAddress += string.IsNullOrEmpty(AddressLine3) ? ";" : "; " + AddressLine3;
+            fullAddress += string.IsNullOrEmpty(AddressTown) ? ";" : "; " + AddressTown;
+            fullAddress += string.IsNullOrEmpty(AddressPostcode) ? ";" : "; " + AddressPostcode;
             return fullAddress;
         }
     }
