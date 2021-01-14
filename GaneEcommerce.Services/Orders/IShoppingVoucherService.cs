@@ -29,46 +29,41 @@ namespace Ganedata.Core.Services
             var voucher = _currentDbContext.ShoppingVouchers.FirstOrDefault(m =>
                 m.VoucherCode.Equals(request.VoucherCode) && (!m.VoucherUserId.HasValue || (request.UserId.HasValue && m.VoucherUserId == request.UserId)));
 
+            var response = new ShoppingVoucherValidationResponseModel(){ VerifiedTimestamp = DateTime.Now, DiscountFigure = 0, VoucherCode = request.VoucherCode, Status = (int)ShoppingVoucherStatus.Active };
+
             if (voucher == null)
             {
-                return new ShoppingVoucherValidationResponseModel()
-                {
-                    DiscountFigure = 0,
-                    Status = (int)ShoppingVoucherStatus.Invalid
-                };
+                response.Status = (int) ShoppingVoucherStatus.Invalid;
+                return response;
             }
 
             if (voucher.VoucherExpiryDate < DateTime.Now)
             {
-                return new ShoppingVoucherValidationResponseModel()
-                {
-                    DiscountFigure = 0,
-                    Status = (int)ShoppingVoucherStatus.Expired
-                };
+                response.Status = (int)ShoppingVoucherStatus.Expired;
             }
             if (voucher.VoucherUsedDate.HasValue)
             {
-                return new ShoppingVoucherValidationResponseModel()
-                {
-                    DiscountFigure = 0,
-                    Status = (int)ShoppingVoucherStatus.Applied
-                };
+                response.Status = (int)ShoppingVoucherStatus.Applied;
             }
 
-            return new ShoppingVoucherValidationResponseModel()
+            if (voucher.MaximumAllowedUse > 0 && voucher.VoucherUsedCount >= voucher.MaximumAllowedUse)
             {
-                DiscountFigure = voucher.DiscountFigure,
-                DiscountType = (int)voucher.DiscountType,
-                Status = (int)ShoppingVoucherStatus.Applied,
-                VerifiedTimestamp = DateTime.Now,
-                VoucherCode = voucher.VoucherCode
-            };
+                response.Status = (int)ShoppingVoucherStatus.UsedMaximum;
+            }
+
+            if (response.Status == (int) ShoppingVoucherStatus.Active)
+            {
+                response.DiscountFigure = voucher.DiscountFigure;
+                response.DiscountType = (int) voucher.DiscountType;
+            }
+
+            return response;
         }
 
         public ShoppingVoucherValidationResponseModel ApplyVoucher(ShoppingVoucherValidationRequestModel request)
         {
             var voucher = _currentDbContext.ShoppingVouchers.FirstOrDefault(m =>
-                m.VoucherCode.Equals(request.VoucherCode) && (!m.VoucherUserId.HasValue || (request.UserId.HasValue && m.VoucherUserId == request.UserId)));
+                m.VoucherCode.Equals(request.VoucherCode) && ((!m.VoucherUserId.HasValue || (request.UserId.HasValue && m.VoucherUserId == request.UserId)))||(m.MaximumAllowedUse>0 && m.MaximumAllowedUse>m.VoucherUsedCount));
             if (voucher == null)
             {
                 return new ShoppingVoucherValidationResponseModel()
@@ -80,6 +75,7 @@ namespace Ganedata.Core.Services
             voucher.VoucherUsedDate = DateTime.Now;
             voucher.UpdatedBy = request.UserId;
             voucher.DateUpdated = DateTime.Now;
+            voucher.VoucherUsedCount = (voucher.MaximumAllowedUse ?? 0) + 1;
             _currentDbContext.Entry(voucher).State = EntityState.Modified;
             _currentDbContext.SaveChanges();
 

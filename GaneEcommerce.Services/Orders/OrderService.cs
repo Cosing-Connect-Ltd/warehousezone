@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Elmah.ContentSyndication;
 
 namespace Ganedata.Core.Services
 {
@@ -1182,9 +1183,15 @@ namespace Ganedata.Core.Services
             {
                 warehouse = _tenantLocationServices.GetActiveTenantLocationById(item.WarehouseId);
             }
+            var tenantConfig = _currentDbContext.TenantConfigs.FirstOrDefault(m => m.TenantId == warehouse.TenantId);
 
             if (item.FoodOrderType != null)
             {
+                if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Internal && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
+                {
+                    item.OrderStatusID = OrderStatusEnum.Active;
+                }
+
                 switch (item.FoodOrderType)
                 {
                     case FoodOrderTypeEnum.Delivery:
@@ -1250,6 +1257,8 @@ namespace Ganedata.Core.Services
                     item.DeliveryAccountAddressID = accountAddress.AddressID;
                 }
 
+                var totalDiscountAmount = item.OrderProcessDiscount + (item.VoucherCodeDiscount ?? 0);
+                
                 var order = new Order
                 {
                     OrderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum)item.InventoryTransactionTypeId, terminal.TenantId),
@@ -1261,12 +1270,10 @@ namespace Ganedata.Core.Services
                     OrderStatusID = (item.OrderStatusID.HasValue && item.OrderStatusID > 0) ? item.OrderStatusID.Value : OrderStatusEnum.Active,
                     IsCancel = false,
                     IsActive = false,
-                    OrderTotal = (item.OrderProcessDetails.Sum(m => m.Price * m.QtyProcessed) + item.OrderProcessDetails.Sum(m => m.TaxAmount) + item.OrderProcessDetails.Sum(m => m.WarrantyAmount)) - item.OrderProcessDiscount,
                     Posted = false,
                     IsShippedToTenantMainLocation = false,
                     TenentId = terminal.TenantId,
                     WarehouseId = warehouse.WarehouseId,
-                    OrderDiscount = item.OrderProcessDiscount,
                     InvoiceNo = item.TerminalInvoiceNumber,
                     OrderToken = item.OrderToken,
                     DeliveryMethod = item.DeliveryMethod,
@@ -1279,8 +1286,12 @@ namespace Ganedata.Core.Services
                     OfflineSale = item.OfflineSale,
                     ShipmentAccountAddressId = item.DeliveryAccountAddressID.HasValue && item.DeliveryAccountAddressID!=0?  item.DeliveryAccountAddressID:null,
                     BillingAccountAddressID = item.BillingAccountAddressID.HasValue && item.BillingAccountAddressID != 0 ? item.BillingAccountAddressID : null,
+                    OrderTotal =  (item.OrderProcessDetails.Sum(m => m.Price * m.QtyProcessed) + item.OrderProcessDetails.Sum(m => m.TaxAmount) + item.OrderProcessDetails.Sum(m => m.WarrantyAmount)) - totalDiscountAmount,
+                    OrderDiscount = totalDiscountAmount,
                     VoucherCode = item.VoucherCode,
-                    VoucherCodeDiscount = item.VoucherCodeDiscount
+                    VoucherCodeDiscount = item.VoucherCodeDiscount,
+                    OrderCost = item.OrderProcessTotal,
+                    DeliveryCharges = item.FoodOrderType== FoodOrderTypeEnum.Delivery? warehouse.DeliveryCharges:0
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
