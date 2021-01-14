@@ -145,7 +145,7 @@ namespace WMS.Controllers.WebAPI
                             {
                                 UserId = item.UpdatedBy,
                                 VoucherCode = item.VoucherCode,
-                                OrderId = item.OrderID
+                                OrderId = order.OrderID
                             });
                         }
 
