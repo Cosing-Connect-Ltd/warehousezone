@@ -637,7 +637,8 @@ namespace Ganedata.Core.Entities.Enums
         Active = 1,
         Applied = 2,
         Expired = 3,
-        Invalid= 4
+        Invalid= 4,
+        UsedMaximum =5
     }
      
 

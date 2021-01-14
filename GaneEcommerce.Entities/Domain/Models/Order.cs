@@ -285,6 +285,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ShoppingVoucher ShoppingVoucher { get; set; }
         public string VoucherCode { get; set; }
         public decimal? VoucherCodeDiscount { get; set; }
+        public decimal? DeliveryCharges { get; set; }
 
     }
 }

@@ -26,10 +26,11 @@ namespace Ganedata.Core.Entities.Domain
 
         [Display(Name = "Discount")]
         public decimal DiscountFigure { get; set; }
-
         public DateTime? VoucherUsedDate { get; set; }
         public DateTime? VoucherExpiryDate { get; set; }
         public virtual ICollection<ShoppingVoucherUsage> OrderDetails { get; set; }
+        public int? MaximumAllowedUse { get; set; }
+        public int? VoucherUsedCount { get; set; }
     }
 
     public class ShoppingVoucherUsage : BaseAuditInfo
