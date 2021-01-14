@@ -527,6 +527,7 @@ namespace Ganedata.Core.Services
                 ApiSiteTitle = p.ApiCredential.SiteTitle,
                 TenantDeliveryServiceDescription = p.TenantDeliveryService.NetworkDescription,
                 DeliveryMethod = p.DeliveryMethod,
+                ShipmentCountry = p.ShipmentCountry != null ? p.ShipmentCountry.CountryName : "",
                 OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
                 {
                     OrderNoteId = s.OrderNoteId,

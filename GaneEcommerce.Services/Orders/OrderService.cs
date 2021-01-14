@@ -1233,7 +1233,7 @@ namespace Ganedata.Core.Services
 
             if (item.OrderToken.HasValue && (!item.OrderID.HasValue || item.OrderID == 0))
             {
-                if ((!item.DeliveryAccountAddressID.HasValue || item.DeliveryAccountAddressID==0) && !string.IsNullOrEmpty(item.ShipmentAddressLine1) && !string.IsNullOrEmpty(item.ShipmentAddressPostcode))
+                if ((!item.DeliveryAccountAddressID.HasValue || item.DeliveryAccountAddressID == 0) && !string.IsNullOrEmpty(item.ShipmentAddressLine1) && !string.IsNullOrEmpty(item.ShipmentAddressPostcode))
                 {
                     var accountAddress = new AccountAddresses()
                     {
@@ -1277,7 +1277,7 @@ namespace Ganedata.Core.Services
                     ExpectedDate = expectedDate,
                     FoodOrderType = item.FoodOrderType,
                     OfflineSale = item.OfflineSale,
-                    ShipmentAccountAddressId = item.DeliveryAccountAddressID.HasValue && item.DeliveryAccountAddressID!=0?  item.DeliveryAccountAddressID:null,
+                    ShipmentAccountAddressId = item.DeliveryAccountAddressID.HasValue && item.DeliveryAccountAddressID != 0 ? item.DeliveryAccountAddressID : null,
                     BillingAccountAddressID = item.BillingAccountAddressID.HasValue && item.BillingAccountAddressID != 0 ? item.BillingAccountAddressID : null,
                 };
 
@@ -3293,14 +3293,14 @@ namespace Ganedata.Core.Services
             decimal deliveryCost = 0;
             var tenantConfig = _currentDbContext.TenantConfigs.FirstOrDefault(m => m.TenantId == tenantId);
 
-            if (tenantConfig !=null)
+            if (tenantConfig != null)
             {
-                deliveryCost = deliveryType == ShopDeliveryTypeEnum.NextDay? (tenantConfig.NextDayDeliveryCost ?? 0) : (tenantConfig.StandardDeliveryCost??0);
+                deliveryCost = deliveryType == ShopDeliveryTypeEnum.NextDay ? (tenantConfig.NextDayDeliveryCost ?? 0) : (tenantConfig.StandardDeliveryCost ?? 0);
                 total = total + deliveryCost;
             }
 
             var duplicateOrder = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.Equals(order.OrderNumber, StringComparison.CurrentCultureIgnoreCase));
-            
+
             if (duplicateOrder != null)
             {
                 throw new Exception($"Order Number {order.OrderNumber} already associated with another Order. Please regenerate order number.", new Exception("Duplicate Order Number"));
@@ -3409,7 +3409,7 @@ namespace Ganedata.Core.Services
                 var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
                 if (order != null)
                 {
-                    order.OrderStatusID = OrderStatusEnum.Active;
+                    order.OrderStatusID = pickerId == null ? OrderStatusEnum.Hold : OrderStatusEnum.Active;
                     order.PickerId = pickerId;
                     order.ExpectedDate = DateTime.Today;
                     order.UpdatedBy = userId;

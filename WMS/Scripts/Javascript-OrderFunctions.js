@@ -1919,7 +1919,7 @@ var populateShipmentAddress = function (selectedAddress) {
         return;
     $("#divFinalShipmentAddress input[type=text]").val('');
     var address = selectedAddress;
-    var addressLines = address.split(',');
+    var addressLines = address.split(';');
 
     if (addressLines.length < 1) return;
 
