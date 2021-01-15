@@ -3323,12 +3323,13 @@ img {
 .phone-2 li{
     white-space:nowrap;
 }
-@media(max-width:1069px) {
+@media(max-width:1619px) {
     .phone-n-demo {
-        display:none;
+        display: none;
     }
 }
-@media(min-width:1070px) {
+
+@media(min-width:1620px) {
     .phone-1 {
         display: none !important;
     }
