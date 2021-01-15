@@ -625,4 +625,21 @@ namespace Ganedata.Core.Entities.Enums
         NextDay = 1,
         Standard = 2
     }
+
+    public enum ShoppingVoucherDiscountTypeEnum
+    {
+        Percentage = 1,
+        FixedPrice = 2
+    }
+
+    public enum ShoppingVoucherStatus
+    {
+        Active = 1,
+        Applied = 2,
+        Expired = 3,
+        Invalid= 4,
+        UsedMaximum =5
+    }
+     
+
 }

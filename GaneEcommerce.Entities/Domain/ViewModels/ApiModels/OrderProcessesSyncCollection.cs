@@ -64,6 +64,8 @@ namespace Ganedata.Core.Models
 
         public int? DeliveryAccountAddressID { get; set; }
         public int? BillingAccountAddressID { get; set; }
+        public string VoucherCode { get; set; }
+        public decimal? VoucherCodeDiscount { get; set; }
     }
 
     public class MarketRouteProgressSync

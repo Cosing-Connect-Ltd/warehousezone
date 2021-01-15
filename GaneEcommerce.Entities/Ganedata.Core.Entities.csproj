@@ -204,6 +204,7 @@
     <Compile Include="Domain\ImportModels\DeliverectModels.cs" />
     <Compile Include="Domain\Models\AdyenOrderPaylink.cs" />
     <Compile Include="Domain\Models\ProductLocationStocks.cs" />
+    <Compile Include="Domain\Models\ShoppingVoucher.cs" />
     <Compile Include="Domain\Shifts\ShiftSchedule.cs" />
     <Compile Include="Domain\ImportModels\ParentChildProductsAssociationsImportModel.cs" />
     <Compile Include="Domain\ImportModels\ProductImportModel.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Domain\Models\UISetting.cs" />
     <Compile Include="Domain\ViewModels\AdyenPayments\AdyenPaylinkPaymentNotificationModel.cs" />
     <Compile Include="Domain\ViewModels\AdyenPayments\CreatePayLinkRequestViewModel.cs" />
+    <Compile Include="Domain\ViewModels\AdyenPayments\ShoppingVoucherResponseModel.cs" />
     <Compile Include="Domain\ViewModels\ApiModels\ProductLocationStocksSync.cs" />
     <Compile Include="Domain\ViewModels\ProductPriceViewModel.cs" />
     <Compile Include="Domain\ViewModels\ProductSearchResultViewModel.cs" />

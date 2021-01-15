@@ -8,9 +8,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Ganedata.Core.Models.AdyenPayments;
 
 namespace WMS.Controllers.WebAPI
 {
+    public class ApiOrderVouchersController : BaseApiController
+    {
+        
+        private readonly IShoppingVoucherService _shoppingVoucherService;
+        public ApiOrderVouchersController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService, 
+            IProductServices productServices, IUserService userService, IShoppingVoucherService shoppingVoucherService) :
+            base(terminalServices, tenantLocationServices, orderService, productServices, userService)
+        {
+            _shoppingVoucherService = shoppingVoucherService;
+        }
+
+        public async Task<IHttpActionResult> ValidateShoppingVoucher(ShoppingVoucherValidationRequestModel data)
+        {
+            return Ok(_shoppingVoucherService.ValidateVoucher(data));
+        }
+    }
+
     public class ApiOrderProcessesSyncController : BaseApiController
     {
         private readonly IAccountServices _accountServices;
@@ -18,11 +36,12 @@ namespace WMS.Controllers.WebAPI
         private readonly IDeliverectSyncService _deliverectSyncService;
         private readonly IGaneConfigurationsHelper _configHelper;
         private readonly IMapper _mapper;
+        private readonly IShoppingVoucherService _shoppingVoucherService;
 
         public ApiOrderProcessesSyncController(ITerminalServices terminalServices, IDeliverectSyncService deliverectSyncService,
             ITenantLocationServices tenantLocationServices, IOrderService orderService, ITenantsServices tenantsServices,
             IProductServices productServices, IUserService userService, IAccountServices accountServices,
-            IGaneConfigurationsHelper configHelper, IMapper mapper) :
+            IGaneConfigurationsHelper configHelper, IMapper mapper, IShoppingVoucherService shoppingVoucherService) :
             base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _accountServices = accountServices;
@@ -30,6 +49,7 @@ namespace WMS.Controllers.WebAPI
             _deliverectSyncService = deliverectSyncService;
             _configHelper = configHelper;
             _mapper = mapper;
+            _shoppingVoucherService = shoppingVoucherService;
         }
 
         // GET http://ganetest.qsrtime.net/api/sync/order-processes/{reqDate}/{serialNo}
@@ -81,7 +101,6 @@ namespace WMS.Controllers.WebAPI
         }
 
 
-
         // POST http://ganetest.qsrtime.net/api/sync/post-order-processes
         public async Task<IHttpActionResult> PostOrderProcesses(OrderProcessesSyncCollection data)
         {
@@ -119,6 +138,16 @@ namespace WMS.Controllers.WebAPI
                     foreach (var item in orderProcesses)
                     {
                         var order = OrderService.SaveOrderProcessSync(item, terminal);
+
+                        if (!string.IsNullOrEmpty(item.VoucherCode))
+                        {
+                            _shoppingVoucherService.ApplyVoucher(new ShoppingVoucherValidationRequestModel()
+                            {
+                                UserId = item.UpdatedBy,
+                                VoucherCode = item.VoucherCode,
+                                OrderId = order.OrderID
+                            });
+                        }
 
                         var deliverectSyncResult = true;
                         var tenantConfig = _tenantServices.GetTenantConfigById(terminal.TenantId);

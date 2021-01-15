@@ -1231,6 +1231,10 @@
     <Compile Include="Migrations\202101151055419_sort-order-added-in-locations.designer.cs">
       <DependentUpon>202101151055419_sort-order-added-in-locations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101151506390_DiscountVouchersForFoodOrders.cs" />
+    <Compile Include="Migrations\202101151506390_DiscountVouchersForFoodOrders.designer.cs">
+      <DependentUpon>202101151506390_DiscountVouchersForFoodOrders.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2475,6 +2479,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101151055419_sort-order-added-in-locations.resx">
       <DependentUpon>202101151055419_sort-order-added-in-locations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101151506390_DiscountVouchersForFoodOrders.resx">
+      <DependentUpon>202101151506390_DiscountVouchersForFoodOrders.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

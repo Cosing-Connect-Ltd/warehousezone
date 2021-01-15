@@ -280,5 +280,12 @@ namespace Ganedata.Core.Entities.Domain
 
         public int? ShopDeliveryTypeID;
 
+        public int? ShoppingVoucherId { get; set; }
+        [ForeignKey("ShoppingVoucherId")]
+        public virtual ShoppingVoucher ShoppingVoucher { get; set; }
+        public string VoucherCode { get; set; }
+        public decimal? VoucherCodeDiscount { get; set; }
+        public decimal? DeliveryCharges { get; set; }
+
     }
 }
