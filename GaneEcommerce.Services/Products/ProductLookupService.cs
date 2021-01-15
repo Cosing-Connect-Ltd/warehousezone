@@ -38,7 +38,7 @@ namespace Ganedata.Core.Services
             {
                 locationIds = _currentDbContext.ProductLocations.Where(x => x.IsDeleted != true && x.ProductId == filterForProductId).Select(y => y.LocationId).Distinct().ToList();
             }
-            return _currentDbContext.Locations.Where(m => m.TenentId == tenantId && m.WarehouseId == warehouseId && m.IsDeleted != true && (filterForProductId == 0 || locationIds.Contains(m.LocationId)));
+            return _currentDbContext.Locations.Where(m => m.TenantId == tenantId && m.WarehouseId == warehouseId && m.IsDeleted != true && (filterForProductId == 0 || locationIds.Contains(m.LocationId)));
         }
         public IEnumerable<ProductAttributes> GetAllValidProductAttributes()
         {
@@ -582,13 +582,13 @@ namespace Ganedata.Core.Services
 
                 var cLocation =
                     _currentDbContext.Locations.FirstOrDefault(a => a.WarehouseId == warehouseId &&
-                                                                    a.TenentId == tenantId && a.LocationCode ==
+                                                                    a.TenantId == tenantId && a.LocationCode ==
                                                                     model.LocationCode);
                 if (cLocation != null)
                     throw new Exception("Location Code already exists!");
                 model.IsActive = true;
                 model.IsDeleted = false;
-                model.TenentId = tenantId;
+                model.TenantId = tenantId;
 
                 model.DateUpdated = DateTime.UtcNow;
                 model.DateCreated = DateTime.UtcNow;
@@ -617,14 +617,14 @@ namespace Ganedata.Core.Services
             {
                 var cLocation =
                     _currentDbContext.Locations.AsNoTracking().FirstOrDefault(a => a.WarehouseId == warehouseId &&
-                                                                    a.TenentId == tenantId && a.LocationCode ==
+                                                                    a.TenantId == tenantId && a.LocationCode ==
                                                                     model.LocationCode);
 
                 model.UpdatedBy = userId;
                 model.DateUpdated = DateTime.UtcNow;
                 model.DateCreated = cLocation.DateCreated;
                 model.WarehouseId = cLocation.WarehouseId;
-                model.TenentId = cLocation.TenentId;
+                model.TenantId = cLocation.TenantId;
                 model.CreatedBy = cLocation.CreatedBy;
                 model.IsActive = cLocation.IsActive;
             }

@@ -106,7 +106,7 @@ namespace Ganedata.Core.Services
         public List<CommonLocationViewModel> ProductsByLocations(int tenant, int warehouse)
         {
             var data = (from locs in _currentDbContext.Locations
-                    .Where(a => a.WarehouseId == warehouse && a.TenentId == tenant && a.IsDeleted != true)
+                    .Where(a => a.WarehouseId == warehouse && a.TenantId == tenant && a.IsDeleted != true)
 
                         select new CommonLocationViewModel
                         {

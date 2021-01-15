@@ -36,7 +36,7 @@ namespace Ganedata.Core.Services
 
         public List<Locations> GetAllLocations(int tenantId, int warehouseId)
         {
-            return _applicationContext.Locations.Where(a => a.WarehouseId == warehouseId && a.IsDeleted != true && a.TenentId == tenantId).ToList();
+            return _applicationContext.Locations.Where(a => a.WarehouseId == warehouseId && a.IsDeleted != true && a.TenantId == tenantId).ToList();
         }
 
         public IEnumerable<PalletTracking> GetPalletTrackingsbyProductId(int? productId, int TenantId, int WarehouseId)
