@@ -1239,6 +1239,10 @@
     <Compile Include="Migrations\202101141307318_OrderDeliveryChargesForAudit.designer.cs">
       <DependentUpon>202101141307318_OrderDeliveryChargesForAudit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101151235558_AddedMultiTenancyProperties.cs" />
+    <Compile Include="Migrations\202101151235558_AddedMultiTenancyProperties.designer.cs">
+      <DependentUpon>202101151235558_AddedMultiTenancyProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2489,6 +2493,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101141307318_OrderDeliveryChargesForAudit.resx">
       <DependentUpon>202101141307318_OrderDeliveryChargesForAudit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101151235558_AddedMultiTenancyProperties.resx">
+      <DependentUpon>202101151235558_AddedMultiTenancyProperties.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

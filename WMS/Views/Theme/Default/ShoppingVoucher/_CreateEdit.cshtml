@@ -1,0 +1,82 @@
+﻿@model Ganedata.Core.Entities.Domain.ShoppingVoucher
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Discount Voucher " + (Model.ShoppingVoucherId > 0 ? "Edit" : "Create");
+}
+
+<div>
+    <h2><span>@ViewBag.Title</span></h2>
+    <form class="form-horizontal" action="@Url.Action("SaveVoucher","ShoppingVoucher")" method="post" id="frmSaveVoucher">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(c => c.ShoppingVoucherId)
+        @Html.ValidationSummary()
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert-success col-md-12">
+                @ViewBag.Message
+            </div>
+        }
+    <div class="col-md-8 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(c => c.VoucherTitle, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.VoucherTitle, new { @placeholder = "Title", @class = "form-control" })
+            </div>
+        </div>
+        
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(c => c.VoucherCode, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.VoucherCode, new { @placeholder = "Code", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(c => c.DiscountType, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(c => c.DiscountType, new SelectList(ViewBag.DiscountTypeList, "Value", "Text", (int)Model.DiscountType), new { @placeholder = "Discount Type", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.DiscountFigure, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.DiscountFigure, new { @placeholder = "Amount/Percentage", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.MaximumAllowedUse, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.MaximumAllowedUse, new { @placeholder = "Use X times max", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.VoucherUserId, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(c => c.VoucherUserId, new SelectList(ViewBag.UserList, "Value", "Text", Model.VoucherUserId), new { @placeholder = "User specific", @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" class="btn btn-primary" id="saveBtn_ShoppingVoucher" value="Save" />
+            <a class="btn btn-default" href="@Url.Action("Index","ShoppingVoucher")">Cancel</a>
+        </div>
+
+    </form>
+</div>

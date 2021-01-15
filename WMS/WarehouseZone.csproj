@@ -574,6 +574,7 @@
     <Compile Include="Controllers\MarketsVehicleController.cs" />
     <Compile Include="Controllers\AccountSectorsController.cs" />
     <Compile Include="Controllers\ProductAttributeValuesController.cs" />
+    <Compile Include="Controllers\ShoppingVoucherController.cs" />
     <Compile Include="Controllers\WebAPI\ApiAdyenPaymentsController.cs" />
     <Compile Include="Controllers\WebAPI\ApiFeedbackController.cs" />
     <Compile Include="Controllers\WebAPI\DeliverectWebhooksController.cs" />
@@ -2824,6 +2825,9 @@
     <Content Include="Views\Theme\Default\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Theme\Default\Account\ResetPassword.cshtml" />
     <Content Include="Views\Theme\Default\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Theme\Default\ShoppingVoucher\_CreateEdit.cshtml" />
+    <Content Include="Views\Theme\Default\ShoppingVoucher\_GridPartial.cshtml" />
+    <Content Include="Views\Theme\Default\ShoppingVoucher\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
