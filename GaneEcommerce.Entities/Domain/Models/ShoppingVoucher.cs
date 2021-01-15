@@ -31,6 +31,13 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<ShoppingVoucherUsage> OrderDetails { get; set; }
         public int? MaximumAllowedUse { get; set; }
         public int? VoucherUsedCount { get; set; }
+        public int? TenantId { get; set; }
+        [ForeignKey("TenantId")]
+        public virtual Tenant Tenant { get; set; }
+
+        public int? WarehouseId { get; set; }
+        public virtual TenantLocations Warehouse { get; set; }
+        public bool? IsDeleted { get; set; }
     }
 
     public class ShoppingVoucherUsage : BaseAuditInfo
@@ -49,6 +56,7 @@ namespace Ganedata.Core.Entities.Domain
         public int? OrderId { get; set; }
         [ForeignKey("OrderId")]
         public virtual Order Order{ get; set; }
+
 
     }
 }
