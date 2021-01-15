@@ -62,18 +62,12 @@
             AddColumn("dbo.Orders", "VoucherCode", c => c.String());
             AddColumn("dbo.Orders", "VoucherCodeDiscount", c => c.Decimal(precision: 18, scale: 2));
             AddColumn("dbo.Orders", "DeliveryCharges", c => c.Decimal(precision: 18, scale: 2));
-            AddColumn("dbo.Locations", "TenentId", c => c.Int(nullable: false));
-            AlterColumn("dbo.Locations", "CreatedBy", c => c.Int(nullable: false));
             CreateIndex("dbo.Orders", "ShoppingVoucherId");
             AddForeignKey("dbo.Orders", "ShoppingVoucherId", "dbo.ShoppingVouchers", "ShoppingVoucherId");
-            DropColumn("dbo.Locations", "SortOrder");
-            DropColumn("dbo.Locations", "TenantId");
         }
         
         public override void Down()
         {
-            AddColumn("dbo.Locations", "TenantId", c => c.Int(nullable: false));
-            AddColumn("dbo.Locations", "SortOrder", c => c.Int(nullable: false));
             DropForeignKey("dbo.Orders", "ShoppingVoucherId", "dbo.ShoppingVouchers");
             DropForeignKey("dbo.ShoppingVouchers", "WarehouseId", "dbo.TenantLocations");
             DropForeignKey("dbo.ShoppingVouchers", "VoucherUserId", "dbo.AuthUsers");
@@ -88,8 +82,6 @@
             DropIndex("dbo.ShoppingVouchers", new[] { "TenantId" });
             DropIndex("dbo.ShoppingVouchers", new[] { "VoucherUserId" });
             DropIndex("dbo.Orders", new[] { "ShoppingVoucherId" });
-            AlterColumn("dbo.Locations", "CreatedBy", c => c.Int());
-            DropColumn("dbo.Locations", "TenentId");
             DropColumn("dbo.Orders", "DeliveryCharges");
             DropColumn("dbo.Orders", "VoucherCodeDiscount");
             DropColumn("dbo.Orders", "VoucherCode");

@@ -13,7 +13,7 @@ namespace Ganedata.Core.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202101151506390_DiscountVouchersForFoodOrders"; }
+            get { return "202101151655429_DiscountVouchersForFoodOrders"; }
         }
         
         string IMigrationMetadata.Source
