@@ -1310,3 +1310,6 @@ function onCommandExecutedByHtmlEditor(s, e) {
         s.SetHtml(result);
     }
 }
+function ShoppingVoucherGridCallbackEnds(s, e) {
+    $("#shoppingVoucherRecordsLabel").text(s.cpVisibleRowCount + ' Results');
+}

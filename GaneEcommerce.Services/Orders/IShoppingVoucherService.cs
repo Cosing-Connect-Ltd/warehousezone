@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,12 @@ namespace Ganedata.Core.Services
     {
         ShoppingVoucherValidationResponseModel ValidateVoucher(ShoppingVoucherValidationRequestModel request);
         ShoppingVoucherValidationResponseModel ApplyVoucher(ShoppingVoucherValidationRequestModel request);
+
+        ShoppingVoucher GetShoppingVoucherById(int shoppingVoucherId);
+        List<ShoppingVoucher> GetAllValidShoppingVouchers(int tenantId, DateTime? onlyUpdatedAfter = null, bool includeDeleted = false);
+        ShoppingVoucher GetShoppingVoucherByVoucherCode(string voucherCode);
+        ShoppingVoucher SaveShoppingVoucher(ShoppingVoucher voucher, int userId);
+        void DeleteShoppingVoucher(int voucherId, int userId);
     }
 
     public class ShoppingVoucherService : IShoppingVoucherService
@@ -101,6 +108,61 @@ namespace Ganedata.Core.Services
                 VerifiedTimestamp = DateTime.Now,
                 VoucherCode = voucher.VoucherCode
             };
+        }
+
+        public ShoppingVoucher GetShoppingVoucherById(int shoppingVoucherId)
+        {
+            return _currentDbContext.ShoppingVouchers.FirstOrDefault(m => m.ShoppingVoucherId == shoppingVoucherId);
+        }
+
+        public List<ShoppingVoucher> GetAllValidShoppingVouchers(int tenantId, DateTime? onlyUpdatedAfter = null, bool includeDeleted = false)
+        {
+            return _currentDbContext.ShoppingVouchers.Where(m =>
+                (includeDeleted || m.IsDeleted != true) && (tenantId == 0 || m.TenantId == tenantId) &&
+                (!onlyUpdatedAfter.HasValue || (m.DateUpdated ?? m.DateCreated) > onlyUpdatedAfter)).ToList();
+        }
+
+        public ShoppingVoucher GetShoppingVoucherByVoucherCode(string voucherCode)
+        {
+            return _currentDbContext.ShoppingVouchers.FirstOrDefault(m => m.VoucherCode == voucherCode);
+        }
+
+        public ShoppingVoucher SaveShoppingVoucher(ShoppingVoucher voucher, int userId)
+        {
+            if (voucher.TenantId == 0)
+            {
+                voucher.TenantId = null;
+            }
+
+            if (voucher.WarehouseId == 0)
+            {
+                voucher.WarehouseId = null;
+            }
+
+            if (voucher.ShoppingVoucherId > 0)
+            {
+                voucher.UpdatedBy = userId;
+                voucher.DateUpdated = DateTime.Now;
+                _currentDbContext.Entry(voucher).State = EntityState.Modified;
+                _currentDbContext.Entry(voucher).Property(m => m.DateCreated).IsModified = false;
+                _currentDbContext.Entry(voucher).Property(m => m.CreatedBy).IsModified = false;
+            }
+            else
+            {
+                voucher.CreatedBy = userId;
+                voucher.DateCreated = DateTime.Now;
+                _currentDbContext.ShoppingVouchers.Add(voucher);
+            }
+
+            _currentDbContext.SaveChanges();
+            return voucher;
+        }
+
+        public void DeleteShoppingVoucher(int voucherId, int userId)
+        {
+            var voucher = GetShoppingVoucherById(voucherId);
+            voucher.IsDeleted = true;
+            SaveShoppingVoucher(voucher, userId);
         }
     }
 }
