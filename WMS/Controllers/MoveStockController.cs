@@ -53,7 +53,7 @@ namespace WMS.Controllers
             ViewBag.Locations = new SelectList(LookupServices.GetAllLocations(CurrentTenantId)
                 .Where(a => a.IsDeleted != true &&
                 a.WarehouseId == transaction.WarehouseId &&
-                a.TenentId == transaction.TenentId && a.LocationId != transaction.LocationId), "LocationId", "LocationCode");
+                a.TenantId == transaction.TenentId && a.LocationId != transaction.LocationId), "LocationId", "LocationCode");
             return PartialView(transaction);
         }
         public ActionResult _MoveStockSubmit(InventoryTransaction model)

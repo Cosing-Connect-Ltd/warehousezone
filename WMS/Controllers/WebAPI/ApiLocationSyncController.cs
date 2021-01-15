@@ -51,7 +51,11 @@ namespace WMS.Controllers.WebAPI
                 LocationSync.LocationId = l.LocationId;
                 LocationSync.LocationGroupId = l.LocationGroupId;
                 LocationSync.LocationTypeId = l.LocationTypeId;
+                LocationSync.WarehouseId = l.WarehouseId;
                 LocationSync.WarehouseName = l.TenantWarehouses.WarehouseName;
+                LocationSync.IsActive = l.IsActive;
+                LocationSync.IsDeleted = l.IsDeleted;
+                LocationSync.SortOrder = l.SortOrder;
                 LocationList.Add(LocationSync);
             }
 
@@ -60,6 +64,46 @@ namespace WMS.Controllers.WebAPI
                 .CreateTerminalLog(reqDate, terminal.TenantId, LocationList.Count, terminal.TerminalId,
                     TerminalLogTypeEnum.LocationsSync).TerminalLogId;
             result.LocationSync = LocationList;
+            return Ok(result);
+        }
+
+        // GET http://localhost:8005/api/sync/locations-stocks/{reqDate}/{serialNo}
+        // GET http://localhost:8005/api/sync/locations-stocks/2014-11-23/920013c000814
+        public IHttpActionResult GetLoctionsStocks(DateTime reqDate, string serialNo)
+        {
+            serialNo = serialNo.Trim().ToLower();
+
+            var terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            var result = new ProductLocationStocksSyncCollection();
+
+            var alllStocks = _LookupService.GetAllLocationStocks(terminal.TenantId, reqDate, true);
+
+            var StocksList = new List<ProductLocationStocksSync>();
+
+            foreach (var stock in alllStocks)
+            {
+                var LocationStockSync = new ProductLocationStocksSync();
+                LocationStockSync.Id = stock.Id;
+                LocationStockSync.ProductId = stock.ProductId;
+                LocationStockSync.LocationId = stock.LocationId;
+                LocationStockSync.IsActive = stock.IsActive;
+                LocationStockSync.IsDeleted = stock.IsDeleted;
+                LocationStockSync.Quantity = stock.Quantity;
+                LocationStockSync.WarehouseId = stock.WarehouseId;
+                StocksList.Add(LocationStockSync);
+            }
+
+            result.Count = StocksList.Count;
+            result.TerminalLogId = TerminalServices
+                .CreateTerminalLog(reqDate, terminal.TenantId, StocksList.Count, terminal.TerminalId,
+                    TerminalLogTypeEnum.ProductLocationStocksSync).TerminalLogId;
+            result.ProductLocationStocksSync = StocksList;
             return Ok(result);
         }
 
@@ -73,7 +117,7 @@ namespace WMS.Controllers.WebAPI
                 return Unauthorized();
             }
             var updateStockMovement = _LookupService.UpdateStockMovement(data);
-            TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, data.StockMovements?.Count??0, terminal.TerminalId, TerminalLogTypeEnum.PostStockMovement);
+            TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, data.StockMovements?.Count ?? 0, terminal.TerminalId, TerminalLogTypeEnum.PostStockMovement);
             return Ok(updateStockMovement);
         }
 

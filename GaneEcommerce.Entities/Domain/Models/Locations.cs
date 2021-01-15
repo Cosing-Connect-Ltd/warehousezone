@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace Ganedata.Core.Entities.Domain
 {
     [Serializable]
-    public partial class Locations
+    public partial class Locations : PersistableEntity<int>
     {
         public Locations()
         {
@@ -63,20 +63,9 @@ namespace Ganedata.Core.Entities.Domain
         public int? PickSeq { get; set; }
         [Display(Name = "Replenish Sequence")]
         public int? ReplenishSeq { get; set; }
-        [Display(Name = "Date Created")]
-        public DateTime DateCreated { get; set; }
-        [Display(Name = "Date Updated")]
-        public DateTime? DateUpdated { get; set; }
-        [Display(Name = "Created By")]
-        public int CreatedBy { get; set; }
-        [Display(Name = "Update By")]
-        public int? UpdatedBy { get; set; }
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
-        [Display(Name = "Deleted")]
-        public bool? IsDeleted { get; set; }
-        [Display(Name = "Client")]
-        public int TenentId { get; set; }
+        public int SortOrder { get; set; }
         public virtual GlobalUOM GlobalUOM { get; set; }
         [ForeignKey("LocationGroupId")]
         public virtual LocationGroup LocationGroup { get; set; }

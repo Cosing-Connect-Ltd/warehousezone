@@ -35,6 +35,7 @@ namespace Ganedata.Core.Services
         IEnumerable<JobType> GetAllJobTypes(int tenantId);
         IEnumerable<SlaWorksOrderListViewModel> GetAllJobTypesIncludingNavProperties(int tenantId);
         IEnumerable<Locations> GetAllLocations(int tenantId, DateTime? reqDate = null, bool includeIsDeleted = false);
+        IEnumerable<ProductLocationStocks> GetAllLocationStocks(int tenantId, DateTime? reqDate = null, bool includeIsDeleted = false);
         Locations GetLocationById(int locationId, int tenantId);
         LocationTypes GetLocationTypeById(int locationTypeId);
         void DeleteLocationById(int locationId, int tenantId, int userId);

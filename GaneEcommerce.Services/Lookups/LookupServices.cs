@@ -226,13 +226,18 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<Locations> GetAllLocations(int tenantId, DateTime? reqDate = null, bool includeIsDeleted = false)
         {
-            return _currentDbContext.Locations.Where(a => (includeIsDeleted || a.IsDeleted != true) && a.TenentId == tenantId && (!reqDate.HasValue || (a.DateUpdated ?? a.DateCreated) >= reqDate));
+            return _currentDbContext.Locations.Where(a => (includeIsDeleted || a.IsDeleted != true) && a.TenantId == tenantId && (!reqDate.HasValue || (a.DateUpdated ?? a.DateCreated) >= reqDate));
+        }
+
+        public IEnumerable<ProductLocationStocks> GetAllLocationStocks(int tenantId, DateTime? reqDate = null, bool includeIsDeleted = false)
+        {
+            return _currentDbContext.ProductLocationStocks.Where(a => (includeIsDeleted || a.IsDeleted != true) && a.TenantId == tenantId && (!reqDate.HasValue || (a.DateUpdated ?? a.DateCreated) >= reqDate));
         }
 
         public Locations GetLocationById(int locationId, int tenantId)
         {
             return _currentDbContext.Locations.FirstOrDefault(
-                m => m.TenentId == tenantId && m.LocationId == locationId);
+                m => m.TenantId == tenantId && m.LocationId == locationId);
         }
 
         public LocationTypes GetLocationTypeById(int locationTypeId)
@@ -252,20 +257,20 @@ namespace Ganedata.Core.Services
         public Locations GetLocationByCode(string locationCode, int tenantId)
         {
             return _currentDbContext.Locations.FirstOrDefault(
-                m => m.TenentId == tenantId && m.LocationCode == locationCode);
+                m => m.TenantId == tenantId && m.LocationCode == locationCode);
         }
 
         public Locations GetLocationByName(string locationName, int tenantId)
         {
             return _currentDbContext.Locations.FirstOrDefault(
-                m => m.TenentId == tenantId && m.LocationName == locationName);
+                m => m.TenantId == tenantId && m.LocationName == locationName);
         }
 
         public Locations CreateLocation(Locations location, List<int> ProductKitIds, int userId, int tenantId, int warehouseId)
         {
             location.CreatedBy = userId;
             location.DateCreated = DateTime.UtcNow;
-            location.TenentId = tenantId;
+            location.TenantId = tenantId;
             location.WarehouseId = warehouseId;
             _currentDbContext.Locations.Add(location);
             _currentDbContext.SaveChanges();
@@ -298,7 +303,7 @@ namespace Ganedata.Core.Services
             {
                 var obj = location;
                 obj.CreatedBy = userId;
-                obj.TenentId = tenantId;
+                obj.TenantId = tenantId;
                 obj.WarehouseId = warehouseId;
                 obj.DateCreated = DateTime.UtcNow;
                 obj.LocationCode = code + ctr;
@@ -507,7 +512,7 @@ namespace Ganedata.Core.Services
         public bool IsLocationCodeAvailable(string locationcode, int locationId, int tenantId)
         {
             var result = (from p in _currentDbContext.Locations
-                          where (p.LocationCode == locationcode && p.LocationId != locationId && p.TenentId == tenantId &&
+                          where (p.LocationCode == locationcode && p.LocationId != locationId && p.TenantId == tenantId &&
                                  p.IsDeleted != true)
                           select p).Count();
 
