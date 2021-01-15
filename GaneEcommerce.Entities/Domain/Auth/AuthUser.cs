@@ -55,6 +55,10 @@ namespace Ganedata.Core.Entities.Domain
         {
             get { return UserFirstName + " " + UserLastName; }
         }
+        public string DisplayNameWithEmail
+        {
+            get { return UserFirstName + " " + UserLastName + (string.IsNullOrEmpty(UserEmail)?"":" ("+ UserEmail +")") ; }
+        }
         public decimal OrderValueLimit { get; set; }
         [Display(Name = "User Group")]
         public int? UserGroupId { get; set; }
