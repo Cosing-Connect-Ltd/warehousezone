@@ -7,13 +7,13 @@ namespace Ganedata.Core.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class OrderDeliveryChargesForAudit : IMigrationMetadata
+    public sealed partial class DiscountVouchersForFoodOrders : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(OrderDeliveryChargesForAudit));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(DiscountVouchersForFoodOrders));
         
         string IMigrationMetadata.Id
         {
-            get { return "202101141307318_OrderDeliveryChargesForAudit"; }
+            get { return "202101151506390_DiscountVouchersForFoodOrders"; }
         }
         
         string IMigrationMetadata.Source

@@ -1227,21 +1227,9 @@
     <Compile Include="Migrations\202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.designer.cs">
       <DependentUpon>202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202101131614172_ShoppingVoucherAndUsageModels.cs" />
-    <Compile Include="Migrations\202101131614172_ShoppingVoucherAndUsageModels.designer.cs">
-      <DependentUpon>202101131614172_ShoppingVoucherAndUsageModels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202101140949019_ShoppingVouchersForMultiUsage.cs" />
-    <Compile Include="Migrations\202101140949019_ShoppingVouchersForMultiUsage.designer.cs">
-      <DependentUpon>202101140949019_ShoppingVouchersForMultiUsage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202101141307318_OrderDeliveryChargesForAudit.cs" />
-    <Compile Include="Migrations\202101141307318_OrderDeliveryChargesForAudit.designer.cs">
-      <DependentUpon>202101141307318_OrderDeliveryChargesForAudit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202101151235558_AddedMultiTenancyProperties.cs" />
-    <Compile Include="Migrations\202101151235558_AddedMultiTenancyProperties.designer.cs">
-      <DependentUpon>202101151235558_AddedMultiTenancyProperties.cs</DependentUpon>
+    <Compile Include="Migrations\202101151506390_DiscountVouchersForFoodOrders.cs" />
+    <Compile Include="Migrations\202101151506390_DiscountVouchersForFoodOrders.designer.cs">
+      <DependentUpon>202101151506390_DiscountVouchersForFoodOrders.cs</DependentUpon>
     </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
@@ -2485,17 +2473,8 @@
     <EmbeddedResource Include="Migrations\202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.resx">
       <DependentUpon>202101071147122_AdyenPaymentAndAddressConfigurationChangesRebased.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101131614172_ShoppingVoucherAndUsageModels.resx">
-      <DependentUpon>202101131614172_ShoppingVoucherAndUsageModels.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101140949019_ShoppingVouchersForMultiUsage.resx">
-      <DependentUpon>202101140949019_ShoppingVouchersForMultiUsage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101141307318_OrderDeliveryChargesForAudit.resx">
-      <DependentUpon>202101141307318_OrderDeliveryChargesForAudit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101151235558_AddedMultiTenancyProperties.resx">
-      <DependentUpon>202101151235558_AddedMultiTenancyProperties.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202101151506390_DiscountVouchersForFoodOrders.resx">
+      <DependentUpon>202101151506390_DiscountVouchersForFoodOrders.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
