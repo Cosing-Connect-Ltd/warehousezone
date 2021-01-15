@@ -41,20 +41,26 @@ namespace WMS.Controllers
         public ActionResult Create()
         {
             var model = new ShoppingVoucher();
-            ViewBag.DiscountTypeList = StaticHelperExtensions.GetSelectList<ShoppingVoucherDiscountTypeEnum>();
-            ViewBag.UserList = _userService.GetAllAuthUsers(CurrentTenantId).Select(m=> new SelectListItem() { Value = m.UserId.ToString(), Text = m.DisplayName}).ToList();
+            LoadVoucherDropdownData();
             return View("_CreateEdit", model);
         }
+
         public ActionResult Edit(int? id)
         {
             var model = new ShoppingVoucher();
-            ViewBag.DiscountTypeList = StaticHelperExtensions.GetSelectList<ShoppingVoucherDiscountTypeEnum>();
-            ViewBag.UserList = _userService.GetAllAuthUsers(CurrentTenantId).Select(m => new SelectListItem() { Value = m.UserId.ToString(), Text = m.DisplayName }).ToList();
+            LoadVoucherDropdownData();
             if (id.HasValue && id > 0)
             {
                 model = _shoppingVoucherService.GetShoppingVoucherById(id.Value);
             }
             return View("_CreateEdit", model);
+        }
+        private void LoadVoucherDropdownData()
+        {
+            ViewBag.DiscountTypeList = StaticHelperExtensions.GetSelectList<ShoppingVoucherDiscountTypeEnum>();
+            var usersList = _userService.GetAllAuthUsers(CurrentTenantId).Select(m => new SelectListItem() { Value = m.UserId.ToString(), Text = m.DisplayNameWithEmail }).ToList();
+            usersList.Insert(0, new SelectListItem() { Text = "Select an User" });
+            ViewBag.UserList = usersList;
         }
 
         [HttpPost]
