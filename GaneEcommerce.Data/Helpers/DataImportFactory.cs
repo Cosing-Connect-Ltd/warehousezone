@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -1298,7 +1299,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 throw;
             }
 
@@ -2617,7 +2618,7 @@ namespace Ganedata.Core.Data.Helpers
                             }
                             catch (Exception ex)
                             {
-                                ErrorSignal.FromCurrentContext().Raise(ex);
+                                EventLog.WriteEntry(ex.Source, ex.Message);
                                 throw;
                             }
                         }
@@ -2815,7 +2816,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 throw;
             }
 
@@ -2843,7 +2844,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 throw;
             }
 
@@ -2869,7 +2870,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 throw;
             }
         }
@@ -2908,7 +2909,7 @@ namespace Ganedata.Core.Data.Helpers
                 }
                 catch (Exception ex)
                 {
-                    ErrorSignal.FromCurrentContext().Raise(ex);
+                    EventLog.WriteEntry(ex.Source, ex.Message);
                     throw;
                 }
             }
@@ -2939,7 +2940,7 @@ namespace Ganedata.Core.Data.Helpers
                     }
                     catch (Exception ex)
                     {
-                        ErrorSignal.FromCurrentContext().Raise(ex);
+                        EventLog.WriteEntry(ex.Source, ex.Message);
                     }
                 }
 
@@ -2964,7 +2965,7 @@ namespace Ganedata.Core.Data.Helpers
                     }
                     catch (Exception ex)
                     {
-                        ErrorSignal.FromCurrentContext().Raise(ex);
+                        EventLog.WriteEntry(ex.Source, ex.Message);
                     }
                 }
             }
@@ -3009,7 +3010,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 throw;
             }
         }
@@ -3027,6 +3028,7 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     url = PrestashopUrl + "products/?filter[id]=[" + Id + "]&display=full";
                 }
+
                 PrestashopProduct productSearch = new PrestashopProduct();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
@@ -3036,6 +3038,7 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     var serializer = new XmlSerializer(typeof(PrestashopProduct));
                     productSearch = serializer.Deserialize(streamReader) as PrestashopProduct;
+
                     if (productSearch?.Products?.Product?.Count < 0)
                     {
                         return default;
@@ -3045,7 +3048,7 @@ namespace Ganedata.Core.Data.Helpers
                 #endregion
                 if (productSearch.Products.Product.Count > 0)
                 {
-                    foreach (var item in productSearch.Products.Product)
+                    foreach (var item in productSearch.Products.Product.Where(x => !string.IsNullOrEmpty(x.Reference)))
                     {
                         var productMaster = context.ProductMaster.FirstOrDefault(u => u.SKUCode == item.Reference.Trim() && u.IsDeleted != true);
                         if (productMaster == null)
@@ -3053,7 +3056,7 @@ namespace Ganedata.Core.Data.Helpers
                             productMaster = new ProductMaster();
                             productMaster.DateCreated = DateTime.UtcNow;
                             productMaster.CreatedBy = UserId;
-                            productMaster.SKUCode = string.IsNullOrEmpty(item.Reference) ? "SkuPresta" : item.Reference.Trim();
+                            productMaster.SKUCode = item.Reference.Trim();
                             productMaster.TaxID = 1;
                             productMaster.Name = string.IsNullOrEmpty(item?.Name?.Language?.Text) ? "PrestaShopProduct" : item.Name.Language.Text;
                             productMaster.Description = GetPlainTextFromHtml(item.Description.Language.Text);
@@ -3062,7 +3065,7 @@ namespace Ganedata.Core.Data.Helpers
                             productMaster.LotOption = false;
                             productMaster.LotOptionCodeId = 1;
                             productMaster.LotProcessTypeCodeId = 1;
-                            productMaster.BarCode = string.IsNullOrEmpty(item.Reference) ? "SkuPresta" : item.Reference.Trim(); ;
+                            productMaster.BarCode = item.Reference.Trim();
                             productMaster.Height = item.Height ?? 0;
                             productMaster.Width = item.Width ?? 0;
                             productMaster.Depth = item.Depth ?? 0;
@@ -3098,7 +3101,7 @@ namespace Ganedata.Core.Data.Helpers
 
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 throw ex;
             }
         }
@@ -3198,7 +3201,7 @@ namespace Ganedata.Core.Data.Helpers
 
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
             }
 
             return result;
@@ -3307,7 +3310,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 throw ex;
             }
         }
@@ -3517,7 +3520,7 @@ namespace Ganedata.Core.Data.Helpers
             catch (Exception ex)
             {
                 CreateWebSiteSyncLog(requestTime, "Error", false, 0, requestSentTime, ApiId, tenantId);
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 return ex.Message;
             }
 
@@ -3580,7 +3583,7 @@ namespace Ganedata.Core.Data.Helpers
 
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
                 throw ex;
             }
 
@@ -3625,17 +3628,19 @@ namespace Ganedata.Core.Data.Helpers
 
                 var productavailableIds = prestashopProducts.Products.Product.Select(u => new
                 {
-
                     StockAvailable = u.Associations.Stock_availables.Stock_available,
                     SKU = u.Reference,
-
+                    ShopId = Convert.ToInt32(u.Id_shop_default)
                 }).ToList();
+
                 var getProductDetails = _currentDbContext.ProductMaster.Where(u => prestashopSkucode.Contains(u.SKUCode) && u.IsDeleted != true && u.TenantId == tenantId)
                     .Select(u => new
                     {
                         InventoryStock = u.InventoryStocks,
                         SkuCode = u.SKUCode,
+
                     }).ToList();
+
                 if (getProductDetails.Count > 0)
                 {
                     List<stock_available> stock_Availables = new List<stock_available>();
@@ -3643,6 +3648,7 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         var sku = item.SkuCode;
                         var stockdetail = productavailableIds.FirstOrDefault(u => u.SKU == sku).StockAvailable;
+                        var shopId = productavailableIds.FirstOrDefault(u => u.SKU == sku).ShopId;
                         if (stockdetail != null)
                         {
                             stock_available stock_Available = new stock_available();
@@ -3652,6 +3658,7 @@ namespace Ganedata.Core.Data.Helpers
                             stock_Available.depends_on_stock = 0;
                             stock_Available.id_product_attribute = stockdetail == null ? 0 : stockdetail.Id_product_attribute;
                             stock_Available.StockAvailableId = stockdetail == null ? 0 : stockdetail.Id;
+                            stock_Available.id_shop = shopId;
                             stock_Availables.Add(stock_Available);
                         }
                     }
@@ -3665,7 +3672,7 @@ namespace Ganedata.Core.Data.Helpers
             catch (Exception e)
             {
                 CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, SiteId, tenantId);
-                ErrorSignal.FromCurrentContext().Raise(e);
+                EventLog.WriteEntry(e.Source, e.Message);
                 return "Stock levels update failed";
             }
 
@@ -3732,11 +3739,11 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (WebException webEx)
             {
-                ErrorSignal.FromCurrentContext().Raise(webEx);
+                EventLog.WriteEntry(webEx.Source, webEx.Message);
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
             }
             finally
             {
@@ -3752,12 +3759,15 @@ namespace Ganedata.Core.Data.Helpers
             XmlDocument xml = new XmlDocument();
             XmlElement root = xml.CreateElement("prestashop");
             xml.AppendChild(root);
+
             foreach (var stock in stock_Availables)
             {
                 XmlElement child = xml.CreateElement("stock_available");
+
                 XmlElement id = xml.CreateElement("id");
                 id.InnerText = stock.StockAvailableId.ToString();
                 child.AppendChild(id);
+
                 XmlElement id_product = xml.CreateElement("id_product");
                 id_product.InnerText = stock.id_product.ToString();
                 child.AppendChild(id_product);
@@ -3779,11 +3789,14 @@ namespace Ganedata.Core.Data.Helpers
                 out_of_stock.InnerText = stock.out_of_stock.ToString();
                 child.AppendChild(out_of_stock);
 
+                XmlElement id_shop = xml.CreateElement("id_shop");
+                id_shop.InnerText = stock.id_shop.ToString();
+                child.AppendChild(id_shop);
+
                 root.AppendChild(child);
             }
+
             return xml.OuterXml;
-
-
         }
         public string GetDPDServices()
         {
@@ -3835,7 +3848,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
             }
 
             return "";
@@ -3912,7 +3925,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                EventLog.WriteEntry(ex.Source, ex.Message);
             }
 
             return "Data Posted";

@@ -26,19 +26,16 @@
 
 @Html.Action("ProductManufacturersList")
 
-<div class="col-md-12 p-0">
+<div class="col-md-offset-2 col-md-10 bottom-right">
 
     @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantDepartment", "Create"))
     {
         @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
     }
-
     @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantDepartment", "Edit"))
     {
         @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
     }
-
-
     @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantDepartment", "Delete"))
     {
         @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
