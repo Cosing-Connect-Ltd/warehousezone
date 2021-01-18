@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Ganedata.Core.Entities.Domain.ViewModels
 {
 
-   public class stock_available
+    public class stock_available
     {
         public int id_product { get; set; }
         public int? id_product_attribute { get; set; }
         public int quantity { get; set; }
         public int depends_on_stock { get; set; }
         public int out_of_stock { get; set; }
-
         public int StockAvailableId { get; set; }
+        public int id_shop { get; set; }
     }
-
 
     [XmlRoot(ElementName = "id_customer")]
     public class Id_customer
@@ -103,8 +99,5 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         [XmlAttribute(AttributeName = "xlink", Namespace = "http://www.w3.org/2000/xmlns/")]
         public string Xlink { get; set; }
     }
-
-
-
 
 }
