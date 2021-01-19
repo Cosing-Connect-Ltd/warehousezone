@@ -367,9 +367,8 @@ namespace Ganedata.Core.Services
             InventoryTransaction AutoTransferInventoryTransaction = new InventoryTransaction();
             bool reverseInventoryTransaction = false;
 
-            caUser user = caCurrent.CurrentUser();
-            var tenantConfig = context.TenantConfigs.First(m => m.TenantId == user.TenantId);
-            int warehouseId = caCurrent.CurrentWarehouse().WarehouseId;
+            var tenantConfig = context.TenantConfigs.First(m => m.TenantId == model.TenentId);
+            int warehouseId = model.WarehouseId;
             var order = context.Order.FirstOrDefault(x => x.OrderID == model.OrderID);
             if (stockLocations != null && stockLocations.Count > 0)
             {
@@ -390,18 +389,17 @@ namespace Ganedata.Core.Services
                                      (!string.IsNullOrEmpty(m.DeliveryNO) && !string.IsNullOrEmpty(delivery) &&
                                       m.DeliveryNO.Trim().Equals(delivery.Trim(), StringComparison.OrdinalIgnoreCase)));
 
-            //var oprocess = context.OrderProcess.FirstOrDefault(a => a.DeliveryNO == delivery && a.IsDeleted != true && a.OrderID == model.OrderID);
             if (oprocess == null)
             {
                 OrderProcess opr = new OrderProcess
                 {
                     DeliveryNO = delivery,
                     DateCreated = DateTime.UtcNow,
-                    CreatedBy = user.UserId,
+                    CreatedBy = model.CreatedBy,
                     OrderID = model.OrderID,
 
-                    TenentId = user.TenantId,
-                    WarehouseId = caCurrent.CurrentWarehouse().WarehouseId,
+                    TenentId = model.TenentId,
+                    WarehouseId = model.WarehouseId,
                     DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
                     InventoryTransactionTypeId = type
                 };
@@ -432,11 +430,11 @@ namespace Ganedata.Core.Services
 
                 OrderProcessDetail odet = new OrderProcessDetail
                 {
-                    CreatedBy = user.UserId,
+                    CreatedBy = model.CreatedBy,
                     DateCreated = DateTime.UtcNow,
                     OrderProcessId = opr.OrderProcessID,
                     ProductId = model.ProductId,
-                    TenentId = user.TenantId,
+                    TenentId = model.TenentId,
                     BatchNumber = model.BatchNumber ?? null,
                     ExpiryDate = model.ExpiryDate ?? null,
                     QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
@@ -466,9 +464,9 @@ namespace Ganedata.Core.Services
                         {
                             DeliveryNO = delivery,
                             DateCreated = DateTime.UtcNow,
-                            CreatedBy = user.UserId,
+                            CreatedBy = model.CreatedBy,
                             OrderID = altOrder?.OrderID,
-                            TenentId = user.TenantId,
+                            TenentId = model.TenentId,
 
                             WarehouseId = altOrder.WarehouseId ?? 0,
                             DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
@@ -484,11 +482,11 @@ namespace Ganedata.Core.Services
 
                         var orderprocessdet = new OrderProcessDetail
                         {
-                            CreatedBy = user.UserId,
+                            CreatedBy = model.CreatedBy,
                             DateCreated = DateTime.UtcNow,
                             OrderProcessId = xopr.OrderProcessID,
                             ProductId = model.ProductId,
-                            TenentId = user.TenantId,
+                            TenentId = model.TenentId,
                             QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                             OrderDetailID = AltOrderDetail?.OrderDetailID,
                             BatchNumber = model.BatchNumber ?? null,
@@ -504,14 +502,12 @@ namespace Ganedata.Core.Services
                         bool dontMonitorStockAlt = CheckDontStockMonitor(model.ProductId, AltOrderDetail.OrderDetailID,
                             model.OrderID);
 
-                        altTransaction.CreatedBy = user.UserId;
+                        altTransaction.CreatedBy = model.CreatedBy;
                         altTransaction.DateCreated = DateTime.UtcNow;
                         altTransaction.InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId;
-                        altTransaction.TenentId = caCurrent.CurrentTenant().TenantId;
+                        altTransaction.TenentId = model.TenentId;
                         altTransaction.DontMonitorStock = dontMonitorStockAlt;
-                        altTransaction.WarehouseId = altOrder.WarehouseId == null
-                            ? caCurrent.CurrentWarehouse().WarehouseId
-                            : (int)altOrder.WarehouseId;
+                        altTransaction.WarehouseId = altOrder.WarehouseId == null ? model.WarehouseId : (int)altOrder.WarehouseId;
                         altTransaction.Quantity = GetUomQuantity(model.ProductId, model.Quantity);
                         altTransaction.OrderProcessId = xopr.OrderProcessID;
                         altTransaction.OrderProcessDetailId = orderprocessdet?.OrderProcessDetailID;
@@ -525,14 +521,14 @@ namespace Ganedata.Core.Services
             else
             {
                 oprocess.DateUpdated = DateTime.UtcNow;
-                oprocess.UpdatedBy = user.UserId;
+                oprocess.UpdatedBy = model.CreatedBy;
                 var odet = new OrderProcessDetail
                 {
-                    CreatedBy = user.UserId,
+                    CreatedBy = model.CreatedBy,
                     DateCreated = DateTime.UtcNow,
                     OrderProcessId = oprocess.OrderProcessID,
                     ProductId = model.ProductId,
-                    TenentId = user.TenantId,
+                    TenentId = model.TenentId,
                     QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                     OrderDetailID = Line_Id,
 
@@ -566,11 +562,11 @@ namespace Ganedata.Core.Services
 
                     odet = new OrderProcessDetail
                     {
-                        CreatedBy = user.UserId,
+                        CreatedBy = model.CreatedBy,
                         DateCreated = DateTime.UtcNow,
                         OrderProcessId = oprocess.OrderProcessID,
                         ProductId = model.ProductId,
-                        TenentId = user.TenantId,
+                        TenentId = model.TenentId,
                         OrderDetailID = od.OrderDetailID,
                         BatchNumber = model.BatchNumber ?? null,
                         ExpiryDate = model.ExpiryDate ?? null,
@@ -630,9 +626,9 @@ namespace Ganedata.Core.Services
                             {
                                 DeliveryNO = delivery,
                                 DateCreated = DateTime.UtcNow,
-                                CreatedBy = user.UserId,
+                                CreatedBy = model.CreatedBy,
                                 OrderID = altOrder?.OrderID,
-                                TenentId = user.TenantId,
+                                TenentId = model.TenentId,
                                 WarehouseId = altOrder.WarehouseId ?? 0,
                                 DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
                                 InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId,
@@ -647,11 +643,11 @@ namespace Ganedata.Core.Services
 
                             var orderProcessDet = new OrderProcessDetail
                             {
-                                CreatedBy = user.UserId,
+                                CreatedBy = model.CreatedBy,
                                 DateCreated = DateTime.UtcNow,
                                 OrderProcessId = xopr.OrderProcessID,
                                 ProductId = model.ProductId,
-                                TenentId = user.TenantId,
+                                TenentId = model.TenentId,
                                 QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                                 BatchNumber = model.BatchNumber ?? null,
                                 ExpiryDate = model.ExpiryDate ?? null,
@@ -666,14 +662,12 @@ namespace Ganedata.Core.Services
                             bool dontMonitorStockAlt = CheckDontStockMonitor(model.ProductId,
                                 AltOrderDetail.OrderDetailID, model.OrderID);
 
-                            altTransaction.CreatedBy = user.UserId;
+                            altTransaction.CreatedBy = model.CreatedBy;
                             altTransaction.DateCreated = DateTime.UtcNow;
                             altTransaction.InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId;
-                            altTransaction.TenentId = caCurrent.CurrentTenant().TenantId;
+                            altTransaction.TenentId = model.TenentId;
                             altTransaction.DontMonitorStock = dontMonitorStockAlt;
-                            altTransaction.WarehouseId = altOrder.WarehouseId == null
-                                ? caCurrent.CurrentWarehouse().WarehouseId
-                                : (int)altOrder.WarehouseId;
+                            altTransaction.WarehouseId = altOrder.WarehouseId == null ? model.WarehouseId : (int)altOrder.WarehouseId;
                             altTransaction.Quantity = GetUomQuantity(model.ProductId, model.Quantity);
                             altTransaction.OrderProcessId = xopr.OrderProcessID;
                             altTransaction.OrderProcessDetailId = orderProcessDet?.OrderProcessDetailID;
@@ -687,11 +681,11 @@ namespace Ganedata.Core.Services
                         {
                             var det = new OrderProcessDetail
                             {
-                                CreatedBy = user.UserId,
+                                CreatedBy = model.CreatedBy,
                                 DateCreated = DateTime.UtcNow,
                                 OrderProcessId = targetWarehouseProcess.OrderProcessID,
                                 ProductId = model.ProductId,
-                                TenentId = user.TenantId,
+                                TenentId = model.TenentId,
                                 QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                                 BatchNumber = model.BatchNumber ?? null,
                                 ExpiryDate = model.ExpiryDate ?? null,
@@ -700,7 +694,7 @@ namespace Ganedata.Core.Services
 
 
                             targetWarehouseProcess.DateUpdated = DateTime.UtcNow;
-                            targetWarehouseProcess.UpdatedBy = user.UserId;
+                            targetWarehouseProcess.UpdatedBy = model.CreatedBy;
                             context.OrderProcessDetail.Add(odet);
                             context.SaveChanges();
 
@@ -709,14 +703,12 @@ namespace Ganedata.Core.Services
                             bool dontMonitorStockAlt = CheckDontStockMonitor(model.ProductId,
                                 AltOrderDetail.OrderDetailID, model.OrderID);
 
-                            altTransaction.CreatedBy = user.UserId;
+                            altTransaction.CreatedBy = model.CreatedBy;
                             altTransaction.DateCreated = DateTime.UtcNow;
                             altTransaction.InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId;
-                            altTransaction.TenentId = caCurrent.CurrentTenant().TenantId;
+                            altTransaction.TenentId = model.TenentId;
                             altTransaction.DontMonitorStock = dontMonitorStockAlt;
-                            altTransaction.WarehouseId = altOrder.WarehouseId == null
-                                ? caCurrent.CurrentWarehouse().WarehouseId
-                                : (int)altOrder.WarehouseId;
+                            altTransaction.WarehouseId = altOrder.WarehouseId == null ? model.WarehouseId : (int)altOrder.WarehouseId;
                             altTransaction.Quantity = GetUomQuantity(model.ProductId, model.Quantity);
                             altTransaction.OrderProcessId = targetWarehouseProcess.OrderProcessID;
                             altTransaction.OrderProcessDetailId = det?.OrderProcessDetailID;
@@ -733,11 +725,11 @@ namespace Ganedata.Core.Services
             // if DontMonitorStock flag is true then make that flag true in inventory as well
             bool dontMonitorStock = CheckDontStockMonitor(model.ProductId, Line_Id, model.OrderID);
 
-            model.CreatedBy = user.UserId;
+            model.CreatedBy = model.CreatedBy;
             model.DateCreated = DateTime.UtcNow;
             model.InventoryTransactionTypeId = type;
-            model.WarehouseId = caCurrent.CurrentWarehouse().WarehouseId;
-            model.TenentId = caCurrent.CurrentTenant().TenantId;
+            model.WarehouseId = model.WarehouseId;
+            model.TenentId = model.TenentId;
             model.DontMonitorStock = dontMonitorStock;
 
             if (oprocess != null)
@@ -770,7 +762,7 @@ namespace Ganedata.Core.Services
                         type, dontMonitorStock);
                     context.InventoryTransactions.Add(model);
                     context.SaveChanges();
-                    StockRecalculate(model.ProductId, model.WarehouseId, user.TenantId, user.UserId);
+                    StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy);
                 }
             }
             else
@@ -781,7 +773,7 @@ namespace Ganedata.Core.Services
 
                 context.InventoryTransactions.Add(model);
                 context.SaveChanges();
-                StockRecalculate(model.ProductId, model.WarehouseId, user.TenantId, user.UserId);
+                StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy);
             }
 
             if (reverseInventoryTransaction == true)
@@ -794,7 +786,7 @@ namespace Ganedata.Core.Services
                 context.InventoryTransactions.Add(AutoTransferInventoryTransaction);
                 context.SaveChanges();
                 StockRecalculate(AutoTransferInventoryTransaction.ProductId,
-                    AutoTransferInventoryTransaction.WarehouseId, user.TenantId, user.UserId);
+                    AutoTransferInventoryTransaction.WarehouseId, model.TenentId, model.CreatedBy);
             }
         }
 

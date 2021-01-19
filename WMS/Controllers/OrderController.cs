@@ -1174,6 +1174,10 @@ namespace WMS.Controllers
         {
             try
             {
+                model.TenentId = CurrentTenantId;
+                model.WarehouseId = CurrentWarehouseId;
+                model.CreatedBy = CurrentUserId;
+
                 int type = (int)model.InventoryTransactionTypeId;
 
                 int? cons_type = null;
@@ -1187,7 +1191,6 @@ namespace WMS.Controllers
 
                 var delivery = Session["delivery"]?.ToString();
                 var line_id = int.Parse(Session["line_id"] != null ? Session["line_id"].ToString() : "0");
-                model.TenentId = caCurrent.CurrentTenant().TenantId;
 
                 if (!string.IsNullOrEmpty(model.BatchNumber) && !_productServices.IsValidBatchForProduct(model.ProductId, model.BatchNumber))
                 {
