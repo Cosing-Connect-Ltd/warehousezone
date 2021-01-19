@@ -89,13 +89,7 @@ namespace WMS.Controllers.WebAPI
             foreach (var stock in alllStocks)
             {
                 var LocationStockSync = new ProductLocationStocksSync();
-                LocationStockSync.Id = stock.Id;
-                LocationStockSync.ProductId = stock.ProductId;
-                LocationStockSync.LocationId = stock.LocationId;
-                LocationStockSync.IsActive = stock.IsActive;
-                LocationStockSync.IsDeleted = stock.IsDeleted;
-                LocationStockSync.Quantity = stock.Quantity;
-                LocationStockSync.WarehouseId = stock.WarehouseId;
+                _mapper.Map(stock, LocationStockSync);
                 StocksList.Add(LocationStockSync);
             }
 

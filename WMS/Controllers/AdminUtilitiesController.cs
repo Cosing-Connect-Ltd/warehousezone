@@ -64,6 +64,32 @@ namespace WMS.Controllers
             return View();
         }
 
+        public ActionResult RecalculateLocationsStockAll()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            Boolean Result = false;
+            ViewBag.Result = "Failed";
+
+            var warehouses = CurrentTenant.TenantLocations.Where(x => x.IsActive != false && x.IsDeleted != true).ToList();
+
+            foreach (var loc in warehouses)
+            {
+                Result = Inventory.LocationStockRecalculateAll(loc.WarehouseId, CurrentTenantId, CurrentUserId);
+            }
+
+            if (Result)
+            {
+                ViewBag.Result = "Success";
+            }
+
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Stock Recalculate was successful";
+            ViewBag.Detail = "Stock Recalculate was successful";
+
+            return View("AdminUtilities");
+        }
+
         public ActionResult RecalculateStock(int id)
         {
             caUser user = caCurrent.CurrentUser();
@@ -198,9 +224,7 @@ namespace WMS.Controllers
                         _currentDbContext.SaveChanges();
                         counter = 0;
                     }
-
                 }
-
             }
 
             ViewBag.Title = "Operation was Successful";
@@ -333,7 +357,6 @@ namespace WMS.Controllers
                 }
                 else
                 {
-
                     ViewBag.Error = "Product is not Process by Pallet";
                 }
             }
@@ -345,8 +368,6 @@ namespace WMS.Controllers
                     var palletTrackings = _adminServices.GetPalletTrackingsbyProductId(item.ProductId, CurrentTenantId, CurrentWarehouseId).ToList();
                     foreach (var palletTracking in palletTrackings)
                     {
-
-
                         var Processedqunatity = Inventory.CalculatePalletQuantity(palletTracking.PalletTrackingId);
                         var remianingquantity = (item.ProductsPerCase ?? 1) * palletTracking.RemainingCases;
                         if (Processedqunatity != remianingquantity)
@@ -357,15 +378,14 @@ namespace WMS.Controllers
                             palletAuditIssueList.ProductName = item.Name;
                             palletAuditIssueLists.Add(palletAuditIssueList);
                         }
-
                     }
                     if (palletAuditIssueLists.Count >= 200)
                     {
                         break;
                     }
                 }
-
             }
+
             if (palletAuditIssueLists.Count > 0)
             {
                 ViewBag.PalletAuditList = palletAuditIssueLists.Take(200).ToList();
