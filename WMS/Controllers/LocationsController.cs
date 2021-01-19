@@ -228,6 +228,7 @@ namespace WMS.Controllers
             var locations = LookupServices.GetAllLocations(CurrentTenantId).ToList();
             return PartialView("_Locations", locations);
         }
+
         public ActionResult _LocationCreate(int? Id)
         {
             SetDropdowns();
