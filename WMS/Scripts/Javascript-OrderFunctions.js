@@ -1258,18 +1258,22 @@ function loadOrderDetailCommonEvents() {
             var iscaseQty = false;
             $("div.sales-detail-actions").each(function () {
                 var rowCodes = $(this).data("codes").toLowerCase().split(',');
+                debugger;
                 if (matchedProduct) return;
 
                 if (rowCodes.indexOf($("#ProcessBarcode").val().toLowerCase()) >= 0) {
                     directPostAllowed = $(this).attr("data-direct-post") === "True";
 
                     if (directPostAllowed) {
+                        debugger;
                         matchedProduct = true;
                         productId = $(this).data("productid");
                         orderDetailId = $(this).data("id");
+                        debugger;
                         iscaseQty = rowCodes.indexOf($("#ProcessBarcode").val().toLowerCase()) === 2;
                         return;
                     } else {
+                        debugger;
                         if ($(this).find("a.process-button").length > 0) {
                             $(this).find("a.process-button").click();
                             matchedProduct = true;
@@ -1280,7 +1284,7 @@ function loadOrderDetailCommonEvents() {
             });
             if (!matchedProduct) {
                 Gane.Helpers.ShowPopupMessage("Invalid code for this order",
-                    "There are no products matching this code found in this order.");
+                    "There are no products matching this code to pick in this order.");
             } else {
                 if (directPostAllowed) {
                     submitProductProcessing(productId, orderDetailId, iscaseQty);
@@ -2066,6 +2070,7 @@ function CloseModel() {
 }
 
 function SaveSerials() {
+
     if ($(".tableSerial > tbody > tr").length <= 0) {
         var res = alert("Please scaned pallet First!");
         return;
@@ -2077,6 +2082,7 @@ function SaveSerials() {
     var prid = $('#prodId').val();
     var DeliveryNo = $('#delivery').val();
     var orderDetailId = $("#OrderDetailID").val();
+    debugger;
     var type = $('#type').val();
 
     var url = "/PurchaseOrders/_SubmitPalleteSerials/";
@@ -2087,11 +2093,6 @@ function SaveSerials() {
 
     var data = { serialList: cases, pid: prid, orderId: ordid, DeliveryNo: DeliveryNo, OrderDetailID: orderDetailId };
     if (type === "2" || type === "8") {
-        orderDetailId = $("#selkeyhdPrddet").val();
-        if (type === "8") {
-            orderDetailId = $("#selkeyworkorder").val();
-        }
-
         url = "/SalesOrders/_SubmitPalleteSerials/";
         data = { serialList: cases, pid: prid, orderId: ordid, DeliveryNo: DeliveryNo, OrderDetailID: orderDetailId, type: type };
     }

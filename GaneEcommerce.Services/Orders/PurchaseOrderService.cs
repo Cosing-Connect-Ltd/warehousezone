@@ -1063,9 +1063,12 @@ namespace Ganedata.Core.Services
                     }
                     if (product != null)
                     {
-                        serials.Quantity = totalquantity * product.ProductsPerCase ?? 1;
+                        serials.Quantity = Inventory.GetUomQuantity(product.ProductId, (totalquantity * product.ProductsPerCase ?? 1));
                     }
-                    else { serials.Quantity = totalquantity; }
+                    else
+                    {
+                        serials.Quantity = totalquantity;
+                    }
 
                     if (serials.OrderId <= 0 && serials.InventoryTransactionType > 0)
                     {
@@ -1231,7 +1234,7 @@ namespace Ganedata.Core.Services
                             UpdatedBy = serials.userId,
 
                             ProductId = serials.ProductId,
-                            QtyProcessed = Math.Round(quantity * (product.ProductsPerCase ?? 1), 2),
+                            QtyProcessed = Inventory.GetUomQuantity(product.ProductId, (quantity * product.ProductsPerCase ?? 1)),
                             TenentId = serials.tenantId,
                             OrderProcessId = orderProcess.OrderProcessID,
                             OrderDetailID = serials.OrderDetailID,
