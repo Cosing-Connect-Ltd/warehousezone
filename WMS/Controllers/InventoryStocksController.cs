@@ -372,8 +372,8 @@ namespace WMS.Controllers
             stockmovement.WarehouseId = CurrentWarehouseId;
             stockmovement.TenentId = CurrentTenantId;
             stockmovement.UserId = CurrentUserId;
-            stockmovement.FromLocationName = _lookupServices.GetLocationById((stockmovement.FromLocation ?? 0), CurrentTenantId)?.LocationName;
-            stockmovement.ToLocationName = _lookupServices.GetLocationById((stockmovement.ToLocation ?? 0), CurrentTenantId)?.LocationName;
+            stockmovement.FromLocationName = _lookupServices.GetLocationById((stockmovement.FromLocation), CurrentTenantId)?.LocationName;
+            stockmovement.ToLocationName = _lookupServices.GetLocationById((stockmovement.ToLocation), CurrentTenantId)?.LocationName;
             stockmovement.ProductName = _productService.GetProductMasterById(stockmovement.ProductId)?.Name;
             GaneStockMovementItemsSessionHelper.UpdateStockMovementItemsSession(stockmovement);
             return Json(true, JsonRequestBehavior.AllowGet);
