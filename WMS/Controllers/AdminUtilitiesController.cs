@@ -1,17 +1,16 @@
-﻿using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Services;
-using System;
-using System.Linq;
-using System.Web.Mvc;
+﻿using AutoMapper;
+using Elmah;
+using Ganedata.Core.Data;
+using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
-using Ganedata.Core.Data;
-using System.Threading.Tasks;
+using Ganedata.Core.Services;
+using System;
 using System.Collections.Generic;
-using AutoMapper;
-using ClosedXML.Report.Utils;
 using System.Data.Entity;
-using Elmah;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace WMS.Controllers
 {
@@ -37,16 +36,12 @@ namespace WMS.Controllers
             _invoiceServices = invoiceServices;
             _deliverectSyncService = deliverectSyncService;
         }
-        // GET: AdminUtilities/RecalculateStockAll
-        /// <summary>
-        /// This is used to recalculate all stock in case if needs to be removed some enteried manually from inventory transactions
-        /// </summary>
-        /// <returns></returns>
+
         public ActionResult RecalculateStockAll()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            Boolean Result = false;
+            bool Result = false;
             ViewBag.Result = "Failed";
 
             var warehouses = CurrentTenant.TenantLocations.Where(x => x.IsActive != false && x.IsDeleted != true).ToList();
@@ -68,7 +63,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            Boolean Result = false;
+            bool Result = false;
             ViewBag.Result = "Failed";
 
             var warehouses = CurrentTenant.TenantLocations.Where(x => x.IsActive != false && x.IsDeleted != true).ToList();
@@ -650,6 +645,48 @@ namespace WMS.Controllers
 
             return View("AdminUtilities");
 
+        }
+
+        public ActionResult CorrectStockLocationRecords()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            bool Result = false;
+            ViewBag.Result = "Failed";
+
+            var stockListfromLocation = _currentDbContext.InventoryTransactions.Where(u =>
+                     (u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentOut
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.MovementOut)).ToList();
+
+
+
+            foreach (var item in stockListfromLocation)
+            {
+                var locationId = Inventory.GetLocation(CurrentTenantId, item.LocationId);
+
+                if (locationId != null)
+                {
+                    Result = Inventory.AdjustStockLocations(item.ProductId, locationId ?? 0, locationId ?? 0,
+                        item.Quantity, item.WarehouseId, item.TenentId,
+                        CurrentUserId, null, null, true);
+                }
+            }
+
+            if (Result)
+            {
+                ViewBag.Result = "Success";
+            }
+
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Stock Recalculate was successful";
+            ViewBag.Detail = "Stock Recalculate was successful";
+
+            return View("AdminUtilities");
         }
 
         public ActionResult ExplicitGC()

@@ -85,7 +85,7 @@ namespace Ganedata.Core.Services
                 //calculate location stock
                 if (!dontMonitorStock && location != null)
                 {
-                    CalculateLocationStock(location ?? 0, tenant.TenantId);
+                    LocationStockRecalculate(location ?? 0, warehouse.WarehouseId, tenant.TenantId, user.UserId);
                 }
             }
 
@@ -797,6 +797,7 @@ namespace Ganedata.Core.Services
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             InventoryTransaction transaction = new InventoryTransaction();
+            int? location = GetLocation(tenantId, locationId);
 
 
             //validate parameters if they exist in current context and are valid
@@ -835,6 +836,12 @@ namespace Ganedata.Core.Services
             {
                 StockRecalculate(productId, warehouseId, tenantId, userId);
                 AdjustRecipeItemsInventory(transaction);
+
+                //calculate location stock
+                if (!dontMonitorStock && location != null)
+                {
+                    LocationStockRecalculate(location ?? 0, warehouseId, tenantId, userId);
+                }
             }
 
             return transaction;
@@ -1532,53 +1539,93 @@ namespace Ganedata.Core.Services
 
         public static bool AdjustStockMovementTransactions(StockMovementViewModel stockMovement)
         {
+            bool status = false;
+            var productService = DependencyResolver.Current.GetService<IProductServices>();
+            var product = productService.GetProductMasterById(stockMovement.ProductId);
+
+            if (stockMovement.PalletSerials.Count > 0)
+            {
+                foreach (var item in stockMovement.PalletSerials)
+                {
+
+                    status = AdjustStockLocations(stockMovement.ProductId, stockMovement.FromLocation, stockMovement.ToLocation,
+                        GetUomQuantity(product.ProductId, (item.Cases * product.ProductsPerCase ?? 1)), stockMovement.WarehouseId, stockMovement.TenentId,
+                        stockMovement.UserId, item.PalletSerialId, null, true);
+                }
+            }
+            else if (stockMovement.SerialIds.Count > 0)
+            {
+                foreach (var item in stockMovement.SerialIds)
+                {
+
+                    status = AdjustStockLocations(stockMovement.ProductId, stockMovement.FromLocation, stockMovement.ToLocation,
+                        1, stockMovement.WarehouseId, stockMovement.TenentId,
+                        stockMovement.UserId, item, null, true);
+                }
+            }
+            else
+            {
+                status = AdjustStockLocations(stockMovement.ProductId, stockMovement.FromLocation, stockMovement.ToLocation,
+                        stockMovement.Qty, stockMovement.WarehouseId, stockMovement.TenentId,
+                        stockMovement.UserId, null, null, true);
+            }
+
+            return status;
+        }
+
+        public static bool AdjustStockLocations(int productId, int fromLocation, int toLocation, decimal quantity, int warehouseId, int tenantId,
+            int userId, int? palletId = null, int? serialId = null, bool isStockMovement = false)
+        {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             var lookupService = DependencyResolver.Current.GetService<ILookupServices>();
-
+            var productService = DependencyResolver.Current.GetService<IProductServices>();
+            var product = productService.GetProductMasterById(productId);
+            Guid? ProductMovementId = null;
             var status = false;
-            Guid ProductMovementId = new Guid();
-            if (stockMovement.Qty > 0)
+
+            if (quantity > 0)
             {
-                var qtyMoved = stockMovement.Qty;
                 var stockListfromLocation = context.InventoryTransactions.Where(u =>
-                    u.ProductId == stockMovement.ProductId && u.LocationId == stockMovement.FromLocation &&
-                    u.IsCurrentLocation == true &&
-                    (u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder
+                    u.ProductId == productId && u.LocationId == fromLocation
+                    && u.IsCurrentLocation == true && (serialId == null || u.SerialID == serialId)
+                    && (palletId == null || u.PalletTrackingId == palletId)
+                    && (u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder
                      || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns
                      || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn
-                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn)).ToList();
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.MovementIn)).ToList();
+
                 status = stockListfromLocation.Count > 0 ? true : false;
-                if (status)
+
+                if (isStockMovement)
                 {
-                    ProductMovementId = lookupService.CreateStockMovement(stockMovement.UserId, stockMovement.TenentId,
-                        stockMovement.WarehouseId);
+                    ProductMovementId = lookupService.CreateStockMovement(userId, tenantId, warehouseId);
                 }
+
+                var quantityToMove = quantity;
 
                 foreach (var item in stockListfromLocation)
                 {
-                    if (item.Quantity >= qtyMoved)
-                    {
-                        var result = item.Quantity - qtyMoved;
-                        InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId,
-                            stockMovement.WarehouseId, ProductMovementId, CurrentLocationstatus: false);
-                        if (result > 0)
-                        {
-                            InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId,
-                                stockMovement.WarehouseId, ProductMovementId, (stockMovement.FromLocation ?? 0),
-                                result);
 
+                    InventoryTransactionForStockMovement(item, userId, tenantId, warehouseId, ProductMovementId, CurrentLocationstatus: false);
+
+                    if (item.Quantity >= quantityToMove)
+                    {
+                        quantityToMove = item.Quantity - quantityToMove;
+
+                        if (quantityToMove > 0)
+                        {
+                            InventoryTransactionForStockMovement(item, userId, tenantId, warehouseId, ProductMovementId, fromLocation, quantityToMove);
                         }
 
-                        InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId,
-                            stockMovement.WarehouseId, ProductMovementId, (stockMovement.ToLocation ?? 0),
-                            stockMovement.Qty);
+                        InventoryTransactionForStockMovement(item, userId, tenantId, warehouseId, ProductMovementId, toLocation, quantity);
+                        status = true;
                         break;
                     }
                     else
                     {
-                        qtyMoved = qtyMoved - item.Quantity;
-                        InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId,
-                            stockMovement.WarehouseId, ProductMovementId, CurrentLocationstatus: false);
+                        quantityToMove = quantityToMove - item.Quantity;
+                        InventoryTransactionForStockMovement(item, userId, tenantId, warehouseId, ProductMovementId, toLocation, item.Quantity);
                     }
                 }
             }
@@ -1587,7 +1634,7 @@ namespace Ganedata.Core.Services
         }
 
         private static void InventoryTransactionForStockMovement(InventoryTransaction inventoryTransaction, int UserId,
-            int Tenantid, int WarehouseId, Guid StocktMovementId, int LocationIdTo = 0, decimal Qty = 0,
+            int Tenantid, int WarehouseId, Guid? StocktMovementId = null, int LocationIdTo = 0, decimal Qty = 0,
             bool CurrentLocationstatus = true)
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
@@ -1629,8 +1676,6 @@ namespace Ganedata.Core.Services
                 context.InventoryTransactions.Add(tans);
                 context.SaveChanges();
             }
-
-
         }
 
         public static string GetProductAttributesValueToDisplay(ICollection<ProductAttributeValuesMap> productAttributeValuesMap)
@@ -1748,11 +1793,5 @@ namespace Ganedata.Core.Services
                 return lookupService.GetLocationById(locationId ?? 0, tenantId)?.LocationId;
             }
         }
-
-        public static bool CalculateLocationStock(int locationId, int tenantId)
-        {
-            return true;
-        }
-
     }
 }

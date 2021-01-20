@@ -20,10 +20,10 @@ namespace Ganedata.Core.Entities.Domain
     {
         [Required]
         [Display(Name = "From Location")]
-        public int? FromLocation { get; set; }
+        public int FromLocation { get; set; }
         [Required]
         [Display(Name = "To Location")]
-        public int? ToLocation { get; set; }
+        public int ToLocation { get; set; }
         public List<int> SerialIds { get; set; }
         public List<StockMovementPalletSerialsViewModel> PalletSerials { get; set; }
         [Display(Name = "Quantity")]
