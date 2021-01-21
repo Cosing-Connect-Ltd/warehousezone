@@ -3680,6 +3680,101 @@ namespace Ganedata.Core.Data.Helpers
 
         }
 
+
+        public async Task<string> PrestaShopOrderStatusUpdate(int orderId, int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
+        {
+            DateTime requestTime = new DateTime(2000, 01, 01);
+            var dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
+            WebResponse httpResponse = null;
+            DateTime requestSentTime = DateTime.UtcNow;
+            string url = "";
+            try
+            {
+                var _currentDbContext = new ApplicationContext();
+                url = PrestashopUrl + "orders/" + orderId;
+                PrestashopOrderSingle prestaShopOrder = new PrestashopOrderSingle();
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
+
+                httpWebRequest.Method = "GET";
+                httpWebRequest.ContentType = "application/json";
+                requestSentTime = DateTime.UtcNow;
+                httpResponse = await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var serializer = new XmlSerializer(typeof(PrestashopOrderSingle));
+
+                    Current_state currentState = new Current_state();
+                    currentState.Text = 5;
+
+                    prestaShopOrder = serializer.Deserialize(streamReader) as PrestashopOrderSingle;
+                    prestaShopOrder.Order.Current_state = currentState;
+
+                    if (prestaShopOrder != null)
+                    {
+                        url = PrestashopUrl + "orders";
+                        UpdatePrestaShopOrder(url, PrestashopKey, prestaShopOrder);
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, SiteId, tenantId);
+                EventLog.WriteEntry(e.Source, e.Message);
+                return "Unable to update order status";
+            }
+
+            return "Order Status updated successfully";
+
+        }
+
+        public string UpdatePrestaShopOrder(string prestashopUrl, string prestashopKey, PrestashopOrderSingle order)
+        {
+            WebRequest req = null;
+            WebResponse rsp = null;
+            string Response = "";
+
+            try
+            {
+                req = WebRequest.Create(prestashopUrl);
+                req.Method = "PUT";
+                req.Credentials = new NetworkCredential(prestashopKey, "");
+                req.ContentType = "text/xml";
+
+                XmlSerializer xmlSerializer = new XmlSerializer(order.GetType());
+                StringWriter textWriter = new StringWriter();
+                xmlSerializer.Serialize(textWriter, order);
+
+                var data = textWriter.ToString();
+                data = data.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", "");
+
+                StreamWriter writer = new StreamWriter(req.GetRequestStream());
+                writer.WriteLine(data);
+                writer.Close();
+                rsp = req.GetResponse();
+                StreamReader sr = new StreamReader(rsp.GetResponseStream());
+                Response = sr.ReadToEnd();
+                sr.Close();
+                textWriter.Close();
+            }
+            catch (WebException webEx)
+            {
+                EventLog.WriteEntry(webEx.Source, webEx.Message);
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry(ex.Source, ex.Message);
+            }
+            finally
+            {
+                if (req != null) req.GetRequestStream().Close();
+                if (rsp != null) rsp.GetResponseStream().Close();
+            }
+
+            return Response;
+        }
+
         private string GetPlainTextFromHtml(string htmlString)
         {
             if (!string.IsNullOrEmpty(htmlString))
@@ -3753,6 +3848,7 @@ namespace Ganedata.Core.Data.Helpers
 
             return Response;
         }
+
         public string GenerateXmlPrestaShopStockUpdate(List<stock_available> stock_Availables)
         {
 
@@ -3798,6 +3894,7 @@ namespace Ganedata.Core.Data.Helpers
 
             return xml.OuterXml;
         }
+
         public string GetDPDServices()
         {
             WebResponse httpResponse = null;
