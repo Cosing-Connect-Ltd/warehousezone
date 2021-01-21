@@ -667,14 +667,11 @@ namespace WMS.Controllers
 
             foreach (var item in stockListfromLocation)
             {
-                var locationId = Inventory.GetLocation(CurrentTenantId, item.LocationId);
+                var locationId = Inventory.GetLocation(CurrentTenantId, CurrentWarehouseId, CurrentUserId, item.LocationId);
 
-                if (locationId != null)
-                {
-                    Result = Inventory.AdjustStockLocations(item.ProductId, locationId ?? 0, locationId ?? 0,
-                        item.Quantity, item.WarehouseId, item.TenentId,
-                        CurrentUserId, null, null, true);
-                }
+                Result = Inventory.AdjustStockLocations(item.ProductId, 0, locationId,
+                    item.Quantity, item.WarehouseId, item.TenentId,
+                    CurrentUserId, null, null, true);
             }
 
             if (Result)
