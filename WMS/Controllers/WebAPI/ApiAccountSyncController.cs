@@ -55,6 +55,13 @@ namespace WMS.Controllers.WebAPI
                 mappedAccount.PriceGroupID = p.PriceGroupID;
                 mappedAccount.FullAddress = p.FullAddress;
                 mappedAccount.TaxPercent = p.GlobalTax.PercentageOfAmount;
+                mappedAccount.PointsToNextReward = p.AccountLoyaltyPoints<500? 500 - p.AccountLoyaltyPoints: 0; //This will need to be changed based on Najum's input
+                mappedAccount.RecentRewardPoints = p.AccountRewardPoints.Select(m => new RecentRewardPointSync()
+                {
+                    OrderDateTime = m.OrderDateTime,
+                    PointsEarned = m.PointsEarned,
+                    OrderID = m.OrderID
+                }).ToList();
                 accounts.Add(mappedAccount);
             }
 
@@ -91,7 +98,13 @@ namespace WMS.Controllers.WebAPI
                 mappedAccount.FullAddress = acc.FullAddress;
                 mappedAccount.TaxPercent = acc.GlobalTax.PercentageOfAmount;
                 result.Account = mappedAccount;
-
+                mappedAccount.PointsToNextReward = acc.AccountLoyaltyPoints < 500 ? 500 - acc.AccountLoyaltyPoints : 0; //This will need to be changed based on Najum's input
+                mappedAccount.RecentRewardPoints = acc.AccountRewardPoints.Select(m => new RecentRewardPointSync()
+                {
+                    OrderDateTime = m.OrderDateTime,
+                    PointsEarned = m.PointsEarned,
+                    OrderID = m.OrderID
+                }).ToList();
                 result.TerminalLogId = TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, 1, terminal.TerminalId, TerminalLogTypeEnum.UserAccountsSync).TerminalLogId;
                 return Ok(result);
 

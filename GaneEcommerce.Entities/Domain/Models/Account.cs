@@ -112,6 +112,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<ProductAccountCodes> ProductAccountCodes { get; set; }
         public virtual ICollection<AccountTransaction> AccountTransactions { get; set; }
         public virtual ICollection<AccountStatusAudit> AccountStatusAudits { get; set; }
+        public virtual ICollection<AccountRewardPoint> AccountRewardPoints { get; set; }
         public virtual GlobalTax GlobalTax { get; set; }
         [ForeignKey("OwnerUserId")]
         public virtual AuthUser AccountOwner { get; set; }
@@ -244,5 +245,21 @@ namespace Ganedata.Core.Entities.Domain
         public int? AccountID { get; set; }
 
         public int? OrderID { get; set; }
+    }
+
+    [Serializable]
+    [Table("AccountRewardPoints")]
+    public class AccountRewardPoint : PersistableEntity<int>
+    {
+        [Key]
+        public int AccountRewardPointID { get; set; }
+        public int OrderID { get; set; }
+        public int? AccountID { get; set; }
+        [ForeignKey("AccountID")]
+        public virtual Account Account { get; set; }
+        public int UserID { get; set; }
+        public int PointsEarned { get; set; }
+        public decimal OrderTotal { get; set; }
+        public DateTime OrderDateTime { get; set; }
     }
 }

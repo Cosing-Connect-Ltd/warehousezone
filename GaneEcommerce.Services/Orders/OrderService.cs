@@ -1183,7 +1183,7 @@ namespace Ganedata.Core.Services
             {
                 warehouse = _tenantLocationServices.GetActiveTenantLocationById(item.WarehouseId);
             }
-            var tenantConfig = _currentDbContext.TenantConfigs.FirstOrDefault(m => m.TenantId == warehouse.TenantId);
+            var tenantConfig = _currentDbContext.TenantConfigs.FirstOrDefault(m => m.TenantId == terminal.TenantId);
 
             if (item.FoodOrderType != null)
             {
@@ -1315,6 +1315,48 @@ namespace Ganedata.Core.Services
 
                 order = CreateOrder(order, terminal.TenantId, warehouse.WarehouseId, order.CreatedBy, orderDetails);
 
+                if (order.OrderID > 0 && order.OrderTotal > 0)
+                {
+                    var account = _currentDbContext.Account.FirstOrDefault(m=> m.AccountID == order.AccountID);
+                    var reward = new AccountRewardPoint()
+                    {
+                        TenantId = terminal.TenantId,
+                        DateCreated = DateTime.Now,
+                        OrderTotal = order.OrderTotal,
+                        AccountID = order.AccountID,
+                        OrderID = order.OrderID,
+                        CreatedBy = order.CreatedBy,
+                        OrderDateTime = order.DateCreated,
+                        PointsEarned = (int)Math.Round(order.OrderTotal, 1),
+                        UserID = account.OwnerUserId
+                    };
+                    _currentDbContext.AccountRewardPoints.Add(reward);
+                    
+                    account.AccountLoyaltyPoints += reward.PointsEarned;
+                    _currentDbContext.Entry(account).State = EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+
+                    if (item.RedeemLoyaltyDiscount == true && account.AccountLoyaltyPoints>=500)
+                    {
+                        var rewardUse = new AccountRewardPoint()
+                        {
+                            TenantId = terminal.TenantId,
+                            DateCreated = DateTime.Now,
+                            OrderTotal = order.OrderTotal,
+                            AccountID = order.AccountID,
+                            OrderID = order.OrderID,
+                            CreatedBy = order.CreatedBy,
+                            OrderDateTime = order.DateCreated,
+                            PointsEarned = -500,
+                            UserID = account.OwnerUserId
+                        };
+                        _currentDbContext.AccountRewardPoints.Add(rewardUse);
+                        account.AccountLoyaltyPoints += rewardUse.PointsEarned;
+                        _currentDbContext.Entry(account).State = EntityState.Modified;
+                        _currentDbContext.SaveChanges();
+                    }
+
+                }
                 //Order has to be created and processed immediately
                 // If OrderStatus is AwaitingAuthorisation then dont process the items
                 if (item?.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation)
@@ -1342,6 +1384,9 @@ namespace Ganedata.Core.Services
                         BillingAccountAddressID = item.BillingAccountAddressID
                     };
 
+                    item.OrderID = order.OrderID;
+
+                    
                     if (item.AccountTransactionInfo != null)
                     {
                         order.AmountPaidByAccount = item.AccountTransactionInfo.PaidAmount;
@@ -1353,6 +1398,7 @@ namespace Ganedata.Core.Services
 
                     _currentDbContext.OrderProcess.Add(process);
                     _currentDbContext.SaveChanges();
+                     
 
                     foreach (var op in item.OrderProcessDetails)
                     {
