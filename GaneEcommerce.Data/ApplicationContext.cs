@@ -95,6 +95,7 @@ namespace Ganedata.Core.Data
         public DbSet<OrderNotes> OrderNotes { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
         public DbSet<OrderProcess> OrderProcess { get; set; }
+        public DbSet<AccountRewardPoint> AccountRewardPoints { get; set; }
         public DbSet<OrderProcessDetail> OrderProcessDetail { get; set; }
         public DbSet<InvoiceMaster> InvoiceMasters { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }

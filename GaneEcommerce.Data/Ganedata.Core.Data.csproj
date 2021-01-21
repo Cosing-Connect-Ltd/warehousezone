@@ -1235,6 +1235,14 @@
     <Compile Include="Migrations\202101151655429_DiscountVouchersForFoodOrders.designer.cs">
       <DependentUpon>202101151655429_DiscountVouchersForFoodOrders.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101201138401_AddedAccountRewardPoints.cs" />
+    <Compile Include="Migrations\202101201138401_AddedAccountRewardPoints.designer.cs">
+      <DependentUpon>202101201138401_AddedAccountRewardPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101201251526_AddedAccountRewardPointKeys.cs" />
+    <Compile Include="Migrations\202101201251526_AddedAccountRewardPointKeys.designer.cs">
+      <DependentUpon>202101201251526_AddedAccountRewardPointKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2482,6 +2490,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101151655429_DiscountVouchersForFoodOrders.resx">
       <DependentUpon>202101151655429_DiscountVouchersForFoodOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101201138401_AddedAccountRewardPoints.resx">
+      <DependentUpon>202101201138401_AddedAccountRewardPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101201251526_AddedAccountRewardPointKeys.resx">
+      <DependentUpon>202101201251526_AddedAccountRewardPointKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

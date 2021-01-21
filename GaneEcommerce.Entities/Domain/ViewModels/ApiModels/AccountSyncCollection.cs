@@ -55,6 +55,16 @@ namespace Ganedata.Core.Models
         public int? AcceptedShelfLife { get; set; }
         public string AccountLoyaltyCode { get; set; }
         public int AccountLoyaltyPoints { get; set; }
+        public int? PointsToNextReward { get; set; }
+        public List<RecentRewardPointSync> RecentRewardPoints { get; set; }
+
+    }
+
+    public class RecentRewardPointSync
+    {
+        public  int OrderID { get; set; }
+        public int PointsEarned { get; set; }
+        public DateTime OrderDateTime { get; set; }
     }
 
 
