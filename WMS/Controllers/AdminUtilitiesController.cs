@@ -686,6 +686,55 @@ namespace WMS.Controllers
             return View("AdminUtilities");
         }
 
+        // use this method to correct stock levels where pallet tracking is right but total stock count is wrong
+        public ActionResult CorrectStockAccordingToPallets()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            var product = _currentDbContext.ProductMaster.Where(x => x.TenantId == CurrentTenantId && x.IsActive == true && x.IsDeleted != true).ToList();
+
+            foreach (var item in product)
+            {
+                var inStock = _currentDbContext.InventoryStocks.FirstOrDefault(x => x.ProductId == item.ProductId && x.TenantId == CurrentTenantId && x.WarehouseId == CurrentWarehouseId)?.InStock ?? 0;
+                var totalPallets = _currentDbContext.PalletTracking.Where(x => x.ProductId == item.ProductId && x.Status != PalletTrackingStatusEnum.Created).Count();
+
+                decimal palletStock = 0;
+                if (item.ProcessByPallet && totalPallets > 0)
+                {
+
+                    palletStock = _currentDbContext.PalletTracking.Where(u => u.ProductId == item.ProductId && (u.RemainingCases > 0) && u.Status != PalletTrackingStatusEnum.Created).Select(u => u.RemainingCases).DefaultIfEmpty(0).Sum();
+
+                    palletStock = palletStock * (item.ProductsPerCase ?? 1);
+
+                    if (inStock != palletStock)
+                    {
+
+                        if (inStock > palletStock)
+                        {
+                            var quantity = inStock - palletStock;
+
+                            //create adjustment out transaction
+                            Inventory.StockTransaction(item.ProductId, InventoryTransactionTypeEnum.AdjustmentOut, quantity, null, null, "Auto generated correction transaction", null);
+
+                        }
+                        else
+                        {
+                            var quantity = palletStock - inStock;
+
+                            //create adjustment in transaction
+                            Inventory.StockTransaction(item.ProductId, InventoryTransactionTypeEnum.AdjustmentIn, quantity, null, null, "Auto generated correction transaction", null);
+                        }
+                    }
+                }
+            }
+
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Stock Recalculate was successful";
+            ViewBag.Detail = "Stock Recalculate was successful";
+
+            return View("AdminUtilities");
+        }
+
         public ActionResult ExplicitGC()
         {
             GC.Collect();
