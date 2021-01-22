@@ -22,7 +22,23 @@
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
 
-
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "LocationCode";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "LocationName";
+            c.Caption = "Location Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TenantWarehouses.WarehouseName";
+            c.Caption = "Warehouse";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
         settings.Columns.Add(c =>
         {
             c.FieldName = "LocationType.LocTypeName";
@@ -33,17 +49,6 @@
         {
             c.FieldName = "LocationGroup.Locdescription";
             c.Caption = "Location Group";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
-        });
-        settings.Columns.Add(c =>
-        {
-            c.FieldName = "LocationCode";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
-        });
-        settings.Columns.Add(c =>
-        {
-            c.FieldName = "TenantWarehouses.WarehouseName";
-            c.Caption = "Location";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
 
