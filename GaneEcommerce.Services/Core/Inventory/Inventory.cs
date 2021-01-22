@@ -50,6 +50,7 @@ namespace Ganedata.Core.Services
             {
 
                 InventoryTransactionTypeId = transType,
+                IsCurrentLocation = GetIsCurrentLocation(transType),
                 OrderID = orderID > 0 ? orderID : null,
                 ProductId = productId,
                 WarehouseId = warehouse.WarehouseId,
@@ -71,7 +72,6 @@ namespace Ganedata.Core.Services
                 PalletTrackingId = pallettrackingId
 
             };
-
 
             //add changes to context
             context.InventoryTransactions.Add(transaction);
@@ -223,6 +223,7 @@ namespace Ganedata.Core.Services
                         CreatedBy = user,
                         DateCreated = DateTime.UtcNow,
                         InventoryTransactionTypeId = goodsReturnRequestSync.InventoryTransactionType ?? 0,
+                        IsCurrentLocation = GetIsCurrentLocation(goodsReturnRequestSync.InventoryTransactionType ?? 0),
                         ProductSerial = serial,
                         Quantity = 1,
                         InventoryTransactionRef = groupToken,
@@ -342,7 +343,7 @@ namespace Ganedata.Core.Services
                         goodsReturnRequestSync.InventoryTransactionType ?? 0, dontMonitorStock),
                     TenentId = goodsReturnRequestSync.tenantId,
                     WarehouseId = goodsReturnRequestSync.warehouseId,
-                    IsCurrentLocation = true,
+                    IsCurrentLocation = GetIsCurrentLocation(goodsReturnRequestSync.InventoryTransactionType ?? 0),
                     LocationId = location
                 };
 
@@ -525,6 +526,7 @@ namespace Ganedata.Core.Services
                         altTransaction.ProductId = model.ProductId;
                         altTransaction.OrderID = altOrder.OrderID;
                         altTransaction.LocationId = location;
+                        altTransaction.IsCurrentLocation = GetIsCurrentLocation(altOrder.InventoryTransactionTypeId);
                         AutoTransferInventoryTransaction = altTransaction;
                         reverseInventoryTransaction = true;
                     }
@@ -684,6 +686,7 @@ namespace Ganedata.Core.Services
                             altTransaction.ProductId = model.ProductId;
                             altTransaction.OrderID = altOrder.OrderID;
                             altTransaction.LocationId = location;
+                            altTransaction.IsCurrentLocation = GetIsCurrentLocation(altOrder.InventoryTransactionTypeId);
                             AutoTransferInventoryTransaction = altTransaction;
                             reverseInventoryTransaction = true;
 
@@ -726,6 +729,7 @@ namespace Ganedata.Core.Services
                             altTransaction.ProductId = model.ProductId;
                             altTransaction.OrderID = altOrder.OrderID;
                             altTransaction.LocationId = location;
+                            altTransaction.IsCurrentLocation = GetIsCurrentLocation(altOrder.InventoryTransactionTypeId);
                             AutoTransferInventoryTransaction = altTransaction;
                             reverseInventoryTransaction = true;
 
@@ -860,6 +864,7 @@ namespace Ganedata.Core.Services
             transaction.TerminalId = terminalId;
             transaction.OrderProcessId = orderProcessId;
             transaction.OrderProcessDetailId = OrderProcessDetialId;
+            transaction.IsCurrentLocation = GetIsCurrentLocation(transType);
 
             context.InventoryTransactions.Add(transaction);
 
@@ -917,7 +922,7 @@ namespace Ganedata.Core.Services
                         LocationId = location,
                         OrderProcessId = orderProcessId,
                         OrderProcessDetailId = OrderProcessDetialId,
-                        IsCurrentLocation = true,
+                        IsCurrentLocation = GetIsCurrentLocation(typeId),
                         SerialID = serial.SerialID,
                         DontMonitorStock = dontMonitorStock
                     };
@@ -1663,6 +1668,20 @@ namespace Ganedata.Core.Services
                         LocationStockRecalculate(toLocation, warehouseId, tenantId, userId);
                     }
                 }
+            }
+
+            return status;
+        }
+
+        private static bool GetIsCurrentLocation(InventoryTransactionTypeEnum transType)
+        {
+            bool status = false;
+
+            if (transType == InventoryTransactionTypeEnum.PurchaseOrder || transType == InventoryTransactionTypeEnum.Returns
+                || transType == InventoryTransactionTypeEnum.AdjustmentIn || transType == InventoryTransactionTypeEnum.TransferIn
+                || transType == InventoryTransactionTypeEnum.MovementIn)
+            {
+                status = true;
             }
 
             return status;
