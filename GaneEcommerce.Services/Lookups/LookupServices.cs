@@ -272,6 +272,7 @@ namespace Ganedata.Core.Services
             location.DateCreated = DateTime.UtcNow;
             location.TenantId = tenantId;
             location.WarehouseId = warehouseId;
+            location.UOMId = location.UOMId == 0 ? 1 : location.UOMId;
             _currentDbContext.Locations.Add(location);
             _currentDbContext.SaveChanges();
             if (ProductKitIds != null)
@@ -612,7 +613,7 @@ namespace Ganedata.Core.Services
 
             var product = _currentDbContext.ProductMaster.Find(ProductId);
 
-            palletstock = palletstock * product.ProductsPerCase ?? 1;
+            palletstock = palletstock * (product.ProductsPerCase ?? 1);
 
             if (InStock == palletstock)
             {
