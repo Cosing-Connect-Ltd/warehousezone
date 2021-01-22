@@ -4,6 +4,7 @@ using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Ganedata.Core.Services
 {
@@ -35,7 +36,7 @@ namespace Ganedata.Core.Services
 
         PalletDispatchInfoViewModel GetPalletDispatchDetailByPallet(int palletId);
 
-        string DispatchPallets(PalletDispatchViewModel dispatch, int userId);
+        Task<string> DispatchPallets(PalletDispatchViewModel dispatch, int userId);
 
         PalletSync DispatchPalletsFromHandheld(PalletSync currentPallet, int userId);
 

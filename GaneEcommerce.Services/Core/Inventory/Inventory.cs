@@ -19,36 +19,14 @@ namespace Ganedata.Core.Services
             int? orderID, int? locationId = null, string transactionRef = null, int? serialId = null,
             int? pallettrackingId = null, int? orderprocessId = null, int? orderProcessDetailId = null)
         {
-
+            Boolean status = false;
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             caTenant tenant = caCurrent.CurrentTenant();
             caUser user = caCurrent.CurrentUser();
             TenantLocations warehouse = caCurrent.CurrentWarehouse();
+            int location = GetLocation(tenant.TenantId, warehouse.WarehouseId, user.UserId, locationId);
 
-            Boolean status = false;
-
-            //validate parameters if they exist in current context and are valid
-            if (user == null)
-            {
-                return false;
-            }
-
-            if (tenant == null)
-            {
-                return false;
-            }
-
-            if (warehouse == null)
-            {
-                return false;
-            }
-
-            if (!ValidateProduct(productId))
-            {
-                return false;
-            }
-
-            if (quantity < 0)
+            if (user == null || tenant == null || warehouse == null || !ValidateProduct(productId) || quantity < 0)
             {
                 return false;
             }
@@ -72,6 +50,7 @@ namespace Ganedata.Core.Services
             {
 
                 InventoryTransactionTypeId = transType,
+                IsCurrentLocation = GetIsCurrentLocation(transType),
                 OrderID = orderID > 0 ? orderID : null,
                 ProductId = productId,
                 WarehouseId = warehouse.WarehouseId,
@@ -84,7 +63,7 @@ namespace Ganedata.Core.Services
                 CreatedBy = user.UserId,
                 UpdatedBy = user.UserId,
                 IsActive = true,
-                LocationId = locationId,
+                LocationId = location,
                 InventoryTransactionRef = transactionRef,
                 SerialID = serialId,
                 DontMonitorStock = dontMonitorStock,
@@ -94,7 +73,6 @@ namespace Ganedata.Core.Services
 
             };
 
-
             //add changes to context
             context.InventoryTransactions.Add(transaction);
 
@@ -103,6 +81,12 @@ namespace Ganedata.Core.Services
                 StockRecalculate(productId, warehouse.WarehouseId, tenant.TenantId, user.UserId);
                 status = true;
                 AdjustRecipeItemsInventory(transaction);
+
+                //calculate location stock
+                if (!dontMonitorStock)
+                {
+                    AdjustStockLocations(transaction.ProductId, 0, location, transaction.Quantity, transaction.WarehouseId, transaction.TenentId, transaction.CreatedBy, pallettrackingId, serialId, false);
+                }
             }
 
             return status;
@@ -113,6 +97,8 @@ namespace Ganedata.Core.Services
         {
             try
             {
+                int location = GetLocation(goodsReturnRequestSync.tenantId, goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.userId, goodsReturnRequestSync.LocationId);
+
                 if (goodsReturnRequestSync.MissingTrackingNo == true)
                 {
                     return StockTransaction(goodsReturnRequestSync, groupToken);
@@ -186,7 +172,7 @@ namespace Ganedata.Core.Services
                         serial.DateUpdated = DateTime.UtcNow;
                         serial.UpdatedBy = user;
                         serial.TenentId = goodsReturnRequestSync.tenantId;
-                        serial.LocationId = locationId;
+                        serial.LocationId = location;
                         serial.WarehouseId = goodsReturnRequestSync.warehouseId;
                     }
                     else
@@ -198,7 +184,7 @@ namespace Ganedata.Core.Services
                             SerialNo = item,
                             TenentId = goodsReturnRequestSync.tenantId,
                             ProductId = goodsReturnRequestSync.ProductId,
-                            LocationId = locationId,
+                            LocationId = location,
                             CurrentStatus =
                                 (InventoryTransactionTypeEnum)goodsReturnRequestSync.InventoryTransactionType,
                             WarehouseId = goodsReturnRequestSync.warehouseId
@@ -231,12 +217,13 @@ namespace Ganedata.Core.Services
 
                     InventoryTransaction tans = new InventoryTransaction
                     {
-                        LocationId = locationId,
+                        LocationId = location,
                         OrderID = cOrder.OrderID,
                         ProductId = goodsReturnRequestSync.ProductId,
                         CreatedBy = user,
                         DateCreated = DateTime.UtcNow,
                         InventoryTransactionTypeId = goodsReturnRequestSync.InventoryTransactionType ?? 0,
+                        IsCurrentLocation = GetIsCurrentLocation(goodsReturnRequestSync.InventoryTransactionType ?? 0),
                         ProductSerial = serial,
                         Quantity = 1,
                         InventoryTransactionRef = groupToken,
@@ -256,6 +243,12 @@ namespace Ganedata.Core.Services
 
                     StockRecalculate(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.warehouseId,
                         goodsReturnRequestSync.tenantId, user);
+
+                    //calculate location stock
+                    if (!dontMonitorStock)
+                    {
+                        AdjustStockLocations(tans.ProductId, 0, location, tans.Quantity, tans.WarehouseId, tans.TenentId, tans.CreatedBy, null, tans.SerialID, false);
+                    }
                 }
 
                 return cOrder.OrderID;
@@ -272,6 +265,7 @@ namespace Ganedata.Core.Services
         {
             try
             {
+                int location = GetLocation(goodsReturnRequestSync.tenantId, goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.userId, goodsReturnRequestSync.LocationId);
                 var context = DependencyResolver.Current.GetService<IApplicationContext>();
                 var orderservice = DependencyResolver.Current.GetService<IOrderService>();
                 var UserId = goodsReturnRequestSync.userId;
@@ -349,19 +343,21 @@ namespace Ganedata.Core.Services
                         goodsReturnRequestSync.InventoryTransactionType ?? 0, dontMonitorStock),
                     TenentId = goodsReturnRequestSync.tenantId,
                     WarehouseId = goodsReturnRequestSync.warehouseId,
-                    IsCurrentLocation = true
+                    IsCurrentLocation = GetIsCurrentLocation(goodsReturnRequestSync.InventoryTransactionType ?? 0),
+                    LocationId = location
                 };
-
-                if (goodsReturnRequestSync.LocationId > 0)
-                {
-                    trans.LocationId = goodsReturnRequestSync.LocationId;
-                }
 
                 context.InventoryTransactions.Add(trans);
                 context.SaveChanges();
 
                 StockRecalculate(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.warehouseId,
                     goodsReturnRequestSync.tenantId, UserId);
+
+                //calculate location stock
+                if (!dontMonitorStock)
+                {
+                    AdjustStockLocations(trans.ProductId, 0, location, trans.Quantity, trans.WarehouseId, trans.TenentId, trans.CreatedBy, null, null, false);
+                }
 
                 return cOrder.OrderID;
 
@@ -378,14 +374,14 @@ namespace Ganedata.Core.Services
             int? cons_type, string delivery, int? Line_Id, List<CommonLocationViewModel> stockLocations = null,
             AccountShipmentInfo shipmentInfo = null)
         {
+            int location = GetLocation(model.TenentId, model.WarehouseId, model.CreatedBy, model.LocationId);
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             var orderservice = DependencyResolver.Current.GetService<IOrderService>();
             InventoryTransaction AutoTransferInventoryTransaction = new InventoryTransaction();
             bool reverseInventoryTransaction = false;
 
-            caUser user = caCurrent.CurrentUser();
-            var tenantConfig = context.TenantConfigs.First(m => m.TenantId == user.TenantId);
-            int warehouseId = caCurrent.CurrentWarehouse().WarehouseId;
+            var tenantConfig = context.TenantConfigs.First(m => m.TenantId == model.TenentId);
+            int warehouseId = model.WarehouseId;
             var order = context.Order.FirstOrDefault(x => x.OrderID == model.OrderID);
             if (stockLocations != null && stockLocations.Count > 0)
             {
@@ -406,18 +402,16 @@ namespace Ganedata.Core.Services
                                      (!string.IsNullOrEmpty(m.DeliveryNO) && !string.IsNullOrEmpty(delivery) &&
                                       m.DeliveryNO.Trim().Equals(delivery.Trim(), StringComparison.OrdinalIgnoreCase)));
 
-            //var oprocess = context.OrderProcess.FirstOrDefault(a => a.DeliveryNO == delivery && a.IsDeleted != true && a.OrderID == model.OrderID);
             if (oprocess == null)
             {
                 OrderProcess opr = new OrderProcess
                 {
                     DeliveryNO = delivery,
                     DateCreated = DateTime.UtcNow,
-                    CreatedBy = user.UserId,
+                    CreatedBy = model.CreatedBy,
                     OrderID = model.OrderID,
-
-                    TenentId = user.TenantId,
-                    WarehouseId = caCurrent.CurrentWarehouse().WarehouseId,
+                    TenentId = model.TenentId,
+                    WarehouseId = model.WarehouseId,
                     DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
                     InventoryTransactionTypeId = type
                 };
@@ -448,11 +442,11 @@ namespace Ganedata.Core.Services
 
                 OrderProcessDetail odet = new OrderProcessDetail
                 {
-                    CreatedBy = user.UserId,
+                    CreatedBy = model.CreatedBy,
                     DateCreated = DateTime.UtcNow,
                     OrderProcessId = opr.OrderProcessID,
                     ProductId = model.ProductId,
-                    TenentId = user.TenantId,
+                    TenentId = model.TenentId,
                     BatchNumber = model.BatchNumber ?? null,
                     ExpiryDate = model.ExpiryDate ?? null,
                     QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
@@ -482,9 +476,9 @@ namespace Ganedata.Core.Services
                         {
                             DeliveryNO = delivery,
                             DateCreated = DateTime.UtcNow,
-                            CreatedBy = user.UserId,
+                            CreatedBy = model.CreatedBy,
                             OrderID = altOrder?.OrderID,
-                            TenentId = user.TenantId,
+                            TenentId = model.TenentId,
 
                             WarehouseId = altOrder.WarehouseId ?? 0,
                             DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
@@ -500,11 +494,11 @@ namespace Ganedata.Core.Services
 
                         var orderprocessdet = new OrderProcessDetail
                         {
-                            CreatedBy = user.UserId,
+                            CreatedBy = model.CreatedBy,
                             DateCreated = DateTime.UtcNow,
                             OrderProcessId = xopr.OrderProcessID,
                             ProductId = model.ProductId,
-                            TenentId = user.TenantId,
+                            TenentId = model.TenentId,
                             QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                             OrderDetailID = AltOrderDetail?.OrderDetailID,
                             BatchNumber = model.BatchNumber ?? null,
@@ -520,19 +514,19 @@ namespace Ganedata.Core.Services
                         bool dontMonitorStockAlt = CheckDontStockMonitor(model.ProductId, AltOrderDetail.OrderDetailID,
                             model.OrderID);
 
-                        altTransaction.CreatedBy = user.UserId;
+                        altTransaction.CreatedBy = model.CreatedBy;
                         altTransaction.DateCreated = DateTime.UtcNow;
                         altTransaction.InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId;
-                        altTransaction.TenentId = caCurrent.CurrentTenant().TenantId;
+                        altTransaction.TenentId = model.TenentId;
                         altTransaction.DontMonitorStock = dontMonitorStockAlt;
-                        altTransaction.WarehouseId = altOrder.WarehouseId == null
-                            ? caCurrent.CurrentWarehouse().WarehouseId
-                            : (int)altOrder.WarehouseId;
+                        altTransaction.WarehouseId = altOrder.WarehouseId == null ? model.WarehouseId : (int)altOrder.WarehouseId;
                         altTransaction.Quantity = GetUomQuantity(model.ProductId, model.Quantity);
                         altTransaction.OrderProcessId = xopr.OrderProcessID;
                         altTransaction.OrderProcessDetailId = orderprocessdet?.OrderProcessDetailID;
                         altTransaction.ProductId = model.ProductId;
                         altTransaction.OrderID = altOrder.OrderID;
+                        altTransaction.LocationId = location;
+                        altTransaction.IsCurrentLocation = GetIsCurrentLocation(altOrder.InventoryTransactionTypeId);
                         AutoTransferInventoryTransaction = altTransaction;
                         reverseInventoryTransaction = true;
                     }
@@ -541,18 +535,16 @@ namespace Ganedata.Core.Services
             else
             {
                 oprocess.DateUpdated = DateTime.UtcNow;
-                oprocess.UpdatedBy = user.UserId;
+                oprocess.UpdatedBy = model.CreatedBy;
                 var odet = new OrderProcessDetail
                 {
-                    CreatedBy = user.UserId,
+                    CreatedBy = model.CreatedBy,
                     DateCreated = DateTime.UtcNow,
                     OrderProcessId = oprocess.OrderProcessID,
                     ProductId = model.ProductId,
-                    TenentId = user.TenantId,
+                    TenentId = model.TenentId,
                     QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                     OrderDetailID = Line_Id,
-
-
                 };
 
                 model.OrderProcessDetailId = odet?.OrderProcessDetailID;
@@ -582,11 +574,11 @@ namespace Ganedata.Core.Services
 
                     odet = new OrderProcessDetail
                     {
-                        CreatedBy = user.UserId,
+                        CreatedBy = model.CreatedBy,
                         DateCreated = DateTime.UtcNow,
                         OrderProcessId = oprocess.OrderProcessID,
                         ProductId = model.ProductId,
-                        TenentId = user.TenantId,
+                        TenentId = model.TenentId,
                         OrderDetailID = od.OrderDetailID,
                         BatchNumber = model.BatchNumber ?? null,
                         ExpiryDate = model.ExpiryDate ?? null,
@@ -646,9 +638,9 @@ namespace Ganedata.Core.Services
                             {
                                 DeliveryNO = delivery,
                                 DateCreated = DateTime.UtcNow,
-                                CreatedBy = user.UserId,
+                                CreatedBy = model.CreatedBy,
                                 OrderID = altOrder?.OrderID,
-                                TenentId = user.TenantId,
+                                TenentId = model.TenentId,
                                 WarehouseId = altOrder.WarehouseId ?? 0,
                                 DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
                                 InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId,
@@ -663,11 +655,11 @@ namespace Ganedata.Core.Services
 
                             var orderProcessDet = new OrderProcessDetail
                             {
-                                CreatedBy = user.UserId,
+                                CreatedBy = model.CreatedBy,
                                 DateCreated = DateTime.UtcNow,
                                 OrderProcessId = xopr.OrderProcessID,
                                 ProductId = model.ProductId,
-                                TenentId = user.TenantId,
+                                TenentId = model.TenentId,
                                 QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                                 BatchNumber = model.BatchNumber ?? null,
                                 ExpiryDate = model.ExpiryDate ?? null,
@@ -682,19 +674,19 @@ namespace Ganedata.Core.Services
                             bool dontMonitorStockAlt = CheckDontStockMonitor(model.ProductId,
                                 AltOrderDetail.OrderDetailID, model.OrderID);
 
-                            altTransaction.CreatedBy = user.UserId;
+                            altTransaction.CreatedBy = model.CreatedBy;
                             altTransaction.DateCreated = DateTime.UtcNow;
                             altTransaction.InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId;
-                            altTransaction.TenentId = caCurrent.CurrentTenant().TenantId;
+                            altTransaction.TenentId = model.TenentId;
                             altTransaction.DontMonitorStock = dontMonitorStockAlt;
-                            altTransaction.WarehouseId = altOrder.WarehouseId == null
-                                ? caCurrent.CurrentWarehouse().WarehouseId
-                                : (int)altOrder.WarehouseId;
+                            altTransaction.WarehouseId = altOrder.WarehouseId == null ? model.WarehouseId : (int)altOrder.WarehouseId;
                             altTransaction.Quantity = GetUomQuantity(model.ProductId, model.Quantity);
                             altTransaction.OrderProcessId = xopr.OrderProcessID;
                             altTransaction.OrderProcessDetailId = orderProcessDet?.OrderProcessDetailID;
                             altTransaction.ProductId = model.ProductId;
                             altTransaction.OrderID = altOrder.OrderID;
+                            altTransaction.LocationId = location;
+                            altTransaction.IsCurrentLocation = GetIsCurrentLocation(altOrder.InventoryTransactionTypeId);
                             AutoTransferInventoryTransaction = altTransaction;
                             reverseInventoryTransaction = true;
 
@@ -703,11 +695,11 @@ namespace Ganedata.Core.Services
                         {
                             var det = new OrderProcessDetail
                             {
-                                CreatedBy = user.UserId,
+                                CreatedBy = model.CreatedBy,
                                 DateCreated = DateTime.UtcNow,
                                 OrderProcessId = targetWarehouseProcess.OrderProcessID,
                                 ProductId = model.ProductId,
-                                TenentId = user.TenantId,
+                                TenentId = model.TenentId,
                                 QtyProcessed = GetUomQuantity(model.ProductId, model.Quantity),
                                 BatchNumber = model.BatchNumber ?? null,
                                 ExpiryDate = model.ExpiryDate ?? null,
@@ -716,7 +708,7 @@ namespace Ganedata.Core.Services
 
 
                             targetWarehouseProcess.DateUpdated = DateTime.UtcNow;
-                            targetWarehouseProcess.UpdatedBy = user.UserId;
+                            targetWarehouseProcess.UpdatedBy = model.CreatedBy;
                             context.OrderProcessDetail.Add(odet);
                             context.SaveChanges();
 
@@ -725,19 +717,19 @@ namespace Ganedata.Core.Services
                             bool dontMonitorStockAlt = CheckDontStockMonitor(model.ProductId,
                                 AltOrderDetail.OrderDetailID, model.OrderID);
 
-                            altTransaction.CreatedBy = user.UserId;
+                            altTransaction.CreatedBy = model.CreatedBy;
                             altTransaction.DateCreated = DateTime.UtcNow;
                             altTransaction.InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId;
-                            altTransaction.TenentId = caCurrent.CurrentTenant().TenantId;
+                            altTransaction.TenentId = model.TenentId;
                             altTransaction.DontMonitorStock = dontMonitorStockAlt;
-                            altTransaction.WarehouseId = altOrder.WarehouseId == null
-                                ? caCurrent.CurrentWarehouse().WarehouseId
-                                : (int)altOrder.WarehouseId;
+                            altTransaction.WarehouseId = altOrder.WarehouseId == null ? model.WarehouseId : (int)altOrder.WarehouseId;
                             altTransaction.Quantity = GetUomQuantity(model.ProductId, model.Quantity);
                             altTransaction.OrderProcessId = targetWarehouseProcess.OrderProcessID;
                             altTransaction.OrderProcessDetailId = det?.OrderProcessDetailID;
                             altTransaction.ProductId = model.ProductId;
                             altTransaction.OrderID = altOrder.OrderID;
+                            altTransaction.LocationId = location;
+                            altTransaction.IsCurrentLocation = GetIsCurrentLocation(altOrder.InventoryTransactionTypeId);
                             AutoTransferInventoryTransaction = altTransaction;
                             reverseInventoryTransaction = true;
 
@@ -749,11 +741,11 @@ namespace Ganedata.Core.Services
             // if DontMonitorStock flag is true then make that flag true in inventory as well
             bool dontMonitorStock = CheckDontStockMonitor(model.ProductId, Line_Id, model.OrderID);
 
-            model.CreatedBy = user.UserId;
+            model.CreatedBy = model.CreatedBy;
             model.DateCreated = DateTime.UtcNow;
             model.InventoryTransactionTypeId = type;
-            model.WarehouseId = caCurrent.CurrentWarehouse().WarehouseId;
-            model.TenentId = caCurrent.CurrentTenant().TenantId;
+            model.WarehouseId = model.WarehouseId;
+            model.TenentId = model.TenentId;
             model.DontMonitorStock = dontMonitorStock;
 
             if (oprocess != null)
@@ -786,7 +778,13 @@ namespace Ganedata.Core.Services
                         type, dontMonitorStock);
                     context.InventoryTransactions.Add(model);
                     context.SaveChanges();
-                    StockRecalculate(model.ProductId, model.WarehouseId, user.TenantId, user.UserId);
+                    StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy);
+
+                    //calculate location stock
+                    if (!dontMonitorStock)
+                    {
+                        AdjustStockLocations(model.ProductId, 0, location, item.Quantity, model.WarehouseId, model.TenentId, model.CreatedBy, model.PalletTrackingId, model.SerialID, false);
+                    }
                 }
             }
             else
@@ -797,7 +795,13 @@ namespace Ganedata.Core.Services
 
                 context.InventoryTransactions.Add(model);
                 context.SaveChanges();
-                StockRecalculate(model.ProductId, model.WarehouseId, user.TenantId, user.UserId);
+                StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy);
+
+                //calculate location stock
+                if (!dontMonitorStock)
+                {
+                    AdjustStockLocations(model.ProductId, 0, location, model.Quantity, model.WarehouseId, model.TenentId, model.CreatedBy, model.PalletTrackingId, model.SerialID, false);
+                }
             }
 
             if (reverseInventoryTransaction == true)
@@ -810,7 +814,14 @@ namespace Ganedata.Core.Services
                 context.InventoryTransactions.Add(AutoTransferInventoryTransaction);
                 context.SaveChanges();
                 StockRecalculate(AutoTransferInventoryTransaction.ProductId,
-                    AutoTransferInventoryTransaction.WarehouseId, user.TenantId, user.UserId);
+                    AutoTransferInventoryTransaction.WarehouseId, model.TenentId, model.CreatedBy);
+
+                //calculate location stock
+                if (!dontMonitorStock)
+                {
+                    AdjustStockLocations(AutoTransferInventoryTransaction.ProductId, 0, location, AutoTransferInventoryTransaction.Quantity, AutoTransferInventoryTransaction.WarehouseId,
+                        AutoTransferInventoryTransaction.TenentId, AutoTransferInventoryTransaction.CreatedBy, AutoTransferInventoryTransaction.PalletTrackingId, AutoTransferInventoryTransaction.SerialID, false);
+                }
             }
         }
 
@@ -819,25 +830,19 @@ namespace Ganedata.Core.Services
             int? pallettrackingId = null, int? terminalId = null, string GroupToken = null, int? orderProcessId = null,
             int? OrderProcessDetialId = null)
         {
+            int location = GetLocation(tenantId, warehouseId, userId, locationId);
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             InventoryTransaction transaction = new InventoryTransaction();
 
 
             //validate parameters if they exist in current context and are valid
-            if (!ValidateProduct(productId))
-            {
-                return transaction;
-            }
-
-            if (quantity < 0)
+            if (!ValidateProduct(productId) || quantity < 0)
             {
                 return transaction;
             }
 
             // if DontMonitorStock flag is true then make that flag true in inventory as well
             bool dontMonitorStock = CheckDontStockMonitor(productId, null, orderID);
-
-
 
             transaction.InventoryTransactionTypeId = transType;
             transaction.OrderID = orderID;
@@ -852,13 +857,14 @@ namespace Ganedata.Core.Services
             transaction.CreatedBy = userId;
             transaction.UpdatedBy = userId;
             transaction.InventoryTransactionRef = GroupToken;
-            transaction.LocationId = locationId;
+            transaction.LocationId = location;
             transaction.IsActive = true;
             transaction.DontMonitorStock = dontMonitorStock;
             transaction.PalletTrackingId = pallettrackingId;
             transaction.TerminalId = terminalId;
             transaction.OrderProcessId = orderProcessId;
             transaction.OrderProcessDetailId = OrderProcessDetialId;
+            transaction.IsCurrentLocation = GetIsCurrentLocation(transType);
 
             context.InventoryTransactions.Add(transaction);
 
@@ -866,21 +872,24 @@ namespace Ganedata.Core.Services
             {
                 StockRecalculate(productId, warehouseId, tenantId, userId);
                 AdjustRecipeItemsInventory(transaction);
+
+                //calculate location stock
+                if (!dontMonitorStock)
+                {
+                    AdjustStockLocations(transaction.ProductId, 0, location, transaction.Quantity, transaction.WarehouseId, transaction.TenentId, transaction.CreatedBy, transaction.PalletTrackingId, transaction.SerialID, false);
+                }
             }
 
             return transaction;
         }
 
         public static List<InventoryTransaction> StockTransactionApi(List<string> serials, int? order, int product,
-            InventoryTransactionTypeEnum typeId, int? locationid, int tenantId, int warehouseId, int userId,
+            InventoryTransactionTypeEnum typeId, int? locationId, int tenantId, int warehouseId, int userId,
             int? orderProcessId = null, int? OrderProcessDetialId = null)
         {
+            int location = GetLocation(tenantId, warehouseId, userId, locationId);
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
 
-            if (locationid == 0)
-            {
-                locationid = null;
-            }
 
             var lstTemp = new List<InventoryTransaction>();
             serials.Sort();
@@ -910,28 +919,33 @@ namespace Ganedata.Core.Services
                         LastQty = CalculateLastQty(product, tenantId, warehouseId, 1, typeId, dontMonitorStock),
                         TenentId = tenantId,
                         WarehouseId = warehouseId,
-                        LocationId = locationid,
+                        LocationId = location,
                         OrderProcessId = orderProcessId,
                         OrderProcessDetailId = OrderProcessDetialId,
-                        IsCurrentLocation = true,
+                        IsCurrentLocation = GetIsCurrentLocation(typeId),
                         SerialID = serial.SerialID,
                         DontMonitorStock = dontMonitorStock
                     };
 
                     context.InventoryTransactions.Add(trans);
                     lstTemp.Add(trans);
-                }
 
-                context.SaveChanges();
-                StockRecalculate(product, warehouseId, tenantId, userId);
+                    context.SaveChanges();
+                    StockRecalculate(product, warehouseId, tenantId, userId);
+
+                    //calculate location stock
+                    if (!dontMonitorStock)
+                    {
+                        AdjustStockLocations(trans.ProductId, 0, location, trans.Quantity, trans.WarehouseId, trans.TenentId, trans.CreatedBy, trans.PalletTrackingId, trans.SerialID, false);
+                    }
+                }
             }
 
             context.SaveChanges();
             return lstTemp;
         }
 
-
-        public static decimal GetTotalInStock(IQueryable<InventoryCalculationViewModel> query, bool stockByLocation = false)
+        public static decimal GetTotalInStock(IQueryable<InventoryCalculationViewModel> query)
         {
             decimal totalIn;
             decimal totalOut;
@@ -946,8 +960,6 @@ namespace Ganedata.Core.Services
             decimal directSales;
             decimal exchnageOut;
             decimal wastages;
-            decimal movementIn = 0m;
-            decimal movementOut = 0m;
 
             totalIn = query.Where(e => e.Type == InventoryTransactionTypeEnum.PurchaseOrder).Select(I => I.Quantity)
                 .DefaultIfEmpty(0).Sum();
@@ -974,21 +986,13 @@ namespace Ganedata.Core.Services
             wastages = query.Where(e => e.Type == InventoryTransactionTypeEnum.Wastage).Select(I => I.Quantity)
                 .DefaultIfEmpty(0).Sum();
 
-            if (stockByLocation == true)
-            {
-                movementIn = query.Where(e => e.Type == InventoryTransactionTypeEnum.MovementIn).Select(I => I.Quantity)
-               .DefaultIfEmpty(0).Sum();
-                movementOut = query.Where(e => e.Type == InventoryTransactionTypeEnum.MovementOut).Select(I => I.Quantity)
-               .DefaultIfEmpty(0).Sum();
-            }
-
-            inStock = (totalIn + totalReturns + adjustmentIn + transferIn + movementIn) - adjustmentOut - totalOut - transferOut -
-                      worksOut - samples - directSales - exchnageOut - wastages - movementOut;
+            inStock = (totalIn + totalReturns + adjustmentIn + transferIn) - adjustmentOut - totalOut - transferOut -
+                      worksOut - samples - directSales - exchnageOut - wastages;
 
             return inStock;
         }
 
-        public static bool StockRecalculate(int ProductId, int WarehouseId, int TenantId, int UserId,
+        public static bool StockRecalculate(int productId, int warehouseId, int tenantId, int userId,
             bool saveContext = true, IApplicationContext context = null)
         {
             if (context == null)
@@ -996,14 +1000,12 @@ namespace Ganedata.Core.Services
                 context = DependencyResolver.Current.GetService<IApplicationContext>();
             }
 
-            bool status = false;
             decimal available;
             decimal inStock;
 
             var totals = (from e in context.InventoryTransactions
-                          where e.ProductId == ProductId && e.WarehouseId == WarehouseId &&
-                                e.TenentId == TenantId && e.DontMonitorStock != true && e.IsDeleted != true
-
+                          where e.ProductId == productId && e.WarehouseId == warehouseId &&
+                                e.TenentId == tenantId && e.DontMonitorStock != true && e.IsDeleted != true
                           select new InventoryCalculationViewModel
                           {
                               Quantity = e.Quantity,
@@ -1017,7 +1019,7 @@ namespace Ganedata.Core.Services
             var itemsOrdered = context.Order
                 .Where(m => (m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder ||
                              m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn) &&
-                            m.WarehouseId == WarehouseId &&
+                            m.WarehouseId == warehouseId &&
                             m.OrderStatusID != OrderStatusEnum.Complete &&
                             m.OrderStatusID != OrderStatusEnum.Cancelled &&
                             m.OrderStatusID != OrderStatusEnum.PostedToAccounts &&
@@ -1025,13 +1027,13 @@ namespace Ganedata.Core.Services
                             m.ShipmentPropertyId == null && m.IsDeleted != true && m.IsCancel != true &&
                             m.DirectShip != true)
                 .Select(m =>
-                    m.OrderDetails.Where(p => p.ProductId == ProductId && p.IsDeleted != true).Select(x => x.Qty)
+                    m.OrderDetails.Where(p => p.ProductId == productId && p.IsDeleted != true).Select(x => x.Qty)
                         .DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
 
             var itemsReceived = context.Order
                 .Where(m => (m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder ||
                              m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn) &&
-                            m.WarehouseId == WarehouseId &&
+                            m.WarehouseId == warehouseId &&
                             m.OrderStatusID != OrderStatusEnum.Complete &&
                             m.OrderStatusID != OrderStatusEnum.Cancelled &&
                             m.OrderStatusID != OrderStatusEnum.PostedToAccounts &&
@@ -1039,11 +1041,12 @@ namespace Ganedata.Core.Services
                             && m.ShipmentPropertyId == null && m.IsDeleted != true && m.IsCancel != true &&
                             m.DirectShip != true)
                 .Select(m => m.OrderProcess.Where(u => u.IsDeleted != true).Select(o => o.OrderProcessDetail.Where(p =>
-                        p.ProductId == ProductId && p.IsDeleted != true &&
+                        p.ProductId == productId && p.IsDeleted != true &&
                         p.OrderDetail.DontMonitorStock != true).Select(q => q.QtyProcessed).DefaultIfEmpty(0)
                     .Sum()).DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
 
             var itemsOnOrder = itemsOrdered - itemsReceived;
+
             if (itemsOnOrder < 1)
             {
                 itemsOnOrder = 0;
@@ -1065,12 +1068,12 @@ namespace Ganedata.Core.Services
                                                                 InventoryTransactionTypeEnum.TransferOut
                                                                 || m.InventoryTransactionTypeId ==
                                                                 InventoryTransactionTypeEnum.Wastage) &&
-                    m.WarehouseId == WarehouseId &&
+                    m.WarehouseId == warehouseId &&
                     m.OrderStatusID != OrderStatusEnum.Complete && m.OrderStatusID != OrderStatusEnum.Cancelled &&
                     m.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.OrderStatusID != OrderStatusEnum.Invoiced
                     && m.IsDeleted != true && m.IsCancel != true && m.DirectShip != true)
                 .Select(m =>
-                    m.OrderDetails.Where(p => p.ProductId == ProductId && p.IsDeleted != true).Select(x => x.Qty)
+                    m.OrderDetails.Where(p => p.ProductId == productId && p.IsDeleted != true).Select(x => x.Qty)
                         .DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
 
             var itemsDispatched = context.Order
@@ -1088,12 +1091,12 @@ namespace Ganedata.Core.Services
                                                                 InventoryTransactionTypeEnum.TransferOut ||
                                                                 m.InventoryTransactionTypeId ==
                                                                 InventoryTransactionTypeEnum.Wastage) &&
-                    m.WarehouseId == WarehouseId &&
+                    m.WarehouseId == warehouseId &&
                     m.OrderStatusID != OrderStatusEnum.Complete && m.OrderStatusID != OrderStatusEnum.Cancelled &&
                     m.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.OrderStatusID != OrderStatusEnum.Invoiced
                     && m.IsDeleted != true && m.IsCancel != true && m.DirectShip != true)
                 .Select(m => m.OrderProcess.Where(u => u.IsDeleted != true).Select(o => o.OrderProcessDetail
-                    .Where(p => p.ProductId == ProductId && p.IsDeleted != true).Select(q => q.QtyProcessed)
+                    .Where(p => p.ProductId == productId && p.IsDeleted != true).Select(q => q.QtyProcessed)
                     .DefaultIfEmpty(0)
                     .Sum()).DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
 
@@ -1107,19 +1110,19 @@ namespace Ganedata.Core.Services
             available = inStock - itemsAllocated;
 
             InventoryStock oldStock = context.InventoryStocks.Where(e =>
-                e.ProductId == ProductId && e.WarehouseId == WarehouseId && e.TenantId == TenantId &&
+                e.ProductId == productId && e.WarehouseId == warehouseId && e.TenantId == tenantId &&
                 e.IsDeleted != true).FirstOrDefault();
 
             if (oldStock != null)
             {
                 if (oldStock.Available <= 0 && available > 0)
                 {
-                    AddProductToNotifyQueue(ProductId, TenantId, WarehouseId, context);
+                    AddProductToNotifyQueue(productId, tenantId, warehouseId, context);
                 }
 
                 if (available <= 0 && oldStock.Available > 0)
                 {
-                    RemoveProductFromNotifyQueue(ProductId, TenantId, WarehouseId, context);
+                    RemoveProductFromNotifyQueue(productId, tenantId, warehouseId, context);
                 }
 
                 oldStock.InStock = inStock;
@@ -1127,47 +1130,125 @@ namespace Ganedata.Core.Services
                 oldStock.OnOrder = itemsOnOrder;
                 oldStock.Available = available;
                 oldStock.DateUpdated = DateTime.UtcNow;
-                oldStock.UpdatedBy = UserId;
+                oldStock.UpdatedBy = userId;
                 oldStock.IsActive = true;
                 context.Entry(oldStock).State = EntityState.Modified;
-
-                if (saveContext)
-                {
-                    context.SaveChanges();
-                }
-
-                status = true;
-
             }
             else
             {
                 InventoryStock newStock = new InventoryStock()
                 {
-                    ProductId = ProductId,
-                    WarehouseId = WarehouseId,
-                    TenantId = TenantId,
+                    ProductId = productId,
+                    WarehouseId = warehouseId,
+                    TenantId = tenantId,
                     InStock = inStock,
                     Allocated = itemsAllocated,
                     OnOrder = itemsOnOrder,
                     Available = available,
                     DateCreated = DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
-                    UpdatedBy = UserId,
-                    CreatedBy = UserId,
+                    UpdatedBy = userId,
+                    CreatedBy = userId,
                     IsActive = true
                 };
 
-                AddProductToNotifyQueue(ProductId, TenantId, WarehouseId, context);
+                AddProductToNotifyQueue(productId, tenantId, warehouseId, context);
                 context.InventoryStocks.Add(newStock);
-                if (saveContext)
-                {
-                    context.SaveChanges();
-                }
-
-                status = true;
             }
 
-            return status;
+            if (saveContext)
+            {
+                context.SaveChanges();
+            }
+
+            return true;
+        }
+
+        public static bool LocationStockRecalculate(int locationId, int warehouseId, int tenantId, int userId,
+            bool saveContext = true, IApplicationContext context = null)
+        {
+            if (context == null)
+            {
+                context = DependencyResolver.Current.GetService<IApplicationContext>();
+            }
+
+            var totals = (from e in context.InventoryTransactions
+                          where e.LocationId == locationId && e.WarehouseId == warehouseId
+                                && e.TenentId == tenantId && e.DontMonitorStock != true && e.IsDeleted != true
+                                && e.IsCurrentLocation == true && e.LocationId != null
+                          && (e.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder
+                          || e.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns
+                          || e.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn
+                          || e.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn
+                          || e.InventoryTransactionTypeId == InventoryTransactionTypeEnum.MovementIn)
+                          group e by new { e.LocationId, e.ProductId, e.TenentId, e.WarehouseId, e.Quantity } into g
+                          select new
+                          {
+                              Quantity = g.Key.Quantity,
+                              ProductId = g.Key.ProductId,
+                              LocationId = g.Key.LocationId
+                          }).ToList();
+
+            foreach (var item in totals)
+            {
+                ProductLocationStocks oldLocationStock = context.ProductLocationStocks.Where(e =>
+                e.ProductId == item.ProductId && e.LocationId == item.LocationId && e.WarehouseId == warehouseId && e.TenantId == tenantId &&
+                e.IsDeleted != true).FirstOrDefault();
+
+                if (oldLocationStock != null)
+                {
+                    oldLocationStock.Quantity = item.Quantity;
+                    oldLocationStock.DateUpdated = DateTime.UtcNow;
+                    oldLocationStock.UpdatedBy = userId;
+                    oldLocationStock.IsActive = true;
+                    context.Entry(oldLocationStock).State = EntityState.Modified;
+                }
+                else
+                {
+                    ProductLocationStocks newStock = new ProductLocationStocks()
+                    {
+                        ProductId = item.ProductId,
+                        WarehouseId = warehouseId,
+                        TenantId = tenantId,
+                        Quantity = item.Quantity,
+                        LocationId = item.LocationId ?? 0,
+                        DateCreated = DateTime.UtcNow,
+                        DateUpdated = DateTime.UtcNow,
+                        UpdatedBy = userId,
+                        CreatedBy = userId,
+                        IsActive = true
+                    };
+
+                    context.ProductLocationStocks.Add(newStock);
+                }
+
+            }
+
+            if (saveContext)
+            {
+                context.SaveChanges();
+            }
+
+            return true;
+        }
+
+        public static Boolean LocationStockRecalculateAll(int warehouseId, int tenantId, int userId)
+        {
+            var context = DependencyResolver.Current.GetService<IApplicationContext>();
+
+            var locations = context.Locations.AsNoTracking()
+                .Where(a => a.TenantId == tenantId && a.IsDeleted != true).Select(x => x.LocationId).ToList();
+
+            var i = 0;
+
+            foreach (var location in locations)
+            {
+                LocationStockRecalculate(location, warehouseId, tenantId, userId, i % 200 == 0, context);
+                i++;
+            }
+
+            context.SaveChanges();
+            return true;
         }
 
         private static void AddProductToNotifyQueue(int productId, int tenantId, int warehouseId, IApplicationContext context = null)
@@ -1493,57 +1574,98 @@ namespace Ganedata.Core.Services
 
         }
 
-
-
         public static bool AdjustStockMovementTransactions(StockMovementViewModel stockMovement)
+        {
+            bool status = false;
+            var productService = DependencyResolver.Current.GetService<IProductServices>();
+            var product = productService.GetProductMasterById(stockMovement.ProductId);
+
+            if (stockMovement.PalletSerials.Count > 0)
+            {
+                foreach (var item in stockMovement.PalletSerials)
+                {
+
+                    status = AdjustStockLocations(stockMovement.ProductId, stockMovement.FromLocation, stockMovement.ToLocation,
+                        GetUomQuantity(product.ProductId, (item.Cases * product.ProductsPerCase ?? 1)), stockMovement.WarehouseId, stockMovement.TenentId,
+                        stockMovement.UserId, item.PalletSerialId, null, true);
+                }
+            }
+            else if (stockMovement.SerialIds.Count > 0)
+            {
+                foreach (var item in stockMovement.SerialIds)
+                {
+                    status = AdjustStockLocations(stockMovement.ProductId, stockMovement.FromLocation, stockMovement.ToLocation,
+                        1, stockMovement.WarehouseId, stockMovement.TenentId,
+                        stockMovement.UserId, item, null, true);
+                }
+            }
+            else
+            {
+                status = AdjustStockLocations(stockMovement.ProductId, stockMovement.FromLocation, stockMovement.ToLocation,
+                        stockMovement.Qty, stockMovement.WarehouseId, stockMovement.TenentId,
+                        stockMovement.UserId, null, null, true);
+            }
+
+            return status;
+        }
+
+        public static bool AdjustStockLocations(int productId, int fromLocation, int toLocation, decimal quantity, int warehouseId, int tenantId,
+            int userId, int? palletId = null, int? serialId = null, bool isStockMovement = false)
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             var lookupService = DependencyResolver.Current.GetService<ILookupServices>();
-
+            var productService = DependencyResolver.Current.GetService<IProductServices>();
+            var product = productService.GetProductMasterById(productId);
+            Guid? ProductMovementId = null;
             var status = false;
-            Guid ProductMovementId = new Guid();
-            if (stockMovement.Qty > 0)
+
+            if (quantity > 0)
             {
-                var qtyMoved = stockMovement.Qty;
                 var stockListfromLocation = context.InventoryTransactions.Where(u =>
-                    u.ProductId == stockMovement.ProductId && u.LocationId == stockMovement.FromLocation &&
-                    u.IsCurrentLocation == true &&
-                    (u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder
+                    u.ProductId == productId && (fromLocation == 0 || u.LocationId == fromLocation)
+                    && u.IsCurrentLocation == true && (serialId == null || u.SerialID == serialId)
+                    && (palletId == null || u.PalletTrackingId == palletId)
+                    && (u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder
                      || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns
                      || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn
-                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn)).ToList();
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.MovementIn)).ToList();
+
                 status = stockListfromLocation.Count > 0 ? true : false;
-                if (status)
+
+                if (isStockMovement)
                 {
-                    ProductMovementId = lookupService.CreateStockMovement(stockMovement.UserId, stockMovement.TenentId,
-                        stockMovement.WarehouseId);
+                    ProductMovementId = lookupService.CreateStockMovement(userId, tenantId, warehouseId);
                 }
+
+                var quantityToMove = quantity;
 
                 foreach (var item in stockListfromLocation)
                 {
-                    if (item.Quantity >= qtyMoved)
-                    {
-                        var result = item.Quantity - qtyMoved;
-                        InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId,
-                            stockMovement.WarehouseId, ProductMovementId, CurrentLocationstatus: false);
-                        if (result > 0)
-                        {
-                            InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId,
-                                stockMovement.WarehouseId, ProductMovementId, (stockMovement.FromLocation ?? 0),
-                                result);
 
+                    InventoryTransactionForStockMovement(item, userId, tenantId, warehouseId, ProductMovementId, CurrentLocationstatus: false);
+
+                    if (item.Quantity >= quantityToMove)
+                    {
+                        quantityToMove = item.Quantity - quantityToMove;
+
+                        if (quantityToMove > 0)
+                        {
+                            var location = GetLocation(item.TenentId, warehouseId, userId, item.LocationId);
+                            InventoryTransactionForStockMovement(item, userId, tenantId, warehouseId, ProductMovementId, location, quantityToMove);
+                            LocationStockRecalculate(location, warehouseId, tenantId, userId);
                         }
 
-                        InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId,
-                            stockMovement.WarehouseId, ProductMovementId, (stockMovement.ToLocation ?? 0),
-                            stockMovement.Qty);
+                        InventoryTransactionForStockMovement(item, userId, tenantId, warehouseId, ProductMovementId, toLocation, quantity);
+                        LocationStockRecalculate(toLocation, warehouseId, tenantId, userId);
+                        status = true;
                         break;
                     }
                     else
                     {
-                        qtyMoved = qtyMoved - item.Quantity;
-                        InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId,
-                            stockMovement.WarehouseId, ProductMovementId, CurrentLocationstatus: false);
+                        quantityToMove = quantityToMove - item.Quantity;
+                        InventoryTransactionForStockMovement(item, userId, tenantId, warehouseId, ProductMovementId, toLocation, item.Quantity);
+                        LocationStockRecalculate(toLocation, warehouseId, tenantId, userId);
                     }
                 }
             }
@@ -1551,8 +1673,22 @@ namespace Ganedata.Core.Services
             return status;
         }
 
+        private static bool GetIsCurrentLocation(InventoryTransactionTypeEnum transType)
+        {
+            bool status = false;
+
+            if (transType == InventoryTransactionTypeEnum.PurchaseOrder || transType == InventoryTransactionTypeEnum.Returns
+                || transType == InventoryTransactionTypeEnum.AdjustmentIn || transType == InventoryTransactionTypeEnum.TransferIn
+                || transType == InventoryTransactionTypeEnum.MovementIn)
+            {
+                status = true;
+            }
+
+            return status;
+        }
+
         private static void InventoryTransactionForStockMovement(InventoryTransaction inventoryTransaction, int UserId,
-            int Tenantid, int WarehouseId, Guid StocktMovementId, int LocationIdTo = 0, decimal Qty = 0,
+            int Tenantid, int WarehouseId, Guid? StocktMovementId = null, int LocationIdTo = 0, decimal Qty = 0,
             bool CurrentLocationstatus = true)
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
@@ -1594,8 +1730,6 @@ namespace Ganedata.Core.Services
                 context.InventoryTransactions.Add(tans);
                 context.SaveChanges();
             }
-
-
         }
 
         public static string GetProductAttributesValueToDisplay(ICollection<ProductAttributeValuesMap> productAttributeValuesMap)
@@ -1698,6 +1832,37 @@ namespace Ganedata.Core.Services
             }
 
             return quantity;
+        }
+
+        public static int GetLocation(int tenantId, int warehouseId, int userId, int? locationId = null)
+        {
+            var lookupService = DependencyResolver.Current.GetService<LookupServices>();
+            var location = lookupService.GetLocationById(locationId ?? 0, tenantId);
+
+            if (location == null)
+            {
+                location = lookupService.GetAllLocations(tenantId, null, false).FirstOrDefault();
+            }
+
+            if (location == null)
+            {
+                var newLocation = new Locations
+                {
+                    LocationName = "Default",
+                    LocationCode = "DEF",
+                    WarehouseId = warehouseId,
+                    TenantId = tenantId,
+                    IsActive = true,
+                    CreatedBy = userId,
+                    DateCreated = DateTime.Now
+
+                };
+
+                location = lookupService.CreateLocation(newLocation, null, userId, tenantId, warehouseId);
+            }
+
+            return location.LocationId;
+
         }
     }
 }

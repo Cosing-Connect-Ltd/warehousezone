@@ -1,17 +1,16 @@
-﻿using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Services;
-using System;
-using System.Linq;
-using System.Web.Mvc;
+﻿using AutoMapper;
+using Elmah;
+using Ganedata.Core.Data;
+using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
-using Ganedata.Core.Data;
-using System.Threading.Tasks;
+using Ganedata.Core.Services;
+using System;
 using System.Collections.Generic;
-using AutoMapper;
-using ClosedXML.Report.Utils;
 using System.Data.Entity;
-using Elmah;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace WMS.Controllers
 {
@@ -37,16 +36,12 @@ namespace WMS.Controllers
             _invoiceServices = invoiceServices;
             _deliverectSyncService = deliverectSyncService;
         }
-        // GET: AdminUtilities/RecalculateStockAll
-        /// <summary>
-        /// This is used to recalculate all stock in case if needs to be removed some enteried manually from inventory transactions
-        /// </summary>
-        /// <returns></returns>
+
         public ActionResult RecalculateStockAll()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            Boolean Result = false;
+            bool Result = false;
             ViewBag.Result = "Failed";
 
             var warehouses = CurrentTenant.TenantLocations.Where(x => x.IsActive != false && x.IsDeleted != true).ToList();
@@ -62,6 +57,32 @@ namespace WMS.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult RecalculateLocationsStockAll()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            bool Result = false;
+            ViewBag.Result = "Failed";
+
+            var warehouses = CurrentTenant.TenantLocations.Where(x => x.IsActive != false && x.IsDeleted != true).ToList();
+
+            foreach (var loc in warehouses)
+            {
+                Result = Inventory.LocationStockRecalculateAll(loc.WarehouseId, CurrentTenantId, CurrentUserId);
+            }
+
+            if (Result)
+            {
+                ViewBag.Result = "Success";
+            }
+
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Stock Recalculate was successful";
+            ViewBag.Detail = "Stock Recalculate was successful";
+
+            return View("AdminUtilities");
         }
 
         public ActionResult RecalculateStock(int id)
@@ -198,9 +219,7 @@ namespace WMS.Controllers
                         _currentDbContext.SaveChanges();
                         counter = 0;
                     }
-
                 }
-
             }
 
             ViewBag.Title = "Operation was Successful";
@@ -333,7 +352,6 @@ namespace WMS.Controllers
                 }
                 else
                 {
-
                     ViewBag.Error = "Product is not Process by Pallet";
                 }
             }
@@ -345,8 +363,6 @@ namespace WMS.Controllers
                     var palletTrackings = _adminServices.GetPalletTrackingsbyProductId(item.ProductId, CurrentTenantId, CurrentWarehouseId).ToList();
                     foreach (var palletTracking in palletTrackings)
                     {
-
-
                         var Processedqunatity = Inventory.CalculatePalletQuantity(palletTracking.PalletTrackingId);
                         var remianingquantity = (item.ProductsPerCase ?? 1) * palletTracking.RemainingCases;
                         if (Processedqunatity != remianingquantity)
@@ -357,15 +373,14 @@ namespace WMS.Controllers
                             palletAuditIssueList.ProductName = item.Name;
                             palletAuditIssueLists.Add(palletAuditIssueList);
                         }
-
                     }
                     if (palletAuditIssueLists.Count >= 200)
                     {
                         break;
                     }
                 }
-
             }
+
             if (palletAuditIssueLists.Count > 0)
             {
                 ViewBag.PalletAuditList = palletAuditIssueLists.Take(200).ToList();
@@ -630,6 +645,94 @@ namespace WMS.Controllers
 
             return View("AdminUtilities");
 
+        }
+
+        public ActionResult CorrectStockLocationRecords()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            bool Result = false;
+            ViewBag.Result = "Failed";
+
+            var stockListfromLocation = _currentDbContext.InventoryTransactions.Where(u =>
+                     (u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentOut
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut
+                     || u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.MovementOut)).ToList();
+
+
+
+            foreach (var item in stockListfromLocation)
+            {
+                var locationId = Inventory.GetLocation(CurrentTenantId, CurrentWarehouseId, CurrentUserId, item.LocationId);
+
+                Result = Inventory.AdjustStockLocations(item.ProductId, 0, locationId,
+                    item.Quantity, item.WarehouseId, item.TenentId,
+                    CurrentUserId, null, null, true);
+            }
+
+            if (Result)
+            {
+                ViewBag.Result = "Success";
+            }
+
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Stock Recalculate was successful";
+            ViewBag.Detail = "Stock Recalculate was successful";
+
+            return View("AdminUtilities");
+        }
+
+        // use this method to correct stock levels where pallet tracking is right but total stock count is wrong
+        public ActionResult CorrectStockAccordingToPallets()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            var product = _currentDbContext.ProductMaster.Where(x => x.TenantId == CurrentTenantId && x.IsActive == true && x.IsDeleted != true).ToList();
+
+            foreach (var item in product)
+            {
+                var inStock = _currentDbContext.InventoryStocks.FirstOrDefault(x => x.ProductId == item.ProductId && x.TenantId == CurrentTenantId && x.WarehouseId == CurrentWarehouseId)?.InStock ?? 0;
+                var totalPallets = _currentDbContext.PalletTracking.Where(x => x.ProductId == item.ProductId && x.Status != PalletTrackingStatusEnum.Created).Count();
+
+                decimal palletStock = 0;
+                if (item.ProcessByPallet && totalPallets > 0)
+                {
+
+                    palletStock = _currentDbContext.PalletTracking.Where(u => u.ProductId == item.ProductId && (u.RemainingCases > 0) && u.Status != PalletTrackingStatusEnum.Created).Select(u => u.RemainingCases).DefaultIfEmpty(0).Sum();
+
+                    palletStock = palletStock * (item.ProductsPerCase ?? 1);
+
+                    if (inStock != palletStock)
+                    {
+
+                        if (inStock > palletStock)
+                        {
+                            var quantity = inStock - palletStock;
+
+                            //create adjustment out transaction
+                            Inventory.StockTransaction(item.ProductId, InventoryTransactionTypeEnum.AdjustmentOut, quantity, null, null, "Auto generated correction transaction", null);
+
+                        }
+                        else
+                        {
+                            var quantity = palletStock - inStock;
+
+                            //create adjustment in transaction
+                            Inventory.StockTransaction(item.ProductId, InventoryTransactionTypeEnum.AdjustmentIn, quantity, null, null, "Auto generated correction transaction", null);
+                        }
+                    }
+                }
+            }
+
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Stock Recalculate was successful";
+            ViewBag.Detail = "Stock Recalculate was successful";
+
+            return View("AdminUtilities");
         }
 
         public ActionResult ExplicitGC()

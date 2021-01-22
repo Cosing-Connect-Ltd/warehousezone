@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using WMS.CustomBindings;
 
@@ -246,7 +247,7 @@ namespace WMS.Controllers
             return Json(item.PalletProductID, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SubmitPaletEditor(PalletGenerateViewModel model)
+        public async Task<ActionResult> SubmitPaletEditor(PalletGenerateViewModel model)
         {
             var orderProcess = _orderService.GetOrderProcessByOrderProcessId(model.SelectedOrderProcessId);
 
@@ -267,7 +268,7 @@ namespace WMS.Controllers
                 OrderProcessId = model.SelectedOrderProcessId
             };
 
-            var result = _palletingService.DispatchPallets(dispatchModel, CurrentUserId);
+            var result = await _palletingService.DispatchPallets(dispatchModel, CurrentUserId);
             if (!string.IsNullOrEmpty(result))
             {
                 TempData["Error"] = result;
@@ -351,7 +352,7 @@ namespace WMS.Controllers
             return PartialView("_PalletDisptachDetail", model);
         }
 
-        public ActionResult SavePalletsDispatch(PalletDispatchViewModel model)
+        public async Task<ActionResult> SavePalletsDispatch(PalletDispatchViewModel model)
         {
             ViewBag.ControllerName = "Pallets";
             if (Session["UploadedPalletEvidences"] != null)
@@ -363,7 +364,7 @@ namespace WMS.Controllers
             {
                 model.ProofOfDeliveryImageFilenames = "";
             }
-            var result = _palletingService.DispatchPallets(model, CurrentUserId);
+            var result = await _palletingService.DispatchPallets(model, CurrentUserId);
             if (!string.IsNullOrEmpty(result))
             {
                 TempData["Error"] = result;

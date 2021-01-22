@@ -281,16 +281,17 @@ namespace WMS.Controllers
 
         public PartialViewResult _AddPalletes()
         {
-            int? receivedQty = 0;
+            decimal receivedQty = 0;
             if (!string.IsNullOrEmpty(Request.Params["rec_qty"]))
             {
-                receivedQty = int.Parse(Request.Params["rec_qty"]);
+                receivedQty = Convert.ToDecimal(Request.Params["rec_qty"]);
             }
 
             ViewBag.QuantityEnabled = true;
-            int qty = int.Parse(Request.Params["qty"]);
+            decimal qty = int.Parse(Request.Params["qty"]);
             ViewBag.ProcessedQuantity = receivedQty;
             int prodId = int.Parse(Request.Params["pid"]);
+            ViewBag.OrderDetailId = int.Parse(Request.Params["line_id"]);
             ViewBag.RequiredQuantity = qty - receivedQty;
             ViewBag.PalletPerCase = _productServices.GetProductMasterById(prodId).ProductsPerCase ?? 1;
             decimal caseperpallet = ((decimal)ViewBag.RequiredQuantity / (decimal?)ViewBag.PalletPerCase ?? 1);

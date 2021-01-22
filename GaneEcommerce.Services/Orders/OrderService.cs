@@ -792,6 +792,21 @@ namespace Ganedata.Core.Services
 
         public Order UpdateOrderStatus(int orderId, OrderStatusEnum statusId, int userId)
         {
+
+            if (statusId == OrderStatusEnum.Complete)
+            {
+                // ship if any order details to be shipped automatically 
+                var order = GetOrderById(orderId);
+                var orderDetailsToProcess = order.OrderDetails.Where(x => x.IsDeleted != true && x.ProductMaster.IsAutoShipment).Where(m => m.ProcessedQty < m.Qty).ToList();
+
+                foreach (var orderDetail in orderDetailsToProcess)
+                {
+                    var qtyDifference = orderDetail.Qty - orderDetail.ProcessedQty;
+                    var model = new InventoryTransaction() { OrderID = orderId, ProductId = orderDetail.ProductId, Quantity = qtyDifference, TenentId = order.TenentId, WarehouseId = orderDetail.WarehouseId, CreatedBy = userId };
+                    Inventory.StockTransaction(model, order.InventoryTransactionTypeId, null, "", orderDetail.OrderDetailID, null);
+                }
+            }
+
             var schOrder = _currentDbContext.Order.Find(orderId);
             schOrder.OrderStatusID = statusId;
             schOrder.UpdatedBy = userId;
@@ -1258,7 +1273,7 @@ namespace Ganedata.Core.Services
                 }
 
                 var totalDiscountAmount = item.OrderProcessDiscount + (item.VoucherCodeDiscount ?? 0);
-                
+
                 var order = new Order
                 {
                     OrderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum)item.InventoryTransactionTypeId, terminal.TenantId),
@@ -1286,12 +1301,12 @@ namespace Ganedata.Core.Services
                     OfflineSale = item.OfflineSale,
                     ShipmentAccountAddressId = item.DeliveryAccountAddressID.HasValue && item.DeliveryAccountAddressID != 0 ? item.DeliveryAccountAddressID : null,
                     BillingAccountAddressID = item.BillingAccountAddressID.HasValue && item.BillingAccountAddressID != 0 ? item.BillingAccountAddressID : null,
-                    OrderTotal =  (item.OrderProcessDetails.Sum(m => m.Price * m.QtyProcessed) + item.OrderProcessDetails.Sum(m => m.TaxAmount) + item.OrderProcessDetails.Sum(m => m.WarrantyAmount)) - totalDiscountAmount,
+                    OrderTotal = (item.OrderProcessDetails.Sum(m => m.Price * m.QtyProcessed) + item.OrderProcessDetails.Sum(m => m.TaxAmount) + item.OrderProcessDetails.Sum(m => m.WarrantyAmount)) - totalDiscountAmount,
                     OrderDiscount = totalDiscountAmount,
                     VoucherCode = item.VoucherCode,
                     VoucherCodeDiscount = item.VoucherCodeDiscount,
                     OrderCost = item.OrderProcessTotal,
-                    DeliveryCharges = item.FoodOrderType== FoodOrderTypeEnum.Delivery? warehouse.DeliveryCharges:0
+                    DeliveryCharges = item.FoodOrderType == FoodOrderTypeEnum.Delivery ? warehouse.DeliveryCharges : 0
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
@@ -2584,7 +2599,7 @@ namespace Ganedata.Core.Services
                     if (!invalidForDirectProcessing || directshipment == true || orderDetail.ProductMaster.IsAutoShipment == true || orderDetail.ProductMaster.ProductType == ProductKitTypeEnum.Virtual)
                     {
                         var qtyDifference = orderDetail.Qty - orderDetail.ProcessedQty;
-                        var model = new InventoryTransaction() { OrderID = orderId, ProductId = orderDetail.ProductId, Quantity = qtyDifference };
+                        var model = new InventoryTransaction() { OrderID = orderId, ProductId = orderDetail.ProductId, Quantity = qtyDifference, TenentId = order.TenentId, WarehouseId = orderDetail.WarehouseId, CreatedBy = userId };
                         Inventory.StockTransaction(model, order.InventoryTransactionTypeId, null, deliveryNumber ?? "", orderDetail.OrderDetailID, null);
                         results.Add(true);
                     }

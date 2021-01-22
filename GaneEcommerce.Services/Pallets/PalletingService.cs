@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Ganedata.Core.Services
@@ -158,9 +159,10 @@ namespace Ganedata.Core.Services
             return _currentDbContext.PalletProducts.Where(m => m.OrderProcessDetailID == orderProcessDetailId && m.IsDeleted != true).ToList().Sum(x => x.Quantity);
         }
 
-        public string DispatchPallets(PalletDispatchViewModel dispatch, int userId)
+        public async Task<string> DispatchPallets(PalletDispatchViewModel dispatch, int userId)
         {
             string result = "";
+
             if (dispatch.PalletDispatchId > 0)
             {
                 var item = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == dispatch.PalletDispatchId);
@@ -266,6 +268,18 @@ namespace Ganedata.Core.Services
                     var model = MapModelWithRealValues(item.PalletsDispatchID, dispatch.NetworkCode);
                     result = _dataImportFactory.PostShipmentData(item.PalletsDispatchID, model);
                 }
+
+                // update Order Status in presta shop
+                var process = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == dispatch.OrderProcessId);
+                var orderToUpdate = _currentDbContext.Order.FirstOrDefault(x => x.OrderID == process.OrderID);
+                var apiCredentials = _currentDbContext.ApiCredentials.FirstOrDefault(x => x.Id == orderToUpdate.ApiCredentialId && x.ApiTypes == ApiTypes.PrestaShop);
+
+                if (orderToUpdate != null && apiCredentials != null)
+                {
+                    await _dataImportFactory.PrestaShopOrderStatusUpdate(orderToUpdate.PrestaShopOrderId ?? 0, orderToUpdate.TenentId,
+                   orderToUpdate.WarehouseId ?? 0, apiCredentials.ApiUrl, apiCredentials.ApiKey, apiCredentials.Id);
+                }
+
                 return result;
             }
         }
@@ -349,17 +363,6 @@ namespace Ganedata.Core.Services
             {
                 results = results.Where(m => m.OrderProcessID == orderProcessId);
             }
-            //if (palletStatusEnum != null)
-            //{
-            //    if (palletStatusEnum.Value == PalletStatusEnum.Completed)
-            //    {
-            //        results = results.Where(m => m.DateCompleted.HasValue);
-            //    }
-            //    else
-            //    {
-            //        results = results.Where(m => !m.DateCompleted.HasValue);
-            //    }
-            //}
 
             if (filterByPalletDetail.HasValue)
             {
