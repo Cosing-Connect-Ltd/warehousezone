@@ -65,7 +65,6 @@ namespace Ganedata.Core.Models
 
     [Serializable]
     public class ProductKitMapViewModel
-
     {
         public int Id { get; set; }
         public int ProductId { get; set; }

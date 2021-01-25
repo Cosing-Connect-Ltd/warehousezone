@@ -23,6 +23,7 @@ namespace Ganedata.Core.Services
         
         Order GetOrderByAdyenPaylinkID(string linkId);
 
+        Task<AdyenPaylinkRefundResponse> CreateRefundRequest(AdyenPaylinkRefundRequest model);
         Task<AdyenOrderPaylink> RequestRefundForPaymentLink(AdyenPaylinkRefundRequest model);
     }
 
@@ -132,16 +133,45 @@ namespace Ganedata.Core.Services
 
         public async Task<AdyenOrderPaylink> UpdateOrderPaymentAuthorisationHook(AdyenPaylinkHookNotificationRequest model)
         {
-            var link = await _context.AdyenOrderPaylinks.FirstAsync(m => m.LinkPaymentReference.Equals(model.MerchantReference));
-            link.HookEventCode = model.EventCode;
-            link.HookPspReference = model.PspReference;
-            link.HookSuccess = model.Success;
-            link.HookAmountCurrency = model.Amount.CurrencyCode;
-            link.HookAmountPaid = model.Amount.Value;
-            link.HookMerchantOrderReference = model.MerchantReference;
-            link.HookCreatedDate = DateTime.Now;
-            link.HookRawJson = model.RawJson;
-            _context.Entry(link).State = EntityState.Modified;
+            var link = _context.AdyenOrderPaylinks.FirstOrDefault(m => m.LinkPaymentReference.Equals(model.MerchantReference));
+
+            if (model.EventCode.ToLower().Contains("refund"))
+            {
+                link = _context.AdyenOrderPaylinks.FirstOrDefault(m => m.HookPspReference.Equals(model.PspReference, StringComparison.InvariantCultureIgnoreCase));
+                if (link != null)
+                {
+                    link.RefundHookCreatedDate = DateTime.Now;
+                    link.RefundHookPspReference = model.PspReference;
+                    link.RefundHookEventCode = model.EventCode;
+
+                    if (model.Success)
+                    {
+                        link.RefundHookAmountCurrency = model.Amount.CurrencyCode;
+                        link.RefundHookAmountPaid = model.Amount.Value;
+                        link.RefundHookPspReference = model.PspReference;
+                        link.RefundHookCreatedDate = DateTime.Now;
+                        link.RefundProcessedDateTime = DateTime.Now;
+                        link.RefundHookEventCode = model.EventCode;
+                    }
+                    _context.Entry(link).State = EntityState.Modified;
+                }
+            }
+            else
+            {
+                if (link != null)
+                {
+                    link.HookEventCode = model.EventCode;
+                    link.HookPspReference = model.PspReference;
+                    link.HookSuccess = model.Success;
+                    link.HookAmountCurrency = model.Amount.CurrencyCode;
+                    link.HookAmountPaid = model.Amount.Value;
+                    link.HookMerchantOrderReference = model.MerchantReference;
+                    link.HookCreatedDate = DateTime.Now;
+                    link.HookRawJson = model.RawJson;
+                    _context.Entry(link).State = EntityState.Modified;
+                }
+            }
+
             await _context.SaveChangesAsync();
             return link;
         }
@@ -156,10 +186,45 @@ namespace Ganedata.Core.Services
             
             return null;
         }
-
+        public async Task<AdyenPaylinkRefundResponse> CreateRefundRequest(AdyenPaylinkRefundRequest model)
+        {
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    var amountInMinorUnits = model.Amount.Value * 100;
+                    model.Amount = new AdyenAmount() { CurrencyCode = model.Amount.CurrencyCode, Value = amountInMinorUnits };
+                    var tokenRequestUri = new Uri(AdyenPaylinkCreateEndpoint);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json"));
+                    httpClient.DefaultRequestHeaders.Add("x-api-key", AdyenApiKey);
+                    var body = JsonConvert.SerializeObject(model);
+                    var response = await httpClient.PostAsync(tokenRequestUri,
+                        new StringContent(body, Encoding.UTF8, "application/json"));
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return JsonConvert.DeserializeObject<AdyenPaylinkRefundResponse>(
+                            await response.Content.ReadAsStringAsync());
+                    }
+                    else
+                    {
+                        return new AdyenPaylinkRefundResponse()
+                            { IsError = true, ErrorMessage = response.ReasonPhrase };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new AdyenPaylinkRefundResponse()
+                    { IsError = true, ErrorMessage = ex.Message, ErrorMessageDetails = ex.StackTrace };
+            }
+        }
         public async Task<AdyenOrderPaylink> RequestRefundForPaymentLink(AdyenPaylinkRefundRequest model)
         {
             var link = _context.AdyenOrderPaylinks.FirstOrDefault(m => m.OrderID == model.OrderID);
+            model.PspReference = link.RefundHookPspReference;
+
             link.RefundMerchantReference = model.RefundReference;
             link.RefundOriginalMerchantReference = model.PspReference;
             link.RefundRequestedUserID = model.RequestedUserID;
@@ -167,9 +232,17 @@ namespace Ganedata.Core.Services
             link.RefundRequestedAmount = model.Amount.Value;
             link.RefundRequestedAmountCurrency = model.Amount.CurrencyCode;
 
-            
             _context.Entry(link).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+
+            var response = await CreateRefundRequest(model);
+            
+            link = _context.AdyenOrderPaylinks.FirstOrDefault(m => m.OrderID == model.OrderID);
+            link.RefundResponseStatus = response.ResponseStatus;
+            link.RefundResponsePspReference = response.PspReference;
+            _context.Entry(link).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
             return link;
         }
 

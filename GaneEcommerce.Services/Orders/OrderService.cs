@@ -1202,7 +1202,7 @@ namespace Ganedata.Core.Services
 
             if (item.FoodOrderType != null)
             {
-                if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Internal && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
+                if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
                 {
                     item.OrderStatusID = OrderStatusEnum.Active;
                 }
@@ -1332,7 +1332,7 @@ namespace Ganedata.Core.Services
 
                 if (order.OrderID > 0 && order.OrderTotal > 0)
                 {
-                    var account = _currentDbContext.Account.FirstOrDefault(m=> m.AccountID == order.AccountID);
+                    var account = _currentDbContext.Account.AsNoTracking().FirstOrDefault(m=> m.AccountID == order.AccountID);
                     var reward = new AccountRewardPoint()
                     {
                         TenantId = terminal.TenantId,
@@ -1349,7 +1349,6 @@ namespace Ganedata.Core.Services
                     
                     account.AccountLoyaltyPoints += reward.PointsEarned;
                     _currentDbContext.Entry(account).State = EntityState.Modified;
-                    _currentDbContext.SaveChanges();
 
                     if (item.RedeemLoyaltyDiscount == true && account.AccountLoyaltyPoints>=500)
                     {
@@ -1368,8 +1367,8 @@ namespace Ganedata.Core.Services
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
                         account.AccountLoyaltyPoints += rewardUse.PointsEarned;
                         _currentDbContext.Entry(account).State = EntityState.Modified;
-                        _currentDbContext.SaveChanges();
                     }
+                    _currentDbContext.SaveChanges();
 
                 }
                 //Order has to be created and processed immediately
@@ -1562,7 +1561,7 @@ namespace Ganedata.Core.Services
                 result.OrderID = order.OrderID;
                 result.OrderStatusID = order.OrderStatusID;
 
-                if (item.AccountTransactionInfo != null && item.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation)
+                if (item.AccountTransactionInfo != null && item.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation && item.FoodOrderType.HasValue)
                 {
                     if (item.AccountTransactionInfo.AccountId > 0)
                     {
@@ -1862,7 +1861,6 @@ namespace Ganedata.Core.Services
             TenantConfig tenantConfig = _tenantServices.GetTenantConfigById(tenantId);
 
             var transaction = new AccountTransaction();
-            var account = new Account();
 
             if (item.AccountTransactionInfo.AccountId > 0)
             {
@@ -1888,9 +1886,12 @@ namespace Ganedata.Core.Services
             transaction.CreatedBy = item.CreatedBy;
 
             transaction.TenantId = (item.TenentId > 0) ? item.TenentId : tenantId;
+
+            Account account = null;
             if (item.AccountID != null && item.AccountID > 0)
             {
-                account = _accountServices.GetAccountsById(item.AccountID.Value);
+                account = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == item.AccountID.Value);
+                //account = _accountServices.GetAccountsById(item.AccountID.Value);
 
                 if (type == AccountTransactionTypeEnum.InvoicedToAccount)
                 {
@@ -1899,14 +1900,7 @@ namespace Ganedata.Core.Services
                     account.FinalBalance = transaction.FinalBalance;
                     account.DateUpdated = DateTime.UtcNow;
                     transaction.Notes = "Invoice: " + item.TerminalInvoiceNumber;
-
-                    _currentDbContext.Account.Attach(account);
-                    var entry = _currentDbContext.Entry(account);
-                    entry.Property(e => e.FinalBalance).IsModified = true;
-                    entry.Property(e => e.DateUpdated).IsModified = true;
-                    _currentDbContext.Entry(account).State = EntityState.Modified;
-                    _currentDbContext.SaveChanges();
-                    _currentDbContext.Entry(account).State = EntityState.Detached;
+                     
                 }
                 else if (type == AccountTransactionTypeEnum.PaidByAccount || type == AccountTransactionTypeEnum.Refund ||
                     type == AccountTransactionTypeEnum.Discount || type == AccountTransactionTypeEnum.CreditNote)
@@ -1920,14 +1914,7 @@ namespace Ganedata.Core.Services
                     }
                     account.FinalBalance = transaction.FinalBalance;
                     account.DateUpdated = DateTime.UtcNow;
-
-                    _currentDbContext.Account.Attach(account);
-                    var entry = _currentDbContext.Entry(account);
-                    entry.Property(e => e.FinalBalance).IsModified = true;
-                    entry.Property(e => e.DateUpdated).IsModified = true;
-                    _currentDbContext.Entry(account).State = EntityState.Modified;
-                    _currentDbContext.SaveChanges();
-                    _currentDbContext.Entry(account).State = EntityState.Detached;
+                 
                 }
             }
             else
@@ -1941,6 +1928,11 @@ namespace Ganedata.Core.Services
             transaction.OrderId = item.OrderID;
             transaction.OrderProcessId = item.OrderProcessID;
             _currentDbContext.AccountTransactions.Add(transaction);
+            if (account != null)
+            {
+                _currentDbContext.Entry(account).State = EntityState.Modified;
+            }
+
             _currentDbContext.SaveChanges();
 
             return transaction;

@@ -55,6 +55,7 @@ namespace Ganedata.Core.Entities.Domain
         public string RefundHookMerchantOrderReference { get; set; }
         public DateTime? RefundHookCreatedDate { get; set; }
         public string RefundHookReason { get; set; }
-
+        public string RefundResponseStatus { get; set; }
+        public string RefundResponsePspReference { get; set; }
     }
 }
