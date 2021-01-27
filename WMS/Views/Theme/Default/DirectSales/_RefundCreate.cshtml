@@ -1,0 +1,60 @@
+﻿@model Ganedata.Core.Models.AdyenPayments.AdyenPaylinkRefundRequest
+@using System.Web.UI.WebControls
+@using Ganedata.Core.Entities.Enums
+
+<h2><span>@ViewBag.Title</span></h2>
+<form class="form-horizontal" action="/Account/SaveAccountTransaction" method="post" id="frmAccountTransaction">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(c => c.OrderID)
+
+    <div class="col-md-12 p-0">
+
+        <div class="input-group row h-100 justify-content-center align-items-center">
+            <div class="col-md-12">
+                @Html.ValidationSummary()
+            </div>
+        </div>
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert-success col-md-12">
+                @ViewBag.Message
+            </div>
+        }
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Refund Amount", new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @if (Model.OrderID < 1)
+                {
+                    @Html.DevExpress().SpinEdit(m =>
+                    {
+                        m.Name = "Amount";
+                        m.ControlStyle.CssClass = "form-control";
+                        m.Properties.MinValue = 0;
+                        m.Properties.MaxValue = Model.RefundAmount;
+                        m.Width = Unit.Percentage(100);
+                        m.Enabled = Model.OrderID < 1;
+                        m.Properties.NullText = "Amount";
+                    }).GetHtml()
+                }
+                else
+                {
+                    <div class="alert alert-danger m-0 mb-2">@Model.RefundAmount.ToString("0.00")</div>
+                    <div class="col-md-12 p-1 alert alert-info">You cannot issue refund.</div>
+                }
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Refund Notes", new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.RefundNotes, new { @placeholder = "Notes", @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+        <input type="button" class="btn btn-primary" id="saveBtn_ProcessRefund" onclick="ProcessRefund(@Model.OrderID)" value="Save" />
+        <input type="button" onclick="ModalProcessRefund.Hide()" class="btn btn-default" id="saveBtn_CancelProcessRefund" value="Cancel" />
+    </div>
+</form>
+

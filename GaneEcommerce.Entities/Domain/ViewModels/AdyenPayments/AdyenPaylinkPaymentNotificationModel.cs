@@ -92,6 +92,11 @@ namespace Ganedata.Core.Models.AdyenPayments
         [JsonIgnore]
         public int? RequestedUserID { get; set; }
 
+        [JsonIgnore]
+        public decimal RefundAmount => Amount.Value / 100;
+
+        [JsonIgnore]
+        public string RefundNotes { get; set; }
     }
     
 

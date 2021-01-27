@@ -49,7 +49,7 @@ namespace WMS.Controllers.WebAPI
             {
                 notification.NotificationRequestItem.RawJson = "";
                 var response = await _paymentService.UpdateOrderPaymentAuthorisationHook(notification?.NotificationRequestItem);
-                return Ok(new { Success = true, Merchant = notification?.NotificationRequestItem.MerchantAccountCode, AuthorisationID = response.AdyenOrderPaylinkID });
+                return Ok("[accepted]");
             }
 
             return BadRequest("Could not find any notification items");
@@ -65,7 +65,7 @@ namespace WMS.Controllers.WebAPI
             {
                 notification.NotificationRequestItem.RawJson = "";
                 var response = await _paymentService.UpdateOrderPaymentAuthorisationHook(notification?.NotificationRequestItem);
-                return Ok(new { Success = true, Merchant = notification?.NotificationRequestItem.MerchantAccountCode, AuthorisationID = response.AdyenOrderPaylinkID });
+                return Ok("[accepted]");
             }
 
             return BadRequest("Could not find any notification items");

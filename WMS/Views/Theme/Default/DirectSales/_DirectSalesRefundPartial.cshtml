@@ -1,0 +1,16 @@
+@model Ganedata.Core.Entities.Domain.Order
+@Html.DevExpress().PageControl(s =>
+{
+s.EnableTabScrolling = true;
+s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+s.Name = "Order"+Model.OrderID.ToString();
+s.TabPages.Add("Order Details").SetContent(() =>
+{
+    Html.RenderAction("_DirectSalesOrderDetails", "Order", new { Id = Model.OrderID });
+});
+s.TabPages.Add("Delivery Proof").SetContent(() =>
+{
+    Html.RenderAction("_DeliveryProof", "Order", new { Id = Model.OrderID });
+});
+
+}).GetHtml();

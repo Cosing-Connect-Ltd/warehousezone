@@ -22,6 +22,7 @@ namespace Ganedata.Core.Services
         Task<AdyenApiPaymentStatusResponseModel> GetPaymentStatus(string linkId);
         
         Order GetOrderByAdyenPaylinkID(string linkId);
+        AdyenOrderPaylink GetAdyenPaylinkByOrderId(int orderId);
 
         Task<AdyenPaylinkRefundResponse> CreateRefundRequest(AdyenPaylinkRefundRequest model);
         Task<AdyenOrderPaylink> RequestRefundForPaymentLink(AdyenPaylinkRefundRequest model);
@@ -186,6 +187,12 @@ namespace Ganedata.Core.Services
             
             return null;
         }
+
+        public AdyenOrderPaylink GetAdyenPaylinkByOrderId(int orderId)
+        {
+            return _context.AdyenOrderPaylinks.OrderByDescending(m=> m.HookCreatedDate).FirstOrDefault(m => m.OrderID.Equals(orderId));
+        }
+
         public async Task<AdyenPaylinkRefundResponse> CreateRefundRequest(AdyenPaylinkRefundRequest model)
         {
             try

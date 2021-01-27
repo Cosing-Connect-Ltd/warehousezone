@@ -183,7 +183,7 @@
             Html.DevExpress().PageControl(s =>
             {
                 s.EnableTabScrolling = true;
-                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.Width = Unit.Percentage(100);
                 s.Name = DataBinder.Eval(c.DataItem, "OrderID").ToString();
                 s.TabPages.Add("Order Details").SetContent(() =>
                 {
