@@ -1,11 +1,59 @@
+@using Ganedata.Core.Entities.Helpers
 @model Ganedata.Core.Entities.Domain.Order
 
-@Html.Hidden("selkey", null, new { @class = "selkey" })
-@Html.HiddenFor(m=> m.OrderID)
 
+@Html.DevExpress().GetStyleSheets(
+    new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+    new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+    new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+    new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+    )
+
+@Html.DevExpress().GetScripts(
+    new Script { ExtensionType = ExtensionType.GridView },
+    new Script { ExtensionType = ExtensionType.PopupControl },
+    new Script { ExtensionType = ExtensionType.SpinEdit },
+    new Script { ExtensionType = ExtensionType.DateEdit },
+    new Script { ExtensionType = ExtensionType.PageControl }
+    )
+@{
+    ViewBag.Title = "Direct Sales Orders";
+}
+<script>
+    function OnSalesOrderTabchange(s, e) {
+        var gridview = GetDevexControlByName('_SalesOrderListGridView' + tabSOs.activeTabIndex);
+        var rowKey = gridview.GetRowKey(gridview.GetFocusedRowIndex());
+        $('#selkeySalesOrderList').val(rowKey);
+    }
+
+    function OnGridDirectFocusedRowChanged(s, e) {
+
+        $('#selkeyDirectSalesOrderId').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+    function ProcessRefundRequest() {
+        ModalProcessRefund.Show();
+    }
+
+    function OnBeginRefundCallback(s, e) {
+        e.customArgs["id"] = $("#OrderID").val();
+    }
+
+</script>
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.HiddenFor(m => m.OrderID)
+
+@if (ViewBag.ErrorMessage!=null)
+{
+    <div class="col-sm-12">
+        <div class="alert alert-danger">
+            <h4>@ViewBag.ErrorMessage</h4>
+        </div>
+    </div>
+}
 <div class="col-sm-12">
 
-    @Html.Action("", "DirectSales", new { id = Model.OrderID })
+    @Html.Action("_DirectSalesRefundPartial", "DirectSales", new { id = Model.OrderID })
 
 </div>
 
@@ -30,11 +78,13 @@
         settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
         settings.EnableClientSideAPI = true;
         settings.ClientSideEvents.BeginCallback = "function(s,e){ OnBeginRefundCallback(s,e); }";
-        settings.ClientSideEvents.CloseUp = "function(s, e){ RefreshRefundedOrderInfo(); }";
 
     }).GetHtml()
 
-
+@if (ViewBag.RefundRestricted!=true)
+{
 <a href="javascript:;" class="btn btn-primary" onclick="ProcessRefundRequest();">Refund</a>
+}
 <a href="@Url.Action("Index", "DirectSales")" class="btn btn-primary">Back</a>
- 
+
+

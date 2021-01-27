@@ -37,6 +37,7 @@ namespace Ganedata.Core.Services
         public static string AdyenClientKey => ConfigurationManager.AppSettings["AdyenClientKey"] != null ? ConfigurationManager.AppSettings["AdyenClientKey"] : "test_6DC3WWEE2VDVJOBWTBCJCAGP3UDX57BX";
         public static string AdyenApiKey => ConfigurationManager.AppSettings["AdyenApiKey"] != null ? ConfigurationManager.AppSettings["AdyenApiKey"] : "AQEqhmfuXNWTK0Qc+iSXk2o9g+WPSZhODJ1mTGE6yd/OgR82Wd+/SMYBi9rlEMFdWw2+5HzctViMSCJMYAc=-3oD+dvkhz0MpGi97nyZ0YCrHCX9aQUCT9RhbqVN6FQo=-gvU2Fa33)VCb5G(a";
         public static string AdyenPaylinkCreateEndpoint => ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] != null ? ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] : "https://checkout-test.adyen.com/v66/paymentLinks";
+        public static string AdyenPaylinkRefundEndpoint => ConfigurationManager.AppSettings["AdyenPaylinkRefundEndpoint"] != null ? ConfigurationManager.AppSettings["AdyenPaylinkRefundEndpoint"] : "https://pal-test.adyen.com/pal/servlet/Payment/v64/refund";
         public static string AdyenMerchantAccountName => ConfigurationManager.AppSettings["AdyenMerchantAccountName"] != null ? ConfigurationManager.AppSettings["AdyenMerchantAccountName"] : "GaneDatascanLtdECOM";
         public static string AdyenHmacKey => ConfigurationManager.AppSettings["AdyenHmacKey"] != null ? ConfigurationManager.AppSettings["AdyenHmacKey"] : "BF43360B5EBA10D283279FE83257B8012798A690FFBFDCE78BDCAEEBA6BC6A8B";
 
@@ -201,18 +202,16 @@ namespace Ganedata.Core.Services
                 {
                     var amountInMinorUnits = model.Amount.Value * 100;
                     model.Amount = new AdyenAmount() { CurrencyCode = model.Amount.CurrencyCode, Value = amountInMinorUnits };
-                    var tokenRequestUri = new Uri(AdyenPaylinkCreateEndpoint);
+                    var refundUri = new Uri(AdyenPaylinkRefundEndpoint);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(
                         new MediaTypeWithQualityHeaderValue("application/json"));
                     httpClient.DefaultRequestHeaders.Add("x-api-key", AdyenApiKey);
                     var body = JsonConvert.SerializeObject(model);
-                    var response = await httpClient.PostAsync(tokenRequestUri,
-                        new StringContent(body, Encoding.UTF8, "application/json"));
+                    var response = await httpClient.PostAsync(refundUri, new StringContent(body, Encoding.UTF8, "application/json"));
                     if (response.IsSuccessStatusCode)
                     {
-                        return JsonConvert.DeserializeObject<AdyenPaylinkRefundResponse>(
-                            await response.Content.ReadAsStringAsync());
+                        return JsonConvert.DeserializeObject<AdyenPaylinkRefundResponse>(await response.Content.ReadAsStringAsync());
                     }
                     else
                     {
@@ -230,7 +229,7 @@ namespace Ganedata.Core.Services
         public async Task<AdyenOrderPaylink> RequestRefundForPaymentLink(AdyenPaylinkRefundRequest model)
         {
             var link = _context.AdyenOrderPaylinks.FirstOrDefault(m => m.OrderID == model.OrderID);
-            model.PspReference = link.RefundHookPspReference;
+            model.PspReference = link.HookPspReference;
 
             link.RefundMerchantReference = model.RefundReference;
             link.RefundOriginalMerchantReference = model.PspReference;
@@ -238,6 +237,7 @@ namespace Ganedata.Core.Services
             link.RefundRequestedDateTime = DateTime.Now;
             link.RefundRequestedAmount = model.Amount.Value;
             link.RefundRequestedAmountCurrency = model.Amount.CurrencyCode;
+            link.RefundNotes = model.RefundNotes;
 
             _context.Entry(link).State = EntityState.Modified;
             await _context.SaveChangesAsync();

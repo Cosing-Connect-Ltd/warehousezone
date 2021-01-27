@@ -53,14 +53,14 @@
         <div class="col-md-offset-2 col-md-10 bottom-right">
             @Html.ActionLink("Create New", "CreateDirectSales", "DirectSales", null, new { @class = "btn btn-primary  " })
             <a href="javascript:;" class="btn btn-primary" onclick="DirectSalesOrderPrint();">Print Order</a>
-            <a href="javascript:;" class="btn btn-primary" onclick="ProcessRefundRequest();">Issue Refund</a>
+            <a href="javascript:;" class="btn btn-primary" onclick="GoToRefundRequest();">Issue Refund</a>
         </div>
     </div>
 </div>
 
 <script>
-    function ProcessRefundRequest() {
-        var orderId = $("#selkey").val();
+    function GoToRefundRequest() {
+        var orderId = $("#selkeyDirectSalesOrderId").val();
         var url = '@Url.Action("DirectSalesRefund", "DirectSales", new {  id="[OrderID]" })';
         var redirectUrl = url.replace('[OrderID]', orderId);
         location.href = redirectUrl;

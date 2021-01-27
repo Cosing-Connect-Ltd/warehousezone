@@ -3,7 +3,8 @@
 @using Ganedata.Core.Entities.Enums
 
 <h2><span>@ViewBag.Title</span></h2>
-<form class="form-horizontal" action="/Account/SaveAccountTransaction" method="post" id="frmAccountTransaction">
+
+<form class="form-horizontal" action='@Url.Action("RequestRefund","DirectSales")' method="post" id="frmRefunds">
     @Html.AntiForgeryToken()
     @Html.HiddenFor(c => c.OrderID)
 
@@ -22,38 +23,43 @@
         }
 
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.Label("Refund Amount", new { @class = "col-md-4 control-label" })
-            <div class="col-md-8">
-                @if (Model.OrderID < 1)
-                {
-                    @Html.DevExpress().SpinEdit(m =>
-                    {
-                        m.Name = "Amount";
-                        m.ControlStyle.CssClass = "form-control";
-                        m.Properties.MinValue = 0;
-                        m.Properties.MaxValue = Model.RefundAmount;
-                        m.Width = Unit.Percentage(100);
-                        m.Enabled = Model.OrderID < 1;
-                        m.Properties.NullText = "Amount";
-                    }).GetHtml()
-                }
-                else
-                {
-                    <div class="alert alert-danger m-0 mb-2">@Model.RefundAmount.ToString("0.00")</div>
-                    <div class="col-md-12 p-1 alert alert-info">You cannot issue refund.</div>
-                }
+            <div class="col-sm-12">
+                <label class="h4">Order Total: @ViewBag.CurrencySymbol@Model.RefundAmount </label>
             </div>
-        </div>
+            <div class="col-md-4">
+                @Html.Label("Refund Amount", new { @class = "col-md-4 control-label" })
+            </div>
+                <div class="col-md-8">
+                    @if (Model.OrderID > 0)
+                    {
+                        @Html.DevExpress().SpinEdit(m =>
+                        {
+                            m.Name = "RefundAmount";
+                            m.ControlStyle.CssClass = "form-control";
+                            m.Properties.MinValue = 0;
+                            m.Properties.MaxValue = Model.RefundAmount;
+                            m.Width = Unit.Percentage(100);
+                            m.Enabled = Model.OrderID > 0;
+                            m.Properties.NullText = "Amount";
+                        }).Bind(Model.RefundAmount).GetHtml()
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger m-0 mb-2">@Model.RefundAmount.ToString("0.00")</div>
+                        <div class="col-md-12 p-1 alert alert-info">You cannot issue refund.</div>
+                    }
+                </div>
+            </div>
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.Label("Refund Notes", new { @class = "col-md-4 control-label" })
             <div class="col-md-8">
-                @Html.TextBoxFor(c => c.RefundNotes, new { @placeholder = "Notes", @class = "form-control" })
+                @Html.TextAreaFor(c => c.RefundNotes, new { @placeholder = "Notes", @class = "form-control", @rows=4 })
             </div>
         </div>
     </div>
 
     <div class="col-md-offset-2 col-md-10 bottom-right-popup">
-        <input type="button" class="btn btn-primary" id="saveBtn_ProcessRefund" onclick="ProcessRefund(@Model.OrderID)" value="Save" />
+        <input type="submit" class="btn btn-primary" id="saveBtn_ProcessRefund"  value="Save" />
         <input type="button" onclick="ModalProcessRefund.Hide()" class="btn btn-default" id="saveBtn_CancelProcessRefund" value="Cancel" />
     </div>
 </form>

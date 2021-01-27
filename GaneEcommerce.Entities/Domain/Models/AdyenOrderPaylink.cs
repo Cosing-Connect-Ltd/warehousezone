@@ -57,5 +57,6 @@ namespace Ganedata.Core.Entities.Domain
         public string RefundHookReason { get; set; }
         public string RefundResponseStatus { get; set; }
         public string RefundResponsePspReference { get; set; }
+        public string RefundNotes { get; set; }
     }
 }

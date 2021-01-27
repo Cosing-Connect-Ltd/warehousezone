@@ -79,7 +79,7 @@ namespace Ganedata.Core.Models.AdyenPayments
         [JsonProperty("merchantAccount")]
         public string MerchantAccountName { get; set; }
          
-        [JsonProperty("pspReference")]
+        [JsonProperty("originalReference")]
         public string PspReference { get; set; }
 
         [JsonProperty("reference")]
@@ -93,7 +93,7 @@ namespace Ganedata.Core.Models.AdyenPayments
         public int? RequestedUserID { get; set; }
 
         [JsonIgnore]
-        public decimal RefundAmount => Amount.Value / 100;
+        public decimal RefundAmount => Amount?.Value??0;
 
         [JsonIgnore]
         public string RefundNotes { get; set; }

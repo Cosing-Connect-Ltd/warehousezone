@@ -79,5 +79,7 @@ namespace Ganedata.Core.Models
         public int? DefaultEatInTimeMinutes { get; set; }
         public int TenantId { get; set; }
         public bool? IsDeleted { get; set; }
+        public string TelephoneNumber1 { get; set; }
+        public string TelephoneNumber2 { get; set; }
     }
 }
