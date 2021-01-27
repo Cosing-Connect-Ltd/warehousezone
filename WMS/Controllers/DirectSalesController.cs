@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using Elmah;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Models.AdyenPayments;
 using Ganedata.Core.Services;
+using Newtonsoft.Json;
 using WMS.Helpers;
 
 namespace WMS.Controllers
@@ -16,13 +20,15 @@ namespace WMS.Controllers
         private readonly IProductServices _productServices;
         private readonly IVanSalesService _vanSalesService;
         private readonly IMapper _mapper;
+        private readonly IAdyenPaymentService _paymentService;
 
         public DirectSalesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices,
-            IVanSalesService vanSalesService, IMapper mapper) : base(orderService, propertyService, accountServices, lookupServices)
+            IVanSalesService vanSalesService, IMapper mapper, IAdyenPaymentService paymentService) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productServices = productServices;
             _vanSalesService = vanSalesService;
             _mapper = mapper;
+            _paymentService = paymentService;
         }
 
         public ActionResult Index()
@@ -165,6 +171,76 @@ namespace WMS.Controllers
             var warehouseId = Request.Params["MobileLocationID"].AsInt();
             var results = _vanSalesService.GetAllVanSalesDailyReports(CurrentTenantId, warehouseId, startDate, endDate);
             return PartialView("_VanSalesCashReport", results);
+        }
+
+        public ActionResult DirectSalesRefund(int id)
+        {
+            var order = OrderService.GetOrderById(id);
+            var paylink = _paymentService.GetAdyenPaylinkByOrderId(order.OrderID);
+            if (paylink == null)
+            {
+                ViewBag.ErrorMessage = "Refund cannot be processed. No processed payments found against the order.";
+                ViewBag.RefundRestricted = true;
+            }
+            if (order.OrderStatusID == OrderStatusEnum.FullyRefunded || order.OrderStatusID == OrderStatusEnum.PartiallyRefunded)
+            {
+                ViewBag.ErrorMessage = "Refund is complete for this order.";
+                ViewBag.RefundRestricted = true;
+            }
+
+            return View(order);
+        }
+
+        public ActionResult _DirectSalesRefundPartial(int id)
+        {
+            var order = OrderService.GetOrderById(id);
+
+            return PartialView("_DirectSalesRefundPartial", order);
+        }   
+        public ActionResult _RefundCreateForm(int id)
+        {
+            var order = OrderService.GetOrderById(id);
+
+            var model = new AdyenPaylinkRefundRequest()
+            {
+                OrderID = order.OrderID,
+                Amount = new AdyenAmount(){ CurrencyCode = "GBP", Value = order.OrderTotal},
+            };
+            return PartialView("_RefundCreate", model);
+        }
+        public async Task<ActionResult> RequestRefund(AdyenPaylinkRefundRequest refundRequestData)
+        {
+            var order = OrderService.GetOrderById(refundRequestData.OrderID);
+            var paylink = _paymentService.GetAdyenPaylinkByOrderId(order.OrderID);
+            if (paylink != null)
+            {
+                if (string.IsNullOrEmpty(paylink.HookPspReference))
+                {
+                    ViewBag.ErrorMessage = "Refund cannot be processed. Missing Payment confirmation hook reference.";
+                    return RedirectToAction("DirectSalesRefund", new { id = order.OrderID });
+                }
+
+                var model = new AdyenPaylinkRefundRequest()
+                {
+                    OrderID = order.OrderID,
+                    MerchantAccountName = AdyenPaymentService.AdyenMerchantAccountName,
+                    RefundReference = paylink.HookPspReference + "_Refund",
+                    PspReference = paylink.HookPspReference,
+                    RequestedUserID = CurrentUserId,
+                    Amount = new AdyenAmount() {CurrencyCode = "GBP", Value = decimal.Parse(Request.Params["RefundAmount"]??"0") },
+                    PayLinkID = paylink.LinkID
+                };
+                await _paymentService.RequestRefundForPaymentLink(model);
+
+                var status = refundRequestData.RefundAmount == paylink.LinkAmount ? OrderStatusEnum.FullyRefunded : OrderStatusEnum.PartiallyRefunded;
+                OrderService.UpdateOrderStatus(order.OrderID, status, CurrentUserId);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Refund cannot be processed. No processed payments found against the order.";
+                return RedirectToAction("DirectSalesRefund", new {id = order.OrderID});
+            }
+            return RedirectToAction("Index");
         }
     }
 }

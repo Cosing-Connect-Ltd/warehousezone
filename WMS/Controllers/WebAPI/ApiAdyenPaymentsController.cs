@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -29,16 +30,66 @@ namespace WMS.Controllers.WebAPI
         public async Task<IHttpActionResult> PaymentSuccessHook(AdyenPaylinkHookNotificationRequestRoot paymentAuthorisationData)
         {
             var json = JsonConvert.SerializeObject(paymentAuthorisationData);
-            var isValidPostFromAdyen = IsValidAdyanHmacSignature(json);
-            if (!isValidPostFromAdyen)
-            {
-                return BadRequest("Failed request source verification");
-            }
+            ErrorSignal.FromCurrentContext().Raise(new Exception("Received payment hook", new Exception(json)));
+            //try
+            //{
+            //    var isValidPostFromAdyen = IsValidAdyanHmacSignature(json);
+            //    if (!isValidPostFromAdyen)
+            //    {
+            //        return BadRequest("Failed request source verification");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    ErrorSignal.FromCurrentContext().Raise(ex);
+            //}
 
             var notification = paymentAuthorisationData.NotificationItems.FirstOrDefault();
-            notification.NotificationRequestItem.RawJson = "";
-            var response = await _paymentService.UpdateOrderPaymentAuthorisationHook(notification?.NotificationRequestItem);
-            return Ok(new { Success = true, Merchant = notification?.NotificationRequestItem.MerchantAccountCode, AuthorisationID = response.AdyenOrderPaylinkID });
+            if (notification != null)
+            {
+                notification.NotificationRequestItem.RawJson = "";
+                var response = await _paymentService.UpdateOrderPaymentAuthorisationHook(notification?.NotificationRequestItem);
+                return Ok("[accepted]");
+            }
+
+            return BadRequest("Could not find any notification items");
+        }
+
+        public async Task<IHttpActionResult> RefundSuccessHook(AdyenPaylinkHookNotificationRequestRoot refundHookData)
+        {
+            var json = JsonConvert.SerializeObject(refundHookData);
+            ErrorSignal.FromCurrentContext().Raise(new Exception("Refund payment hook", new Exception(json)));
+
+            var notification = refundHookData.NotificationItems.FirstOrDefault();
+            if (notification != null)
+            {
+                notification.NotificationRequestItem.RawJson = "";
+                var response = await _paymentService.UpdateOrderPaymentAuthorisationHook(notification?.NotificationRequestItem);
+                return Ok("[accepted]");
+            }
+
+            return BadRequest("Could not find any notification items");
+        }
+
+        public async Task<IHttpActionResult> SendPaymentRefundRequest(AdyenPaylinkRefundRequest refundRequestData)
+        {
+            var json = JsonConvert.SerializeObject(refundRequestData);
+
+            try
+            {
+                var isValidPostFromAdyen = IsValidAdyanHmacSignature(json);
+                if (!isValidPostFromAdyen)
+                {
+                    return BadRequest("Failed request source verification");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorSignal.FromCurrentContext().Raise(ex);
+            }
+             
+            var response = await _paymentService.RequestRefundForPaymentLink(refundRequestData);
+            return Ok(new { Success = true, Merchant = response.RefundOriginalMerchantReference, AuthorisationID = response.AdyenOrderPaylinkID });
         }
 
         private bool IsValidAdyanHmacSignature(string json)

@@ -53,7 +53,16 @@
         <div class="col-md-offset-2 col-md-10 bottom-right">
             @Html.ActionLink("Create New", "CreateDirectSales", "DirectSales", null, new { @class = "btn btn-primary  " })
             <a href="javascript:;" class="btn btn-primary" onclick="DirectSalesOrderPrint();">Print Order</a>
-           @* @Html.ActionLink("Print Order", "SalesOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkDirectSalesOrderPrint", target = "_blank" })*@
+            <a href="javascript:;" class="btn btn-primary" onclick="GoToRefundRequest();">Issue Refund</a>
         </div>
     </div>
 </div>
+
+<script>
+    function GoToRefundRequest() {
+        var orderId = $("#selkeyDirectSalesOrderId").val();
+        var url = '@Url.Action("DirectSalesRefund", "DirectSales", new {  id="[OrderID]" })';
+        var redirectUrl = url.replace('[OrderID]', orderId);
+        location.href = redirectUrl;
+    }
+</script>

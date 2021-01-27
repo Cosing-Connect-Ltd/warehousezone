@@ -180,7 +180,9 @@ namespace Ganedata.Core.Entities.Enums
         Prepared = 23,
         ReadyForPickup = 24,
         Finalised = 25,
-        Accepted = 26
+        Accepted = 26,
+        PartiallyRefunded = 27,
+        FullyRefunded = 28
     }
 
     public enum PalletStatusEnum

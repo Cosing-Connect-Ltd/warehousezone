@@ -41,6 +41,12 @@ namespace WMS.Controllers.WebAPI
 
             _mapper.Map(allTenantLocations, result.TenantLocationSync);
 
+            for(var i=0; i< allTenantLocations.Count;i++)
+            {
+                result.TenantLocationSync[i].TelephoneNumber1 = allTenantLocations[i].ContactNumbers.HomeNumber;
+                result.TenantLocationSync[i].TelephoneNumber2 = allTenantLocations[i].ContactNumbers.WorkNumber?? allTenantLocations[i].ContactNumbers.MobileNumber;
+            }
+
             result.Count = result.TenantLocationSync?.Count() ?? 0;
             result.TerminalLogId = TerminalServices
                 .CreateTerminalLog(reqDate, terminal.TenantId, result.Count, terminal.TerminalId,

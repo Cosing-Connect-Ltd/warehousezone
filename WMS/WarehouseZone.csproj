@@ -2828,6 +2828,9 @@
     <Content Include="Views\Theme\Default\ShoppingVoucher\_CreateEdit.cshtml" />
     <Content Include="Views\Theme\Default\ShoppingVoucher\_GridPartial.cshtml" />
     <Content Include="Views\Theme\Default\ShoppingVoucher\Index.cshtml" />
+    <Content Include="Views\Theme\Default\DirectSales\_DirectSalesRefundPartial.cshtml" />
+    <Content Include="Views\Theme\Default\DirectSales\DirectSalesRefund.cshtml" />
+    <Content Include="Views\Theme\Default\DirectSales\_RefundCreate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

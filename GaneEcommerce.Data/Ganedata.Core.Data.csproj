@@ -1243,6 +1243,14 @@
     <Compile Include="Migrations\202101201251526_AddedAccountRewardPointKeys.designer.cs">
       <DependentUpon>202101201251526_AddedAccountRewardPointKeys.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101251239456_AddedRefundRequestDetails.cs" />
+    <Compile Include="Migrations\202101251239456_AddedRefundRequestDetails.designer.cs">
+      <DependentUpon>202101251239456_AddedRefundRequestDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101271749488_AddedRefundNotesToPaymentLink.cs" />
+    <Compile Include="Migrations\202101271749488_AddedRefundNotesToPaymentLink.designer.cs">
+      <DependentUpon>202101271749488_AddedRefundNotesToPaymentLink.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2496,6 +2504,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101201251526_AddedAccountRewardPointKeys.resx">
       <DependentUpon>202101201251526_AddedAccountRewardPointKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101251239456_AddedRefundRequestDetails.resx">
+      <DependentUpon>202101251239456_AddedRefundRequestDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101271749488_AddedRefundNotesToPaymentLink.resx">
+      <DependentUpon>202101271749488_AddedRefundNotesToPaymentLink.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

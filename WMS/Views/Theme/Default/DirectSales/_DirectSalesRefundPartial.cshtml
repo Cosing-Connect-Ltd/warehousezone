@@ -1,0 +1,15 @@
+@using Ganedata.Core.Entities.Helpers
+@model Ganedata.Core.Entities.Domain.Order
+
+
+@Html.DevExpress().PageControl(s =>
+{
+s.EnableTabScrolling = true;
+s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+s.Name = "RefundOrder";
+s.TabPages.Add("Order Details").SetContent(() =>
+{
+    Html.RenderAction("_DirectSalesOrderDetails", "Order", new { Id = Model.OrderID });
+}); 
+
+}).GetHtml()

@@ -288,7 +288,7 @@ function removeCartItem(id) {
                     data: { cartId: id },
                     dataType: 'json',
                     success: function (data) {
-                        var cardItemsValue = parseInt($("#cart-total").text());                        
+                        var cardItemsValue = parseInt($("#cart-total").text());
                         $("#cart-total").text(cardItemsValue - 1);
                         getCartitems(null);
                         if ((cardItemsValue - 1) <= 0)
@@ -495,7 +495,7 @@ function LoggedIn() {
         url: basePath + "/User/LoginUsers/",
         data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: placecheck },
         dataType: 'json',
-        success: function (data) {            
+        success: function (data) {
             stopLoading();
             if (!data.status) {
                 $(".alert-message-login").html("User name or password is not correct").show().delay(2000).fadeOut();
@@ -576,19 +576,19 @@ function addToWishList(productId, parentProductId) {
     });
 }
 
-function ShowNotificationEmailModal(callback) {    
-    var $modal = $("#modalNotificationEmail");    
+function ShowNotificationEmailModal(callback) {
+    var $modal = $("#modalNotificationEmail");
     $modal.modal("show");
 
-    $modal.on("click", "#btnNotifyProd", function () {        
+    $modal.on("click", "#btnNotifyProd", function () {
         $modal.find("form:eq(0)").validate();
         if ($modal.find("form:eq(0)").valid()) {
             callback($modal.find("#EmailId").val());
-        }        
+        }
     });
 }
 
-function addToNotifyList(productId, parentProductId, addRemoveAction) {        
+function addToNotifyList(productId, parentProductId, addRemoveAction) {
     var callBack = function (emailId) {
         var currentClass = $("#notification-bell_" + productId);
         var notifyBtnClass = $("#notification-bell__button_" + productId);
@@ -611,7 +611,7 @@ function addToNotifyList(productId, parentProductId, addRemoveAction) {
                 if (!!parentProductId && parentProductId > 0) {
                     $(currentParentClass).find(".list-icon").css({ "color": "red" });
                 }
-                                
+
                 if (emailId)
                     $("#modalNotificationEmail button.close").trigger("click");
                 else {
@@ -628,7 +628,7 @@ function addToNotifyList(productId, parentProductId, addRemoveAction) {
         //GetLoggedIn(false);
         ShowNotificationEmailModal(callBack);
         return;
-    }    
+    }
 
     callBack();
 }
@@ -692,7 +692,7 @@ function removeWishListItemAndUpdateTheList(productId) {
 
 function redirectToWishListByConfirmation() {
     if (userStatus === "Login") {
-        $.alert({            
+        $.alert({
             title: 'Notification Already Subscribed!',
             content: 'You will be notified when this item is available.',
             confirmText: 'OK',
