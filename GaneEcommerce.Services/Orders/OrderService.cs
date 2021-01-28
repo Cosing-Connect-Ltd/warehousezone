@@ -1202,7 +1202,7 @@ namespace Ganedata.Core.Services
 
             if (item.FoodOrderType != null)
             {
-                if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
+                if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Internal && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
                 {
                     item.OrderStatusID = OrderStatusEnum.Active;
                 }

@@ -162,6 +162,7 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("TenantId")]
         public virtual Tenant Tenants { get; set; }
         public virtual Address Address { get; set; }
+        [ForeignKey("ContactNumbersId")]
         public virtual ContactNumbers ContactNumbers { get; set; }
         public virtual ICollection<EmployeeShifts_Stores> EmployeeShifts_Stores { get; set; }
         public virtual ICollection<Terminals> Devices { get; set; }
