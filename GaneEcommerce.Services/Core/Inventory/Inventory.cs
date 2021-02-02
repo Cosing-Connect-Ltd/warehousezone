@@ -1580,7 +1580,7 @@ namespace Ganedata.Core.Services
             var productService = DependencyResolver.Current.GetService<IProductServices>();
             var product = productService.GetProductMasterById(stockMovement.ProductId);
 
-            if (stockMovement.PalletSerials.Count > 0)
+            if (stockMovement.PalletSerials!=null && stockMovement.PalletSerials.Count > 0)
             {
                 foreach (var item in stockMovement.PalletSerials)
                 {
@@ -1590,7 +1590,7 @@ namespace Ganedata.Core.Services
                         stockMovement.UserId, item.PalletSerialId, null, true);
                 }
             }
-            else if (stockMovement.SerialIds.Count > 0)
+            else if (stockMovement.SerialIds!=null && stockMovement.SerialIds.Count > 0)
             {
                 foreach (var item in stockMovement.SerialIds)
                 {
