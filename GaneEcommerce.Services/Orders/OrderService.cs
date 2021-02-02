@@ -1202,7 +1202,7 @@ namespace Ganedata.Core.Services
 
             if (item.FoodOrderType != null)
             {
-                if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
+                if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Internal && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
                 {
                     item.OrderStatusID = OrderStatusEnum.Active;
                 }
@@ -1603,6 +1603,13 @@ namespace Ganedata.Core.Services
                     + Guid.NewGuid().ToString().Replace("-", "").ToUpper().Substring(0, 15) : item.DeliveryNo, item.CreatedBy, null, warehouse.WarehouseId);
                 foreach (var op in item.OrderProcessDetails)
                 {
+                    var locationid = (int?) null;
+                    if (!string.IsNullOrWhiteSpace(op.LocationCode))
+                    {
+                        var location = _currentDbContext.Locations.FirstOrDefault(m => m.LocationCode.Equals(op.LocationCode, StringComparison.CurrentCultureIgnoreCase) && m.IsActive);
+                        locationid = location?.LocationId;
+                    }
+
                     if (op.Serials != null && op.Serials.Count > 0)
                     {
                         var serialResult = UpdateSerialStockStatus(op.Serials, op.ProductId, item.DeliveryNo, item.OrderID ?? 0, op.OrderDetailID ?? 0, 0, item.InventoryTransactionTypeId, item.CreatedBy,
@@ -1655,7 +1662,7 @@ namespace Ganedata.Core.Services
                                         decimal quantity = pallet.ProcessedQuantity * productsPerCase;
 
                                         Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, quantity, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId, op.CreatedBy,
-                                            null, pallet.PalletTrackingId, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
+                                            locationid, pallet.PalletTrackingId, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                                     }
                                     else
                                     {
@@ -1679,7 +1686,7 @@ namespace Ganedata.Core.Services
                                         decimal quantity = pallet.ProcessedQuantity * productsPerCase;
 
                                         Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, quantity, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId, op.CreatedBy,
-                                            null, pallet.PalletTrackingId, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
+                                            locationid, pallet.PalletTrackingId, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                                     }
                                     else
                                     {
@@ -1698,7 +1705,8 @@ namespace Ganedata.Core.Services
                         else
                         {
                             _currentDbContext.SaveChanges();
-                            Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId, op.CreatedBy, null, null, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
+                            
+                            Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId, op.CreatedBy, locationid, null, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                         }
                     }
                 }
@@ -1716,6 +1724,12 @@ namespace Ganedata.Core.Services
 
                         foreach (var op in item.OrderProcessDetails)
                         {
+                            var locationid = (int?)null;
+                            if (!string.IsNullOrWhiteSpace(op.LocationCode))
+                            {
+                                var location = _currentDbContext.Locations.FirstOrDefault(m => m.LocationCode.Equals(op.LocationCode, StringComparison.CurrentCultureIgnoreCase) && m.IsActive);
+                                locationid = location?.LocationId;
+                            }
                             var reverseOrderdetail = _currentDbContext.OrderDetail.Where(x => x.OrderID == reverseOrder.OrderID && x.ProductId == op.ProductId).FirstOrDefault();
 
                             if (op.Serials != null && op.Serials.Count > 0)
@@ -1748,7 +1762,7 @@ namespace Ganedata.Core.Services
                                 _currentDbContext.OrderProcessDetail.Add(o);
                                 _currentDbContext.SaveChanges();
                                 Inventory.StockTransactionApi(o.ProductId, reverseOrder.InventoryTransactionTypeId, o.QtyProcessed, reverseOrder.OrderID, terminal.TenantId, (reverseOrder.WarehouseId ?? warehouse.WarehouseId),
-                                    op.CreatedBy, null, null, terminal.TerminalId, orderProcessId: (reverseOrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
+                                    op.CreatedBy, locationid, null, terminal.TerminalId, orderProcessId: (reverseOrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                             }
                         }
                     }

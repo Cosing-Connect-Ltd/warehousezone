@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 using AutoMapper;
+using Elmah;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
@@ -43,8 +45,8 @@ namespace WMS.Controllers.WebAPI
 
             for(var i=0; i< allTenantLocations.Count;i++)
             {
-                result.TenantLocationSync[i].TelephoneNumber1 = allTenantLocations[i].ContactNumbers.HomeNumber;
-                result.TenantLocationSync[i].TelephoneNumber2 = allTenantLocations[i].ContactNumbers.WorkNumber?? allTenantLocations[i].ContactNumbers.MobileNumber;
+                result.TenantLocationSync[i].TelephoneNumber1 = allTenantLocations[i].ContactNumbers?.HomeNumber;
+                result.TenantLocationSync[i].TelephoneNumber2 = allTenantLocations[i].ContactNumbers?.WorkNumber?? allTenantLocations[i].ContactNumbers?.MobileNumber;
             }
 
             result.Count = result.TenantLocationSync?.Count() ?? 0;
