@@ -31,18 +31,18 @@ namespace WMS.Controllers.WebAPI
         {
             var json = JsonConvert.SerializeObject(paymentAuthorisationData);
             ErrorSignal.FromCurrentContext().Raise(new Exception("Received payment hook", new Exception(json)));
-            //try
-            //{
-            //    var isValidPostFromAdyen = IsValidAdyanHmacSignature(json);
-            //    if (!isValidPostFromAdyen)
-            //    {
-            //        return BadRequest("Failed request source verification");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    ErrorSignal.FromCurrentContext().Raise(ex);
-            //}
+            try
+            {
+                var isValidPostFromAdyen = IsValidAdyanHmacSignature(json, false);
+                if (!isValidPostFromAdyen)
+                {
+                    return BadRequest("Failed request source verification for payment notification");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorSignal.FromCurrentContext().Raise(ex);
+            }
 
             var notification = paymentAuthorisationData.NotificationItems.FirstOrDefault();
             if (notification != null)
@@ -59,6 +59,18 @@ namespace WMS.Controllers.WebAPI
         {
             var json = JsonConvert.SerializeObject(refundHookData);
             ErrorSignal.FromCurrentContext().Raise(new Exception("Refund payment hook", new Exception(json)));
+            try
+            {
+                var isValidPostFromAdyen = IsValidAdyanHmacSignature(json, true);
+                if (!isValidPostFromAdyen)
+                {
+                    return BadRequest("Failed request source verification for refund notification");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorSignal.FromCurrentContext().Raise(ex);
+            }
 
             var notification = refundHookData.NotificationItems.FirstOrDefault();
             if (notification != null)
@@ -77,10 +89,10 @@ namespace WMS.Controllers.WebAPI
 
             try
             {
-                var isValidPostFromAdyen = IsValidAdyanHmacSignature(json);
+                var isValidPostFromAdyen = IsValidAdyanHmacSignature(json, true);
                 if (!isValidPostFromAdyen)
                 {
-                    return BadRequest("Failed request source verification");
+                    return BadRequest("Failed request source verification for portal refund notification");
                 }
             }
             catch (Exception ex)
@@ -92,13 +104,13 @@ namespace WMS.Controllers.WebAPI
             return Ok(new { Success = true, Merchant = response.RefundOriginalMerchantReference, AuthorisationID = response.AdyenOrderPaylinkID });
         }
 
-        private bool IsValidAdyanHmacSignature(string json)
+        private bool IsValidAdyanHmacSignature(string json, bool isRefunds)
         {
             var hmacValidator = new HmacValidator();
             var notificationHandler = new NotificationHandler();
             var handleNotificationRequest = notificationHandler.HandleNotificationRequest(json);
             var notificationItem = handleNotificationRequest.NotificationItemContainers.First().NotificationItem;
-            return hmacValidator.IsValidHmac(notificationItem, AdyenPaymentService.AdyenHmacKey);
+            return hmacValidator.IsValidHmac(notificationItem, isRefunds? AdyenPaymentService.AdyenRefundHmacKey: AdyenPaymentService.AdyenHmacKey);
         }
         public async Task<IHttpActionResult> CreateOrderPaymentLink(AdyenApiCreatePayLinkRequestModel model)
         {
