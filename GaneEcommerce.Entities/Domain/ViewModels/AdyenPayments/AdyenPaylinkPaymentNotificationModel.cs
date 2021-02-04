@@ -8,6 +8,9 @@ namespace Ganedata.Core.Models.AdyenPayments
     {
         [JsonProperty("paymentLinkId")]
         public string PaymentLinkId { get; set; }
+
+        [JsonProperty("hmacSignature")]
+        public string HmacSignature { get; set; }
     }
      
     public class AdyenPaylinkHookNotificationRequest
@@ -35,8 +38,7 @@ namespace Ganedata.Core.Models.AdyenPayments
         [JsonIgnore]
         public string RawJson { get; set; }
 
-        [JsonProperty("hmacSignature")]
-        public string HmacSignature { get; set; }
+
     }
 
     public class AdyenPaylinkHookNotificationItem

@@ -39,7 +39,8 @@ namespace Ganedata.Core.Services
         public static string AdyenPaylinkCreateEndpoint => ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] != null ? ConfigurationManager.AppSettings["AdyenPaylinkCreateEndpoint"] : "https://checkout-test.adyen.com/v66/paymentLinks";
         public static string AdyenPaylinkRefundEndpoint => ConfigurationManager.AppSettings["AdyenPaylinkRefundEndpoint"] != null ? ConfigurationManager.AppSettings["AdyenPaylinkRefundEndpoint"] : "https://pal-test.adyen.com/pal/servlet/Payment/v64/refund";
         public static string AdyenMerchantAccountName => ConfigurationManager.AppSettings["AdyenMerchantAccountName"] != null ? ConfigurationManager.AppSettings["AdyenMerchantAccountName"] : "GaneDatascanLtdECOM";
-        public static string AdyenHmacKey => ConfigurationManager.AppSettings["AdyenHmacKey"] != null ? ConfigurationManager.AppSettings["AdyenHmacKey"] : "BF43360B5EBA10D283279FE83257B8012798A690FFBFDCE78BDCAEEBA6BC6A8B";
+        public static string AdyenHmacKey => ConfigurationManager.AppSettings["AdyenHmacKey"] != null ? ConfigurationManager.AppSettings["AdyenHmacKey"] : "95D0C2C9B2BA6EF5F3E50DAE742E35F4D98521706883364E520BA9E9F979C927";
+        public static string AdyenRefundHmacKey => ConfigurationManager.AppSettings["AdyenRefundHmacKey"] != null ? ConfigurationManager.AppSettings["AdyenRefundHmacKey"] : "058672FDBCDC65BBC2695D8C2C5B1123CBCDD8013D6E2AAD2AFFEDA19591952C";
 
         public AdyenPaymentService(IApplicationContext context)
         {
