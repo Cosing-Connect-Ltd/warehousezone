@@ -15,12 +15,12 @@ namespace Ganedata.Core.Services
     {
         ShoppingVoucherValidationResponseModel ValidateVoucher(ShoppingVoucherValidationRequestModel request);
         ShoppingVoucherValidationResponseModel ApplyVoucher(ShoppingVoucherValidationRequestModel request);
-
         ShoppingVoucher GetShoppingVoucherById(int shoppingVoucherId);
         List<ShoppingVoucher> GetAllValidShoppingVouchers(int tenantId, DateTime? onlyUpdatedAfter = null, bool includeDeleted = false);
         ShoppingVoucher GetShoppingVoucherByVoucherCode(string voucherCode);
         ShoppingVoucher SaveShoppingVoucher(ShoppingVoucher voucher, int userId);
         void DeleteShoppingVoucher(int voucherId, int userId);
+        List<ShoppingVoucherValidationResponseModel> GetAllValidUserVouchers(int userId, string email, string phone);
     }
 
     public class ShoppingVoucherService : IShoppingVoucherService
@@ -31,18 +31,20 @@ namespace Ganedata.Core.Services
         {
             _currentDbContext = currentDbContext;
         }
-        public ShoppingVoucherValidationResponseModel ValidateVoucher(ShoppingVoucherValidationRequestModel request)
-        {
-            var voucher = _currentDbContext.ShoppingVouchers.FirstOrDefault(m =>
-                m.VoucherCode.Equals(request.VoucherCode) && (!m.VoucherUserId.HasValue || (request.UserId.HasValue && m.VoucherUserId == request.UserId)));
 
-            var response = new ShoppingVoucherValidationResponseModel(){ VerifiedTimestamp = DateTime.Now, DiscountFigure = 0, VoucherCode = request.VoucherCode, Status = (int)ShoppingVoucherStatus.Active };
+        public ShoppingVoucherValidationResponseModel MapVoucherToModel(ShoppingVoucher voucher)
+        {
+            var response = new ShoppingVoucherValidationResponseModel() { VerifiedTimestamp = DateTime.Now, DiscountFigure = 0, VoucherCode = voucher?.VoucherCode, Status = (int)ShoppingVoucherStatus.Active };
 
             if (voucher == null)
             {
-                response.Status = (int) ShoppingVoucherStatus.Invalid;
+                response.Status = (int)ShoppingVoucherStatus.Invalid;
                 return response;
             }
+
+            response.UserId = voucher.VoucherUserId ?? 0;
+            response.VoucherTitle = voucher.VoucherTitle;
+            response.MinimumOrderPrice = voucher.MinimumOrderPrice??0;
 
             if (voucher.VoucherExpiryDate < DateTime.Now)
             {
@@ -53,21 +55,31 @@ namespace Ganedata.Core.Services
             {
                 if (voucher.VoucherUsedCount >= voucher.MaximumAllowedUse)
                 {
-                    response.Status = (int) ShoppingVoucherStatus.UsedMaximum;
+                    response.Status = (int)ShoppingVoucherStatus.UsedMaximum;
                 }
             }
             else if (voucher.VoucherUsedDate.HasValue)
             {
+                response.UsedDate = voucher.VoucherUsedDate;
                 response.Status = (int)ShoppingVoucherStatus.Applied;
             }
 
-            if (response.Status == (int) ShoppingVoucherStatus.Active)
+            if (response.Status == (int)ShoppingVoucherStatus.Active)
             {
                 response.DiscountFigure = voucher.DiscountFigure;
-                response.DiscountType = (int) voucher.DiscountType;
+                response.DiscountType = (int)voucher.DiscountType;
             }
 
+            response.RewardProductId = voucher.RewardProductId;
+
             return response;
+        }
+
+        public ShoppingVoucherValidationResponseModel ValidateVoucher(ShoppingVoucherValidationRequestModel request)
+        {
+            var voucher = _currentDbContext.ShoppingVouchers.FirstOrDefault(m =>
+                m.VoucherCode.Equals(request.VoucherCode) && (!m.VoucherUserId.HasValue || (request.UserId.HasValue && m.VoucherUserId == request.UserId)));
+            return MapVoucherToModel(voucher);
         }
 
         public ShoppingVoucherValidationResponseModel ApplyVoucher(ShoppingVoucherValidationRequestModel request)
@@ -163,6 +175,14 @@ namespace Ganedata.Core.Services
             var voucher = GetShoppingVoucherById(voucherId);
             voucher.IsDeleted = true;
             SaveShoppingVoucher(voucher, userId);
+        }
+
+        public List<ShoppingVoucherValidationResponseModel> GetAllValidUserVouchers(int userId, string email, string phone)
+        {
+            return _currentDbContext.ShoppingVouchers.Where(m =>
+                m.IsDeleted != true && userId != 0 && m.VoucherUser!=null 
+                && (m.VoucherUser.UserEmail!=null && m.VoucherUser.UserEmail.ToLower().Equals(email.ToLower())) 
+                && (m.VoucherUser.UserMobileNumber!=null && m.VoucherUser.UserMobileNumber.EndsWith(phone.Trim()) )).Select(MapVoucherToModel).ToList();
         }
     }
 }

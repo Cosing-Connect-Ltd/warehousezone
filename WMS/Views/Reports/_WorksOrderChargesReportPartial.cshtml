@@ -1,8 +1,0 @@
-@Html.DevExpress().DocumentViewer(settings => {
-    settings.Name = "WorksOrderChargesReportPrint";
-    settings.CallbackRouteValues = new { Controller = "Reports", Action = "_WorksOrdersChargesReportPartial" };
-    settings.ExportRouteValues = new { Controller = "Reports", Action = "_WorksOrdersChargesReportExport" };
-    settings.Report = (XtraReport)Model;
-    settings.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
-    settings.StylesSplitter.SidePaneMinWidth = System.Web.UI.WebControls.Unit.Pixel(300);
-}).GetHtml()

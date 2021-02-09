@@ -66,7 +66,7 @@ namespace WMS.Controllers.WebAPI
 
                 newUser.IsDeleted = usr.IsDeleted;
                 newUser.DateUpdated = usr.DateUpdated;
-
+                newUser.PersonalReferralCode = usr.PersonalReferralCode;
                 //get parent warehouse to check permissions
                 int warehouseId = terminal.WarehouseId;
 

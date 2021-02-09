@@ -18,8 +18,22 @@ namespace Ganedata.Core.Models.AdyenPayments
         public int DiscountType { get; set; }
 
         //Can be used to determine if expiry becomes an issue
-        public DateTime VerifiedTimestamp{ get; set; }
+        public DateTime VerifiedTimestamp { get; set; }
         public int Status { get; set; }
+
+        //Promotions
+        public int UserId { get; set; }
+        public string VoucherTitle { get; set; }
+        public decimal MinimumOrderPrice { get; set; }
+        public DateTime? UsedDate { get; set; }
+        public int? RewardProductId { get; set; }
+    }
+
+    public class PromotionsSyncRequest
+    {
+        public int UserId { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
     }
 
 }

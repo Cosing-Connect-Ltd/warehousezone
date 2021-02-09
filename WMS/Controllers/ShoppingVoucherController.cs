@@ -14,13 +14,15 @@ namespace WMS.Controllers
     {
         private readonly IShoppingVoucherService _shoppingVoucherService;
         private readonly IUserService _userService;
+        private readonly IProductServices _productServices;
 
         public ShoppingVoucherController(ICoreOrderService orderService,
-            IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IShoppingVoucherService shoppingVoucherService, IUserService userService)
+            IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IShoppingVoucherService shoppingVoucherService, IUserService userService, IProductServices productServices)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _shoppingVoucherService = shoppingVoucherService;
             _userService = userService;
+            _productServices = productServices;
         }
 
         public ActionResult Index()
@@ -61,6 +63,8 @@ namespace WMS.Controllers
             var usersList = _userService.GetAllAuthUsers(CurrentTenantId).Select(m => new SelectListItem() { Value = m.UserId.ToString(), Text = m.DisplayNameWithEmail }).ToList();
             usersList.Insert(0, new SelectListItem() { Text = "Select an User" });
             ViewBag.UserList = usersList;
+
+            ViewBag.Products = _productServices.GetAllValidProducts(CurrentTenantId);
         }
 
         [HttpPost]
@@ -76,6 +80,12 @@ namespace WMS.Controllers
         {
             _shoppingVoucherService.DeleteShoppingVoucher(id, CurrentUserId);
             return Json(new { success = true });
+        }
+
+        public ActionResult UpdateAllUsersWithPersonalReferralCode()
+        {
+            _userService.UpdateAllUsersWithPersonalReferralCode();
+            return RedirectToAction("Index");
         }
     }
 }

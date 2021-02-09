@@ -106,7 +106,7 @@ namespace Ganedata.Core.Services
         bool UpdateDontMonitorStockFlagForLocationproducts(int currentTenantId);
         List<Tuple<string, string, decimal, bool>> AllocatedProductDetail(int productId, int WarehouseId, int detail);
         IEnumerable<InventoryTransaction> GetInventoryTransactionsReturns(int productId, int? orderId, string orderNumber, int inventoryTransactionType, string grouptoken);
-        IQueryable<ProductMaster> GetAllValidProducts(int tenantId, string args, int OrderId, int departmentId = 0, int groupId = 0, int ProductId = 0);
+        IQueryable<ProductMaster> GetAllValidProducts(int tenantId, string args=null, int OrderId=0, int departmentId = 0, int groupId = 0, int ProductId = 0);
         IEnumerable<PalletTracking> GetAllPalletByOrderProcessDetailId(int orderprocessdetailId, int tenantId);
         IEnumerable<ProductSerialis> GetAllProductSerialbyOrderProcessDetailId(int orderprocessdetailId, int tenantId, bool? type);
         ProductMaster SaveEditProduct(ProductMasterViewModel productMaster, int UserId, int TenantId);

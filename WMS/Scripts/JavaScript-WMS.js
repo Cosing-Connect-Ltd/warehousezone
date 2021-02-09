@@ -1313,3 +1313,14 @@ function onCommandExecutedByHtmlEditor(s, e) {
 function ShoppingVoucherGridCallbackEnds(s, e) {
     $("#shoppingVoucherRecordsLabel").text(s.cpVisibleRowCount + ' Results');
 }
+
+function UpdateRewardContents() {
+    var discountType = $("#frmSaveVoucher #DiscountType").val();
+    if (discountType === "3") {
+        $(".reward-product").show();
+        $(".reward-figure").hide();
+    } else {
+        $(".reward-product").hide();
+        $(".reward-figure").show();
+    }
+}

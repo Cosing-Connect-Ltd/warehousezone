@@ -6,6 +6,29 @@ using Ganedata.Core.Entities.Enums;
 
 namespace Ganedata.Core.Entities.Domain
 {
+    public class VoucherRewardPoints
+    {
+        [Key]
+        [Display(Name = "Reward Id")]
+        public int VoucherRewardPointsId { get; set; }
+        public string RewardTitle { get; set; }
+        public string RewardDescription { get; set; }
+        public int RewardPoints { get; set; }
+
+        public int? RewardShoppingVoucherId { get; set; }
+        [ForeignKey("RewardShoppingVoucherId")]
+        public virtual ShoppingVoucher RewardShoppingVoucher { get; set; }
+
+        public int? RewardProductId { get; set; }
+        [ForeignKey("RewardProductId")]
+        public virtual ProductMaster RewardProduct { get; set; } 
+
+        public bool IsDeleted { get; set; }
+        public DateTime? ExpiryDate { get; set; }
+        public DateTime? DateCreated { get; set; }
+        public DateTime? DateUpdated { get; set; }
+    }
+    
     public class ShoppingVoucher : BaseAuditInfo
     {
         [Key]
@@ -13,6 +36,9 @@ namespace Ganedata.Core.Entities.Domain
         public int ShoppingVoucherId { get; set; }
         [Display(Name = "Voucher Title")]
         public string VoucherTitle { get; set; }
+        [Display(Name = "Voucher Description")]
+        public string RewardDescription { get; set; }
+
         [Display(Name = "Voucher Code")]
         public string VoucherCode { get; set; }
 
@@ -38,6 +64,11 @@ namespace Ganedata.Core.Entities.Domain
         public int? WarehouseId { get; set; }
         public virtual TenantLocations Warehouse { get; set; }
         public bool? IsDeleted { get; set; }
+        public decimal? MinimumOrderPrice { get; set; }
+        public int? RewardProductId { get; set; }
+        [ForeignKey("RewardProductId")]
+        public virtual ProductMaster RewardProduct { get; set; }
+
     }
 
     public class ShoppingVoucherUsage : BaseAuditInfo
@@ -56,7 +87,6 @@ namespace Ganedata.Core.Entities.Domain
         public int? OrderId { get; set; }
         [ForeignKey("OrderId")]
         public virtual Order Order{ get; set; }
-
 
     }
 }

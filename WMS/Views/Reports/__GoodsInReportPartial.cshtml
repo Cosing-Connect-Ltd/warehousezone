@@ -1,8 +1,0 @@
-@Html.DevExpress().DocumentViewer(settings => {
-    settings.Name = "GoodsInReport";
-    settings.CallbackRouteValues = new { Controller = "Reports", Action = "_GoodsInReportPartial" };
-    settings.ExportRouteValues = new { Controller = "Reports", Action = "_GoodsInReportPartialExport" };
-	settings.Report = (XtraReport)Model;
-    settings.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
-    settings.StylesSplitter.SidePaneMinWidth = System.Web.UI.WebControls.Unit.Pixel(300);
-}).GetHtml()

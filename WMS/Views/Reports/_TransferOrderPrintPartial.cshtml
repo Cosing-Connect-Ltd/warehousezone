@@ -1,7 +1,0 @@
-@Html.DevExpress().DocumentViewer(settings => {
-    settings.Name = "TransferOrderPrint";
-    settings.CallbackRouteValues = new { Controller = "Reports", Action = "TransferOrderPrintPartial" };
-    settings.ExportRouteValues = new { Controller = "Reports", Action = "TransferOrderPrintPartialExport" };
-    settings.Report = (XtraReport)Model;
-    settings.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
-}).GetHtml()

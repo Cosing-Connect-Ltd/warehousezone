@@ -577,6 +577,7 @@
     <Compile Include="Controllers\ShoppingVoucherController.cs" />
     <Compile Include="Controllers\WebAPI\ApiAdyenPaymentsController.cs" />
     <Compile Include="Controllers\WebAPI\ApiFeedbackController.cs" />
+    <Compile Include="Controllers\WebAPI\ApiOrderVouchersController.cs" />
     <Compile Include="Controllers\WebAPI\DeliverectWebhooksController.cs" />
     <Compile Include="Controllers\WebAPI\ApiTenantLocationsSyncController.cs" />
     <Compile Include="Controllers\WebAPI\ApiWebsitesController.cs" />
