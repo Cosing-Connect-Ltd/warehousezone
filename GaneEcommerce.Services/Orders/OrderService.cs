@@ -1359,7 +1359,7 @@ namespace Ganedata.Core.Services
                     var newLoyaltyPoint = account.AccountLoyaltyPoints;
                     _currentDbContext.SaveChanges();
 
-                    _shoppingVoucherService.TriggerRewardsBasedForCurrentVoucher(item.CreatedBy, oldLoyaltyPoint, newLoyaltyPoint);
+                    _shoppingVoucherService.TriggerRewardsBasedForCurrentVoucher(item.CreatedBy, oldLoyaltyPoint, newLoyaltyPoint, item.OrderID, string.IsNullOrWhiteSpace(item.VoucherCode));
                 }
                 //Order has to be created and processed immediately
                 // If OrderStatus is AwaitingAuthorisation then dont process the items

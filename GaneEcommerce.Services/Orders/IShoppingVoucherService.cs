@@ -25,7 +25,7 @@ namespace Ganedata.Core.Services
         void DeleteShoppingVoucher(int voucherId, int userId);
         List<ShoppingVoucherValidationResponseModel> GetAllValidUserVouchers(int userId, string email, string phone);
         bool LoadDefaultSystemVouchersForNewUser(int userId);
-        void TriggerRewardsBasedForCurrentVoucher(int userId, int oldPoint, int newPoint, int orderId = 0);
+        void TriggerRewardsBasedForCurrentVoucher(int userId, int oldPoint, int newPoint, int? orderId = 0, bool noVouchers = false);
     }
 
     public class ShoppingVoucherService : IShoppingVoucherService
@@ -179,13 +179,13 @@ namespace Ganedata.Core.Services
             return code;
         }
 
-        private AccountRewardPoint GetAccountRewardPoint(int accountId, int userId, int orderId, int rewardPoint, int productId)
+        private AccountRewardPoint GetAccountRewardPoint(int accountId, int userId, int? orderId, int rewardPoint, int productId)
         {
             return new AccountRewardPoint()
             {
                 DateCreated = DateTime.Now,
                 AccountID = accountId,
-                OrderID = orderId,
+                OrderID = orderId??0,
                 CreatedBy = userId,
                 OrderDateTime = DateTime.Now,
                 PointsEarned = rewardPoint,
@@ -194,7 +194,7 @@ namespace Ganedata.Core.Services
             };
         }
 
-        public void TriggerRewardsBasedForCurrentVoucher(int userId, int oldPoint, int newPoint, int orderId = 0)
+        public void TriggerRewardsBasedForCurrentVoucher(int userId, int oldPoint, int newPoint, int? orderId = null, bool noVouchers=false)
         {
             var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserId == userId && m.IsActive && m.IsDeleted != true);
             if (user != null && user.AccountId.HasValue)
@@ -202,7 +202,19 @@ namespace Ganedata.Core.Services
                 var account = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == user.AccountId);
                 if (account != null)
                 {
-                    var loyaltyPoint = account.AccountLoyaltyPoints;
+                    if (noVouchers)
+                    {
+                        var defaultVouchers = _currentDbContext.ShoppingVouchers.Where(m => m.VoucherUserId == userId && m.VoucherUsedDate == null
+                                                                                                                      && (m.VoucherCode.ToLower().Equals(FirstOrderHomeDeliveryDiscountVoucher) || m.VoucherCode.ToLower().Equals(FirstOrderOnlineDiscountVoucher)));
+                        foreach (var voucher in defaultVouchers)
+                        {
+                            voucher.IsDeleted =true;
+                            voucher.DateUpdated = DateTime.Now;
+                            _currentDbContext.Entry(voucher).State = EntityState.Modified;
+                        }
+                        _currentDbContext.SaveChanges();
+                    }
+
                     if (oldPoint < 400 && newPoint >= 400 && newPoint<800)
                     {
                         var product400 = _currentDbContext.ProductMaster.FirstOrDefault(m =>  m.ProductId == LoyaltyPoint400RewardProductId);
@@ -240,7 +252,7 @@ namespace Ganedata.Core.Services
                         var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -1200, LoyaltyPoint1200RewardProductId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
 
-                        account.AccountLoyaltyPoints = 0;
+                        account.AccountLoyaltyPoints = newPoint - 1200;
                         _currentDbContext.Entry(account).State = EntityState.Modified;
                         _currentDbContext.SaveChanges();
                         return;
@@ -409,7 +421,7 @@ namespace Ganedata.Core.Services
         public List<ShoppingVoucherValidationResponseModel> GetAllValidUserVouchers(int userId, string email, string phone)
         {
             var vouchers = _currentDbContext.ShoppingVouchers.Where(m =>
-                m.IsDeleted != true && userId != 0 && m.VoucherUser!=null 
+                m.IsDeleted != true && userId != 0 && m.VoucherUser!=null && m.VoucherUsedDate ==null
                 && (m.VoucherUser.UserEmail!=null && m.VoucherUser.UserEmail.ToLower().Equals(email.ToLower())) 
                 && (m.VoucherUser.UserMobileNumber!=null && m.VoucherUser.UserMobileNumber.EndsWith(phone.Trim()) )).Select(MapVoucherToModel).ToList();
             return vouchers;
