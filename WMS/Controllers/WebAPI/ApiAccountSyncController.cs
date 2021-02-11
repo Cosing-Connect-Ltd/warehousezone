@@ -56,7 +56,7 @@ namespace WMS.Controllers.WebAPI
                 mappedAccount.FullAddress = p.FullAddress;
                 mappedAccount.TaxPercent = p.GlobalTax.PercentageOfAmount;
                 mappedAccount.PointsToNextReward = p.AccountLoyaltyPoints<500? 500 - p.AccountLoyaltyPoints: 0; //This will need to be changed based on Najum's input
-                mappedAccount.RecentRewardPoints = p.AccountRewardPoints.Select(m => new RecentRewardPointSync()
+                mappedAccount.RecentRewardPoints = p.AccountRewardPoints.Where(m=> m.PointsEarned>0).Select(m => new RecentRewardPointSync()
                 {
                     OrderDateTime = m.OrderDateTime,
                     PointsEarned = m.PointsEarned,
@@ -98,8 +98,8 @@ namespace WMS.Controllers.WebAPI
                 mappedAccount.FullAddress = acc.FullAddress;
                 mappedAccount.TaxPercent = acc.GlobalTax.PercentageOfAmount;
                 result.Account = mappedAccount;
-                mappedAccount.PointsToNextReward = acc.AccountLoyaltyPoints < 500 ? 500 - acc.AccountLoyaltyPoints : 0; //This will need to be changed based on Najum's input
-                mappedAccount.RecentRewardPoints = acc.AccountRewardPoints.Select(m => new RecentRewardPointSync()
+                mappedAccount.PointsToNextReward = acc.AccountLoyaltyPoints < 400 ? 400 - acc.AccountLoyaltyPoints:acc.AccountLoyaltyPoints < 800 ? 800 - acc.AccountLoyaltyPoints : 1200 - acc.AccountLoyaltyPoints; //This will need to be changed based on Najum's input
+                mappedAccount.RecentRewardPoints = acc.AccountRewardPoints.Where(m=> m.PointsEarned>0).Select(m => new RecentRewardPointSync()
                 {
                     OrderDateTime = m.OrderDateTime,
                     PointsEarned = m.PointsEarned,

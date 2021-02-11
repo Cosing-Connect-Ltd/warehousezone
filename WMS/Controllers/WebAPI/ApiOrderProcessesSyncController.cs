@@ -120,8 +120,7 @@ namespace WMS.Controllers.WebAPI
                     var orderProcesses = processGroup.OrderProcesses;
                     foreach (var item in orderProcesses)
                     {
-                        var order = OrderService.SaveOrderProcessSync(item, terminal);
-
+                        var order = OrderService.SaveOrderProcessSync(item, terminal); 
                         if (!string.IsNullOrEmpty(item.VoucherCode))
                         {
                             _shoppingVoucherService.ApplyVoucher(new ShoppingVoucherValidationRequestModel()

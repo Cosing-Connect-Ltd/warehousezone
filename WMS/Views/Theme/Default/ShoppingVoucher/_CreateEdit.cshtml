@@ -79,22 +79,21 @@
                         @Html.TextBoxFor(c => c.MaximumAllowedUse, new {@placeholder = "Use X times max", @class = "form-control"})
                     </div>
                 </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(m => m.VoucherUserId, new {@class = "col-md-4 control-label"})
-                    <div class="col-md-8">
-                        @Html.DropDownListFor(c => c.VoucherUserId, new SelectList(ViewBag.UserList, "Value", "Text", Model.VoucherUserId), new {@placeholder = "User specific", @class = "form-control chosen-select"})
-                    </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.VoucherUserId, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8">
+                    @Html.DropDownListFor(c => c.VoucherUserId, new SelectList(ViewBag.UserList, "Value", "Text", Model.VoucherUserId), new {@placeholder = "User specific", @class = "form-control chosen-select"})
                 </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.MinimumOrderPrice, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8">
+                    @Html.TextBoxFor(c => c.MinimumOrderPrice, new {@placeholder = "Min Order value", @class = "form-control"})
+                </div>
+            </div>
            
         </div>
-        <div class="col-md-8 pull-left">
-            <h2>User Earning Triggers</h2>
-            <ul>
-                <li>When they first register, they get 50% off first order through App</li>
-                <li>When they first register, they get 25% off home delivery order through App, minimum value £5</li>
-                <li>When they first register, if they use "Add Promo code" option and add one of the friends code, both get 100 points</li>
-            </ul>
-        </div>
+       
 
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <input type="submit" class="btn btn-primary" id="saveBtn_ShoppingVoucher" value="Save" />

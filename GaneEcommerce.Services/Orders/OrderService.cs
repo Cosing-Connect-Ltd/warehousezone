@@ -27,9 +27,10 @@ namespace Ganedata.Core.Services
         private readonly IProductPriceService _productPriceService;
         private readonly IMapper _mapper;
         private readonly ITenantLocationServices _tenantLocationServices;
+        private readonly IShoppingVoucherService _shoppingVoucherService;
 
         public OrderService(IApplicationContext currentDbContext, IProductServices productService, IAccountServices accountServices, IInvoiceService invoiceService, IUserService userService,
-            ITenantsServices tenantServices, IProductPriceService productPriceService, IMapper mapper, TenantLocationServices tenantLocationServices)
+            ITenantsServices tenantServices, IProductPriceService productPriceService, IMapper mapper, TenantLocationServices tenantLocationServices, IShoppingVoucherService shoppingVoucherService)
         {
             _currentDbContext = currentDbContext;
             _productService = productService;
@@ -40,6 +41,7 @@ namespace Ganedata.Core.Services
             _productPriceService = productPriceService;
             _mapper = mapper;
             _tenantLocationServices = tenantLocationServices;
+            _shoppingVoucherService = shoppingVoucherService;
         }
 
         public string GenerateNextOrderNumber(InventoryTransactionTypeEnum type, int tenantId)
@@ -1202,10 +1204,11 @@ namespace Ganedata.Core.Services
 
             if (item.FoodOrderType != null)
             {
-                if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Internal && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
-                {
-                    item.OrderStatusID = OrderStatusEnum.Active;
-                }
+                //Will need to review why Deliverect need this code
+                //if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Internal && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
+                //{
+                //    item.OrderStatusID = OrderStatusEnum.Active;
+                //}
 
                 switch (item.FoodOrderType)
                 {
@@ -1333,6 +1336,9 @@ namespace Ganedata.Core.Services
                 if (order.OrderID > 0 && order.OrderTotal > 0)
                 {
                     var account = _currentDbContext.Account.AsNoTracking().FirstOrDefault(m=> m.AccountID == order.AccountID);
+
+                    var oldLoyaltyPoint = account.AccountLoyaltyPoints;
+
                     var reward = new AccountRewardPoint()
                     {
                         TenantId = terminal.TenantId,
@@ -1342,34 +1348,18 @@ namespace Ganedata.Core.Services
                         OrderID = order.OrderID,
                         CreatedBy = order.CreatedBy,
                         OrderDateTime = order.DateCreated,
-                        PointsEarned = (int)Math.Round(order.OrderTotal, 1),
-                        UserID = account.OwnerUserId
+                        PointsEarned = (int)Math.Round(order.OrderTotal, 1) * 50, //Todo: RH To be removed after testing
+                        UserID = item.CreatedBy
                     };
                     _currentDbContext.AccountRewardPoints.Add(reward);
                     
                     account.AccountLoyaltyPoints += reward.PointsEarned;
                     _currentDbContext.Entry(account).State = EntityState.Modified;
 
-                    if (item.RedeemLoyaltyDiscount == true && account.AccountLoyaltyPoints>=500)
-                    {
-                        var rewardUse = new AccountRewardPoint()
-                        {
-                            TenantId = terminal.TenantId,
-                            DateCreated = DateTime.Now,
-                            OrderTotal = order.OrderTotal,
-                            AccountID = order.AccountID,
-                            OrderID = order.OrderID,
-                            CreatedBy = order.CreatedBy,
-                            OrderDateTime = order.DateCreated,
-                            PointsEarned = -500,
-                            UserID = account.OwnerUserId
-                        };
-                        _currentDbContext.AccountRewardPoints.Add(rewardUse);
-                        account.AccountLoyaltyPoints += rewardUse.PointsEarned;
-                        _currentDbContext.Entry(account).State = EntityState.Modified;
-                    }
+                    var newLoyaltyPoint = account.AccountLoyaltyPoints;
                     _currentDbContext.SaveChanges();
 
+                    _shoppingVoucherService.TriggerRewardsBasedForCurrentVoucher(item.CreatedBy, oldLoyaltyPoint, newLoyaltyPoint);
                 }
                 //Order has to be created and processed immediately
                 // If OrderStatus is AwaitingAuthorisation then dont process the items

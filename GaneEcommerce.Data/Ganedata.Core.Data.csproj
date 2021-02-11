@@ -1263,6 +1263,10 @@
     <Compile Include="Migrations\202102110831465_AddedRewardPointTriggers.designer.cs">
       <DependentUpon>202102110831465_AddedRewardPointTriggers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202102111649457_AddedAccountRewardLogs.cs" />
+    <Compile Include="Migrations\202102111649457_AddedAccountRewardLogs.designer.cs">
+      <DependentUpon>202102111649457_AddedAccountRewardLogs.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2531,6 +2535,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102110831465_AddedRewardPointTriggers.resx">
       <DependentUpon>202102110831465_AddedRewardPointTriggers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102111649457_AddedAccountRewardLogs.resx">
+      <DependentUpon>202102111649457_AddedAccountRewardLogs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

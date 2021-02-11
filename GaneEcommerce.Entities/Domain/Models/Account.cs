@@ -261,5 +261,8 @@ namespace Ganedata.Core.Entities.Domain
         public int PointsEarned { get; set; }
         public decimal OrderTotal { get; set; }
         public DateTime OrderDateTime { get; set; }
+        public int? RewardProductId { get; set; }
+        [ForeignKey("RewardProductId")]
+        public virtual ProductMaster RewardProduct { get; set; }
     }
 }
