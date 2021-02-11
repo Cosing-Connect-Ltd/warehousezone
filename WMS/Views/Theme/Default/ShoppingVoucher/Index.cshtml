@@ -15,7 +15,20 @@
     ViewBag.Title = "Manage Discount Vouchers";
 }
 
-<h2><span>@ViewBag.Title</span></h2>
+<script>
+    $(document).ready(function() {
+        $("#tabs").tabs({});
+    });
+</script>
+
+<div id="tabs" style="visibility: hidden">
+ 
+<ul>
+    <li><a href="#DiscountVouchers">Discount Vouchers</a></li>
+    <li><a href="#RewardPointTriggers">Reward Point Triggers</a></li> 
+</ul>
+<div id="DiscountVouchers">
+<h3><span>@ViewBag.Title</span></h3>
 
 <div class="table-responsive col-md-12 p-0">
     @if (ViewBag.ResultsCount != null)
@@ -32,5 +45,9 @@
 
 <div class="col-md-offset-2 col-md-10 bottom-right">
     <a class="btn btn-primary" href="@Url.Action("Create","ShoppingVoucher")"><b class="fa fa-plus"></b> Add Voucher</a>
+    <a class="btn btn-default" href="@Url.Action("UpdateAllUsersWithPersonalReferralCode","ShoppingVoucher")">Generate Referral Codes</a>
+</div>
+</div>
+    <div id="RewardPointTriggers">Reward Points & Triggers content</div>
 </div>
  

@@ -64,12 +64,21 @@ namespace WMS.Controllers
             usersList.Insert(0, new SelectListItem() { Text = "Select an User" });
             ViewBag.UserList = usersList;
 
-            ViewBag.Products = _productServices.GetAllValidProducts(CurrentTenantId);
+            var products = _productServices.GetAllValidProductMastersForSelectList(CurrentTenantId).ToList();
+            products.Insert(0, new SelectListItem() { Text = "Select a Product" });
+            ViewBag.Products = products;
         }
 
         [HttpPost]
         public ActionResult SaveVoucher(ShoppingVoucher model)
         {
+            if (model.DiscountType == ShoppingVoucherDiscountTypeEnum.FreeProduct && (model.RewardProductId == null || model.RewardProductId<1) )
+            {
+                ViewBag.ErrorMessage = "Please select a reward Product";
+                LoadVoucherDropdownData();
+                return View("_CreateEdit", model);
+            }
+
             model.TenantId = CurrentTenantId;
             _shoppingVoucherService.SaveShoppingVoucher(model, CurrentUserId);
             return RedirectToAction("Index");

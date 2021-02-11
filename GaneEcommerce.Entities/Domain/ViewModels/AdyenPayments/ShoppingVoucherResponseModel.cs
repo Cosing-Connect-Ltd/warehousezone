@@ -26,6 +26,7 @@ namespace Ganedata.Core.Models.AdyenPayments
         public string VoucherTitle { get; set; }
         public decimal MinimumOrderPrice { get; set; }
         public DateTime? UsedDate { get; set; }
+        public DateTime? ExpiryDate { get; set; }
         public int? RewardProductId { get; set; }
     }
 

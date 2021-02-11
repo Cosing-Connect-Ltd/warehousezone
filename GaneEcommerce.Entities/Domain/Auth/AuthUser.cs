@@ -73,5 +73,6 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<AuthUserLogin> AuthUserLogins { get; set; }
         public virtual ICollection<AuthUserprofile> AuthUserprofiles { get; set; }
         public string PersonalReferralCode { get; set; }
+        public bool ReferralConfirmed { get; set; }
     }
 }

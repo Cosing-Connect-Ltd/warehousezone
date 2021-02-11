@@ -21,12 +21,14 @@ namespace Ganedata.Core.Services
         private readonly ITenantsServices _tenantServices;
         //private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly IMapper _mapper;
+        private readonly IShoppingVoucherService _shoppingVoucherService;
 
-        public UserService(IApplicationContext currentDbContext, ITenantsServices tenantServices, IMapper mapper)
+        public UserService(IApplicationContext currentDbContext, ITenantsServices tenantServices, IMapper mapper, IShoppingVoucherService shoppingVoucherService)
         {
             _currentDbContext = currentDbContext;
             _tenantServices = tenantServices;
             _mapper = mapper;
+            _shoppingVoucherService = shoppingVoucherService;
         }
 
         public IEnumerable<AuthUser> GetAllAuthUsers(int tenantId)
@@ -272,8 +274,8 @@ namespace Ganedata.Core.Services
             && (e.WebUser == webUser) && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true).FirstOrDefault();
             if (user != null)
             {
+                _shoppingVoucherService.LoadDefaultSystemVouchersForNewUser(user.UserId);
                 _mapper.Map(user, resp);
-
                 resp.Success = true;
             }
 

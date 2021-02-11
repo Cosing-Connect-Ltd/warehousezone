@@ -1255,6 +1255,14 @@
     <Compile Include="Migrations\202102091516519_RewardsAndVoucherUpdates.designer.cs">
       <DependentUpon>202102091516519_RewardsAndVoucherUpdates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202102101137223_LoyaltyReferralTrackingInfo.cs" />
+    <Compile Include="Migrations\202102101137223_LoyaltyReferralTrackingInfo.designer.cs">
+      <DependentUpon>202102101137223_LoyaltyReferralTrackingInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102110831465_AddedRewardPointTriggers.cs" />
+    <Compile Include="Migrations\202102110831465_AddedRewardPointTriggers.designer.cs">
+      <DependentUpon>202102110831465_AddedRewardPointTriggers.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2517,6 +2525,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102091516519_RewardsAndVoucherUpdates.resx">
       <DependentUpon>202102091516519_RewardsAndVoucherUpdates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102101137223_LoyaltyReferralTrackingInfo.resx">
+      <DependentUpon>202102101137223_LoyaltyReferralTrackingInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102110831465_AddedRewardPointTriggers.resx">
+      <DependentUpon>202102110831465_AddedRewardPointTriggers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

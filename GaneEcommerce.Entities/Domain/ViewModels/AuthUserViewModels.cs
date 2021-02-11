@@ -66,6 +66,8 @@ namespace Ganedata.Core.Entities.Domain
         public string UserMobileNumber { get; set; }
         public bool Success { get; set; }
         public string ErrorMessage { get; set; }
+        public string PersonalReferralCode { get; set; }
+        public bool ReferralConfirmed { get; set; }
     }
 
     public class UserRegisterRequestViewModel

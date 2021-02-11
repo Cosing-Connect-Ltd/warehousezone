@@ -35,6 +35,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Voucher Id")]
         public int ShoppingVoucherId { get; set; }
         [Display(Name = "Voucher Title")]
+        [Required]
         public string VoucherTitle { get; set; }
         [Display(Name = "Voucher Description")]
         public string RewardDescription { get; set; }
@@ -47,9 +48,11 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("VoucherUserId")]
         public virtual AuthUser VoucherUser { get; set; }
 
+        [Required]
         [Display(Name = "Discount Type")]
         public ShoppingVoucherDiscountTypeEnum DiscountType { get; set; }
 
+        [Required]
         [Display(Name = "Discount")]
         public decimal DiscountFigure { get; set; }
         public DateTime? VoucherUsedDate { get; set; }
@@ -87,6 +90,30 @@ namespace Ganedata.Core.Entities.Domain
         public int? OrderId { get; set; }
         [ForeignKey("OrderId")]
         public virtual Order Order{ get; set; }
+
+    }
+
+    [Table("RewardPointTriggers")]
+    public class RewardPointTrigger : BaseAuditInfo
+    {
+        [Key]
+        public int RewardPointTriggerId { get; set; }
+        [Display(Name = "Title")]
+        public string Title { get; set; }
+        [Display(Name = "Title")]
+        public string Description { get; set; }
+        [Display(Name = "Type")]
+        public VoucherDiscountTriggerEnum TriggerType { get; set; }
+        [Display(Name = "Reward Voucher")]
+        public int ShoppingVoucherId { get; set; }
+        [ForeignKey("ShoppingVoucherId")]
+        public virtual ShoppingVoucher ShoppingVoucher { get; set; }
+
+        //Limitations
+        public int? LoyaltyPointToTrigger { get; set; }
+        public decimal? MinimumOrderValueToTrigger { get; set; }
+        public FoodOrderTypeEnum? FoodOrderTypeToTrigger { get; set; }
+        public int? MaximumAllowed { get; set; }
 
     }
 }

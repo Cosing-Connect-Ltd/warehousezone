@@ -643,6 +643,11 @@ namespace Ganedata.Core.Entities.Enums
         Invalid= 4,
         UsedMaximum =5
     }
-     
+    public enum VoucherDiscountTriggerEnum
+    {
+        OnNewUserRegistration = 1,
+        OnReachingPoints = 2,
+        OnReferringFriend = 3
+    }
 
 }

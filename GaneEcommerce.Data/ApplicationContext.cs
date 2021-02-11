@@ -224,6 +224,7 @@ namespace Ganedata.Core.Data
         public DbSet<AdyenOrderPaylink> AdyenOrderPaylinks { get; set; }
         public DbSet<ShoppingVoucher> ShoppingVouchers { get; set; }
         public DbSet<ShoppingVoucherUsage> ShoppingVoucherUsages { get; set; }
+        public DbSet<RewardPointTrigger> RewardPointTriggers { get; set; }
 
         //#end region
     }

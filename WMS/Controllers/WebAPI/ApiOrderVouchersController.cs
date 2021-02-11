@@ -15,15 +15,24 @@ namespace WMS.Controllers.WebAPI
         {
             _shoppingVoucherService = shoppingVoucherService;
         }
-
+        [HttpPost]
         public async Task<IHttpActionResult> ValidateShoppingVoucher(ShoppingVoucherValidationRequestModel data)
         {
             return Ok(_shoppingVoucherService.ValidateVoucher(data));
         }
-        public async Task<IHttpActionResult> UserPromotions(int uid, string em, string ph)
+
+        [HttpPost]
+        public async Task<IHttpActionResult> UserPromotions(PromotionsSyncRequest request)
         {
-            return Ok(_shoppingVoucherService.GetAllValidUserVouchers(uid, em, ph));
+            return Ok(_shoppingVoucherService.GetAllValidUserVouchers(request.UserId, request.Email, request.Phone));
         }
+        [HttpPost]
+        public async Task<IHttpActionResult> AddPromotion(ShoppingVoucherValidationRequestModel data)
+        {
+            return Ok(_shoppingVoucherService.AddFriendReferralVoucher(data));
+        }
+
+
 
     }
 }

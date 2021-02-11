@@ -126,7 +126,7 @@ namespace WMS.Controllers.WebAPI
                         {
                             _shoppingVoucherService.ApplyVoucher(new ShoppingVoucherValidationRequestModel()
                             {
-                                UserId = item.UpdatedBy,
+                                UserId = item.CreatedBy,
                                 VoucherCode = item.VoucherCode,
                                 OrderId = order.OrderID
                             });

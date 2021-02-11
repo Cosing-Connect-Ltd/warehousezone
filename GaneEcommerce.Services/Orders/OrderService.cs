@@ -1446,11 +1446,14 @@ namespace Ganedata.Core.Services
                             _currentDbContext.OrderProcessDetail.Add(o);
 
                             _currentDbContext.SaveChanges();
-                            Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId,
-                                o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId,
-                                op.CreatedBy, null, null, terminal.TerminalId,
-                                orderProcessId: (o?.OrderProcess?.OrderProcessID),
-                                OrderProcessDetialId: o?.OrderDetailID);
+                            if (item.FoodOrderType == null)
+                            {
+                                Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId,
+                                    o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId,
+                                    op.CreatedBy, null, null, terminal.TerminalId,
+                                    orderProcessId: (o?.OrderProcess?.OrderProcessID),
+                                    OrderProcessDetialId: o?.OrderDetailID);
+                            }
                         }
                     }
                 }
