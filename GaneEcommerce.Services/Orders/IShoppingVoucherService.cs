@@ -111,66 +111,74 @@ namespace Ganedata.Core.Services
 
         public ShoppingVoucherValidationResponseModel AddFriendReferralVoucher(ShoppingVoucherValidationRequestModel request)
         {
-            var referredUser= _currentDbContext.AuthUsers.FirstOrDefault(m =>
+            var requestedUser = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserId == request.UserId);
+
+            if (string.IsNullOrWhiteSpace(request.VoucherCode) && request.UserId > 0)
+            {
+                if (requestedUser != null)
+                {
+                    requestedUser.ReferralConfirmed = true;
+                    _currentDbContext.Entry(requestedUser).State = EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                }
+
+                return new ShoppingVoucherValidationResponseModel()
+                {
+                    DiscountFigure = 0,
+                    Status = (int) ShoppingVoucherStatus.Applied
+                };
+            }
+
+            var referredUser = _currentDbContext.AuthUsers.FirstOrDefault(m =>
                 m.PersonalReferralCode != null && m.PersonalReferralCode.ToLower().Equals(request.VoucherCode.ToLower()));
+
             if (referredUser == null)
             {
-                var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserId == request.UserId);
-                if (user != null)
-                {
-                    user.ReferralConfirmed = true;
-                    _currentDbContext.Entry(user).State = EntityState.Modified;
-                }
-                _currentDbContext.SaveChanges();
-
                 return new ShoppingVoucherValidationResponseModel()
                 {
                     DiscountFigure = 0,
-                    Status = (int)ShoppingVoucherStatus.Invalid
+                    Status = (int) ShoppingVoucherStatus.Invalid
                 };
             }
-            else
+
+            if (_currentDbContext.ShoppingVouchers.Any(m => m.CreatedBy == request.UserId && requestedUser.ReferralConfirmed))
             {
-                var requestedUser = _currentDbContext.AuthUsers.FirstOrDefault(m =>m.UserId==request.UserId);
-                if (_currentDbContext.ShoppingVouchers.Any(m =>  m.CreatedBy == request.UserId && requestedUser.ReferralConfirmed))
-                {
-                    return new ShoppingVoucherValidationResponseModel()
-                    {
-                        DiscountFigure = 0,
-                        Status = (int)ShoppingVoucherStatus.Expired
-                    };
-                }
-
-                var product = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == ReferralFreeRewardProductId);
-                var voucher = new ShoppingVoucher()
-                {
-                    VoucherUserId = referredUser.UserId,
-                    VoucherCode = request.VoucherCode,
-                    CreatedBy = request.UserId??0,
-                    DateCreated = DateTime.Now,
-                    DiscountType = ShoppingVoucherDiscountTypeEnum.FreeProduct,
-                    RewardProductId = ReferralFreeRewardProductId,
-                    DiscountFigure = 0,
-                    VoucherTitle = $"Referral Free Product ({product?.Name})",
-                    MaximumAllowedUse = 1
-                };
-                _currentDbContext.ShoppingVouchers.Add(voucher);
-
-                var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserId == request.UserId);
-                if (user != null)
-                {
-                    user.ReferralConfirmed = true;
-                    _currentDbContext.Entry(user).State = EntityState.Modified;
-                }
-
-                _currentDbContext.SaveChanges();
                 return new ShoppingVoucherValidationResponseModel()
                 {
                     DiscountFigure = 0,
-                    Status = (int)ShoppingVoucherStatus.Active
+                    Status = (int) ShoppingVoucherStatus.Expired
                 };
             }
+
+            var product = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == ReferralFreeRewardProductId);
+            var voucher = new ShoppingVoucher()
+            {
+                VoucherUserId = referredUser.UserId,
+                VoucherCode = request.VoucherCode,
+                CreatedBy = request.UserId ?? 0,
+                DateCreated = DateTime.Now,
+                DiscountType = ShoppingVoucherDiscountTypeEnum.FreeProduct,
+                RewardProductId = ReferralFreeRewardProductId,
+                DiscountFigure = 0,
+                VoucherTitle = $"Referral Free Product ({product?.Name})",
+                MaximumAllowedUse = 1
+            };
+            _currentDbContext.ShoppingVouchers.Add(voucher);
+
+            if (requestedUser != null)
+            {
+                requestedUser.ReferralConfirmed = true;
+                _currentDbContext.Entry(requestedUser).State = EntityState.Modified;
+            }
+
+            _currentDbContext.SaveChanges();
+            return new ShoppingVoucherValidationResponseModel()
+            {
+                DiscountFigure = 0,
+                Status = (int) ShoppingVoucherStatus.Active
+            };
         }
+
         public string GetNextUniquePersonalVoucherCode()
         {
             var code = string.Empty;
@@ -313,7 +321,7 @@ namespace Ganedata.Core.Services
                 var firstOnlineOrderVoucher = GetVoucher(FirstOrderOnlineDiscountVoucher, userId,
                     ShoppingVoucherDiscountTypeEnum.Percentage, userId, FirstOrderOnlineDiscountPercent, null, FirstOrderOnlineDiscountPercent+ "% off first on any order");
                 firstOnlineOrderVoucher.MinimumOrderPrice = FirstOrderOnlineDiscountMinimumOrderValue;
-                firstOnlineOrderVoucher.VoucherExpiryDate = DateTime.Now.AddDays(10);
+                firstOnlineOrderVoucher.VoucherExpiryDate = DateTime.Now.AddDays(30);
                 _currentDbContext.ShoppingVouchers.Add(firstOnlineOrderVoucher);
                 _currentDbContext.SaveChanges();
                 newlyApplied = true;
@@ -323,7 +331,7 @@ namespace Ganedata.Core.Services
             {
                 var firstOnlineOrderVoucher = GetVoucher(FirstOrderHomeDeliveryDiscountVoucher, userId,
                     ShoppingVoucherDiscountTypeEnum.Percentage, userId, FirstOrderHomeDeliveryDiscountPercent, null, FirstOrderHomeDeliveryDiscountPercent+"% off first delivery order");
-                firstOnlineOrderVoucher.VoucherExpiryDate = DateTime.Now.AddDays(10);
+                firstOnlineOrderVoucher.VoucherExpiryDate = DateTime.Now.AddDays(30);
                 _currentDbContext.ShoppingVouchers.Add(firstOnlineOrderVoucher);
                 _currentDbContext.SaveChanges();
                 newlyApplied = true;
