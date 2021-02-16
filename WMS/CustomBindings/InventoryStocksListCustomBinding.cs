@@ -73,14 +73,36 @@ namespace WMS.CustomBindings
       {
             var InventoryStocks = DependencyResolver.Current.GetService<IProductServices>();
             var transactions = InventoryStocks.GetAllInventoryStocksList(tenantId, InventoryId);
-
-
+             
             return transactions;
         }
+
+        public static void LoadStockLevelFilters(List<InventoryStockViewModel> stocks, int tenantId)
+        {
+            var service = DependencyResolver.Current.GetService<ITenantLocationServices>();
+
+            var stockLevels = service.GetAllStockLevelsForTenant(tenantId).ToList();
+            foreach (var stock in stocks)
+            {
+                var stockLevel = stockLevels.FirstOrDefault(m => m.ProductID == stock.ProductId);//RH: This has to be filtered with WarehouseId based on ProductStockLevel table, however leaving with what is done currently
+                if (stockLevel != null && stock.Available > 0 && stockLevel.MinStockQuantity > 0)
+                {
+                    if (stock.Available < stockLevel.MinStockQuantity)
+                    {
+                        stock.StockLevelColor = "#F08080";
+                    }
+                    if (stock.Available > stockLevel.MinStockQuantity && stock.Available < stockLevel.MinStockQuantity * 1.1m)
+                    {
+                        stock.StockLevelColor = "#FFAA80";
+                    }
+                }
+            }
+        }
+
         public static void InventoryStocksListGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int InventoryId)
         {
             var transactions = GetInventoryStocksListDataset(tenantId, InventoryId);
-
+             
             if (e.State.SortedColumns.Count() > 0)
             {
 
@@ -108,6 +130,7 @@ namespace WMS.CustomBindings
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
             var data = transactions.ToList();
+
             var lookupService = DependencyResolver.Current.GetService<ILookupServices>();
 
             data.ForEach(m =>
@@ -117,6 +140,8 @@ namespace WMS.CustomBindings
                     m.StockIssue = lookupService.CheckStockIssue(m.ProductId, m.InStock, (m.SerialProduct ?? false), (m.PalletProduct ?? true));
                 }
             });
+
+            LoadStockLevelFilters(data, tenantId);
 
             e.Data = data;
         }
