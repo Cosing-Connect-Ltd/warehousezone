@@ -1,6 +1,0 @@
-@Html.DevExpress().DocumentViewer(settings => {
-    settings.Name = "PO";
-    settings.CallbackRouteValues = new { Controller = "Reports", Action = "_POPartial" };
-    settings.ExportRouteValues = new { Controller = "Reports", Action = "_POPartialExport" };
-	settings.Report = (XtraReport)Model;
-}).GetHtml()

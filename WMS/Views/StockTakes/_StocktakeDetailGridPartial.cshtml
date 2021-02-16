@@ -1,0 +1,118 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "StocktakeGridDetail";
+        settings.CallbackRouteValues = new { Controller = "StockTakes", Action = "_StocktakeDetailGridPartial", Id = ViewBag.StockID };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "StockTakes", Action = "_StockTakesGridViewsPaging", Id = ViewBag.StockID }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "StockTakes", Action = "_StockTakesGridViewFiltering", Id = ViewBag.StockID }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "StockTakes", Action = "_StockTakesGridViewDataSorting", Id = ViewBag.StockID }
+        );
+
+
+
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.KeyFieldName = "StockTakeDetailId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ProductName";
+            c.Caption = "Product";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ReceivedSku";
+            c.Caption = "Sku Code";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Quantity";
+            c.Caption = "Quantity";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PalletSerial";
+            c.Caption = "Pallet Serial";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SerialNumber";
+            c.Caption = "Serial Number";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "BatchNumber";
+            c.Caption = "Batch";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ExpiryDate";
+            c.Caption = "Expiry";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateScanned";
+            c.Caption = "Date Scanned";
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateApplied";
+            c.Caption = "Date Applied";
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+
+        settings.Columns.Add().SetDataItemTemplateContent(m =>
+        {
+            var detailId = DataBinder.Eval(m.DataItem, "StockTakeDetailId").ToString();
+            var pCode = DataBinder.Eval(m.DataItem, "ReceivedSku").ToString();
+            ViewContext.Writer.Write("<div class='stocktake-delete' data-id='" + detailId + "'><i class='fa fa-trash stocktake-glyph-icons'></i></div>");
+        });
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+
+}
+
+@grid.BindToCustomData(Model).GetHtml()

@@ -1,0 +1,17 @@
+﻿@Html.DevExpress().UploadControl(settings =>
+{
+    settings.Name = "UploadControl";
+    settings.ShowAddRemoveButtons = true;
+   settings.ShowProgressPanel = true;
+    settings.ShowClearFileSelectionButton = true;
+   settings.ShowUploadButton = false;
+   settings.AdvancedModeSettings.EnableMultiSelect = true;
+    settings.AdvancedModeSettings.EnableFileList = true;
+    settings.AdvancedModeSettings.EnableDragAndDrop = true;
+    settings.NullText = "Select multiple files...";
+    settings.CallbackRouteValues = new {Controller = "TenantDataImport", Action = "UploadProductPriceFile" };
+    settings.Size = 30;
+    settings.ValidationSettings.Assign(new UploadControlValidationSettings { AllowedFileExtensions = new string[] { ".csv" }, MaxFileSize = 100000000 });
+    settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileImportComplete(s,e); }";
+
+}).GetHtml()

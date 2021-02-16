@@ -1,0 +1,50 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+    @Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionType = ExtensionType.Scheduler, Theme = GaneStaticAppExtensions.DevexTheme })
+    @Html.DevExpress().GetScripts(new Script { ExtensionType = ExtensionType.Scheduler })
+}
+
+<script>
+    function OnAppointmentDeleting(s, e) {
+        //setTimeout(function () { AjaxCall(); }, 1000);
+    }
+
+    function OnAppointmentEndCallBack(s, e) {
+        //AjaxCall();
+    }
+    function OnAppointmentBeginCallback(s, e) {
+        //AjaxCall();
+    }
+</script>
+
+@{
+    ViewBag.Title = "Market Route Scheduler";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+
+<div id="RouteScheduler" class="col-md-12 p-0">
+    <div class ="col-md-4 pull-left">
+        @Html.Action("_ListMarketRoutes")
+    </div>
+
+    <div class="col-md-8 pull-left">
+        <div class="droppable-route">
+            @Html.Action("SchedulerPartial")
+        </div>
+    </div>
+</div>
+
+<script>
+    function pad(str, max) {
+        str = str.toString();
+        return str.length < max ? pad("0" + str, max) : str;
+    }
+    var marketRouteCallback = function (s, e) {
+        e.customArgs["scheduleDate"] = ScheduleDate.GetFormattedText("dd/MM/yyyy");
+        e.customArgs["marketId"] = $("#MarketId").val();
+    }
+
+</script>

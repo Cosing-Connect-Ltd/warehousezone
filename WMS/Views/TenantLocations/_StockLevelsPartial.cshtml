@@ -1,0 +1,101 @@
+﻿@using System.Web.UI.WebControls
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+
+        settings.Name = "StockLevelsGridView";
+        settings.CallbackRouteValues = new { Controller = "TenantLocations", Action = "_StockLevelsPartial" };
+        settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "TenantLocations", Action = "UpdateProductLevels" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "TenantLocations", Action = "_LocationListPaging" }
+        );
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "TenantLocations", Action = "_LocationFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "TenantLocations", Action = "_LocationGetDataSorting" }
+        );
+
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "ProductID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+        settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
+        settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+        settings.EnableCallbackAnimation = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsPager.PageSize = 10;
+        settings.CommandColumn.Visible = false;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "ProductName";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "SKU";
+            column.FieldName = "SKUCode";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "ReOrderQuantity";
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "MinStockQuantity";
+            column.EditorProperties().SpinEdit(p =>
+            {
+                p.MinValue = 0;
+                p.MaxValue = 000000000;
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnQuantitiesChanged(s,e);}";
+            });
+        });
+
+        settings.CellEditorInitialize = (s, e) =>
+        {
+            ASPxEdit editor = (ASPxEdit)e.Editor;
+            editor.ValidationSettings.Display = Display.None;
+        };
+        settings.ClientSideEvents.BeginCallback = "OnBeginGridCallback";
+        settings.ClientSideEvents.FocusedCellChanging = "OnStockLevelsGridFocusChanged";
+        settings.ClientSideEvents.EndCallback = "OnEndGridCallback";
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()

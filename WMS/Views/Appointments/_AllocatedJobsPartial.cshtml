@@ -1,0 +1,115 @@
+@using Ganedata.Core.Entities.Domain
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "AllocatedJobs";
+        settings.CallbackRouteValues = new { Controller = "Appointments", Action = "AllocatedJobsPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "Appointments", Action = "_AllocatedJobsPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "Appointments", Action = "_AllocatedJobsFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "Appointments", Action = "_AllocatedJobsGetDataSorting" }
+        );
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsPager.PageSize = 10;
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+
+        settings.CommandColumn.Visible = true;
+
+        settings.KeyFieldName = "OrderID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ worksDayOrderBeginCallback(s,e); }";
+        settings.ClientSideEvents.FocusedRowChanged = "function(s,e){ OnWorksOrderGridFocusedRowChanged(s,e); }";
+        settings.ClientSideEvents.EndCallback = "function(s,e){ OnWorksOrderGridFocusedRowChanged(s,e); }";
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Property";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNumber";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ResourceName";
+            c.Caption = "Resource";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "JobTypeName";
+            c.Caption = "Job Type";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "JobSubTypeName";
+            c.Caption = "Description";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Appointment.StartTime";
+            c.Caption = "Scheduled Time";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.Name = "notes";
+            c.Caption = "Notes";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.SetDataItemTemplateContent(container =>
+            {
+                var notelist = DataBinder.Eval(container.DataItem, "OrderNotesList") as IEnumerable<OrderNotesViewModel>;
+                var notes = "";
+                if (notelist != null)
+                {
+                    foreach (var m in notelist)
+                    {
+                        notes = notes + "<br/>" + m.Notes + " <small>(" + m.NotesByName + " : " + m.NotesDate.ToString("dd/MM/yyyy") + ")</small>";
+                    }
+                }
+                ViewContext.Writer.Write(notes);
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderTypeId";
+            c.Visible = false;
+
+        });
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()

@@ -1,0 +1,310 @@
+﻿@model Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Domain
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+            new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+             new StyleSheet { ExtensionType = ExtensionType.ComboBox, Theme = GaneStaticAppExtensions.DevexTheme }
+            )
+
+    @Html.DevExpress().GetScripts(
+            new Script { ExtensionType = ExtensionType.PopupControl },
+            new Script { ExtensionType = ExtensionType.SpinEdit },
+            new Script { ExtensionType = ExtensionType.DateEdit },
+            new Script { ExtensionType = ExtensionType.ComboBox }
+            ) 
+}
+
+@{
+    ViewBag.Title = Model.OrderDetailID == 0 ? "Create Order Details" : "Modify Order Details";
+
+    //if (Model.Qty == 0m) { Model.Qty = 1m; }
+}
+
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { @id = "frmorddetails" }))
+{
+
+    @Html.HiddenFor(m => m.OrderDetailID)
+    @Html.HiddenFor(m => m.OrderID)
+    @Html.HiddenFor(m => m.DateCreated)
+    @Html.HiddenFor(m => m.TenentId)
+    @Html.Hidden("TenantId", Model.TenentId)
+    @Html.HiddenFor(m => m.WarehouseId)
+    @Html.HiddenFor(m => m.WarrantyAmount)
+    @Html.Hidden("BuyPrice", (decimal?)ViewBag.BuyingPrice)
+    @Html.Hidden("PercentMargin", (decimal?)ViewBag.percentageMargin)
+    @*@Html.HiddenFor(m => m.WarrantyID)*@
+
+    @Html.Hidden("IsTransferAdd", (ViewBag.IsTransferOrderAdd != null ? ((bool)ViewBag.IsTransferOrderAdd).ToString() : "False"))
+
+    @Html.Hidden("ProductsPerCase")
+    @Html.Hidden("CasesPerPallet")
+    @Html.Hidden("ProductsPerPallet")
+    @Html.Hidden("ProcessByType", "Item")
+
+
+    @Html.Hidden("InventoryTransactionTypeId", (int?)(ViewBag.InventoryTransactionTypeId))
+    @Html.AntiForgeryToken()
+    var st = Request;
+    <h2><span> @ViewBag.Title</span> </h2>
+    <div class="col-md-12 pull-left order-detail">
+        @Html.ValidationSummary(true, "", new { @id = "vldOrdDet" })
+
+        @if (Request.UrlReferrer.AbsolutePath.Contains("WorksOrders"))
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ExpectedDate, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DevExpress().DateEditFor(m => m.ExpectedDate,
+                                        settings =>
+                                        {
+                                            settings.Name = "ExpectedDate";
+                                            settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                                            settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+                                            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                            settings.ControlStyle.CssClass = "form-control";
+                                        }
+                                        ).GetHtml()
+
+                    @Html.ValidationMessageFor(model => model.ExpectedDate)
+                </div>
+            </div>
+        }
+
+
+        @if (Request.UrlReferrer.AbsolutePath.Contains("PurchaseOrders"))
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "col-md-4 prdlbl" })
+                <div class="col-md-8">
+                    <div id="prdid_chosen">
+                        @Html.Partial("ProductLargeDataComboBoxPartial")
+                    </div>
+                    @if (Model.OrderDetailID == 0)
+                    {
+                        <div class="col-md-4 p-0 pull-left">
+                            <label class="">New Product?</label>
+                        </div>
+                        <div class="col-md-8 pull-left">
+                            @Html.CheckBox("IsNewProduct", new { @class = "d-inline mt-1", @onclick = "toggleProductAddForm()" })
+                        </div>
+                    }
+                    @Html.ValidationMessageFor(model => model.ProductId)
+                </div>
+            </div>
+
+            <div class="col-md-12 p-0" id="divNewProductAddForm" style="display: none">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8" id="divNewProductErrorForm"></div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Product Name", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBox("ProductName", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.TaxID, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("TaxIds", ViewBag.GlobalTaxes as SelectList, new { @class = "chosen-select" })
+                        @Html.ValidationMessageFor(model => model.TaxID)
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ProdAccCodeID, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.ProdAccCodeID, ViewBag.ProductAccounts as IEnumerable<SelectListItem>, new { @id = "drpPrdAccount", @class = "chosen-select" })
+                    @Html.ValidationMessageFor(model => model.ProdAccCodeID)
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center ordering-notes" style="display:none;">
+                @Html.LabelFor(model => model.OrderingNotes, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(m => m.OrderingNotes, new { @style = "background:yellow;" })
+                    @Html.ValidationMessageFor(model => model.OrderingNotes)
+                </div>
+            </div>
+
+
+
+        }
+        else
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+
+                    @Html.Partial("ProductLargeDataComboBoxPartial")
+
+                </div>
+            </div>
+        }
+
+        <div class="input-group h-100 justify-content-center align-items-center quantityor" style="display:@(ViewBag.cases==false ? "active" : "none")">
+            @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @if (Model.OrderDetailID == 0)
+                {
+                    @Html.DevExpress().SpinEdit(
+                     settings =>
+                     {
+                         settings.Name = "Qty";
+                         settings.Properties.MaxValue = 999999999;
+                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                         settings.ControlStyle.CssClass = "form-control";
+                     }).GetHtml()
+                }
+                else
+                {
+                    @Html.DevExpress().SpinEditFor(m => m.Qty,
+                     settings =>
+                     {
+                         settings.Name = "Qty";
+                         settings.Properties.MaxValue = 999999999;
+                         settings.Properties.MinValue = (ViewBag.RecQty == null || ViewBag.RecQty == "") ? 0 : decimal.Parse(ViewBag.RecQty);
+                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                         settings.ControlStyle.CssClass = "form-control";
+                         settings.Properties.ClientSideEvents.LostFocus = "VerifyQunatity";
+
+                     }).GetHtml()
+                    @Html.ValidationMessageFor(model => model.Qty)
+                }
+
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center casequantity" style="display:@(ViewBag.cases==false ? "none" : "active")">
+
+            <label class="col-md-4">Case Quantity</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CaseQuantity, new { htmlAttributes = new { @class = "form-control", @Value = String.Format("{0:0.00}", ViewBag.caseProcess ?? ""), @onchange = "calculateQuantity(event,false)" } })
+                <input type="hidden" value="@ViewBag.processcase" id="processcase" />
+            </div>
+        </div>
+
+        @if (Request.UrlReferrer.AbsolutePath.Contains("PurchaseOrders") || Request.UrlReferrer.AbsolutePath.Contains("DirectSales") || Request.UrlReferrer.AbsolutePath.Contains("SalesOrders") || Request.UrlReferrer.AbsolutePath.Contains("WorksOrders"))
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-4">
+                    @Html.DevExpress().SpinEditFor(m => m.Price,
+                                     settings =>
+                                     {
+                                         settings.Name = "Price";
+                                         settings.Properties.MaxValue = 999999999;
+                                         settings.Properties.SpinButtons.ShowIncrementButtons = false;
+                                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                         settings.ControlStyle.CssClass = "form-control";
+                                         settings.Properties.ClientSideEvents.LostFocus = "IsAllowZeroSale";
+                                     }
+                                     ).GetHtml()
+                    @Html.ValidationMessageFor(model => model.Price)
+
+
+                </div>
+                <div class="col-md-4 mt-1">
+                    <a href="#" onclick="return ShowPHistoryModal()">Price History</a>
+                </div>
+            </div>
+
+            <div class="financialAnalysisMainDiv input-group h-100 justify-content-center align-items-center" style="display:none">
+                <div class="col-md-4">
+                    <label>
+                        Profit Percentage per item
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" id="profitPercentage" class="form-control" readonly />
+
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        Profit Margin per item
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" id="profitMargin" class="form-control" readonly />
+
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-8" id="vldOrdDet"></div>
+            </div>
+
+            if (Request.UrlReferrer.AbsolutePath.Contains("DirectSales") || Request.UrlReferrer.AbsolutePath.Contains("SalesOrders") || Request.UrlReferrer.AbsolutePath.Contains("WorksOrders"))
+            {
+                if (Model.OrderDetailID == 0)
+                {
+                    <div class="input-group h-100 justify-content-center align-items-center WarrantyDetail">
+                        @Html.LabelFor(model => model.WarrantyID, htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.WarrantyID, ViewBag.GlobalWarranties as SelectList, new { @class = "chosen-select" })
+                            @Html.ValidationMessageFor(model => model.WarrantyID)
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    if (Model.ProductMaster != null && Model.ProductMaster.EnableWarranty)
+                    {
+                        <div class="input-group h-100 justify-content-center align-items-center WarrantyDetail">
+                            @Html.LabelFor(model => model.WarrantyID, htmlAttributes: new { @class = "col-md-4" })
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.WarrantyID, ViewBag.GlobalWarranties as SelectList, new { @class = "chosen-select" })
+                                @Html.ValidationMessageFor(model => model.WarrantyID)
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        }
+        @if (Request.UrlReferrer.AbsolutePath.Contains("PurchaseOrders"))
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.DontMonitorStock, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.DontMonitorStock)
+
+                    @Html.ValidationMessageFor(model => model.DontMonitorStock)
+                </div>
+            </div>
+        }
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.Notes)
+                @Html.ValidationMessageFor(model => model.Notes)
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+
+        @if (Model.OrderDetailID == 0)
+        {
+            <input type="button" value="Add" onclick="addDetail('add')" class="btn btn-primary" />
+        }
+        else
+        {
+            <input type="button" value="Modify" onclick="addDetail('mod')" class="btn btn-primary" />
+        }
+
+        <input type="button" value="Cancel" onclick="javascript: ModelOrdDetail.Hide();" class="btn btn-default" />
+
+    </div>
+}

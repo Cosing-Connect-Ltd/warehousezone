@@ -1,0 +1,100 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    ViewBag.Title = "";
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+        )
+}
+<script>
+    $(document).ready(function () {
+        $("ul.tabs li").click(function () {
+            $("ul.tabs li").removeClass("active"); //Remove any "active" class
+            $(this).addClass("active"); //Add "active" class to selected tab
+            $(".tab_content").hide(); //Hide all tab content
+            var activeTab = $(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
+
+            if ($(activeTab).html() == '') {
+                $.ajax({
+                    url: '/url/to/post',
+                    type: 'post',
+                    dataType: 'html',
+                    success: function (content) {
+                        $(activeTab).html(content);
+                    }
+                });
+            }
+
+            $(activeTab).fadeIn(); //Fade in the active ID content
+            return false;
+        });
+
+    });
+    function PublishProductForWebSite() {
+        var selectedIds = $("#SelectedProductIds").val();
+        var SiteId = $("#SiteId").val();
+        if (selectedIds.length <= 0) { alert("Please select product first"); return; }
+        LoadingPanel.Show();
+        $.ajax({
+            type: "POST",
+            url: '/ProductsWebsitesMaps/Create/',
+            data: { ProductIds: selectedIds, siteId: SiteId },
+            dataType: 'json',
+            success: function (data)
+            {
+
+                if (data) {
+                    ProductWebMapsGridView.Refresh();
+                    $("#infoMsg").html("Products published").show();
+                    $('#infoMsg').delay(2000).fadeOut();
+                }
+                else {
+                    $("#infoMsg").html("These products already published").show();
+                    $('#infoMsg').delay(2000).fadeOut();
+                }
+                LoadingPanel.Hide();
+               
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                LoadingPanel.Hide();
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+
+
+    }
+
+
+</script>
+@Html.Hidden("SiteId",(int)ViewBag.siteid)
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#WPP">Publish Product</a></li>
+        <li><a href="#WN">Website Navigations</a></li>
+    </ul>
+
+    <div id="WPP">
+        @Html.Action("Index", "ProductsWebsitesMaps")
+        <div class='col-md-offset-2 col-md-10 bottom-right'>
+
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PurchaseOrders", "Create"))
+            {
+                <input type="button" class="btn btn-primary" value="Publish Product" onclick="PublishProductForWebSite()" />
+            }
+
+        </div>
+    </div>
+
+    <div id="WN">
+        @Html.Action("Create", "WebsiteNavigations", new { SiteId= ViewBag.siteid })
+       
+    </div>
+</div>

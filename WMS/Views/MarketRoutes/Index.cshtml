@@ -1,0 +1,55 @@
+﻿@model  Ganedata.Core.Entities.Domain.MarketRouteListViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Market Routes";
+}
+
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("gridMaster") >= 0) {
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<div class="table-responsive col-md-12 p-0">
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert-success col-md-12">
+            @Model.ResultsCount Results
+        </div>
+    }
+
+    @Html.Action("MarketRoutesListPartial", Model)
+
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+
+    <a class="btn btn-primary" href="/MarketRoutes/edit"><b class="fa fa-plus"></b> Add Route</a>
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("MarketRoutes", "RouteMarkets"))
+    {
+        @Html.ActionLink("Route Markets", "RouteMarkets", null, new { @class = "btn btn-primary  Caction" })
+    }
+
+</div>

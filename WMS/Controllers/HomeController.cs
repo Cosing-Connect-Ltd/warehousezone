@@ -15,12 +15,16 @@ namespace WMS.Controllers
     public class HomeController : Controller
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        public HomeController(ITenantWebsiteService tenantWebsiteService)
+        private readonly IUserService _userService;
+
+        public HomeController(ITenantWebsiteService tenantWebsiteService, IUserService userService)
         {
             _tenantWebsiteService = tenantWebsiteService;
+            _userService = userService;
         }
         public ActionResult Index()
         {
+
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             // get properties of current tenant

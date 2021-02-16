@@ -1,0 +1,73 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "SerialProucteditGridview";
+        settings.CallbackRouteValues = new { Controller = "SalesOrders", Action = "EditSerialProduct", OrderprocessDetailId = ViewBag.OrderprocessDetailId };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "SerialID";
+            col.Visible = false;
+
+        });
+        settings.KeyFieldName = "SerialID";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Columns.Add("SerialID");
+        settings.Columns.Add("SerialNo");
+        settings.Columns.Add(u =>
+        {
+            u.FieldName = "Name";
+            u.Caption = "Product";
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCreated";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                // var SerialId = (bool?)DataBinder.Eval(m.DataItem, "ProductMaster.Serialisable");
+                var id = (int)DataBinder.Eval(m.DataItem, "SerialID");
+                var remove = "false";
+                var update = string.Format("RemoveSerial({0},{1})", id, remove);
+                ViewContext.Writer.Write("<a title='Remove' class='fa fa-trash' style='cursor: pointer' href='#' onclick=" + update + "></a>");
+
+
+            });
+        });
+     
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "InventoryTransactionBeginCallBack";
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,32 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Contact Us";
+}
+<h2><span>@ViewBag.Title.</span></h2>
+
+<address>
+    Gane Data Ltd<br />
+    Airedale House, Clayton Wood Rise<br />
+    Leeds, LS16 6RF, United Kingdom<br />
+    © All rights reserved, GaneData 2017<br />
+    <abbr title="Phone">Tel:</abbr>
+    0333 323 0202
+</address>
+
+<address>
+    <strong>Support:</strong>   <a href="mailto:Support@ganedata.co.uk">Support@ganedata.co.uk</a><br />
+</address>

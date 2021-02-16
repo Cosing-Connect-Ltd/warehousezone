@@ -12,23 +12,6 @@ using Ganedata.Core.Models.AdyenPayments;
 
 namespace WMS.Controllers.WebAPI
 {
-    public class ApiOrderVouchersController : BaseApiController
-    {
-        
-        private readonly IShoppingVoucherService _shoppingVoucherService;
-        public ApiOrderVouchersController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService, 
-            IProductServices productServices, IUserService userService, IShoppingVoucherService shoppingVoucherService) :
-            base(terminalServices, tenantLocationServices, orderService, productServices, userService)
-        {
-            _shoppingVoucherService = shoppingVoucherService;
-        }
-
-        public async Task<IHttpActionResult> ValidateShoppingVoucher(ShoppingVoucherValidationRequestModel data)
-        {
-            return Ok(_shoppingVoucherService.ValidateVoucher(data));
-        }
-    }
-
     public class ApiOrderProcessesSyncController : BaseApiController
     {
         private readonly IAccountServices _accountServices;
@@ -137,13 +120,12 @@ namespace WMS.Controllers.WebAPI
                     var orderProcesses = processGroup.OrderProcesses;
                     foreach (var item in orderProcesses)
                     {
-                        var order = OrderService.SaveOrderProcessSync(item, terminal);
-
+                        var order = OrderService.SaveOrderProcessSync(item, terminal); 
                         if (!string.IsNullOrEmpty(item.VoucherCode))
                         {
                             _shoppingVoucherService.ApplyVoucher(new ShoppingVoucherValidationRequestModel()
                             {
-                                UserId = item.UpdatedBy,
+                                UserId = item.CreatedBy,
                                 VoucherCode = item.VoucherCode,
                                 OrderId = order.OrderID
                             });

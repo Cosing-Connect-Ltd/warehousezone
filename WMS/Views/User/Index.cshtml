@@ -1,0 +1,52 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2><span>Users</span></h2>
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+<div class="gridlist">
+    @Html.Action("_UserList")
+</div>
+
+<div class="col-md-12 p-0">
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("User", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("User", "Details"))
+    {
+        @Html.ActionLink("View", "Details", null, new { @class = "btn btn-primary  Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("User", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("User", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
+    }
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("User", "UserPermissions"))
+    {
+        @Html.ActionLink("Permissions", "UserPermissions", null, new { @class = "btn btn-primary Caction" })
+    }
+</div>

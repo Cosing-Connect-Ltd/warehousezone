@@ -110,6 +110,8 @@ namespace WMS
             config.Routes.MapHttpRoute("AdyanPaymentLinkCreate", "api/adyen/payment-link-create", new { controller = "ApiAdyenPayments", action = "CreateOrderPaymentLink" });
             config.Routes.MapHttpRoute("AdyanPaymentLinkStatus", "api/adyen/payment-link-status/{linkid}", new { controller = "ApiAdyenPayments", action = "GetPaymentStatus", linkid = string.Empty });
             config.Routes.MapHttpRoute("OrderVoucherDetails", "api/vouchers/validate", new { controller = "ApiOrderVouchers", action = "ValidateShoppingVoucher" });
+            config.Routes.MapHttpRoute("PromotionsSync", "api/sync/user-promotions", new { controller = "ApiOrderVouchers", action = "UserPromotions" });
+            config.Routes.MapHttpRoute("ReferralPromotion", "api/sync/user-referrals", new { controller = "ApiOrderVouchers", action = "AddPromotion" });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

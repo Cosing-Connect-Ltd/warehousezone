@@ -1,0 +1,22 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantEmailTemplates
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.HtmlEditor, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.HtmlEditor }
+        )
+}
+
+@{
+    ViewBag.Title = "Edit Email Template";
+}
+
+<h2><span>Edit Email Template</span></h2>
+
+
+@Html.Partial("_TemplateForm", Model)

@@ -1,0 +1,49 @@
+﻿@using DevExpress.XtraPrinting.Native
+@using Ganedata.Core.Entities.Helpers
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Financial Transactions";
+}
+<h2><span>@ViewBag.Title</span></h2>
+
+<script>
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("gridviewAccountTransactions") >= 0) {
+            $('#selkeysavetransactions').val(s.GetRowKey(s.GetFocusedRowIndex()));
+            $('#SelectedTransactionIDForPopup').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+
+
+</script>
+
+<div class="col-md-12 p-0">
+    @Html.Hidden("SelectedTransactionIDForPopup", null)
+    @Html.Hidden("selkeysavetransactions", null)
+    @Html.Hidden("accounttransId", null)
+    <div class="col-md-12 p-0">
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="button" value="Record new Transaction" class="btn btn-primary" onclick="RecordAccountTransaction(true)" />
+            <input type="button" value="Update Transaction Details" class="btn btn-primary" onclick="RecordAccountTransaction()" />
+        </div>
+
+        @Html.Action("_AccountTransactionsGrid", new { id = ViewBag.SelectedAccountID })
+    </div>
+</div>

@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.Resources>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Resources List";
+}
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("ResourceList") >= 0) {
+            $('#selkeyResourceList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+
+    function onBeginCallback(s, e) {
+
+        e.customArgs["exportRowType"] = ExportRowType.GetText();
+    }
+    function Stop(s, e) {
+
+        $('.se-pre-con').fadeOut("slow");
+
+    }
+
+</script>
+
+<h2><span>@ViewBag.Title</span></h2>
+
+@Html.Hidden("selkeyResourceList", null)
+
+
+@using (Html.BeginForm("ExportTo", "Resources"))
+{
+    <div class='col-md-12 report-date-header'>
+        <div class='input-group'>
+            <div class='col-md-6 text-center'>
+                <div class='input-group'>
+                    @Html.DevExpress().ComboBox(settings =>
+               {
+                   settings.Name = "ExportRowType";
+                   settings.Properties.Caption = "Export";
+                   settings.Properties.RootStyle.CssClass = "export-combo";
+                   settings.SelectedIndex = 0;
+               }).BindList(Enum.GetValues(typeof(GridViewExportedRowType))).Bind(GridViewExportedRowType.Selected).GetHtml()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.Action("ResourceListPartial")
+
+}
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Resources", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Resources", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction", @id = "lnkresourceEdit" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Resources", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction", @id = "lnkresourceEdit" })
+    }
+
+</div>

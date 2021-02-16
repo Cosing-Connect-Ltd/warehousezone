@@ -21,9 +21,10 @@ namespace WMS.Controllers.WebAPI
         private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly IAccountServices _accountServices;
         private readonly IMapper _mapper;
+        private readonly IShoppingVoucherService _shoppingVoucherService;
 
         public ApiTerminalUserSyncController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService,
-            IProductServices productServices, IUserService userService, IActivityServices activityServices, IGaneConfigurationsHelper configurationsHelper, IAccountServices accountServices, IMapper mapper)
+            IProductServices productServices, IUserService userService, IActivityServices activityServices, IGaneConfigurationsHelper configurationsHelper, IAccountServices accountServices, IMapper mapper, IShoppingVoucherService shoppingVoucherService)
             : base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _activityServices = activityServices;
@@ -32,6 +33,7 @@ namespace WMS.Controllers.WebAPI
             _configurationsHelper = configurationsHelper;
             _accountServices = accountServices;
             _mapper = mapper;
+            _shoppingVoucherService = shoppingVoucherService;
         }
 
         //GET http://localhost:8005/api/sync/users/{reqDate}/{serialNo}
@@ -66,7 +68,8 @@ namespace WMS.Controllers.WebAPI
 
                 newUser.IsDeleted = usr.IsDeleted;
                 newUser.DateUpdated = usr.DateUpdated;
-
+                newUser.PersonalReferralCode = usr.PersonalReferralCode;
+                newUser.ReferralConfirmed = usr.ReferralConfirmed;
                 //get parent warehouse to check permissions
                 int warehouseId = terminal.WarehouseId;
 
@@ -321,6 +324,7 @@ namespace WMS.Controllers.WebAPI
                 int res = _userService.SaveAuthUser(authUser, 0, user.TenantId);
                 if (res > 0)
                 {
+                    _shoppingVoucherService.LoadDefaultSystemVouchersForNewUser(authUser.UserId);
                     await _userService.CreateUserVerificationCode(authUser.UserId, terminal.TenantId, UserVerifyTypes.Mobile);
                     UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
                     _mapper.Map(authUser, resp);

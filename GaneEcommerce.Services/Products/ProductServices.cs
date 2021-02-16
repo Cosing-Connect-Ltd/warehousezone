@@ -42,7 +42,7 @@ namespace Ganedata.Core.Services
                    };
         }
 
-        public IQueryable<ProductMaster> GetAllValidProducts(int tenantId, string args, int OrderId, int departmentId = 0, int groupId = 0, int ProductId = 0)
+        public IQueryable<ProductMaster> GetAllValidProducts(int tenantId, string args =null, int OrderId=0, int departmentId = 0, int groupId = 0, int ProductId = 0)
         {
             if (ProductId > 0)
             {

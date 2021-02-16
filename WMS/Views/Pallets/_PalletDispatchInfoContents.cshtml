@@ -1,0 +1,32 @@
+﻿@model Ganedata.Core.Entities.Domain.PalletDispatchInfoViewModel
+<div class="order-forms">
+    <div id="divPalletingItemInformation" class="col-md-12 p-0">
+        <div class="input-group text-center h-100 justify-content-center align-items-center">
+            <div class="pallet-number">Dispatched : @Html.DisplayFor(m=>m.DispatchDate)</div>
+             
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-12">
+                    <div class="col-md-6 pallet-quantity-hlabel">Tracking Reference</div>
+                    <div class="col-md-6 pallet-quantity-hvalue">@Html.DisplayFor(m=> m.TrackingReference)</div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6 pallet-quantity-hlabel">Sent Method</div>
+                    <div class="col-md-6 pallet-quantity-hvalue">@Html.DisplayFor(m => m.SentMethod)</div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6 pallet-quantity-hlabel">Vehicle Reference</div>
+                    <div class="col-md-6 pallet-quantity-hvalue">@Html.DisplayFor(m=> m.VehicleNumber)</div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6 pallet-quantity-hlabel">Driver</div>
+                    <div class="col-md-6 pallet-quantity-hvalue">@Html.DisplayFor(m=> m.DriverName)</div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6 pallet-quantity-hlabel">Notes</div>
+                    <div class="col-md-6 pallet-quantity-hvalue">@Html.DisplayFor(m => m.DispatchNotes)</div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>

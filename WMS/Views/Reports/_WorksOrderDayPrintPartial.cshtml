@@ -1,9 +1,0 @@
-@Html.DevExpress().DocumentViewer(settings => {
-    settings.Name = "WorksOrderDayPrint";
-    settings.CallbackRouteValues = new { Controller = "Reports", Action = "WorksOrderDayPrintPartial" };
-    settings.ExportRouteValues = new { Controller = "Reports", Action = "WorksOrderDayPrintPartialExport" };
-    settings.Report = (XtraReport)Model;
-    settings.ClientSideEvents.BeginCallback = "function(s,e){  worksDayOrderBeginCallback(s,e); }";
-    settings.ClientSideEvents.BeforeExportRequest = "function(s,e){  worksDayOrderBeginCallback(s,e); }";
-    settings.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
-}).GetHtml()

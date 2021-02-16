@@ -1,0 +1,45 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+
+    {
+        settings.Name = ViewBag.productId + "productAccountsGridView";
+        settings.CallbackRouteValues = new { Controller = "Products", Action = "_AccountCodes", productId = ViewBag.productId };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "ProdAccCodeID";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("AccountCode");
+        settings.Columns.Add("ProdAccCode");
+        settings.Columns.Add("CompanyName", "Company Name");
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+
+@grid.Bind(Model).GetHtml()
+
+@if (Request.Url.AbsolutePath.ToLower().Contains("edit"))
+{
+    <div class="col-md-12 p-0 pull-left">
+        @Html.ActionLink("Create New", "SaveProductAccount", null, new { @class = "btn btn-primary  " })
+        @Html.ActionLink("Update", "SaveProductAccount", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdAccountCode" })
+        @Html.ActionLink("Delete", "DeleteProductAccount", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdAccountCode" })
+    </div>
+}

@@ -1,0 +1,49 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "gvPalletItemsList" + ViewBag.setname;
+        settings.CallbackRouteValues = ViewBag.route;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.Settings.ShowGroupFooter = GridViewGroupFooterMode.VisibleAlways;
+        settings.Settings.ShowFooter = false;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Hidden;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.KeyFieldName = "PalletProductID";
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Columns.Add("ProductID", "Id");
+        settings.Columns.Add("Product.SKUCode", "Sku Code");
+        settings.Columns.Add("Product.Name", "Product");
+        settings.Columns.Add("Quantity");
+        settings.Columns.Add("Pallet.DateCreated", "Added");
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var DispatchStatus = (int?)DataBinder.Eval(m.DataItem, "Pallet.PalletsDispatchID");
+                if (DispatchStatus == null)
+                {
+                    var PalletProductId = (int)DataBinder.Eval(m.DataItem, "PalletProductID");
+                    var function = string.Format("DeletePalletProduct({0})", PalletProductId);
+                    ViewContext.Writer.Write("<a class='process-button fa fa fa-trash' href='javascript:" + function + ";'></a>");
+                }
+            });
+        });
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

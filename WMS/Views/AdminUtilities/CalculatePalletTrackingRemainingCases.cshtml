@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "CalculatePalletTrackingRemainingCases";
+}
+<h2><span>Pallet Tracking Audit</span></h2>
+<div class="col-md-12 bg-warning">
+    <ul id="data-import-results">
+        @if (ViewBag.PalletAuditList != null)
+        {
+            foreach (var item in ViewBag.PalletAuditList)
+            {
+        <li>@item.PalletTrackingId &nbsp;&nbsp;@item.ProductId  &nbsp;&nbsp;@item.ProductName</li>
+            }
+
+        }
+    </ul>
+</div>
+

@@ -1,0 +1,194 @@
+﻿@using System.Web.UI.WebControls
+@model Ganedata.Core.Entities.Domain.DirectSalesViewModel
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+<script src="@Url.Content("~/Scripts/Gane.Invoices.js")"></script>
+@using (Html.BeginForm("SaveDirectSales", "DirectSales", FormMethod.Post, new { id = "frmDirectCreate" }))
+{
+    @Html.HiddenFor(m => m.DirectSalesOrderId)
+    @Html.HiddenFor(m => m.NetAmount)
+    @Html.HiddenFor(m => m.TaxAmount)
+    @Html.HiddenFor(m => m.TaxDataHelper)
+    @Html.HiddenFor(m => m.WarrantyDataHelper)
+    @Html.HiddenFor(m => m.InvoiceTotal)
+    @Html.HiddenFor(m => m.TaxId)
+    @Html.Hidden("BuyPrice", (decimal?)ViewBag.BuyingPrice)
+    @Html.Hidden("PercentMargin", (decimal?)ViewBag.percentageMargin)
+    @Html.Hidden("InventoryTransactionTypeId", (int)InventoryTransactionTypeEnum.DirectSales)
+
+    <div class="col-md-12 p-0">
+        <h2 class="h2"><span>Direct Sale</span></h2>
+
+        <div class="col-md-6 p-0 pull-left">
+            <div class="col-md-12 p-0">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Invoice Date", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().DateEdit(m =>
+                   {
+                       m.Name = "InvoiceDate";
+                       m.ControlStyle.CssClass = "form-control";
+                       m.Width = Unit.Pixel(120);
+                       m.Properties.ClientSideEvents.DateChanged = "function(s,e){ updateInvoiceDate(); }";
+                       m.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                       m.ControlStyle.CssClass = "form-control";
+                       m.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+
+                   }).Bind(DateTime.UtcNow).GetHtml()
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Select Account", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.AccountId, Model.AllAccounts, "Select Account", new { @class = "chosen-select " })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0" style="display:none;">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Discount(%)", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().SpinEdit(m =>
+                             {
+                                 m.Name = "DiscountBox";
+                                 m.ControlStyle.CssClass = "form-control";
+                                 m.Properties.MinValue = 0;
+                                 m.Properties.MaxValue = ViewBag.discountPercentage ?? 100;
+                                 m.Width = Unit.Percentage(100);
+                                // m.Properties.ClientSideEvents.NumberChanged = "function(s,e){ updateInvoiceTotals(); }";
+                             }).Bind(0).GetHtml()
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6 p-0 pull-left">
+            <div class="col-md-12 invoice-preview-pane-top">
+                <div class="col-md-12 p-0">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.Label("Select Product", htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8 largecomboboxEdit">
+                            @*@Html.DropDownList("ProductId", Model.AllProducts, new { @class = "chosen-select" })*@
+                            @Html.Partial("ProductLargeDataComboBoxPartial")
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-12 p-0">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.Label("Qty", htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DevExpress().SpinEdit(m =>
+                                 {
+                                     m.Name = "InvoiceProductQty";
+                                     m.ControlStyle.CssClass = "form-control";
+                                     m.Properties.MinValue = 1;
+                                     m.Properties.MaxValue = 999999;
+                                     m.Width = Unit.Percentage(100);
+                                     m.Properties.NullText = "Quantity";
+                                 }).GetHtml()
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 p-0">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.Label("Price", htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DevExpress().SpinEdit(m =>
+                       {
+                           m.Name = "InvoiceProductPrice";
+                           m.ControlStyle.CssClass = "form-control";
+                           m.Properties.MaxValue = 999999999;
+                           m.Properties.SpinButtons.ShowIncrementButtons = false;
+                            m.Width = Unit.Percentage(100);
+                           m.Properties.NullText = "Unit Price";
+                           m.Properties.ClientSideEvents.LostFocus = "IsAllowZeroSale";
+                       }).GetHtml()
+                        </div>
+                    </div>
+                </div>
+                <div class="financialAnalysisMainDiv input-group h-100 justify-content-center align-items-center" style="display:none">
+                    <div class="col-md-4">
+                        <label>
+                            Profit Percentage per item
+                        </label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="profitPercentage" class="form-control" readonly />
+
+                    </div>
+                    <div class="col-md-4">
+                        <label>
+                            Profit Margin per item
+                        </label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="profitMargin" class="form-control" readonly />
+
+                    </div>
+                </div>
+                <div class="col-md-12 p-0">
+                    <div class="input-group h-100 justify-content-center align-items-center WarrantyDetail" style="display:none;">
+                        @Html.Label("Select Warranty", htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.WarrantyId, Model.AllWarranties, new { @class = "chosen-select" })
+                        </div>
+                    </div>
+                </div>
+                @*<div class="col-md-12 p-0">
+                        <div class="input-group h-100 justify-content-center align-items-center">
+                            @Html.Label("Select Tax", htmlAttributes: new { @class = "col-md-4" })
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.TaxId, Model.AllTaxes, new { @class = "chosen-select" })
+                            </div>
+                        </div>
+                    </div>*@
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary btn-invoice-add-product pull-right"><b class="fa fa-plus-sign"></b><span>Add Item</span></button>
+                </div>
+            </div>
+        </div>
+
+        @Html.Action("DirectSalesPreviewPartial")
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <div class="btn btn-default"> @Html.ActionLink("Back to List", "Index", "DirectSales", null, null, ViewBag.Fragment as string, null, null)</div>
+        </div>
+
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        formmodified = 0;
+        $("form :input").change(function () {
+            formmodified = 1;
+        });
+
+
+        window.onbeforeunload = confirmExit;
+        function confirmExit() {
+            $("#dvbusy").hide();
+            if (formmodified === 1) {
+                return "New information not saved. Do you wish to leave the page?";
+            }
+        }
+
+    });
+
+</script>

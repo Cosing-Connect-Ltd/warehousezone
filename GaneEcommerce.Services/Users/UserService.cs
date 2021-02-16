@@ -21,12 +21,14 @@ namespace Ganedata.Core.Services
         private readonly ITenantsServices _tenantServices;
         //private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly IMapper _mapper;
+        private readonly IShoppingVoucherService _shoppingVoucherService;
 
-        public UserService(IApplicationContext currentDbContext, ITenantsServices tenantServices, IMapper mapper)
+        public UserService(IApplicationContext currentDbContext, ITenantsServices tenantServices, IMapper mapper, IShoppingVoucherService shoppingVoucherService)
         {
             _currentDbContext = currentDbContext;
             _tenantServices = tenantServices;
             _mapper = mapper;
+            _shoppingVoucherService = shoppingVoucherService;
         }
 
         public IEnumerable<AuthUser> GetAllAuthUsers(int tenantId)
@@ -106,10 +108,36 @@ namespace Ganedata.Core.Services
             user.CreatedBy = userId;
             user.UpdatedBy = userId;
             user.TenantId = tenantId;
-
+            if (userId < 1)
+            {
+                user.PersonalReferralCode = GetNextUniquePersonalReferralCode();
+            }
             _currentDbContext.Entry(user).State = EntityState.Added;
             _currentDbContext.SaveChanges();
             return user.UserId;
+        }
+
+        public string GetNextUniquePersonalReferralCode()
+        {
+            var code = string.Empty;
+            var isNewCode = false;
+            while (!isNewCode)
+            {
+                code = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper();
+                isNewCode = !_currentDbContext.AuthUsers.Any(m => m.PersonalReferralCode != null && m.PersonalReferralCode.ToUpper().Equals(code));
+            }
+            return code;
+        }
+
+        public void UpdateAllUsersWithPersonalReferralCode()
+        {
+            var authUsers = _currentDbContext.AuthUsers.Where(m => string.IsNullOrEmpty(m.PersonalReferralCode) && m.IsActive && m.IsDeleted != true);
+            foreach (var item in authUsers)
+            {
+                item.PersonalReferralCode = GetNextUniquePersonalReferralCode();
+                _currentDbContext.Entry(item).Property(m => m.PersonalReferralCode).IsModified = true;
+            }
+            _currentDbContext.SaveChanges();
         }
 
         public int CreateNewEcommerceUser(string email, string firstName, string lastName, string password, int accountId, int siteId, int tenantId, int currentUserId)
@@ -246,8 +274,8 @@ namespace Ganedata.Core.Services
             && (e.WebUser == webUser) && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true).FirstOrDefault();
             if (user != null)
             {
+                _shoppingVoucherService.LoadDefaultSystemVouchersForNewUser(user.UserId);
                 _mapper.Map(user, resp);
-
                 resp.Success = true;
             }
 

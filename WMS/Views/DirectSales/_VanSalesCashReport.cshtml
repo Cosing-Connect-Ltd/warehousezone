@@ -1,0 +1,118 @@
+﻿@using System.Web.UI.WebControls
+@model List<Ganedata.Core.Models.VanSalesDailyCashSync>
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "VanSalesDailyCashGridview";
+        settings.CallbackRouteValues = new { Controller = "DirectSales", Action = "_VanSalesCashReport" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "VanSalesDailyCashId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SaleDate";
+            c.Caption = "Sale Date";
+            c.Visible = false;
+            c.Width = Unit.Pixel(120);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "VehicleName";
+            c.Caption = "Vehicle";
+            c.Width = Unit.Pixel(150);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SalesManName";
+            c.Caption = "Sales Man";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CashNoteDenominations";
+            c.Caption = "Cash";
+            c.CellStyle.CssClass = "text-center";
+            c.Width = Unit.Pixel(200);
+            c.SetDataItemTemplateContent(m =>
+            {
+                var text = DataBinder.Eval(m.DataItem, "CashNoteDenominations").ToString();
+                ViewContext.Writer.Write(MvcHtmlString.Create(text));
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CashCoinDenominations";
+            c.Caption = "Coins";
+            c.CellStyle.CssClass = "text-center";
+            c.Width = Unit.Pixel(200);
+            c.SetDataItemTemplateContent(m =>
+            {
+                var text = DataBinder.Eval(m.DataItem, "CashCoinDenominations").ToString();
+                ViewContext.Writer.Write(MvcHtmlString.Create(text));
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TotalPaidText";
+            c.Caption = "Total Paid";
+            c.CellStyle.CssClass = "text-center";
+            c.Width = Unit.Pixel(150);
+            c.SetDataItemTemplateContent(m =>
+            {
+                var text = DataBinder.Eval(m.DataItem, "TotalPaidText").ToString();
+                ViewContext.Writer.Write(MvcHtmlString.Create(text));
+            });
+        });
+
+        settings.Columns.Add("TotalCashSubmitted");
+        settings.Columns.Add("SubmittedDate");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Notes";
+            c.Caption = "Comments";
+            c.Width = Unit.Percentage(15);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var VanSalesDailyCashId = (int)DataBinder.Eval(m.DataItem, "VanSalesDailyCashId");
+                ViewContext.Writer.Write("<a target='_blank' href='/Reports/DailySaleZReport?VanSaleCashId=" + VanSalesDailyCashId+ "'  alt='Print Report' class='btn fa fa-print' role='button'></a>");
+
+
+            });
+        });
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "OnGridBeginCallback";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsPager.PageSize = 10;
+
+    });
+}
+@grid.Bind(Model).GetHtml()

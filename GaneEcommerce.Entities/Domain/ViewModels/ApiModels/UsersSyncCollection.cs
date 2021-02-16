@@ -37,6 +37,8 @@ namespace Ganedata.Core.Models
         public bool AllowModifyPriceInTerminal { get; set; }
         public bool PendingOrdersPerm { get; set; }
         public bool PrintBarcodePerm { get; set; }
+        public string PersonalReferralCode { get; set; }
+        public bool ReferralConfirmed { get; set; }
     }
 
     public class UsersSyncCollection

@@ -631,7 +631,8 @@ namespace Ganedata.Core.Entities.Enums
     public enum ShoppingVoucherDiscountTypeEnum
     {
         Percentage = 1,
-        FixedPrice = 2
+        FixedPrice = 2,
+        FreeProduct = 3
     }
 
     public enum ShoppingVoucherStatus
@@ -642,6 +643,11 @@ namespace Ganedata.Core.Entities.Enums
         Invalid= 4,
         UsedMaximum =5
     }
-     
+    public enum VoucherDiscountTriggerEnum
+    {
+        OnNewUserRegistration = 1,
+        OnReachingPoints = 2,
+        OnReferringFriend = 3
+    }
 
 }

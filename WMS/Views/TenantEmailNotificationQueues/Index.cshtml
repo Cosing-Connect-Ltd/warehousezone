@@ -1,0 +1,30 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Email Notification Queue";
+}
+
+
+
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<div class="table-responsive col-md-12 p-0">
+
+    @Html.Action("_NotificationQueue")
+
+
+</div>

@@ -1,0 +1,138 @@
+﻿@model Ganedata.Core.Entities.Domain.Locations
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2><span>Details</span></h2>
+
+<div>
+    <h4>Locations</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationGroup.Locdescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocationGroup.Locdescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantWarehouses.WarehouseName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantWarehouses.WarehouseName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocationCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelOfDetail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelOfDetail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StagingLocation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StagingLocation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MixContainer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MixContainer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AllowPutAway)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AllowPutAway)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AllowPick)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AllowPick)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AllowReplenish)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AllowReplenish)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PutAwaySeq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PutAwaySeq)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PickSeq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PickSeq)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplenishSeq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReplenishSeq)
+        </dd>
+
+    </dl>
+</div>
+
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.LocationId }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+</div>

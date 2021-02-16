@@ -1,0 +1,184 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantWebsites
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TenantWebsites</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Tenant.TenantName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tenant.TenantName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Warehouse.WarehouseName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Warehouse.WarehouseName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SiteName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SiteName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SiteDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SiteDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HostName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HostName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Logo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Logo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SmallLogo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SmallLogo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Favicon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Favicon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FacebookUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FacebookUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TwitterUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TwitterUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LinkedInUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LinkedInUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.YoutubeUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.YoutubeUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InstaGramUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InstaGramUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FooterText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FooterText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateUpdated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateUpdated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,33 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductGroups
+<hgroup>
+    <h2><span>Product Group</span></h2>
+    <h3><span>@Html.ValidationSummary("", new { @id = "vldProductGroup" })</span></h3>
+</hgroup>
+@using (Html.BeginForm("SaveProductGroup", "Products", FormMethod.Post, new { @id = "frmprgroup" }))
+{
+    @Html.HiddenFor(m => m.ProductGroupId)
+    <div class="col-md-12 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class ="col-md-4">Product Group<span style="color:red"> *</span></label>
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.ProductGroup)
+                @Html.ValidationMessageFor(model => model.ProductGroup)
+            </div>
+        </div>
+    </div>
+
+    if (!Request.Url.AbsolutePath.ToLower().Contains("saveproductgroup"))
+    {
+        <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+            <input type="button" onclick="productGroupPost()" value="Save" class="btn btn-primary" />
+            <input type="button" onclick="cancelproductgroupadd()" value="Cancel" class="btn btn-default" />
+        </div>
+    }
+    else
+    {
+        <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", new { @id = Session["pId"] })</div>
+        </div>
+    }
+}

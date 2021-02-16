@@ -1,0 +1,74 @@
+﻿@model IPagedList<Ganedata.Core.Entities.Domain.InventoryStock>
+
+<div class="col-md-12 p-0">
+
+    <table class="table table-hover table-bordered tsort">
+        <thead>
+            <tr>
+                <th>
+                    @Html.Label("Select")
+
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().ProductMaster.SKUCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().InStock)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Allocated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Available)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.First().DateUpdated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().IsActive)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="radio" name="id" class="selkey" value="@item.ProductId">
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductMaster.SKUCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InStock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Allocated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Available)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateUpdated)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="col-md-12 p-0  prow" data-wms-url="@Url.Action("SearchInventory")">
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
+
+</div>
+
+

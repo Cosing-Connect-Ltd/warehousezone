@@ -40,5 +40,7 @@ namespace Ganedata.Core.Services
         string GenerateVerifyRandomNo();
         IEnumerable<AuthUser> GetUsersAgainstPermission(int tenantId, int warehouseId,string controller, string action);
         AuthUser UpdateUserPassword(int authUserId, string resetPasswordCode, string newPassword);
+        string GetNextUniquePersonalReferralCode();
+        void UpdateAllUsersWithPersonalReferralCode();
     }
 }

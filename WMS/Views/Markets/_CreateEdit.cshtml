@@ -1,0 +1,74 @@
+﻿@model Ganedata.Core.Entities.Domain.MarketViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Market - " + (Model.Id > 0 ? "Edit" : "Create");
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+<div class="col-md-10 p-0">
+    <form class="form-horizontal" action="/Markets/SaveMarket" method="post" id="frmSaveMarket">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(c => c.Id)
+        <div class="input-group row h-100 justify-content-center align-items-center">
+            <div class="col-md-7">
+                @Html.ValidationSummary()
+            </div>
+        </div>
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert-success col-md-12">
+                @ViewBag.Message
+            </div>
+        }
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(c => c.Name, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.Name, new { @placeholder = "Market Name", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(c => c.Description, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.Description, new { @placeholder = "Description", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(c => c.Town, new { @class = "col-md-4 control-label" })@*TODO: Dropdown for town/city*@
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.Town, new { @placeholder = "Town", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("External Id", new { @class = "col-md-4 control-label" })@*TODO: Dropdown for town/city*@
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.ExternalId, new { @placeholder = "External Id", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" class="btn btn-primary" id="saveBtn_Markets" value="Save" />
+            @if (Model.Id > 0)
+            {
+                <a class='btn btn-primary' href='/markets/marketcustomers/@Model.Id' role='button' title='Manage Market Custoemrs'><b class="fa fa-random"></b>Manage Customers</a>
+            }
+            <a class="btn btn-default" href="@Url.Action("Index","Markets")">Back to list</a>
+
+        </div>
+    </form>
+</div>

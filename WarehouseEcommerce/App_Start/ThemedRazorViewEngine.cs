@@ -11,6 +11,7 @@ namespace WMS.App_Start
 
     public class ThemedRazorViewEngine : RazorViewEngine
     {
+        public static bool ThemingEnabled = false;
         private string[] _newAreaViewLocations = new string[]
         {
         "~/Areas/{2}/Views/Theme/%1/{1}/{0}.cshtml",
@@ -96,6 +97,8 @@ namespace WMS.App_Start
 
         public string GetThemeName()
         {
+            if (!ThemingEnabled) return null;
+
             WebsiteThemeEnum ThemeName = WebsiteThemeEnum.University;
 
             if (HttpContext.Current.Session["CurrentTenantWebsites"] != null)

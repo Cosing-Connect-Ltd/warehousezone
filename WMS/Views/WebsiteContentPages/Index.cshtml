@@ -1,0 +1,54 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    ViewBag.Title = "Website Content Pages";
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+        )
+}
+
+<h2><span>Website Content Pages (@ViewBag.SiteName)</span></h2>
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+@Html.Action("_WebsiteContentPagesList", new { SiteId = ViewBag.SiteId })
+
+<div class="col-md-12 p-0">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("WebsiteContentPages", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", new { SiteId = ViewBag.SiteId }, new { @class = "btn btn-primary  " })
+    }
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("WebsiteContentPages", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
+    }
+
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("WebsiteContentPages", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
+    }
+    <div class='col-md-offset-2 col-md-10 bottom-right'>
+        <div class="back-list">
+            <a href="@Url.Action("Index","TenantWebsites")" class="btn btn-default">Back to List</a>
+        </div>
+
+    </div>
+  
+
+</div>

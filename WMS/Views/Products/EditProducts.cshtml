@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "EditProducts";
+}
+@using Ganedata.Core.Entities.Helpers
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+        )
+}
+
+@{
+
+    ViewBag.Title = "Edit Products List";
+}
+<h2><span>Edit Products</span></h2>
+
+
+<script type="text/javascript">
+
+    
+
+    MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginEditGridCallback);
+
+    function OnBeginEditGridCallback(s, e) {
+
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmEditProducts");
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+        e.customArgs["productId"] = ProductEditListGridView.GetRowKey(rowIndex);
+
+    }
+
+    function OnEndEditGridCallback(s, e) {
+        
+        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+        SetGridEditorToRowIndex(lastIndex);
+    }
+
+    function SetGridEditorToRowIndex(index) {
+
+        ProductEditListGridView.batchEditApi.StartEdit(index, ProductEditListGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+
+
+    function OnEditGridFocusChanged(s, e) {
+
+        if (e.cellInfo.rowVisibleIndex >= 0) {
+            var index = e.cellInfo.rowVisibleIndex;
+            $("#LastEditingRowIndex").val(index);
+            $("#RowIndexForProductId").val(index);
+        }
+
+
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+
+    function OnTagDetailsChanged(s, e) {
+        ProductEditListGridView.UpdateEdit();
+
+    }
+
+</script>
+@Html.Hidden("LastEditingRowIndex")
+@Html.Hidden("LastEditingColIndex")
+@Html.Hidden("RowIndexForProductId")
+
+
+<div class="input-group h-100 justify-content-center align-items-center">
+    @Html.Action("_EditableProductGrid")
+</div>

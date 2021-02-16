@@ -1,0 +1,87 @@
+﻿@using System.Web.UI.WebControls
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+@model List<Ganedata.Core.Entities.Domain.TenantPriceGroupViewModel>
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "PriceGroupsGridView";
+        settings.KeyFieldName = "PriceGroupID";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "ProductSpecialPrice", Action = "_ProductSpecialPriceGroups" };
+        settings.SettingsBehavior.AllowHeaderFilter = true;
+        settings.Settings.ShowFilterBar =  GridViewStatusBarMode.Auto;
+        settings.Settings.ShowFilterRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+        settings.SettingsPager.PageSize = 10;
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Name";
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "DateCreated";
+            column.Width = Unit.Percentage(10);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "DateUpdated";
+            column.Width = Unit.Percentage(10);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateUpdated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Width = Unit.Percentage(10);
+            column.FieldName = "Percent";
+            column.Caption = "Default Discount %";
+        });
+
+        var c = new MVCxGridViewColumn();
+        c.Width = Unit.Percentage(10);
+        c.FieldName = "PriceGroupID";
+        c.Caption = "Special Prices";
+        c.SetDataItemTemplateContent(m =>
+        {
+            var id = DataBinder.Eval(m.DataItem, "PriceGroupID").ToString();
+            ViewContext.Writer.Write("<div class='text-center'><a href='" + Url.Action("Edit", "ProductSpecialPrice",  new { id = id }) + "' data-id='" + id + "'><i class='bt-gvactions fa fa-list'></i></a>" +
+                "<a href='javascript:LoadPriceGroupEditForm("+ id + ")'><i class='bt-gvactions fa fa-pencil'></i></a>" +
+                "<a href='javascript:DeletePriceGroup(" + id + ")'><i class='bt-gvactions fa fa-trash'></i></a></div>");
+
+        });
+        settings.Columns.Add(c);
+
+    }).Bind(Model).GetHtml()

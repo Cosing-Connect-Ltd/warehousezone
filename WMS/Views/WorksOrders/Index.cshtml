@@ -1,0 +1,155 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@model IEnumerable<Ganedata.Core.Entities.Domain.Order>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Works Orders";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<script type="text/javascript">
+
+    function OnGridFocusedRowChanged(s, e) {
+
+        var name = s.name;
+
+        if (name.indexOf("_WorksOrderListGridView") >= 0) {
+            $('#selkeyWorksOrderListGridView').val(s.GetRowKey(s.GetFocusedRowIndex()));
+            OnGetRowValuesWO(s.cpPOStatus[s.GetFocusedRowIndex()]);
+        } else if (name.indexOf("_WorksOrderCompletedListGridView") >= 0) {
+            $('#selkeyWorksOrderCompletedListGridView').val(s.GetRowKey(s.GetFocusedRowIndex()));
+            OnGetRowValuesWOC(s.cpPOStatus[s.GetFocusedRowIndex()]);
+        }
+        else
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+    function OnGetRowValuesWO(value) {
+        if (value == "Scheduled")
+            $('.socactionw').show();
+        else
+            $('.socactionw').hide();
+    }
+
+    function OnGetRowValuesWOC(status) {
+        if (status === "Complete") {
+            $("#WorksOrderCommandComplete").hide();
+        } else {
+            $("#WorksOrderCommandComplete").show();
+        }
+    }
+    function OnBeginCallbackWO(s, e) {
+
+
+        e.customArgs['selectedStatus'] = $('#WorkOrderStatus :selected').val();
+    }
+    function UASelectedValueChanged(e) {
+
+
+
+        _WorksOrderCompletedListGridView.Refresh();
+
+
+
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.Hidden("selkeyOrderList", null)
+@Html.Hidden("selkeyOrderCompleteList", null)
+@Html.Hidden("selkeyWorksOrderListGridView", null)
+@Html.Hidden("selkeyWorksOrderCompletedListGridView", null)
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#WO">Active</a></li>
+        <li><a href="#WOC">Completed</a></li>
+    </ul>
+
+
+
+    <div id="WO">
+        @Html.Action("_WorksOrders", "Order")
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("WorksOrders", "Create"))
+            {
+                @Html.ActionLink("Create New", "Create", "WorksOrders", null, new { @class = "btn btn-primary  ", @id = "lnkOrderUpdate" })
+                @Html.ActionLink("Create Bulk", "CreateBulk", "WorksOrders", null, new { @class = "btn btn-primary  ", @id = "lnkOrderUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("WorksOrders", "Edit"))
+            {
+                @Html.ActionLink("Update", "Edit", "WorksOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkWorksOrderUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "DeleteOrder"))
+            {
+                <a class='btn btn-primary lnkDelete' data-type='WO' data-target='#selkeyWorksOrderListGridView'>Delete</a>
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("WorksOrders", "ProcessOrder"))
+            {
+                @Html.ActionLink("Process Order", "ProcessOrder", "WorksOrders", null, new { @class = "btn btn-primary socactionw Caction", @id = "lnkWorksOrderUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "WorksOrderPrint"))
+            {
+                @Html.ActionLink("Print Order", "WorksOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkWorksOrderUpdate", target = "_blank" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Appointments", "Index"))
+            {
+                @Html.ActionLink("Schedule Works Order", "Index", "Appointments", null, new { @class = "btn btn-primary" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "Complete"))
+            {
+                <a href='javascript: void(0)' class='btn btn-primary' onclick='completeOrder(true)'>Complete Order</a>
+            }
+
+        </div>
+
+    </div>
+
+    <div id="WOC">
+        @Html.Partial("_FilterWOGridView")
+        @Html.Action("_WorksOrdersCompleted", "Order")
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            @if (LayoutHelpers.ActivityValidator("WorksOrders", "Create"))
+            {
+                @Html.ActionLink("Create New", "Create", "WorksOrders", null, new { @class = "btn btn-primary", @id = "lnkOrderUpdate" })
+            }
+            @if (LayoutHelpers.ActivityValidator("WorksOrders", "Edit"))
+            {
+                @Html.ActionLink("Update", "Edit", "WorksOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkWorkOrderCompleteUpdate" })
+            }
+            @if (LayoutHelpers.ActivityValidator("Reports", "WorksOrderPrint"))
+            {
+                @Html.ActionLink("Print Order", "WorksOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkWorkOrderCompleteUpdate", target = "_blank" })
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    $("#WorksOrderCommandComplete").on("click", function () {
+        var orderId = $('#selkeyWorksOrderListGridView').val();
+        if (orderId < 1) return false;
+        var completeOrderUrl = '@Url.Action("Complete")' + '/' + orderId;
+        $(this).attr("href", completeOrderUrl);
+        if (!confirm('Are you sure you want to complete the order?')) {
+            return false;
+        }
+    });
+
+</script>

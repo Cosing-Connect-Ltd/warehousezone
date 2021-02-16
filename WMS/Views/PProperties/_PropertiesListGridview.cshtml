@@ -1,0 +1,111 @@
+﻿@using DevExpress.XtraGrid
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "PPropertiesGridview";
+        settings.CallbackRouteValues = new { Controller = "PProperties", Action = "PPropertiesGridview" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "PProperties", Action = "_PPropertiesGridViewsPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "PProperties", Action = "_PPropertiesGridViewFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "PProperties", Action = "_PPropertiesGridViewDataSorting" }
+        );
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.KeyFieldName = "PPropertyId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+
+        settings.Columns.Add("PropertyCode").SetDataItemTemplateContent(m =>
+        {
+            var code = DataBinder.Eval(m.DataItem, "PropertyCode").ToString();
+            var isArchived = (DataBinder.Eval(m.DataItem, "PropertyStatus") != null && DataBinder.Eval(m.DataItem, "PropertyStatus").ToString() == "ARCHIVED");
+            ViewContext.Writer.Write("<div>" + code + "</div>" + (isArchived ? "<b class='fa fa-exclamation' title='Archived'></b" : ""));
+        });
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "LandlordDetails";
+
+            column.Settings.AllowSort = DefaultBoolean.False;
+            column.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.Columns.Add("AddressLine1", "AddressLine1");
+        settings.Columns.Add("AddressLine2", "AddressLine2");
+        settings.Columns.Add("AddressPostcode", "Postcode");
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Property Status";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var isVacant = DataBinder.Eval(m.DataItem, "IsVacant") != null ? (DataBinder.Eval(m.DataItem, "IsVacant").ToString() == "True" ? "Vacant" : "Let") : "";
+                var letDate = DataBinder.Eval(m.DataItem, "LetDate") != null ? "<br/>First Let Date :" + DataBinder.Eval(m.DataItem, "LetDate").ToString() : "";
+                var dateAvailable = DataBinder.Eval(m.DataItem, "DateAvailable") != null ? "<br/>Date Available:" + DataBinder.Eval(m.DataItem, "DateAvailable").ToString() : "";
+                var dateAdded = DataBinder.Eval(m.DataItem, "DateAdded") != null ? "<br/>DateAdded :" + DataBinder.Eval(m.DataItem, "DateAdded").ToString() : "";
+                var propertyBranch = DataBinder.Eval(m.DataItem, "PropertyBranch") != null ? "<br/>PropertyBranch :" + DataBinder.Eval(m.DataItem, "PropertyBranch").ToString() : "";
+                ViewContext.Writer.Write(isVacant + letDate + dateAvailable + dateAdded + propertyBranch);
+            });
+        });
+
+
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+{
+
+    Html.DevExpress().PageControl(s =>
+{
+    s.EnableTabScrolling = true;
+    s.Name = DataBinder.Eval(c.DataItem, "PPropertyId").ToString();
+    s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+    s.TabPages.Add("Tenant").SetContent(() =>
+            {
+                Html.RenderAction("PTenantsGridview", "PTenants", new { Id = DataBinder.Eval(c.DataItem, "PPropertyId") });
+            });
+
+}).GetHtml();
+});
+
+
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50", "100", "500" };
+
+        if (ViewBag.DisableCallBacks != null)
+        {
+            settings.Settings.ShowHeaderFilterButton = false;
+            settings.SettingsPager.Visible = false;
+            settings.Settings.ShowFilterRow = false;
+            settings.SettingsPager.PageSizeItemSettings.Visible = false;
+            settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+            settings.SettingsBehavior.AllowSort = false;
+            settings.SettingsDetail.ShowDetailRow = false;
+        }
+    });
+
+}
+
+@grid.BindToCustomData(Model).GetHtml()

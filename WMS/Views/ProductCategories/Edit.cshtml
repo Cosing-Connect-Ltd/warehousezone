@@ -1,0 +1,76 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductCategory
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Models;
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit },
+        new Script { ExtensionType = ExtensionType.UploadControl }
+        )
+}
+
+@{
+    ViewBag.Title = "Update Product Category";
+}
+
+<h2><span>Update Product Category</span></h2>
+
+<div>
+    @Html.Hidden("productCategory", true)
+    <div class="col-md-6 pull-left">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>ProductCategory</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.ProductCategoryId)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductCategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProductCategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductCategoryName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SortOrder, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductGroupId, "ProductGroupId", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("ProductGroupId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProductGroupId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <div class="col-md-offset-2 col-md-10 bottom-right">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>

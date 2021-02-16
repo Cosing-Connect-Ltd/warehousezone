@@ -1,0 +1,121 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@model IEnumerable<Ganedata.Core.Entities.Domain.Order>
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Sales Orders";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+
+        var name = s.name;
+
+        if (name.indexOf("_SalesOrderListGridView_Active") >= 0) {
+            $('#selkeySalesOrderList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        else if (name.indexOf("_SalesOrderListGridView_Completed") >= 0) {
+            $('#selkeySalesOrderCompleteList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        else {
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+
+    function OnBeginCallbackSO(s, e) {
+        e.customArgs['selectedStatus'] = $('#SalesOrderStatus :selected').val();
+    }
+
+    function UASelectedValueChanged(e) {
+        _SalesOrderListGridView_Completed.Refresh();
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.Hidden("selkeySalesOrderList", null)
+@Html.Hidden("selkeySalesOrderCompleteList", null)
+@Html.Hidden("EmailTemplate", (int)WorksOrderNotificationTypeEnum.SalesOrderTemplate)
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#SOA">Active</a></li>
+        <li><a href="#SOC">Completed</a></li>
+    </ul>
+
+    <div class="col-md-12 p-0 legend-pane">
+        <p class="pull-left" style="text-align:left;margin-bottom:0px"><label style="height:12px;width:24px;background-color:lightcoral;vertical-align:middle"></label>  Proforma</p>
+        <p class="pull-left" style="text-align:left;margin-bottom:0px"><label style="height:12px;width:24px;background-color:orange;vertical-align:middle"></label>  Quotation</p>
+        <p class="pull-left" style="text-align:left;margin-bottom:0px"><label style="height:12px;width:24px;background-color:lightsteelblue;vertical-align:middle"></label>  Loan</p>
+        <p class="pull-left" style="text-align:left;margin-bottom:0px"><label style="height:12px;width:24px;background-color:lightgreen;vertical-align:middle"></label>  Samples</p>
+        <div class="clearfix"></div>
+    </div>
+
+    <div id="SOA">
+
+
+        @Html.Action("_SalesOrders", "Order", new { type = 1 })
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("SalesOrders", "Create"))
+            {
+                @Html.ActionLink("Create New", "Create", "SalesOrders", null, new { @class = "btn btn-primary" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("SalesOrders", "Edit"))
+            {
+                @Html.ActionLink("Update", "Edit", "SalesOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkSalesOrderUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "DeleteOrder"))
+            {
+                <a class='btn btn-primary lnkDelete' data-type='SO' data-target='#selkeySalesOrderList'>Delete</a>
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("SalesOrders", "BatchAssignment"))
+            {
+                @Html.ActionLink("Batch Assignment", "BatchPickersAssignment", "SalesOrders", null, new { @class = "btn btn-primary" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "SalesOrderPrint"))
+            {
+                @Html.ActionLink("Print Order", "SalesOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkSalesOrderUpdate", target = "_blank" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("SalesOrders", "ProcessOrder"))
+            {
+                @Html.ActionLink("Process Order", "ProcessOrder", "SalesOrders", null, new { @class = "btn btn-primary socaction Caction", @id = "lnkSalesOrderUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "OrderNotification"))
+            {
+                <a href="javascript:;" alt="Send Email" class="custom-email btn btn-primary">Email Order</a>
+            }
+        </div>
+    </div>
+
+    <div id="SOC">
+        @Html.Partial("_FilterGridView")
+        @Html.Action("_SalesOrders", "Order", new { type = 2 })
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("SalesOrders", "Edit"))
+            {
+                @Html.ActionLink("Update", "Edit", "SalesOrders", null, new { @class = "btn btn-primary Caction", @id = "lnkSalesOrderCompleteUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "SalesOrderPrint"))
+            {
+                @Html.ActionLink("Print Order", "SalesOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkSalesOrderCompleteUpdate", target = "_blank" })
+            }
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@model  Ganedata.Core.Entities.Domain.ProductMasterViewModel
+<div class="col-md-12 p-0">
+    <div class="col-md-6">
+        <h2>Available Products</h2>
+        @Html.Action("_ProductKitItems", new { productId = Model.ProductId, selectionMode = true })
+    </div>
+
+    <div class="col-md-6">
+        <h2>Selected Products</h2>
+        @Html.Action("_ProductKitSelectedItems", new { productId = Model.ProductId })
+    </div>
+
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right-popup">
+    <input type="submit" value="Submit" class="btn btn-primary" id="btnConfirmKitItems" onclick="ConfirmAddedKitProducts()" />
+    <input type="button" value="Cancel" class="btn btn-default" onclick="pcModalProductKitItemsEditor.Hide()" />
+</div>

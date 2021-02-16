@@ -1,0 +1,114 @@
+﻿@model Ganedata.Core.Entities.Domain.ReceivePOVM
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Receive Purchase Order";
+}
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('#OrderDetailID').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+    function addSerialPO(detid, orderid, pid, ser) {
+
+        if (IsValidForm('#frmRecPO')) {
+            $('#prodId').val(pid);
+            $('#ser').val(ser);
+            $('#delivery').val($('#DeliveryNumber').val());
+            $('#order').val(orderid);
+            if (ser == 1) {
+                ModelAddSerial.Show();
+            }
+            else
+                ModelRecProduct.Show();
+        }
+    }
+
+</script>
+<h2><span>@ViewBag.Title</span></h2>
+@Html.Hidden("prodId", null)
+@Html.Hidden("ser", null)
+@Html.Hidden("delivery", null)
+@Html.Hidden("order", null)
+@Html.Hidden("qty", null)
+@Html.Hidden("rec_qty", null)
+@Html.Hidden("line_id", null)
+@Html.Hidden("type", null)
+@Html.Hidden("OrderDetailID", null)
+
+@using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { @id = "frmProcessOrder" }))
+{
+    @Html.HiddenFor(m => m.OrderID)
+    @Html.HiddenFor(m => m.InventoryTransactionTypeId)
+    <div class="col-md-12">
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.OrderNumber)
+                @Html.ValidationMessageFor(model => model.OrderNumber)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Account.AccountCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Account.AccountCode)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.DeliveryNumber, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+
+                @Html.EditorFor(m => m.DeliveryNumber)
+                @Html.ValidationMessageFor(model => model.DeliveryNumber)
+            </div>
+        </div>
+        <div class="col-12 process-textbox-scan">
+            @if ((ViewBag.PreventProcessing != null && !ViewBag.PreventProcessing) && (Request.Url.AbsolutePath.ToLower().Contains("purchaseorders/receivepo/") || (Request.Url.AbsolutePath.ToLower().Contains("purchaseorders/_podetails/") && Request.UrlReferrer.AbsolutePath.ToLower().Contains("purchaseorders/receivepo/"))))
+            {
+                <div class="col-11 pull-left pt-2 pb-2">
+                    @Html.TextBox("ProcessBarcode", null, new { @class = "form-control", placeholder = "Scan or enter product/case sku/barcode" })
+                </div>
+                <div class="col-1 pull-left pt-1">
+                    <b class="btn fa fa-search"></b>
+                </div>
+            }
+        </div>
+        <div>
+            @Html.Action("_PODetails", new { Id = Model.OrderID })
+        </div>
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            @Html.ActionLink("Finish Processing", "Index", "PurchaseOrders", null, null, ViewBag.Fragment as string, null, new { @class = "btn btn-primary" })
+
+            @if (Model.OrderStatusID != (int)OrderStatusEnum.Complete)
+            {
+                <a href="javascript:void(0)" class="btn btn-primary" onclick="completeOrder()">Complete Order</a>
+            }
+
+            <div class="btn btn-default">
+
+                @Html.ActionLink("Back to List", "Index", "PurchaseOrders", null, null, ViewBag.Fragment as string, null, null)
+
+            </div>
+
+
+        </div>
+
+    </div>
+}
+

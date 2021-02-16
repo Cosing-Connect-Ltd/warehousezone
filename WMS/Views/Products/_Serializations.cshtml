@@ -1,0 +1,58 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewBag.productId + "Serializationgridview";
+        settings.CallbackRouteValues = new { Controller = "Products", Action = "_Serializations", productId = ViewBag.productId };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "SerialID";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SerialNo";
+            c.Caption = "Serial No";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add("CurrentStatus");
+        settings.Columns.Add("BuyPrice");
+        settings.Columns.Add("WarrantyStartDate");
+        settings.Columns.Add("Batch");
+        settings.Columns.Add("ExpiryDate");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "LocationName";
+            c.Caption = "Location";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()
+@if (Request.Url.AbsolutePath.ToLower().Contains("edit"))
+{
+    <div class="col-md-12 p-0">
+        @Html.ActionLink("Create New", "SaveProductSer", null, new { @class = "btn btn-primary  " })
+        @Html.ActionLink("Update", "SaveProductSer", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdSer" })
+        @Html.ActionLink("Delete", "SaveProductKitItems", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdSer" })
+    </div>
+}

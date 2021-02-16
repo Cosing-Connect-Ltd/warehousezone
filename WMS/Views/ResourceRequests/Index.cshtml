@@ -1,0 +1,126 @@
+﻿@model Ganedata.Core.Models.ResourceRequestsViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.Scheduler, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+         new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.Scheduler }
+        )
+}
+
+@{
+    ViewBag.Title = "Resource Requests";
+}
+
+<h2><span>Resource Requests</span></h2>
+
+<script type="text/javascript">
+    function OnBeginCallback(s, e) {
+        e.customArgs["RequestStatus"] = $('#RequestStatus').val();
+        e.customArgs["RequestType"] = $('#RequestType').val();
+
+    }
+    function OnGridFocusedRowChanged(s, e) {
+
+        var name = s.name;
+        if (name.indexOf("ResourceRequestsAwaitingGridView") >= 0) {
+
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+
+    function updateDeclinePopup(chk) {
+        if ($(chk).prop("checked")) {
+            $("#divDeclineReason").slideDown();
+        } else {
+            $("#divDeclineReason").slideUp();
+        }
+    }
+
+    function confirmApproveHolidays(id) {
+        var data = { ResourceHolidayRequestId: id, Reason: $("#txtDeclineReason").val(), IsApproved: !$("#chkDecline").prop("checked") };
+        $.post("/ResourceRequests/Approve/",
+            data,
+            function (result) {
+                if (!result.HasWarning) {
+                    PopupMessage.Hide();
+                    ResourceRequestsAwaitingGridView.Refresh();
+                    Scheduler.Refresh();
+                } else {
+                    ResourceRequestsAwaitingGridView.Refresh();
+                    Scheduler.Refresh();
+                }
+            });
+    }
+
+    function SelectedValueChanged() {
+        ResourceRequestsAwaitingGridView.Refresh();
+    }
+
+
+
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<div id="tabs" style="visibility: hidden">
+
+    <ul>
+        <li><a href="#Requests">Requests</a></li>
+        <li><a href="#Calendar">Calendar View</a></li>
+    </ul>
+
+    <div id="Requests">
+        <div class='col-md-12 report-date-header'>
+            <div class='input-group'>
+                <div class='col-md-6 text-center h-100 justify-content-center align-items-center'>
+                    <div class='input-group h-100 justify-content-center align-items-center'>
+                        @Html.Label("Status", htmlAttributes: new { @class = "col-md-4" })
+                        <div class='col-md-8'>
+                            @Html.EnumDropDownListFor(model => model.RequestStatus, "All", new { @class = "chosen-select", onchange = @"SelectedValueChanged(this);" })
+                        </div>
+                    </div>
+                </div>
+                <div class='col-md-6 text-center h-100 justify-content-center align-items-center'>
+                    <div class='input-group h-100 justify-content-center align-items-center'>
+                        @Html.Label("Type", htmlAttributes: new { @class = "col-md-4" })
+                        <div class='col-md-8'>
+                            @Html.EnumDropDownListFor(model => model.RequestType, "All", new { @class = "chosen-select", onchange = @"SelectedValueChanged(this);" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.Action("ResourceRequestsAwaitingGridViewPartial")
+
+        <div class='col-md-offset-2 col-md-10 bottom-right'>
+
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Create"))
+            {
+                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Create"))
+            {
+                @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary Caction" })
+
+            }
+
+            <a href='javascript:void(0);' class='btn btn-primary Caction' id='lnkApproveHolidayRequest'>Approve</a>
+
+        </div>
+
+    </div>
+    <div id="Calendar">
+        @Html.Action("SchedulerPartial")
+    </div>
+
+</div>
+

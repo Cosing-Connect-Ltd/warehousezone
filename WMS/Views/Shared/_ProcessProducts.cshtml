@@ -1,0 +1,37 @@
+﻿@model Ganedata.Core.Entities.Domain.InventoryTransaction
+<hgroup>
+    <h2><span>Receive Product</span></h2>
+</hgroup>
+@using (Html.BeginForm("", "", FormMethod.Post, new { @id = "frmProcessProduct" }))
+{
+    @Html.HiddenFor(m => m.OrderID)
+    @Html.HiddenFor(m => m.ProductId)
+    @Html.HiddenFor(m => m.InventoryTransactionTypeId)
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-6 pull-left">
+        @Html.ValidationSummary(true, "", new { @id = "vldProcessPrd" })
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.Quantity,
+         settings =>
+         {
+             settings.Name = "Quantity";
+             settings.Properties.MaxValue = 100000000;
+             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+             settings.ControlStyle.CssClass = "form-control";
+
+         }
+     ).GetHtml()
+                @Html.ValidationMessageFor(model => model.Quantity)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-8">
+                <input type="button" onclick="submitProduct()" value="Receive" class="btn btn-default" />
+                <input type="button" onclick="javacript: ModelRecProduct.Hide()" value="Cancel" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

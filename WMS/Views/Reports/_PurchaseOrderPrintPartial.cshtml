@@ -1,7 +1,0 @@
-@Html.DevExpress().DocumentViewer(settings => {
-    settings.Name = "PurchaseOrderPrint";
-    settings.CallbackRouteValues = new { Controller = "Reports", Action = "PurchaseOrderPrintPartial" };
-    settings.ExportRouteValues = new { Controller = "Reports", Action = "PurchaseOrderPrintPartialExport" };
-    settings.Report = (XtraReport)Model;
-    settings.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
-}).GetHtml()

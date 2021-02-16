@@ -12,6 +12,6 @@ namespace WMS.Reports
         {
             InitializeComponent();
         }
-
+        
     }
 }

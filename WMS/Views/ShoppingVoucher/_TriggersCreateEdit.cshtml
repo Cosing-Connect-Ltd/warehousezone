@@ -1,0 +1,104 @@
+﻿@model Ganedata.Core.Entities.Domain.RewardPointTrigger
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Reward Point Trigger " + (Model.RewardPointTriggerId > 0 ? "Edit" : "Create");
+}
+
+<div>
+    <h2><span>@ViewBag.Title</span></h2>
+    <form class="form-horizontal" action="@Url.Action("SaveRewardTrigger","ShoppingVoucher")" method="post" id="frmSaveVoucher">
+       
+        <div class="col-md-8 pull-left">
+
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(c => c.RewardPointTriggerId)
+            @Html.ValidationSummary()
+             
+           
+            <h4 class="alert alert-info">Voucher Info</h4>
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert-danger col-md-12">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(c => c.Title, new {@class = "col-md-4 control-label"})
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(c => c.Title, new {@placeholder = "Title", @class = "form-control"})
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(c => c.Description, new {@class = "col-md-4 control-label"})
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(c => c.Description, new {@placeholder = "Description", @class = "form-control"})
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(c => c.TriggerType, new {@class = "col-md-4 control-label"})
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(c => c.TriggerType, new SelectList(ViewBag.TriggerTypeList, "Value", "Text", (int) Model.TriggerType), new {@placeholder = "Trigger Type", @class = "form-control", onchange = "UpdateRewardContents();"})
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(m => m.LoyaltyPointToTrigger, new {@class = "col-md-4 control-label"})
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(c => c.LoyaltyPointToTrigger, new { @type = "number", @class = "form-control"})
+                    </div>
+                </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.ShoppingVoucherId, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.ShoppingVoucherId, new SelectList(ViewBag.VouchersList, "Value", "Text", Model.ShoppingVoucherId), new {@class = "chosen-select"})
+                </div>
+            </div>
+            <h4 class="alert alert-info">Restrictions</h4>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(m => m.MaximumAllowed, new {@class = "col-md-4 control-label"})
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(c => c.MaximumAllowed, new {@type="number", @class = "form-control"})
+                    </div>
+                </div>
+             
+        </div>
+        <div class="col-md-8 pull-left">
+            <h2>User Earning Triggers</h2>
+            <ul>
+                <li>When they first register, they get 50% off first order through App</li>
+                <li>When they first register, they get 25% off home delivery order through App, minimum value £5</li>
+                <li>When they first register, if they use "Add Promo code" option and add one of the friends code, both get 100 points</li>
+            </ul>
+        </div>
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" class="btn btn-primary" id="saveBtn_ShoppingVoucher" value="Save" />
+            <a class="btn btn-default" href="@Url.Action("Index","ShoppingVoucher")">Cancel</a>
+        </div>
+
+    </form>
+</div>
+<script>
+    $(document).ready(function() {
+        UpdateRewardContents();
+    });
+</script>

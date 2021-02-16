@@ -1,0 +1,40 @@
+﻿@model Ganedata.Core.Entities.Domain.PalletDispatchInfoViewModel
+  
+@{
+    var grid =
+        Html.DevExpress().DataView(
+            settings =>
+            {
+                settings.Name = "dataView" + Model.PalletID;
+                settings.CallbackRouteValues = new { Controller = "Pallets", Action = "_PalletDispatchInfoImages", palletId = Model.PalletID };
+                settings.SettingsTableLayout.RowsPerPage = 1;
+                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                settings.PagerAlign = DevExpress.Web.PagerAlign.Center;
+                settings.SetItemTemplateContent(
+                    c =>
+                    {
+
+                        ViewContext.Writer.Write(
+                            "<table>" +
+                            "<tr>" +
+
+                            "<td>" +
+                            "<img style='width:250px;height:200px' src=\"" + Url.Content(c.DataItem.ToString()) + "\" alt=\"\" />" +
+                            "</td>" +
+
+
+                            "</tr>" +
+
+                            "</table>"
+                            );
+                    }
+                    );
+                settings.PagerSettings.ShowNumericButtons = true;
+                settings.PagerSettings.AllButton.Visible = false;
+                settings.PagerSettings.Summary.Visible = false;
+                settings.PagerSettings.PageSizeItemSettings.Visible = true;
+                //settings.PagerSettings.PageSizeItemSettings.ShowAllItem = true;
+            }
+            );
+}
+@grid.Bind(Model.DispatchEvidenceImagePaths).GetHtml()

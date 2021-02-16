@@ -1,0 +1,81 @@
+﻿@using Ganedata.Core.Services
+@model Ganedata.Core.Entities.Domain.AuthActivityGroupMap
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Activity Group Map Detail";
+}
+
+<h2><span>Activity Group Map Detail</span></h2>
+
+<div class="form-horizontal col-md-6 pull-left">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthActivity.ActivityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthActivity.ActivityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthActivityGroup.ActivityGroupName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthActivityGroup.ActivityGroupName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @DateTimeToLocal.Convert(Model.DateCreated, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateUpdated)
+        </dt>
+
+        <dd>
+            @DateTimeToLocal.Convert(Model.DateUpdated, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @LayoutHelpers.GetUserName(Model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @LayoutHelpers.GetUserName(Model.UpdatedBy)
+        </dd>
+    </dl>
+</div>
+
+<div class="input-group h-100 justify-content-center align-items-center">
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <div class="back-list">@Html.ActionLink("Edit", "Edit", new { id = Model.ActivityGroupMapId }, new { @class = "btn btn-primary" })</div>
+        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+    </div>
+</div>

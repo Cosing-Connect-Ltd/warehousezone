@@ -1,0 +1,26 @@
+﻿@model Ganedata.Core.Entities.Domain.PalletDispatchInfoViewModel
+
+@Html.DevExpress().PageControl(s =>
+{
+    s.EnableTabScrolling = true;
+    s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    s.Name = "tabPallets"+Model.PalletID;
+    s.TabPages.Add("Items").SetContent(() =>
+    {
+        Html.RenderAction("_PalletItemsList","Pallets", new { palletId = Model.PalletID});
+    });
+
+    if (Model.IsDispatched)
+    {
+        s.TabPages.Add("Details").SetContent(() =>
+        {
+            ViewContext.Writer.Write(Html.Partial("_PalletDispatchInfoContents", Model));
+        });
+
+        s.TabPages.Add("Evidences").SetContent(() =>
+        {
+            ViewContext.Writer.Write(Html.Partial("_PalletDispatchInfoImages", Model));
+        });
+    }
+
+}).GetHtml()

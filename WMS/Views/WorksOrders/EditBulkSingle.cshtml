@@ -1,0 +1,116 @@
+﻿@model Ganedata.Core.Entities.Domain.Order
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("gridViewOrdDet") >= 0) {
+            $('#selkeyhdPrddet').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+<h2><span>Edit Works Order</span></h2>
+
+@using (Html.BeginForm("SaveOrdersBulkSingle", "WorksOrders", FormMethod.Post, new { @id = "frmWorksSingleOrderFormEdit" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("selkeyhdPrddet", 100)
+    @Html.HiddenFor(m => m.OrderID)
+    @Html.HiddenFor(m => m.OrderGroupToken)
+
+    <div class="col-md-12 p-0 order-forms">
+        <div class="col-md-5 p-0 pull-left">
+            <div class="col-md-12 p-0">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.OrderNumber)
+                        @Html.ValidationMessageFor(model => model.OrderNumber)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.ExternalOrderNumber, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => m.ExternalOrderNumber, new { htmlattributes = new { @class = " form-control" } })
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Fault Code", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.JobSubTypeId, ViewBag.JobSubTypes as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Job Type", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.JobTypeId, ViewBag.JobTypes as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+
+                        <div class="notes-holder-box">
+                            <b class="fa fa-file-o"></b>
+                            <a href="#" style="cursor:pointer" onclick="javaScript: ModelOrderNotes.Show();">Notes</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.SLAPriorityId, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.SLAPriorityId, ViewBag.SLAPs as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.ExpectedHours, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.ExpectedHours, ViewBag.ExpectedHoursList as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-7 p-0 pull-left">
+            <div class="col-md-12 p-0">
+                @Html.Action("_OrderDetails", "OrderDetail", new { id = Model.OrderID })
+            </div>
+            <div class="pull-right">
+                <input type="button" id="OrderDetailadd" class="btn btn-primary orddet" value="Add">
+                <input type="button" id="OrderDetailUpdate" class="btn btn-primary orddet" value="Update">
+                <input type="button" id="OrderDetailDelete" class="btn btn-primary orddet" value="Delete">
+            </div>
+        </div>
+    </div>
+    <div class="popup-bottom-left">
+        <input type="button" class="btn btn-primary woPropertyvalidation" id="btnSaveBulkOrderSingleEdit" value="Save Order">
+        <input type="button" onclick="ModelWorksOrderSingleEdit.Hide()" value="Cancel" class="btn btn-default" />
+    </div>
+}

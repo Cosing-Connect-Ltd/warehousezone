@@ -1,0 +1,86 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewBag.setname;
+        settings.CallbackRouteValues = ViewBag.route;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.Settings.ShowGroupFooter = GridViewGroupFooterMode.Hidden;
+        settings.Settings.ShowFooter = false;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Hidden;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.SettingsCookies.Enabled = true;
+        settings.SettingsCookies.CookiesID = "PalletProcess";
+        settings.SettingsCookies.StoreColumnsVisiblePosition = true;
+        settings.SettingsCookies.StoreColumnsWidth = true;
+        settings.SettingsCookies.StoreFiltering = true;
+        settings.SettingsCookies.StoreGroupingAndSorting = true;
+        settings.SettingsCookies.StorePaging = true;
+
+        settings.KeyFieldName = "OrderDetailID";
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+        settings.SettingsPager.Visible = true;
+        settings.SettingsPager.PageSize = 10;
+        settings.Settings.ShowGroupPanel = false;
+
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Columns.Add("ProductId", "Id").Width = System.Web.UI.WebControls.Unit.Pixel(50);
+
+        settings.Columns.Add("ProductMaster.Name", "Product <b class='pallet-orderno'>#" + ViewBag.OrderNumber + "</b>");
+        if (ViewBag.Groups != null && (bool)ViewBag.Groups == true)
+        {
+            settings.SettingsBehavior.AllowFixedGroups = true;
+            settings.Settings.ShowGroupPanel = true;
+            settings.Settings.GroupFormat = "{1}";
+            settings.Columns.Add("ProductGroups.ProductGroup").GroupIndex = 0;
+            settings.Columns.Add("ProductGroup").Caption = "ID";
+        }
+
+        settings.Columns.Add("Qty").Width = System.Web.UI.WebControls.Unit.Pixel(60);
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "QtyProcessed";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Actions";
+            column.Name = "rc";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+            column.SetDataItemTemplateContent(container =>
+            {
+                var productName = DataBinder.Eval(container.DataItem, "ProductMaster.Name");
+                var productid = DataBinder.Eval(container.DataItem, "ProductId");
+                var qty = DataBinder.Eval(container.DataItem, "Qty").ToString();
+                var rec_qty = DataBinder.Eval(container.DataItem, "QtyProcessed");
+
+                var orderDetailId = DataBinder.Eval(container.DataItem, "OrderDetailID").ToString();
+                ViewContext.Writer.Write("<div class='sales-detail-actions' data-id='" + orderDetailId + "' data-qty='" + qty + "' data-pqty='" + rec_qty + "' data-productid='" + productid + "' data-productname='" + productName + "'></div>");
+            });
+        });
+
+        settings.PreRender = (s, e) =>
+        {
+            MVCxGridView grids = s as MVCxGridView;
+            if (grids != null)
+                grids.ExpandAll();
+        };
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnPalletOrderDetailsCallback";
+        settings.ClientSideEvents.Init = "ShowPalletDispatchButton";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,72 @@
+﻿@using System.Web.UI.WebControls
+@model IEnumerable<Ganedata.Core.Entities.Domain.RecipeProductItemRequest>
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "ProductKitSelectedItemsGrid";
+        settings.CallbackRouteValues = ViewBag.routeValues;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "ProductId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("ProductName", "Product").Width = System.Web.UI.WebControls.Unit.Percentage(70);
+
+
+        if (ViewBag.SelectionMode != true)
+        {
+            settings.Columns.Add(column =>
+            {
+                column.Width = Unit.Percentage(20);
+                column.Caption = "Quantity";
+
+                column.SetDataItemTemplateContent(m =>
+                {
+                    var qty = (decimal)DataBinder.Eval(m.DataItem, "Quantity");
+                    var id = (int)DataBinder.Eval(m.DataItem, "ProductId");
+
+                    ViewContext.Writer.Write("<div class='row recipe-item-qty-text'>" + qty + "<b class='btn fa fa-pencil'></b></div>" +
+                                             "<div class='row recipe-item-qty-edit' style='display:none'>" +
+                                             "<div class='row'><input type='text' class='form-control recipe-item-qty-textbox' placeholder='Quantity' value='" + qty + "'/></div>" +
+                                             "<div class='pull-right'> <button type='button' class='btn btn-sm btn-primary kititem-edit-qty-buttons' data-action='EditSelectedKitItem' data-id='" + id + "'><b class='fa fa-save'></b></button><button type='button' class='btn btn-sm btn-danger kititem-edit-qty-buttons'><b class='fa fa-times'></b></button></div>" +
+                                             "</div></div>");
+                });
+            });
+        }
+
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+            column.Caption = "Actions";
+
+            column.SetDataItemTemplateContent(m =>
+            {
+                var id = (int)DataBinder.Eval(m.DataItem, "ProductId");
+
+                ViewContext.Writer.Write("<a class='btn fa fa-trash' role='button' data-valueid='" + id + "' data-action='DeleteSelectedKitItem' title='Remove Kit Item' data-controller='Products' id='deleteBtn' data-title='Remove Kit' data-message='This cannot be reversed, are you sure you want to remove this Kit item?' data-toggle='modal' data-target='#confirm-delete'></a>");
+
+            });
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "function(s,e){   ModalProductKitAdd_EndCallback(s,e); }";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()
