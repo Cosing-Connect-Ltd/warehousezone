@@ -1,0 +1,260 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantWebsites
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit },
+          new Script { ExtensionType = ExtensionType.UploadControl }
+        )
+}
+
+@{
+    ViewBag.Title = "Edit Tenant Website";
+}
+
+<h2><span> Tenant Website</span></h2>
+@Html.Hidden("tenantWebsite", true)
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.SiteID)
+    <div class="col-md-12">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-6 p-0 pull-left mb-2">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SiteName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SiteName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SiteDescription, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SiteDescription, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.Theme, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EnumDropDownListFor(model => model.Theme, "Select Theme", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Theme, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.HostName, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.HostName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HostName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.BaseFilePath, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.BaseFilePath, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BaseFilePath, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.FooterText, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(model => model.FooterText, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.FooterText, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.WebsiteContactAddress, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.WebsiteContactAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.WebsiteContactAddress, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.WebsiteContactPhone, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.WebsiteContactPhone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.WebsiteContactPhone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.WebsiteContactEmail, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.WebsiteContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.WebsiteContactEmail, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.HomeTopCategoryText, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.HomeTopCategoryText, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HomeTopCategoryText, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.HomeFeaturedProductText, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.HomeFeaturedProductText, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HomeFeaturedProductText, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.FeaturedTagId, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.FeaturedTagId, ViewBag.ProductTag as SelectList, "Select Tag", htmlAttributes: new { @class = "form-control chosen-select" })
+                    @Html.ValidationMessageFor(model => model.FeaturedTagId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.HomeOurBrandsText, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.HomeOurBrandsText, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HomeOurBrandsText, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.IsCollectionAvailable, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsCollectionAvailable)
+                        @Html.ValidationMessageFor(model => model.IsCollectionAvailable, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.IsDeliveryAvailable, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsDeliveryAvailable)
+                        @Html.ValidationMessageFor(model => model.IsDeliveryAvailable, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6 p-0 pull-left mb-2">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.FacebookUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.FacebookUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FacebookUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.InstaGramUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.InstaGramUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InstaGramUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.TwitterUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.TwitterUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TwitterUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.LinkedInUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.LinkedInUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LinkedInUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.YoutubeUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.YoutubeUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.YoutubeUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.InstaGramUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.InstaGramUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InstaGramUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ContactPageUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ContactPageUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ContactPageUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Logo", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Action("_FileUploader", new { name = "Logo", filePath = Model.Logo })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("SmallLogo", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Action("_FileUploader", new { name = "SmallLogo", filePath = Model.SmallLogo })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Favicon", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Action("_FileUploader", new { name = "Favicon", filePath = Model.Favicon })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ShowPricesIncludingTax, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.ShowPricesIncludingTax)
+                        @Html.ValidationMessageFor(model => model.ShowPricesIncludingTax, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Default Price Group", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownList("DefaultPriceGroupId", ViewBag.PriceGroups as IEnumerable<SelectListItem>, "Select Price Group", new { @class = "chosen-select" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Is Internal Website", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsInternalWebsite)
+                        @Html.ValidationMessageFor(model => model.IsInternalWebsite, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+            </div>
+        </div>
+    </div>
+}

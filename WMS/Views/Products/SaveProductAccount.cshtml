@@ -1,0 +1,17 @@
+﻿@model  Ganedata.Core.Entities.Domain.ProductAccountCodes
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@Html.Partial("_ProductAccount", Model)

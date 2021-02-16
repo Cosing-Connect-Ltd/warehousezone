@@ -1,0 +1,77 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "User Permissions";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<script>
+    $(document).ready(function () {
+        // auto select parents of child checkboxes
+        $('input[type="checkbox"]').change(function (e) {
+            var checked = $(this).prop("checked"),
+                container = $(this).parent(),
+                siblings = container.siblings();
+
+            container.find('input[type="checkbox"]').prop({
+                indeterminate: false,
+                checked: checked
+            });
+
+            function checkSiblings(el) {
+                var parent = el.parent().parent(),
+                    all = true;
+
+                el.siblings().each(function () {
+                    return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+                });
+
+                if (all && checked) {
+                    parent.children('input[type="checkbox"]').prop({
+                        indeterminate: false,
+                        checked: checked
+                    });
+                    checkSiblings(parent);
+                } else if (all && !checked) {
+                    parent.children('input[type="checkbox"]').prop("checked", checked);
+                    parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
+                    checkSiblings(parent);
+                } else {
+                    el.parents("li").children('input[type="checkbox"]').prop({
+                        indeterminate: true,
+                        checked: false
+                    });
+                }
+            }
+            checkSiblings(container);
+        });
+    });
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.Raw(ViewBag.permissions)
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+        </div>
+    </div>
+}
+
+
+

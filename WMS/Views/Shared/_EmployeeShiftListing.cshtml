@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Ganedata.Core.Models.EmployeeShiftsViewModel>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+    new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+     new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+         new Script { ExtensionType = ExtensionType.GridView },
+          new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Employee Shifts";
+    ViewBag.SectionTitle = "Employee Shifts";
+}
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+    function OnShiftsGridBeginCallback(s, e) {
+        e.customArgs["searchDate"] = ShiftDate.GetFormattedText("dd/MM/yyyy");
+        e.customArgs["ShiftId"] = $('.selkey').val();
+    }
+
+</script>
+<h2><span>In / Out</span></h2>
+<div class="col-md-12 mb-2 p-0 pull-left report-date-header">
+    <div class=" col-md-6 p-0 pull-right input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-4 pull-left ">
+            <label>Search Date:</label>
+        </div>
+        <div class="col-md-8 p-0 pull-left">
+            @Html.DevExpress().DateEdit(m =>
+       {
+           m.Name = "ShiftDate";
+           m.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+           m.ControlStyle.CssClass = "form-control";
+           m.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+           m.Properties.ClientSideEvents.DateChanged = "function(s,e){ EmployeeShiftsGridview.Refresh(); }";
+           m.Properties.ClientSideEvents.KeyPress = "function(s,e){ EmployeeShiftsGridview.Refresh(); }";
+
+       }).Bind(DateTime.UtcNow).GetHtml()
+
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    @Html.Action("EmployeesShiftsGridview", "EmployeeShifts", new { searchDate = DateTime.UtcNow.ToString("dd/MM/yyyy") })
+</div>
+<div class="col-md-12 p-0">
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("EmployeeShifts", "Create"))
+        {
+            <a href="javascript:;" onclick="AddEditTimings(this);" class="btn btn-primary" id="add">Create New</a>
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("EmployeeShifts", "Edit"))
+        {
+            <a href="javascript:;" onclick="AddEditTimings(this);" class="btn btn-primary">Update</a>
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("EmployeeShifts", "Delete"))
+        {
+            <a href="javascript:;" onclick="deleteResourcesShift();" class="btn btn-primary">Delete</a>
+        }
+
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+}
+<script type="text/html" id="custom-dx-date">
+    <div data-bind="dxDateBox: { value: value.extend({ throttle: 500 }), closeOnValueChange: true, format: 'date', disabled: disabled }, dxValidator: { validationRules: validationRules || [] }"></div>
+</script>
+<script type="text/javascript">
+    function designer_CustomizeParameterEditors(s, e) {
+        if (e.parameter.type == "System.DateTime") {
+            e.info.editor.header = 'custom-dx-date';
+        }
+    }
+</script>
+@{
+    ViewBag.Title = "MarketTotalReport";
+}
+
+<h2><span>Market Total Report</span></h2>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "MarketTotalReportDocumentViewer";
+    settings.ClientSideEvents.CustomizeParameterEditors = "designer_CustomizeParameterEditors";
+
+}).Bind(Model).GetHtml()
+

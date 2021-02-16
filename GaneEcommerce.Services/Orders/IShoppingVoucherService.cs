@@ -26,6 +26,10 @@ namespace Ganedata.Core.Services
         List<ShoppingVoucherValidationResponseModel> GetAllValidUserVouchers(int userId, string email, string phone);
         bool LoadDefaultSystemVouchersForNewUser(int userId);
         void TriggerRewardsBasedForCurrentVoucher(int userId, int oldPoint, int newPoint, int? orderId = 0, bool noVouchers = false);
+        RewardPointTrigger GetRewardTriggerById(int id);
+        RewardPointTrigger SaveRewardTrigger(RewardPointTrigger trigger, int userId);
+
+        List<RewardPointTrigger> GetAllValidRewardTriggers(int tenantId, DateTime? onlyUpdatedAfter = null, bool includeDeleted = false);
     }
 
     public class ShoppingVoucherService : IShoppingVoucherService
@@ -196,6 +200,14 @@ namespace Ganedata.Core.Services
 
         public void TriggerRewardsBasedForCurrentVoucher(int userId, int oldPoint, int newPoint, int? orderId = null, bool noVouchers=false)
         {
+            var rewardTriggers = _currentDbContext.RewardPointTriggers
+                .Where(m => m.TriggerType == VoucherDiscountTriggerEnum.OnReachingPoints)
+                .OrderBy(m => m.LoyaltyPointToTrigger).ToList();
+
+            var point1 = rewardTriggers[0];
+            var point2 = rewardTriggers[1];
+            var point3 = rewardTriggers[2];
+
             var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserId == userId && m.IsActive && m.IsDeleted != true);
             if (user != null && user.AccountId.HasValue)
             {
@@ -215,44 +227,56 @@ namespace Ganedata.Core.Services
                         _currentDbContext.SaveChanges();
                     }
 
-                    if (oldPoint < 400 && newPoint >= 400 && newPoint<800)
+                    if (oldPoint < point1.LoyaltyPointToTrigger && newPoint >= point1.LoyaltyPointToTrigger && newPoint< point2.LoyaltyPointToTrigger)
                     {
                         var product400 = _currentDbContext.ProductMaster.FirstOrDefault(m =>  m.ProductId == LoyaltyPoint400RewardProductId);
+                        
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
+                        
                         var voucher400 = GetVoucher(freeItemVoucher, userId,
-                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint400RewardProductId, $"400 Loyalty Points - Free ({product400?.Name})");
+                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint400RewardProductId, $"{point1.LoyaltyPointToTrigger} Loyalty Points - Free ({product400?.Name})");
+                        voucher400.RewardProductId = point1.ShoppingVoucher.RewardProductId;
+                        voucher400.DiscountType = point1.ShoppingVoucher.DiscountType;
+                        voucher400.DiscountFigure = point1.ShoppingVoucher.DiscountFigure;
+
                         _currentDbContext.ShoppingVouchers.Add(voucher400);
 
-                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -400, LoyaltyPoint400RewardProductId);
+                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point1.LoyaltyPointToTrigger??400), LoyaltyPoint400RewardProductId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
                         _currentDbContext.SaveChanges();
                         return;
                     }
-                    if (oldPoint < 800 && newPoint >= 800 && newPoint < 1200)
+                    if (oldPoint < point2.LoyaltyPointToTrigger && newPoint >= point2.LoyaltyPointToTrigger && newPoint < point3.LoyaltyPointToTrigger)
                     {
                         var product800 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint800RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher800 = GetVoucher(freeItemVoucher, userId,
-                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint800RewardProductId, $"800 Loyalty Points - Free ({product800?.Name})");
+                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint800RewardProductId, $"{point2.LoyaltyPointToTrigger} Loyalty Points - Free ({product800?.Name})");
+                        voucher800.RewardProductId = point1.ShoppingVoucher.RewardProductId;
+                        voucher800.DiscountType = point1.ShoppingVoucher.DiscountType;
+                        voucher800.DiscountFigure = point1.ShoppingVoucher.DiscountFigure;
                         _currentDbContext.ShoppingVouchers.Add(voucher800);
 
-                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -800, LoyaltyPoint800RewardProductId);
+                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point1.LoyaltyPointToTrigger ?? 800), LoyaltyPoint800RewardProductId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
                         _currentDbContext.SaveChanges();
                         return;
                     }
-                    if (oldPoint < 1200 && newPoint >= 1200)
+                    if (oldPoint < point3.LoyaltyPointToTrigger && newPoint >= point3.LoyaltyPointToTrigger)
                     {
                         var product1200 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint1200RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher1200 = GetVoucher(freeItemVoucher, userId,
-                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint1200RewardProductId, $"1200 Loyalty Points - Free ({product1200?.Name})");
+                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint1200RewardProductId, $"{point3.LoyaltyPointToTrigger} Loyalty Points - Free ({product1200?.Name})");
+                        voucher1200.RewardProductId = point1.ShoppingVoucher.RewardProductId;
+                        voucher1200.DiscountType = point1.ShoppingVoucher.DiscountType;
+                        voucher1200.DiscountFigure = point1.ShoppingVoucher.DiscountFigure;
                         _currentDbContext.ShoppingVouchers.Add(voucher1200);
 
-                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -1200, LoyaltyPoint1200RewardProductId);
+                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point1.LoyaltyPointToTrigger ?? 1200), LoyaltyPoint1200RewardProductId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
 
-                        account.AccountLoyaltyPoints = newPoint - 1200;
+                        account.AccountLoyaltyPoints = newPoint - (point1.LoyaltyPointToTrigger ?? 1200);
                         _currentDbContext.Entry(account).State = EntityState.Modified;
                         _currentDbContext.SaveChanges();
                         return;
@@ -275,7 +299,8 @@ namespace Ganedata.Core.Services
                 DiscountFigure = discountFigure,
                 RewardProductId = rewardProductId,
                 VoucherTitle = title,
-                MaximumAllowedUse = 1
+                MaximumAllowedUse = 1,
+                VoucherExpiryDate = DateTime.Now.AddDays(30)
             };
             return voucher;
         }
@@ -286,7 +311,7 @@ namespace Ganedata.Core.Services
             if (EnableDiscountForFirstOnlineOrder && !_currentDbContext.ShoppingVouchers.Any(m => m.VoucherCode.ToLower().Equals(FirstOrderOnlineDiscountVoucher) && m.VoucherUserId == userId))
             {
                 var firstOnlineOrderVoucher = GetVoucher(FirstOrderOnlineDiscountVoucher, userId,
-                    ShoppingVoucherDiscountTypeEnum.Percentage, userId, FirstOrderOnlineDiscountPercent, null, FirstOrderOnlineDiscountPercent+ "% off first order");
+                    ShoppingVoucherDiscountTypeEnum.Percentage, userId, FirstOrderOnlineDiscountPercent, null, FirstOrderOnlineDiscountPercent+ "% off first on any order");
                 firstOnlineOrderVoucher.MinimumOrderPrice = FirstOrderOnlineDiscountMinimumOrderValue;
                 firstOnlineOrderVoucher.VoucherExpiryDate = DateTime.Now.AddDays(10);
                 _currentDbContext.ShoppingVouchers.Add(firstOnlineOrderVoucher);
@@ -297,7 +322,7 @@ namespace Ganedata.Core.Services
             if (EnableDiscountForFirstDeliveryOrder && !_currentDbContext.ShoppingVouchers.Any(m => m.VoucherCode.ToLower().Equals(FirstOrderHomeDeliveryDiscountVoucher) && m.VoucherUserId == userId))
             {
                 var firstOnlineOrderVoucher = GetVoucher(FirstOrderHomeDeliveryDiscountVoucher, userId,
-                    ShoppingVoucherDiscountTypeEnum.Percentage, userId, FirstOrderHomeDeliveryDiscountPercent, null, FirstOrderHomeDeliveryDiscountPercent+"% off first order");
+                    ShoppingVoucherDiscountTypeEnum.Percentage, userId, FirstOrderHomeDeliveryDiscountPercent, null, FirstOrderHomeDeliveryDiscountPercent+"% off first delivery order");
                 firstOnlineOrderVoucher.VoucherExpiryDate = DateTime.Now.AddDays(10);
                 _currentDbContext.ShoppingVouchers.Add(firstOnlineOrderVoucher);
                 _currentDbContext.SaveChanges();
@@ -367,12 +392,23 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.ShoppingVouchers.FirstOrDefault(m => m.ShoppingVoucherId == shoppingVoucherId);
         }
+        public RewardPointTrigger GetRewardTriggerById(int id)
+        {
+            return _currentDbContext.RewardPointTriggers.FirstOrDefault(m => m.RewardPointTriggerId == id);
+        }
 
         public List<ShoppingVoucher> GetAllValidShoppingVouchers(int tenantId, DateTime? onlyUpdatedAfter = null, bool includeDeleted = false)
         {
             return _currentDbContext.ShoppingVouchers.Where(m =>
                 (includeDeleted || m.IsDeleted != true) && (tenantId == 0 || (m.TenantId == tenantId || m.TenantId==null)) &&
-                (!onlyUpdatedAfter.HasValue || (m.DateUpdated ?? m.DateCreated) > onlyUpdatedAfter)).ToList();
+                (!onlyUpdatedAfter.HasValue || (m.DateUpdated ?? m.DateCreated) > onlyUpdatedAfter)).OrderByDescending(m=> m.DateCreated).ToList();
+        }
+
+        public List<RewardPointTrigger> GetAllValidRewardTriggers(int tenantId, DateTime? onlyUpdatedAfter = null, bool includeDeleted = false)
+        {
+            return _currentDbContext.RewardPointTriggers.Where(m =>
+                (includeDeleted || m.IsDeleted != true) && (tenantId == 0 || (m.TenantId == tenantId || m.TenantId == null)) &&
+                (!onlyUpdatedAfter.HasValue || (m.DateUpdated ?? m.DateCreated) > onlyUpdatedAfter)).OrderByDescending(m => m.DateCreated).ToList();
         }
 
         public ShoppingVoucher GetShoppingVoucherByVoucherCode(string voucherCode)
@@ -411,6 +447,27 @@ namespace Ganedata.Core.Services
             return voucher;
         }
 
+        public RewardPointTrigger SaveRewardTrigger(RewardPointTrigger trigger, int userId)
+        {
+            if (trigger.RewardPointTriggerId > 0)
+            {
+                trigger.UpdatedBy = userId;
+                trigger.DateUpdated = DateTime.Now;
+                _currentDbContext.Entry(trigger).State = EntityState.Modified;
+                _currentDbContext.Entry(trigger).Property(m => m.DateCreated).IsModified = false;
+                _currentDbContext.Entry(trigger).Property(m => m.CreatedBy).IsModified = false;
+            }
+            else
+            {
+                trigger.CreatedBy = userId;
+                trigger.DateCreated = DateTime.Now;
+                _currentDbContext.RewardPointTriggers.Add(trigger);
+            }
+
+            _currentDbContext.SaveChanges();
+            return trigger;
+        }
+
         public void DeleteShoppingVoucher(int voucherId, int userId)
         {
             var voucher = GetShoppingVoucherById(voucherId);
@@ -423,7 +480,7 @@ namespace Ganedata.Core.Services
             var vouchers = _currentDbContext.ShoppingVouchers.Where(m =>
                 m.IsDeleted != true && userId != 0 && m.VoucherUser!=null && m.VoucherUsedDate ==null
                 && (m.VoucherUser.UserEmail!=null && m.VoucherUser.UserEmail.ToLower().Equals(email.ToLower())) 
-                && (m.VoucherUser.UserMobileNumber!=null && m.VoucherUser.UserMobileNumber.EndsWith(phone.Trim()) )).Select(MapVoucherToModel).ToList();
+                && (m.VoucherUser.UserMobileNumber!=null && m.VoucherUser.UserMobileNumber.EndsWith(phone.Trim()) )).OrderByDescending(m=> m.DateCreated).Select(MapVoucherToModel).ToList();
             return vouchers;
         }
     }

@@ -1,0 +1,74 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@model Ganedata.Core.Entities.Domain.Order
+
+<div class="col-md-12 p-0">
+    <div id="so-shipment-info" style="visibility: @(ViewBag.IsShipmentToAccountAddress == true ? "visible" : "hidden")">
+        <div class="order-shipmentinfo-panes">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <div class="col-md-4 pull-left">
+                    <label class="checkbox-inline"><input type="radio" value="1" @(ViewBag.IsShipmentToAccountAddress == true ? "checked" : "") name="SOShipmentDestination" /> Existing Address </label>
+                </div>
+                <div class="col-md-4 pull-left">
+                    <label class="checkbox-inline"><input type="radio" value="2" name="SOShipmentDestination" @(ViewBag.IsShipmentToCustomAddress == true ? "checked" : "") /> New address </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 order-shipmentinfo-panes" id="divDisplayAccountAddresses" style="visibility: @(ViewBag.IsShipmentToAccountAddress == true ? "visible" : "hidden")">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.DropDownList("ShipmentAccountAddressId", ViewBag.AccountAddresses as IEnumerable<SelectListItem>, new { @class = "chosen-select form-control" })
+            </div>
+        </div>
+        <div class="col-md-12 order-shipmentinfo-panes" id="divCustomShipmentAddress">
+            <h2><span>Shipment Address</span></h2>
+            <div class="col-md-6 float-left address-detail">
+                @Html.Label("Address Name", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.ShipmentAddressName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ShipmentAddressName)
+                </div>
+            </div>
+            <div class="col-md-6 float-left address-detail">
+                @Html.Label("Address Line 1", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.ShipmentAddressLine1, new { @class = "form-control", @required = "required" })
+                    @Html.ValidationMessageFor(model => model.ShipmentAddressLine1)
+                </div>
+            </div>
+            <div class="col-md-6 float-left address-detail">
+                @Html.Label("Address Line 2", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.ShipmentAddressLine2, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6 float-left address-detail">
+                @Html.Label("Address Line 3", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.ShipmentAddressLine3, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6 float-left address-detail">
+                @Html.Label("PostCode", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.ShipmentAddressPostcode, new { @class = "form-control", @required = "required" })
+                </div>
+            </div>
+            <div class="col-md-6 float-left address-detail">
+                @Html.Label("Town", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.ShipmentAddressTown, new { @class = "form-control", @required = "required" })
+                </div>
+            </div>
+            <div class="col-md-6 float-left address-detail">
+                @Html.Label("Country", htmlAttributes: new { @class = "col-md-4 required-asterisk" })
+                <div class="col-md-8">
+                    @Html.DropDownList("ShipmentCountryId", ViewBag.Countries as SelectList, new { @class = "chosen-select form-control required", @required = "required" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.CheckBox("AddAddressToAccount", false)
+                <label class="checkbox-inline control-label">Tick to add this Account Shipment Addresses</label>
+            </div>
+        </div>
+    </div>
+</div>

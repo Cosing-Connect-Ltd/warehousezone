@@ -11,6 +11,8 @@ namespace WMS.App_Start
 
     public class ThemedRazorViewEngine : RazorViewEngine
     {
+        public static bool ThemingEnabled = false;
+
         private string[] _newAreaViewLocations = new string[] {
         "~/Areas/{2}/Views/Theme/%1/{1}/{0}.cshtml",
         "~/Areas/{2}/Views/Theme/%1/{1}/{0}.vbhtml",
@@ -56,18 +58,22 @@ namespace WMS.App_Start
         public ThemedRazorViewEngine()
             : base()
         {
+            if (ThemingEnabled)
+            {
+                AreaViewLocationFormats = AppendLocationFormats(_newAreaViewLocations, AreaViewLocationFormats);
 
-            AreaViewLocationFormats = AppendLocationFormats(_newAreaViewLocations, AreaViewLocationFormats);
+                AreaMasterLocationFormats = AppendLocationFormats(_newAreaMasterLocations, AreaMasterLocationFormats);
 
-            AreaMasterLocationFormats = AppendLocationFormats(_newAreaMasterLocations, AreaMasterLocationFormats);
+                AreaPartialViewLocationFormats =
+                    AppendLocationFormats(_newAreaPartialViewLocations, AreaPartialViewLocationFormats);
 
-            AreaPartialViewLocationFormats = AppendLocationFormats(_newAreaPartialViewLocations, AreaPartialViewLocationFormats);
+                ViewLocationFormats = AppendLocationFormats(_newViewLocations, ViewLocationFormats);
 
-            ViewLocationFormats = AppendLocationFormats(_newViewLocations, ViewLocationFormats);
+                MasterLocationFormats = AppendLocationFormats(_newMasterLocations, MasterLocationFormats);
 
-            MasterLocationFormats = AppendLocationFormats(_newMasterLocations, MasterLocationFormats);
-
-            PartialViewLocationFormats = AppendLocationFormats(_newPartialViewLocations, PartialViewLocationFormats);
+                PartialViewLocationFormats =
+                    AppendLocationFormats(_newPartialViewLocations, PartialViewLocationFormats);
+            }
         }
 
         private string[] AppendLocationFormats(string[] newLocations, string[] defaultLocations)
@@ -80,17 +86,29 @@ namespace WMS.App_Start
 
         protected override IView CreateView(ControllerContext controllerContext, string viewPath, string masterPath)
         {
-            return base.CreateView(controllerContext, viewPath.Replace("%1", GetThemeName()), masterPath);
+            if (ThemingEnabled)
+            {
+                return base.CreateView(controllerContext, viewPath.Replace("%1", GetThemeName()), masterPath);
+            }
+            return base.CreateView(controllerContext, viewPath, masterPath);
         }
 
         protected override IView CreatePartialView(ControllerContext controllerContext, string partialPath)
         {
-            return base.CreatePartialView(controllerContext, partialPath.Replace("%1", GetThemeName()));
+            if (ThemingEnabled)
+            {
+                return base.CreatePartialView(controllerContext, partialPath.Replace("%1", GetThemeName()));
+            }
+            return base.CreatePartialView(controllerContext, partialPath);
         }
 
         protected override bool FileExists(ControllerContext controllerContext, string virtualPath)
         {
-            return base.FileExists(controllerContext, virtualPath.Replace("%1", GetThemeName()));
+            if (ThemingEnabled)
+            {
+                return base.FileExists(controllerContext, virtualPath.Replace("%1", GetThemeName()));
+            }
+            return base.FileExists(controllerContext, virtualPath);
         }
 
         public string GetThemeName()

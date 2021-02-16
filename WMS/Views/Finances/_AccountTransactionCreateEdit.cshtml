@@ -1,0 +1,98 @@
+﻿@using System.Web.UI.WebControls
+@model Ganedata.Core.Models.AccountTransactionViewModel
+@using Ganedata.Core.Entities.Enums
+@{
+    ViewBag.Title = "Account Transaction - " + (Model.AccountTransactionId > 0 ? "Edit" : "Create");
+}
+<h2><span>@ViewBag.Title</span></h2>
+<form class="form-horizontal" action="/Account/SaveAccountTransaction" method="post" id="frmAccountTransaction">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(c => c.AccountTransactionId)
+    @*@Html.HiddenFor(c => c.AccountTransactionTypeId)*@
+
+    <div class="col-md-12 p-0">
+
+        <div class="input-group row h-100 justify-content-center align-items-center">
+            <div class="col-md-12">
+                @Html.ValidationSummary()
+            </div>
+        </div>
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert-success col-md-12">
+                @ViewBag.Message
+            </div>
+        }
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Account", new { @class = "col-md-4 control-label" })
+            @if (Model.AccountTransactionId > 0)
+            {
+
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.AccountId, new SelectList(ViewBag.Accounts, "Value", "Text", Model.AccountId), new { @class = "chosen-select", disabled = "disabled" })
+                </div>
+            }
+            else
+            {
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.AccountId, new SelectList(ViewBag.Accounts, "Value", "Text", Model.AccountId), new { @class = "chosen-select" })
+                </div>
+
+            }
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Account Transaction Type", new { @class = "col-md-4 control-label" })
+
+            @if (Model.AccountTransactionId > 0)
+            {
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.AccountTransactionTypeId, EnumHelper.GetSelectList(typeof(AccountTransactionTypeEnum)), new { @class = "chosen-select", disabled = "disabled" })
+                </div>
+            }
+            else
+            {
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.AccountTransactionTypeId, EnumHelper.GetSelectList(typeof(AccountTransactionTypeEnum)), new { @class = "chosen-select " })
+                </div>
+            }
+
+        </div>
+
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Amount Received", new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @if (Model.AccountTransactionId < 1)
+                {
+                    @Html.DevExpress().SpinEdit(m =>
+                    {
+                        m.Name = "Amount";
+                        m.ControlStyle.CssClass = "form-control";
+                        m.Properties.MinValue = 0;
+                        m.Properties.MaxValue = 999999;
+                        m.Width = Unit.Percentage(100);
+                        m.Enabled = Model.AccountTransactionId < 1;
+                        m.Properties.NullText = "Amount";
+                    }).GetHtml()
+                }
+                else
+                {
+                    <div class="alert alert-danger m-0 mb-2">@Model.Amount.ToString("0.00")</div>
+                    <div class="col-md-12 p-1 alert alert-info">You can only update notes or mode of payment. Please add a negative transaction to tally the totals with notes.</div>
+                }
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Transaction Notes", new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.Notes, new { @placeholder = "Description", @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+        <input type="button" class="btn btn-primary" id="saveBtn_Markets" onclick="SaveAccountTransaction()" value="Save" />
+        <input type="button" onclick="ModalEditAccountTransaction.Hide()" class="btn btn-default" id="saveBtn_CancelMarkets" value="Cancel" />
+    </div>
+</form>

@@ -1,0 +1,255 @@
+﻿@model Ganedata.Core.Entities.Domain.AuthUserGroups
+
+@{
+    ViewBag.Title = "Create";
+
+}
+
+
+<h2><span>Add User Group</span></h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-12">
+        <div class="col-md-6 p-0 pull-left mb-2">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.GroupAdministrators, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.GroupAdministrators, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.GroupAdministrators, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ShippingMargin, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ShippingMargin, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ShippingMargin, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ProductMarkup, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ProductMarkup, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ProductMarkup, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.BillingCompanyName, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.BillingCompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BillingCompanyName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.BillingAddressLine1, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.BillingAddressLine1, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BillingAddressLine1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.BillingAddressLine2, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.BillingAddressLine2, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BillingAddressLine2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.Region, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Region, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Region, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.PostCode, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.PostCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PostCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.CountryId, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownList("CountryId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.MaxProductsPerOrder, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.MaxProductsPerOrder, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MaxProductsPerOrder, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AccountNumber, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowPriceBreaks, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.AllowPriceBreaks)
+                        @Html.ValidationMessageFor(model => model.AllowPriceBreaks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+       
+
+        </div>
+        <div class="col-md-6 p-0 pull-left mb-2">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowEnquiries, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.AllowEnquiries)
+                        @Html.ValidationMessageFor(model => model.AllowEnquiries, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowBaskets, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.AllowBaskets)
+                        @Html.ValidationMessageFor(model => model.AllowBaskets, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowCheckout, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.AllowCheckout)
+                        @Html.ValidationMessageFor(model => model.AllowCheckout, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.DefaultForWebRegistration, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.DefaultForWebRegistration)
+                        @Html.ValidationMessageFor(model => model.DefaultForWebRegistration, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SuperUserAccess, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.SuperUserAccess)
+                        @Html.ValidationMessageFor(model => model.SuperUserAccess, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowSagePay, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.AllowSagePay)
+                        @Html.ValidationMessageFor(model => model.AllowSagePay, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowPayPal, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.AllowPayPal)
+                        @Html.ValidationMessageFor(model => model.AllowPayPal, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowInvoice, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.AllowInvoice)
+                        @Html.ValidationMessageFor(model => model.AllowInvoice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowProformaInvoice, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.AllowProformaInvoice)
+                        @Html.ValidationMessageFor(model => model.AllowProformaInvoice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowFoC, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.AllowFoC)
+                        @Html.ValidationMessageFor(model => model.AllowFoC, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" class="btn btn-primary" value="Create" />
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+        </div>
+    </div>
+}

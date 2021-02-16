@@ -1,0 +1,55 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "AuthUserGroupGridView";
+        settings.CallbackRouteValues = new
+        {
+            Controller = "AuthUserGroups",
+            Action = "_authUsersGroupsList",
+           
+        };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "GroupId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Columns.Add("Name");
+        settings.Columns.Add("GroupAdministrators");
+        settings.Columns.Add("AllowEnquiries");
+        settings.Columns.Add("AllowBaskets");
+        settings.Columns.Add("SuperUserAccess");
+        settings.Columns.Add("MaxProductsPerOrder");
+        settings.Columns.Add("ShippingMargin");
+        settings.Columns.Add("ProductMarkup");
+        settings.Columns.Add("GlobalCountry.CountryName");
+        settings.Columns.Add("BillingCompanyName");
+        settings.Columns.Add("BillingAddressLine1");
+        settings.Columns.Add("BillingAddressLine2");
+        settings.Columns.Add("City");
+        settings.Columns.Add("PostCode");
+        settings.Columns.Add("IsActive");
+
+
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()
+
+
+

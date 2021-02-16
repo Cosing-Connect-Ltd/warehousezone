@@ -1,0 +1,125 @@
+﻿@using Ganedata.Core.Entities.Enums
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "NotificationQueueGridView";
+        settings.CallbackRouteValues = new
+        {
+            Controller = "TenantEmailNotificationQueues",
+            Action = "_NotificationQueue"
+        };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "TenantEmailNotificationQueues", Action = "_NotificationQueueListPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "TenantEmailNotificationQueues", Action = "_NotificationQueueFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "TenantEmailNotificationQueues", Action = "_NotificationQueueGetDataSorting" }
+        );
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.KeyFieldName = "TenantEmailNotificationQueueId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TenantEmailNotificationQueueId";
+            c.Caption = "Id";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNumber";
+            c.Caption = "Order Number";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "EmailSubject";
+            c.Caption = "Email Subject";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "InvoiceNumber";
+            c.Caption = "Invoice Number";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CustomEmailMessage";
+            c.Caption = "Email Message";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CustomRecipients";
+            c.Caption = "Custom Recipients";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TenantEmailTemplate";
+            c.Caption = "Email Template";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetNames(typeof(WorksOrderNotificationTypeEnum));
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AppointmentSubject";
+            c.Caption = "Appointment Subject";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "IsNotificationCancelled";
+            c.Caption = "Notification Cancelled";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ScheduledProcessingTime";
+            c.Caption = "Scheduled Processing Time";
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+
+        });
+//c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+});
+
+
+}
+@grid.BindToCustomData(Model).GetHtml()

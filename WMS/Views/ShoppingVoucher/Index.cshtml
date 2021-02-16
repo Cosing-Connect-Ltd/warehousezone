@@ -1,0 +1,81 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Manage Discount Vouchers";
+}
+
+<script>
+    $(document).ready(function() {
+        $("#tabs").tabs({});
+    });
+</script>
+
+<div id="tabs" style="visibility: hidden">
+ 
+<ul>
+    <li><a href="#DiscountVouchers">Discount Vouchers</a></li>
+    <li><a href="#RewardPointTriggers">Reward Point Triggers</a></li> 
+</ul>
+<div id="DiscountVouchers">
+<h3><span>@ViewBag.Title</span></h3>
+
+<div class="table-responsive col-md-12 p-0">
+    @if (ViewBag.ResultsCount != null)
+    {
+        <div class="alert-success col-md-12" id="shoppingVoucherRecordsLabel">
+            @ViewBag.ResultsCount Results
+        </div>
+    }
+
+    @Html.Action("ShoppingListPartial", "ShoppingVoucher")
+
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    <a class="btn btn-primary" href="@Url.Action("Create","ShoppingVoucher")"><b class="fa fa-plus"></b> Add Voucher</a>
+    <a class="btn btn-default" href="@Url.Action("UpdateAllUsersWithPersonalReferralCode","ShoppingVoucher")">Generate Referral Codes</a>
+</div>
+</div>
+<div id="RewardPointTriggers">
+
+    <h3><span>Reward Point Triggers</span></h3>
+
+
+    <div class="table-responsive col-md-12 p-0">
+        @if (ViewBag.ResultsCount != null)
+        {
+            <div class="alert-success col-md-12" id="shoppingVoucherRecordsLabel">
+                @ViewBag.ResultsCount Results
+            </div>
+        }
+
+        @Html.Action("RewardTriggersListPartial", "ShoppingVoucher")
+
+    </div>
+    <div class="col-sm-12">
+        <ul>
+            <li>Choose - How many loyalty points added for every £1 spent </li>
+            <li>Choose - How many days any voucher should be valid for? </li>
+            <li>Choose - How much % of discount for first Order</li>
+            <li>Choose - How much % of discount for first Order if Home Delivery</li>
+            <li>Choose - Free Product for Referring a friend</li>
+            <li></li>
+            <li>Choose Free Product at 400 Loyalty Points</li>
+            <li>Choose Free Product at 800 Loyalty Points</li>
+            <li>Choose Free Product at 1200 Loyalty Points</li>
+        </ul>
+    </div>
+</div>
+</div>
+ 

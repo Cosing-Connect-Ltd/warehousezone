@@ -1,0 +1,279 @@
+﻿@model Ganedata.Core.Entities.Domain.Tenant
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Client Detail";
+}
+
+<h2><span>Client Detail</span></h2>
+
+<div>
+    <dl class="dl-horizontal col-md-6 pull-left">
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantVatNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantVatNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantAccountReference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantAccountReference)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantWebsite)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantWebsite)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantDayPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantDayPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantEveningPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantEveningPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantMobilePhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantMobilePhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantFax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantFax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantAddress1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantAddress1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantAddress2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantAddress2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantAddress3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantAddress3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantAddress4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantAddress4)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountNumber)
+        </dd>
+
+
+    </dl>
+    <dl class="col-md-6 pull-left dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantStateCounty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantStateCounty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantPostalCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantPostalCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CountryID)
+        </dt>
+
+
+        <dd>
+            @if (Model.Country != null) { @Html.DisplayFor(model => model.Country.CountryName)}
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrencyID)
+        </dt>
+
+
+        <dd>
+            @if (Model.Currency != null) { @Html.DisplayFor(model => model.Currency.CurrencyName)}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantSubDmoain)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantSubDmoain)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductCodePrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductCodePrefix)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantCulture)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantCulture)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantTimeZoneId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantTimeZoneId)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @DateTimeToLocal.Convert(Model.DateCreated, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateUpdated)
+        </dt>
+
+        <dd>
+            @DateTimeToLocal.Convert(Model.DateUpdated, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @LayoutHelpers.GetUserName(Model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @LayoutHelpers.GetUserName(Model.UpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+
+    </dl>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <div class="back-list">@Html.ActionLink("Edit", "Edit", new { id = Model.TenantId }, new { @class = "btn btn-primary" })</div>
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,51 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@{
+    ViewBag.Title = "Activity Groups";
+}
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+<h2><span>Activity Groups</span></h2>
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<div class="col-md-12 p-0 View">
+    @Html.Action("_ActivityGroupList")
+</div>
+
+<div class="col-md-12 p-0">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ActivityGroup", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ActivityGroup", "Details"))
+    {
+        @Html.ActionLink("View", "Details", null, new { @class = "btn btn-primary  product-actions Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ActivityGroup", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  product-actions Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ActivityGroup", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  product-actions Caction" })
+    }
+
+</div>

@@ -1,0 +1,54 @@
+﻿@model Ganedata.Core.Entities.Domain.JobType
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Edit Job Type";
+}
+
+<h2><span>Edit Job Type</span></h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.JobTypeId)
+    @Html.HiddenFor(m => m.DateCreated)
+    @Html.HiddenFor(m => m.TenantId)
+    <div class="col-md-6 pull-left">
+        @Html.ValidationSummary(true)
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.AppointmentResources, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.ListBox("ResourceIds", ViewBag.Resources as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                <input type="submit" value="Save" class="btn btn-primary oAction" />
+                <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+            </div>
+        </div>
+    </div>
+
+}

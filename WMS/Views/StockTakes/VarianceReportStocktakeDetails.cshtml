@@ -1,0 +1,96 @@
+﻿@using System.Web.UI.WebControls
+@model Ganedata.Core.Entities.Domain.StockTakeReportResponse
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "StocktakeCurrentScans";
+        settings.CallbackRouteValues = new { Controller = "StockTakes", Action = "VarianceReportGridPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.KeyFieldName = "InventoryStockId";
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        var selectColumn = new MVCxGridViewColumn("InventoryStockId", "Select")
+        {
+            Width = Unit.Pixel(60),
+            CellStyle = { HorizontalAlign = HorizontalAlign.Center }
+        };
+
+        selectColumn.SetDataItemTemplateContent(m =>
+        {
+            var stockId = DataBinder.Eval(m.DataItem, "ProductId").ToString();
+            ViewContext.Writer.Write(Html.DevExpress().CheckBox(c =>
+            {
+                c.Name = "InventoryStock_" + stockId;
+                c.Attributes.Add("data-id", stockId);
+                c.Checked = true;
+                c.Attributes.Add("value", stockId);
+            }).GetHtml());
+
+            var prevQuantity = DataBinder.Eval(m.DataItem, "PreviousQuantity").ToString();
+            var currQuantity = DataBinder.Eval(m.DataItem, "CurrentQuantity").ToString();
+            var valueString = stockId + "," + prevQuantity + "," + currQuantity;
+            ViewContext.Writer.Write("<input type='hidden' name='InventoryStockv_" + stockId + "' value='" + valueString + "'/>");
+        });
+
+        settings.Columns.Add(selectColumn);
+
+        settings.Columns.Add("ProductCode");
+        settings.Columns.Add("ProductName");
+
+        settings.Columns.Add("PreviousQuantity");
+        settings.Columns.Add("CurrentQuantity");
+
+        var actionsColumn = new MVCxGridViewColumn("InventoryStockId", "Actions") { Width = Unit.Pixel(120), CellStyle = { HorizontalAlign = HorizontalAlign.Center } };
+        actionsColumn.SetDataItemTemplateContent(m =>
+        {
+            var serialised = (bool)DataBinder.Eval(m.DataItem, "IsSerialised");
+            var currQuantity = (decimal)DataBinder.Eval(m.DataItem, "CurrentQuantity");
+
+            if (serialised && currQuantity > 0)
+            {
+                var stockId = DataBinder.Eval(m.DataItem, "InventoryStockId").ToString();
+
+                ViewContext.Writer.Write("<div class='view-stocktake-serials' onclick='ASPx.GVShowDetailRow('accountsGridView'," + stockId + ",event);event.cancelBubble = true'><i class='fa fa-list stocktake-glyph-icons'></i> View Serials</div>");
+            }
+        });
+
+        settings.Columns.Add(actionsColumn);
+
+
+
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ stockTakeScanBeginCallback(s,e); }";
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+        settings.SettingsDetail.ShowDetailRow = true;
+        settings.SettingsDetail.ShowDetailButtons = true;
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            ViewContext.Writer.Write(
+                Html.DevExpress().PageControl(s =>
+                {
+                    s.EnableTabScrolling = true;
+                    s.Name = "pc" + DataBinder.Eval(c.DataItem, "ProductId").ToString();
+                    s.Width = Unit.Percentage(100);
+
+                    var tab1 = new MVCxTabPage("Product Serials");
+                    tab1.SetContent(() =>
+                    {
+                        ViewContext.Writer.Write(Html.Action("StockTakeCurrentProductSerialsPartial", new { id = DataBinder.Eval(c.DataItem, "ProductId"), stockTakeId = Model.CurrentStockTakeId }).ToHtmlString());
+                    });
+
+                    s.TabPages.Add(tab1);
+                }).GetHtml());
+        });
+    });
+}
+
+@grid.Bind(Model.StockTakeReportResponseItems).GetHtml()

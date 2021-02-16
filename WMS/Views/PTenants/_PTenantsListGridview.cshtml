@@ -1,0 +1,77 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "PPropertiesGridview" + ViewBag.PropertyId ?? "";
+        settings.CallbackRouteValues = new { Controller = "PTenants", Action = "PTenantsGridview", id = ViewBag.PropertyId ?? "" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CustomBindingRouteValuesCollection.Add(
+           GridViewOperationType.Paging,
+           new { Controller = "PTenants", Action = "_PTenantsGridViewsPaging" }
+       );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "PTenants", Action = "_PTenantsGridViewFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "PTenants", Action = "_PTenantsGridViewDataSorting" }
+        );
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+
+        settings.KeyFieldName = "PTenantId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("TenantCode");
+        settings.Columns.Add("CurrentPropertyCode");
+        settings.Columns.Add("TenantFullName");
+        settings.Columns.Add("Email", "Email");
+        settings.Columns.Add("AddressLine1");
+        settings.Columns.Add("AddressLine2");
+        settings.Columns.Add("AddressPostcode");
+
+        settings.Columns.Add("HomeTelephone", "Contact").SetDataItemTemplateContent(m =>
+        {
+            var homeTel = DataBinder.Eval(m.DataItem, "HomeTelephone") != null ? "Tel: " + DataBinder.Eval(m.DataItem, "HomeTelephone").ToString() : "";
+            var workTel1 = DataBinder.Eval(m.DataItem, "WorkTelephone1") != null ? "<br/>Work Tel1 :" + DataBinder.Eval(m.DataItem, "WorkTelephone1").ToString() : "";
+            var workTel2 = DataBinder.Eval(m.DataItem, "WorkTelephone2") != null ? "<br/>Work Tel2:" + DataBinder.Eval(m.DataItem, "WorkTelephone2").ToString() : "";
+            var workFax1 = DataBinder.Eval(m.DataItem, "WorkTelephoneFax") != null ? "<br/>Fax :" + DataBinder.Eval(m.DataItem, "WorkTelephoneFax").ToString() : "";
+            var mob = DataBinder.Eval(m.DataItem, "MobileNumber") != null ? "<br/>Mobile :" + DataBinder.Eval(m.DataItem, "MobileNumber").ToString() : "";
+            ViewContext.Writer.Write(homeTel + workTel1 + workTel2 + workFax1 + mob);
+        });
+
+        settings.Columns.Add("IsCurrentTenant");
+        settings.Columns.Add("IsFutureTenant");
+
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50", "100", "500" };
+
+        if (ViewBag.DisableCallBacks != null)
+        {
+            settings.Settings.ShowHeaderFilterButton = false;
+            settings.SettingsPager.Visible = false;
+            settings.Settings.ShowFilterRow = false;
+            settings.SettingsPager.PageSizeItemSettings.Visible = true;
+            settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+            settings.SettingsBehavior.AllowSort = false;
+        }
+
+    });
+}
+
+@grid.BindToCustomData(Model).GetHtml()

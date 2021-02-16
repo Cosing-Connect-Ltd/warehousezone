@@ -1,0 +1,11 @@
+﻿@using System.Web.UI.WebControls
+@model  Ganedata.Core.Entities.Domain.MarketRouteAccountViewModel
+
+<div class="route-box @(Model.IsSelected?"account-box-selected":"")" data-text="@Model.MarketName.ToLower()" data-id="@Model.MarketId">
+    <div class="route-box-order">
+        <b class="fa fa-truck"></b>
+    </div>
+    <div class="route-box-text" title="@Model.MarketName">
+        @Model.MarketName
+    </div>
+</div>

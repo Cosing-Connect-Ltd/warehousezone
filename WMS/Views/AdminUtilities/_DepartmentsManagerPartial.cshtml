@@ -1,0 +1,42 @@
+@using System.Web.UI.WebControls
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "DepartmentsManager";
+        settings.CallbackRouteValues = new { Controller = "AdminUtilities", Action = "DepartmentsManagerPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "AdminUtilities", Action = "DepartmentsManagerPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "AdminUtilities", Action = "DepartmentsManagerPartialUpdate" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Width = Unit.Percentage(100);
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.CellStyle.CssClass = "gridview-inline-links";
+        settings.KeyFieldName = "DepartmentId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DepartmentName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+    });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

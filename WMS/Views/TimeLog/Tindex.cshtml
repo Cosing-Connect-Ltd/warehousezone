@@ -1,0 +1,52 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "TimeLog";
+    ViewBag.SectionTitle = "TimeLog";
+}
+
+<script>
+    function OnShiftsGridBeginCallback(s, e) {
+        e.customArgs["years"] = $("#YearsList :selected").val();
+        e.customArgs["weeks"] = $("#WeekDaysList :selected").val();
+        e.customArgs["stores"] = $("#StoresList :selected").val();
+    }
+</script>
+
+
+
+
+
+<h2><span>Timelog</span></h2>
+<div class="col-md-12 report-date-header mb-2">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class ="col-md-3 pull-left mt-2">
+            @Html.DropDownList("StoresList", ViewBag.StoresList as List<SelectListItem>, new { @class = "form-control" })
+        </div>
+        <div class ="col-md-3 pull-left mt-2">
+            @Html.DropDownList("YearsList", ViewBag.yearList as List<SelectListItem>, new { @class = "form-control" })
+        </div>
+        <div class ="col-md-3 pull-left mt-2">
+            @Html.DropDownList("WeekDaysList", ViewBag.WeekDaysList as List<SelectListItem>, new { @class = "form-control", @placeholder = "@ViewBag.placeHolder" })
+        </div>
+
+
+        <div class ="col-md-3 text-center">
+            <a class="btn btn-primary" id="searchBtn_TimeLog">Search Log</a>
+            <a class="btn btn-primary" href="~/TimeLog/TimeLogReport?weekNumber=@ViewData["weekNumber"]&storesId=@ViewData["storesId"]&years= @ViewData["yearNumber"]" id="printReportBtn">Print</a>
+        </div>
+    </div>
+
+</div>
+@Html.Action("GridViewPartial", new { Id = ViewData["storesId"], weekNumber = ViewData["weekNumber"], YearsList = ViewData["yearNumber"] })

@@ -1348,7 +1348,7 @@ namespace Ganedata.Core.Services
                         OrderID = order.OrderID,
                         CreatedBy = order.CreatedBy,
                         OrderDateTime = order.DateCreated,
-                        PointsEarned = (int)Math.Round(order.OrderTotal, 1) * 50, //Todo: RH To be removed after testing
+                        PointsEarned = (int)Math.Round(order.OrderTotal, 1) * 20, //Todo: RH To be removed after testing
                         UserID = item.CreatedBy
                     };
                     _currentDbContext.AccountRewardPoints.Add(reward);

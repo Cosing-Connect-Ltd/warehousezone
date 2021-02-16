@@ -1,0 +1,106 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantEmailConfig
+@using Ganedata.Core.Entities.Helpers
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>TenantEmailConfig</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TenantId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TenantId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SmtpHost)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SmtpHost)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SmtpPort)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SmtpPort)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UserEmail)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UserEmail)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Password)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.EnableSsl)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EnableSsl)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DateUpdated)
+            </dt>
+
+            <dd>
+                @DateTimeToLocal.Convert(Model.DateUpdated, ViewBag.TimeZone)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UpdatedBy)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IsActive)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>

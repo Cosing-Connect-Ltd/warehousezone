@@ -1,0 +1,92 @@
+﻿@model Ganedata.Core.Models.ApiCredentialsViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Delete ApiCredential";
+}
+
+<h2><span>Delete ApiCredential</span></h2>
+<h3 class="alert alert-danger">Are you sure you want to delete this?</h3>
+<div class="form-horizontal col-md-6 pull-left">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ApiKey)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApiKey)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApiTypes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApiTypes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApiUrl)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApiUrl)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpiryDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExpiryDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AccountNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SiteName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SiteName)
+        </dd>
+
+    </dl>
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-actions no-color">
+                @Html.HiddenFor(m => m.Id)
+                <input type="submit" value="Delete" class="btn btn-primary" />
+                <div class="btn btn-default">@Html.ActionLink("Back to List", "Index", "null", null)</div>
+            </div>
+        }
+    </div>
+</div>

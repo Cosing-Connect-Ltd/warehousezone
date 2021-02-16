@@ -1,0 +1,64 @@
+@using Ganedata.Core.Entities.Domain
+@model  List<Ganedata.Core.Entities.Domain.RewardPointTrigger>
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "rewardsGridMaster";
+        settings.CallbackRouteValues = new { Controller = "ShoppingVoucher", Action = "RewardTriggersListPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Styles.Header.CssClass = "";
+        settings.Settings.ShowTitlePanel = true;
+        settings.ClientSideEvents.EndCallback = "function(s,e) { ShoppingVoucherGridCallbackEnds(s,e); } ";
+        settings.CustomJSProperties = (sender, e) =>
+        {
+            MVCxGridView grid = (MVCxGridView)sender;
+            e.Properties["cpVisibleRowCount"] = grid.VisibleRowCount;
+        };
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.KeyFieldName = "Id";
+        settings.Columns.Add("RewardPointTriggerId").Width = System.Web.UI.WebControls.Unit.Percentage(10);
+        settings.Columns.Add("Title", "Title").Width = System.Web.UI.WebControls.Unit.Percentage(25);
+        settings.Columns.Add("TriggerType", "TriggerType").Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        settings.Columns.Add("LoyaltyPointToTrigger", "LoyaltyPointToTrigger").Width = System.Web.UI.WebControls.Unit.Percentage(15);
+
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            column.Caption = "Voucher";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var voucher = (ShoppingVoucher)DataBinder.Eval(m.DataItem, "ShoppingVoucher");
+                if (voucher != null)
+                {
+                    ViewContext.Writer.Write(voucher.VoucherTitle + " - " + voucher.VoucherCode);
+                }
+            });
+        });
+
+        settings.Columns.Add("MaximumAllowed", "MaximumAllowed").Width = System.Web.UI.WebControls.Unit.Percentage(5);
+
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var id = (int)DataBinder.Eval(m.DataItem, "RewardPointTriggerId");
+                ViewContext.Writer.Write("<form class='form-horizontal' id='_deleteVoucher'>" + Html.AntiForgeryToken()
+                                         + "<a class='btn fa fa-pencil' href='/ShoppingVoucher/EditRewardTrigger/" + id + "' role='button'></a></form>");
+            });
+        });
+
+    }).Bind(Model).GetHtml()

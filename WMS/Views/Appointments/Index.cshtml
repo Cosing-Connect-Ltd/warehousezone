@@ -1,0 +1,326 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.Appointments>
+@using Ganedata.Core.Entities.Helpers
+
+@{
+    /**/
+
+    ViewBag.Title = "Works Order Scheduler";
+}
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+                new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+                new StyleSheet { ExtensionType = ExtensionType.Scheduler, Theme = GaneStaticAppExtensions.DevexTheme },
+                new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+                )
+
+    @Html.DevExpress().GetScripts(
+                new Script { ExtensionType = ExtensionType.GridView },
+                new Script { ExtensionType = ExtensionType.Scheduler },
+                new Script { ExtensionType = ExtensionType.DateEdit }
+                )
+}
+
+<h2><span>Works Order Scheduler</span></h2>
+
+<script>
+
+    // mouse refresh flag
+    var mouseRefresh = 0;
+    $(function () {
+        JobsAccordian();
+        // save refresh time on page load
+        $.cookie('JobsRefreshTime', new Date(), { path: '/' });
+
+        //check on mouse move if user was idle for more then 30 seconds then refresh page
+        $("#Scheduler").mousemove(function (event) {
+            var preDateTime = $.cookie('JobsRefreshTime');
+            var diffMSeconds = new Date().getTime() - new Date(preDateTime).getTime();
+            if (diffMSeconds > 30000 && mouseRefresh <= 0) {
+                mouseRefresh = 1;
+                Scheduler.Refresh();
+            }
+        });
+
+    });
+
+    function JobsAccordian() {
+        var act = 0;
+        $("#works-jobs").accordion({
+            create: function (event, ui) {
+                //get index in cookie on accordion create event
+                if ($.cookie('jobsh_index') != null) {
+                    act = $.cookie('jobsh_index');
+                    //alert($.cookie('saved_index'));
+                }
+            },
+            activate: function (event, ui) {
+                //set cookie for current index on change event
+                $.cookie('jobsh_index', null, { path: '/' });
+                var index = jQuery(this).find("h3").index(ui.newHeader[0]);
+                $.cookie('jobsh_index', index, { path: '/' });
+                //alert($.cookie('saved_index'));
+            },
+            active: parseInt($.cookie('jobsh_index')),
+            heightStyle: "content"
+        });
+    }
+
+    function AjaxCall() {
+        // get scroll values of divs and store in cookies
+        $.cookie('JobsByTradeScrolly', $("#JobsByTrade").scrollTop(), { path: '/' });
+        $.cookie('JobsByPriorityScrolly', $("#JobsByPriority").scrollTop(), { path: '/' });
+        //set last refresh time in Cookie
+        $.cookie('JobsRefreshTime', new Date(), { path: '/' });
+
+
+        $.ajax({
+            url: '@Url.Action("_ListWorksOrderJobs")',
+            type: 'GET',
+            cache: false
+        }).done(function (result) {
+            $('#DynamicRefresh').html("");
+            $('#DynamicRefresh').html(result);
+            $("#JobTabs").tabs({ active: $.cookie('ActiveJobTabsId') });
+            $("#JobTabs").on("tabsactivate", function (event, ui) { $.cookie('ActiveJobTabsId', ui.newTab.index(), { path: '/' }); });
+            // preserve scroll position
+            $("#JobsByTrade").scrollTop($.cookie('JobsByTradeScrolly'));
+            $("#JobsByPriority").scrollTop($.cookie('JobsByPriorityScrolly'));
+            JobsAccordian();
+            $(".draggable").draggable({ helper: 'clone', appendTo: 'body', zIndex: 100, cursor: "pointer" });
+        });
+
+        // refresh allocation stats as well
+
+        $.ajax({
+            url: '@Url.Action("_JobAlocationStats")',
+            type: 'GET',
+            cache: false
+        }).done(function (result) {
+            $('#DynamicRefresh2').html("");
+            $('#DynamicRefresh2').html(result);
+        });
+
+        // Refresh Grids and Scheduler
+        AllocatedJobs.Refresh();
+        ReallocationJobs.Refresh();
+        UnallocatedJobs.Refresh();
+
+        // reset Mouse Refresh flag
+        mouseRefresh = 0;
+    }
+
+    function OnAppointmentDeleting(s, e) {
+        //setTimeout(function () { AjaxCall(); }, 1000);
+    }
+
+    function OnAppointmentEndCallBack(s, e) {
+        AjaxCall();
+    }
+
+
+
+  function OnAppointmentEventsClick(s, e) {
+        var appointmentId = e.appointmentId;
+        var $link = $("a#WorksOrderReportLink");
+
+        if ($link.length < 1) {
+            var $link = $("<a id='WorksOrderReportLink' class='btn btn-default pull-right p-1' target='_blank' hreftemp='@Url.Action("PrintWorksOrderByAppointment", "WorksOrders", new {id = "APPTID"})' href='@Url.Action("PrintWorksOrderByAppointment", "WorksOrders", new {id = "APPTID"})'>Print Order</a>");
+            var url = $link.attr("hreftemp");
+            url = url.replace('APPTID', appointmentId);
+            $link.attr("href", url);
+            $(".main-left h2:eq(0)").append($link);
+        } else {
+            var url = $link.attr("hreftemp");
+            url = url.replace('APPTID', appointmentId);
+            $link.attr("href", url);
+        }
+    }
+
+    function PrintWorksOrderByAppointmentId(appointmentId) {
+        var url = '@Url.Action("PrintWorksOrderByAppointment", "WorksOrders", new {id = "APPTID"})';
+        url = url.replace('APPTID', appointmentId);
+        location.href = url;
+    }
+
+    function SelectedValueChanged() {
+        Scheduler.Refresh();
+    }
+
+    function UASelectedValueChanged() {
+        UnallocatedJobs.Refresh();
+    }
+
+    function RASelectedValueChanged() {
+        ReallocationJobs.Refresh();
+    }
+
+
+
+    function OnBeginCallback(s, e) {
+        e.customArgs['SelectedJobType'] = $('#JobTypeId').val();
+        e.customArgs['UASelectedJobType'] = $('#UAJobTypeId').val();
+        e.customArgs['RASelectedJobType'] = $('#RAJobTypeId').val();
+    }
+
+</script>
+
+@Html.Hidden("selkeyWorksOrderListGridViewAllocated")
+@Html.Hidden("selkeyWorksOrderListGridViewGridName")
+
+<div class="col-md-12 p-0 legend-pane">
+    <p class="pull-left" style="text-align:left;margin-bottom:0px"><label style="height:12px;width:24px;background-color:lightgreen;vertical-align:middle"></label> Low </p>
+    <p class="pull-left" style="text-align:left;margin-bottom:0px"><label style="height:12px;width:24px;background-color:yellow;vertical-align:middle"></label>  Medium</p>
+    <p class="pull-left" style="text-align:left;margin-bottom:0px"><label style="height:12px;width:24px;background-color:coral;vertical-align:middle"></label>  High</p>
+    <p class="pull-left" style="text-align:left;margin-bottom:0px"> <span>(R)</span> Reallocation Required</p>
+    <span id="DynamicRefresh2" class="pull-right">@Html.Action("_JobAlocationStats")</span>
+    <div class="clearfix"></div>
+</div>
+
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#Scheduler">Scheduler</a></li>
+        <li><a href="#Unallocated">Unallocated Jobs</a></li>
+        <li><a href="#Allocated">Allocated</a></li>
+        <li><a href="#Reallocation">Reallocation Required</a></li>
+    </ul>
+    <div id="Scheduler">
+        <div id="DynamicRefresh" class ="col-md-4 pull-left">
+            @Html.Action("_ListWorksOrderJobs")
+        </div>
+        <div class="col-md-8 p-0 pull-left">
+            <div class="col-md-12 report-date-header">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <div class="col-md-12 text-center">
+                        <div class="input-group h-100 justify-content-center align-items-center">
+                            @Html.Label("Filter By Job Type", htmlAttributes: new { @class = "col-md-5" })
+                            <div class="col-md-7">
+                                @Html.DropDownList("JobTypeId", ViewBag.ResourcejobTypes as IEnumerable<SelectListItem>, new { @class = "chosen-select", onchange = @"SelectedValueChanged();" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="droppable col-md-12 p-0">
+                @Html.Action("SchedulerPartial")
+            </div>
+        </div>
+    </div>
+    <div id="Unallocated">
+        <div class="col-md-12 p-0">
+            <div class="col-md-12 report-date-header">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <div class="col-md-12 text-center">
+                        <div class="input-group h-100 justify-content-center align-items-center">
+                            @Html.Label("Filter By Job Type", htmlAttributes: new { @class = "col-md-4" })
+                            <div class="col-md-8">
+                                @Html.DropDownList("UAJobTypeId", ViewBag.ResourcejobTypes as IEnumerable<SelectListItem>, new
+                           {
+                               @class = "chosen-select",
+                               onchange = @"UASelectedValueChanged();"
+                           })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="DynamicRefresh3">
+            @Html.Action("UnallocatedJobsPartial")
+        </div>
+    </div>
+    <div id="Allocated">
+        <div class="col-md-12 report-date-header">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Select Filters", htmlAttributes: new { @class = "col-md-3 text-center" })
+                <div class ="col-md-3 text-center pull-left">
+                    @Html.DevExpress().DateEdit(settings =>
+               {
+                   settings.Name = "PrintDate";
+                   settings.Properties.NullText = "Select date...";
+                   settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                   settings.ClientVisible = true;
+                   settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                   settings.ControlStyle.CssClass = "form-control";
+                   settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+
+               }).GetHtml()
+                </div>
+                <div class="col-md-3 text-center pull-left">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.Label("", htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-12 p-0">
+                            @Html.DropDownList("WorksResourceId", ViewBag.WorksResources as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                        </div>
+                    </div>
+                </div>
+                <div class ="col-md-3 text-center pull-left">
+                    <input id="btnFetchReports" type="button" value="Apply" class="btn btn-primary" onclick="AllocatedJobs.Refresh()" />
+                </div>
+            </div>
+        </div>
+
+        <div id="DynamicRefresh4">
+            @Html.Action("AllocatedJobsPartial")
+        </div>
+
+        <div class="col-md-offset-2 col-md-8 bottom-right">
+            @if (LayoutHelpers.ActivityValidator("Reports", "WorksOrderDayPrint"))
+            {
+                <input type="button" id="btnPrintAllocatedOrdersView" value="Print Day Orders" class="btn btn-primary allocated-orders-print" />
+            }
+        </div>
+    </div>
+    <div id="Reallocation">
+        <div class="col-md-12 p-0">
+            <div class="col-md-12 report-date-header">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <div class="col-md-12 text-center">
+                        <div class="input-group h-100 justify-content-center align-items-center">
+                            @Html.Label("Filter By Job Type", htmlAttributes: new { @class = "col-md-5" })
+                            <div class="col-md-7">
+                                @Html.DropDownList("RAJobTypeId", ViewBag.ResourcejobTypes as IEnumerable<SelectListItem>, new
+                           {
+                               @class = "chosen-select",
+                               onchange = @"RASelectedValueChanged();"
+                           })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="DynamicRefresh5">
+            @Html.Action("ReallocationJobsPartial")
+        </div>
+    </div>
+
+</div>
+<script>
+    function pad(str, max) {
+        str = str.toString();
+        return str.length < max ? pad("0" + str, max) : str;
+    }
+    var worksDayOrderBeginCallback = function (s, e) {
+        e.customArgs["id"] = PrintDate.GetFormattedText("dd/MM/yyyy");
+        e.customArgs["resourceId"] = $("#WorksResourceId").val();
+    }
+    $("#btnPrintAllocatedOrdersView").on("click", function () {
+        location.href = "/reports/WorksOrderDayPrint/";
+    });
+
+    var OnWorksOrderGridFocusedRowChanged = function (s, e) {
+        var rowKey = s.GetRowKey(s.GetFocusedRowIndex());
+        $('#selkeyWorksOrderListGridViewAllocated').val(rowKey);
+        $('#selkeyWorksOrderListGridViewGridName').val(s.name);
+    }
+</script>
+
+
+
+
+
+

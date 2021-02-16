@@ -1,0 +1,24 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+}
+
+@{
+    ViewBag.Title = "Works Order KPI Report";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "WorksOrderKpiReportDocumentViewer";
+
+}).Bind(Model).GetHtml()

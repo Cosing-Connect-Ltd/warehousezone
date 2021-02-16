@@ -1,0 +1,50 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+      new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Activities";
+}
+
+<h2><span>Activities</span></h2>
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<div id="gridlist">
+    @Html.Action("_ActivityList")
+
+</div>
+
+<div class="col-md-12 p-0">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Activity", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Activity", "Details"))
+    {
+        @Html.ActionLink("View", "Details", null, new { @class = "btn btn-primary Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Activity", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Activity", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary Caction" })
+    }
+</div>

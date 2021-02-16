@@ -1,0 +1,74 @@
+@using DevExpress.Data
+@using Ganedata.Core.Entities.Domain
+@using Ganedata.Core.Entities.Helpers
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "gridMaster";
+        settings.CallbackRouteValues = new { Controller = "TimeLog", Action = "GridViewPartial", Id = ViewData["storesId"], weekNumber = ViewData["weekNumber"], YearsList=ViewData["yearNumber"] };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "TimeLog", Action = "_TimeLogGridViewsPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "TimeLog", Action = "_TimeLogGridViewFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "TimeLog", Action = "_TimeLogGridViewDataSorting" }
+        );
+        settings.ClientSideEvents.BeginCallback = "OnShiftsGridBeginCallback";
+
+        settings.KeyFieldName = "EmployeeId";
+        settings.Columns.Add(column =>
+        {
+            // "FieldName" contains a unique value that does not refer to any field in the GridView's data model.
+            column.FieldName = "FirstName";
+            column.Caption = "First Name";
+            column.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            column.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+        });
+        settings.Columns.Add(column =>
+        {
+            // "FieldName" contains a unique value that does not refer to any field in the GridView's data model.
+            column.FieldName = "SurName";
+            column.Caption = "Sur Name";
+            column.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            column.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+        });
+        // A delegate method that allows you to generate data for an unbound column.
+
+
+        settings.Columns.Add("EmployeeRole");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PayrollEmployeeNo";
+            c.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Left;
+
+        });
+
+        settings.SettingsDetail.ShowDetailRow = true;
+
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            Html.RenderAction("GridDetailsViewPartial", new { EmployeeId = DataBinder.Eval(c.DataItem, "EmployeeId"), weekNumber = ViewData["weekNumber"], storesId = ViewData["storesId"], years= ViewData["yearNumber"] });
+        });
+        settings.PreRender = (sender, e) =>
+        {
+            ((MVCxGridView)sender).DetailRows.ExpandRow(0);
+        };
+    }).BindToCustomData(Model).GetHtml()

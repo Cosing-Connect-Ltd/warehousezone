@@ -1,0 +1,16 @@
+@using Ganedata.Core.Entities.Helpers
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+}
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "PurchaseOrderPrintDocumentViewer";
+
+}).Bind(Model).GetHtml()

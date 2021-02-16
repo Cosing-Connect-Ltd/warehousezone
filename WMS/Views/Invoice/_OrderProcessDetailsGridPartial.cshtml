@@ -1,0 +1,72 @@
+@model  List<Ganedata.Core.Models.OrderProcessDetailsViewModel>
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "ProcessDetailGrid" + ViewBag.OrderProcessID;
+        settings.CallbackRouteValues = new { Controller = "Invoice", Action = "OrderProcessedDetails", id = ViewBag.OrderProcessID };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Styles.Header.CssClass = "";
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Settings.ShowGroupFooter = GridViewGroupFooterMode.VisibleAlways;
+        settings.Settings.ShowFooter = true;
+
+        settings.KeyFieldName = "OrderProcessDetailId";
+        settings.Columns.Add("ProductCode").Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        settings.Columns.Add("ProductName").Width = System.Web.UI.WebControls.Unit.Percentage(25);
+
+        settings.Columns.Add(u =>
+        {
+            u.FieldName = "Price";
+            u.Caption = "Unit Price";
+            u.PropertiesEdit.DisplayFormatString = "n2";
+            u.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        });
+        settings.Columns.Add(u =>
+        {
+            u.FieldName = "QtyProcessed";
+            u.Caption = "QtyProcessed";
+            u.PropertiesEdit.DisplayFormatString = "n2";
+            u.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        });
+        settings.Columns.Add(u =>
+        {
+            u.FieldName = "TaxAmount";
+            u.Caption = "TaxAmount";
+            u.PropertiesEdit.DisplayFormatString = "n2";
+            u.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        });
+          settings.Columns.Add(u =>
+        {
+            u.FieldName = "WarrantyAmount";
+            u.Caption = "Warranty Amount";
+            u.PropertiesEdit.DisplayFormatString = "n2";
+            u.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        });
+
+        settings.Columns.Add(u =>
+        {
+            u.FieldName = "NetAmount";
+            u.Caption = "Amount";
+            u.PropertiesEdit.DisplayFormatString = "n2";
+            u.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        });
+        settings.CustomUnboundColumnData = (sender, e) =>
+        {
+            if (e.Column.FieldName == "NetAmount")
+            {
+                decimal netAmount = e.GetListSourceFieldValue("NetAmount") == null ? 0 : (decimal)e.GetListSourceFieldValue("NetAmount");
+                e.Value = netAmount;
+            }
+        };
+
+        settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "NetAmount").DisplayFormat = "Total = " + ViewBag.CurrencySymbol + "{0:n2}";
+
+
+    }).Bind(Model).GetHtml()

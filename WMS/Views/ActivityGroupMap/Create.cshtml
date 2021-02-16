@@ -1,0 +1,54 @@
+﻿@model Ganedata.Core.Entities.Domain.AuthActivityGroupMap
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Create Activity Group Mapping";
+}
+
+<h2><span>Create Activity Group Mapping</span></h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-md-6 pull-left">
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ActivityId, "ActivityId", new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("ActivityId", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.ActivityId)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ActivityGroupId, "ActivityGroupId", new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("ActivityGroupId", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.ActivityGroupId)
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+        </div>
+    </div>
+}

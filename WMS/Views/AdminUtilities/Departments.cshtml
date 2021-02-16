@@ -1,0 +1,21 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Departments";
+}
+
+<h2><span>Departments</span></h2>
+
+<button class="btn btn-danger pull-right" onclick="DepartmentsManager.AddNewRow()">New Department</button>
+
+@Html.Action("DepartmentsManagerPartial")

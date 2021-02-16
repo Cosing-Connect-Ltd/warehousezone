@@ -1,0 +1,43 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "StockMovementList";
+        settings.CallbackRouteValues = new { Controller = "InventoryStocks", Action = "_StockMovementList" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowGroupFooter = GridViewGroupFooterMode.VisibleAlways;
+        settings.Settings.ShowFooter = true;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "ProductId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("FromLocationName").Caption="From Location";
+        settings.Columns.Add("ToLocationName").Caption = "To Location";
+        settings.Columns.Add("ProductName").Caption = "Product";
+        settings.Columns.Add("Qty");
+        settings.CustomJSProperties = (s, e) =>
+        {
+            MVCxGridView gridd = (MVCxGridView)s;
+            e.Properties["cpRowCount"] = gridd.VisibleRowCount;
+        };
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "OnBeginGrCallBack";
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,51 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+
+    {
+        settings.Name = ViewBag.productid + "prpductDocumentsGridView";
+        settings.CallbackRouteValues = new { Controller = "Products", Action = "_ProductDocuments", AccountID = ViewBag.productid };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "FileUrl";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "FileUrl";
+            column.Caption = "Download Link";
+
+            column.ColumnType = MVCxGridViewColumnType.HyperLink;
+            var hyperLinkProperties = column.PropertiesEdit as HyperLinkProperties;
+            hyperLinkProperties.Target = "_blank";
+            hyperLinkProperties.NavigateUrlFormatString = ViewBag.UploadDirectory + ViewBag.productid + "/{0}";
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()
+@if (Request.Url.AbsolutePath.ToLower().Contains("edit"))
+{
+    <div class="col-md-12 p-0">
+        @Html.ActionLink("Create New", "SaveProductPrice", null, new { @class = "btn btn-primary  " })
+        @Html.ActionLink("Update", "SaveProductPrice", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdDocs" })
+        @Html.ActionLink("Delete", "SaveProductKitItems", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdDocs" })
+    </div>
+}

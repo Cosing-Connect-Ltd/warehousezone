@@ -1,0 +1,50 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Stock takes";
+}
+
+<h2><span>Stocktake Report</span></h2>
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<div class="col-md-12 p-0 View">
+    @if (TempData["Notice"] != null)
+    {
+        <div class="success-notice">@TempData["Notice"]</div>
+    }
+
+    @Html.Action("StocktakeGridPartial")
+</div>
+
+<div class="col-md-12 p-0">
+ 
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("StockTakes", "Create"))
+    {
+        @Html.ActionLink("New/Running Stocktakes", "Create", null, new { @class = "btn btn-primary" })
+    }
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("StockTakes", "Details"))
+    {
+        @Html.ActionLink("View Detail/Report", "Details", null, new { @class = "btn btn-primary Caction" })
+    }
+
+</div>

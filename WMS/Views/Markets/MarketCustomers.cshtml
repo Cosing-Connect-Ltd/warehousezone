@@ -1,0 +1,74 @@
+﻿@model Ganedata.Core.Entities.Domain.MarketCustomersViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = (ViewBag.MarketName ?? "Market") + " - Customers Association";
+}
+
+<div class="col-md-12 p-0">
+    <h2><span>@ViewBag.Title</span></h2>
+    <div class="col-md-12 p-0">
+        <div id="search-form">
+            @Html.Action("SearchAvailable", "Markets", new { id = Model.MarketId })
+        </div>
+    </div>
+    <form class="form-horizontal" action="/Markets/SaveMarketCustomers" method="post" id="frmSaveMarketRoute">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(c => c.MarketId)
+        <div class="input-group row h-100 justify-content-center align-items-center">
+            <div class="col-md-7">
+                @Html.ValidationSummary()
+            </div>
+        </div>
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert-success col-md-12">
+                @ViewBag.Message
+            </div>
+        }
+
+        <div class="col-md-12 pull-left p-0">
+            <div class="col-md-12 pull-left p-0">
+                <div class="col-md-6 pull-left">
+                    <input type="text" placeholder="Find in container" class="form-control input-lg txt-search-market-customers" />
+                </div>
+                <div class="col-md-6 pull-left">
+                    <div id="account-box-message" class="alert alert-warning">
+                        Drag customers and drop in below container, also arrange order by dragging up or down.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 pull-left">
+                <div class="account-customers-container">
+                    <div class="col-md-6 pull-left account-available-customers account-customers" id="SearchUpdate">
+                        @Html.DisplayFor(m => m.AvailableCustomers)
+                    </div>
+                    <div class="col-md-6 pull-left account-selected-customers account-customers">
+                        @Html.DisplayFor(m => m.SelectedCustomers)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            @Html.HiddenFor(m => m.MarketCustomerEntries)
+            <input type="submit" class="btn btn-primary" id="saveBtn_MarketRoutes" value="Save" />
+            <a class="btn btn-default" href="@Url.Action("Index","Markets", new{ id= Model.MarketId})"> Back to List</a>
+        </div>
+    </form>
+</div>

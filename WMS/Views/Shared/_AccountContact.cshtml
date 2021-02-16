@@ -1,0 +1,97 @@
+﻿@model Ganedata.Core.Entities.Domain.AccountContacts
+<hgroup>
+    <h2><span>Account Contact</span></h2>
+    <h3><span>@Html.ValidationSummary("", new { @id = "vldAccountContact" })</span></h3>
+</hgroup>
+@using (Html.BeginForm("SaveAccountContact", "Account", FormMethod.Post, new { @id = "frmAccountContact" }))
+{
+    @Html.HiddenFor(m => m.AccountContactId)
+    @Html.HiddenFor(m => m.AccountID)
+<div class="col-md-12 pull-left">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <label class="col-md-4">Contact Name<span style="color:red"> *</span></label>
+
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ContactName)
+            @Html.ValidationMessageFor(model => model.ContactName)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ContactJobTitle, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ContactJobTitle)
+            @Html.ValidationMessageFor(model => model.ContactJobTitle)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ContactEmail, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ContactEmail)
+            @Html.ValidationMessageFor(model => model.ContactEmail)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantContactPhone, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantContactPhone)
+            @Html.ValidationMessageFor(model => model.TenantContactPhone)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <label class="col-md-4">Contact Pin</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantContactPin)
+            @Html.ValidationMessageFor(model => model.TenantContactPin)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ConTypeStatment, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ConTypeStatment)
+            @Html.ValidationMessageFor(model => model.ConTypeStatment)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ConTypeInvoices, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ConTypeInvoices)
+            @Html.ValidationMessageFor(model => model.ConTypeInvoices)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ConTypeMarketing, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ConTypeMarketing)
+            @Html.ValidationMessageFor(model => model.ConTypeMarketing)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ConTypeRemittance, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ConTypeRemittance)
+            @Html.ValidationMessageFor(model => model.ConTypeRemittance)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ConTypePurchasing, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ConTypePurchasing)
+            @Html.ValidationMessageFor(model => model.ConTypePurchasing)
+        </div>
+    </div>
+</div>
+    if (!Request.Url.AbsolutePath.ToLower().Contains("saveaccountcontact"))
+    {
+        <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+            <input type="button" onclick="saveAccountContact()" value="Save" class="btn btn-primary" />
+            <input type="button" onclick="javascript: ModalAccountContact.Hide();" value="Cancel" class="btn btn-default" />
+        </div>
+    }
+    else
+    {
+        <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", null, null, null, "contacts", new { @id = Session["account"] }, null)</div>
+        </div>
+    }
+}

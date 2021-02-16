@@ -1,0 +1,74 @@
+@model  Ganedata.Core.Entities.Domain.MarketRouteListViewModel
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "gridMaster";
+        settings.CallbackRouteValues = new { Controller = "MarketRoutes", Action = "MarketRoutesListPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsPager.PageSize = 10;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Styles.Header.CssClass = "";
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.KeyFieldName = "Id";
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Id";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.Width = System.Web.UI.WebControls.Unit.Percentage(20);
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Description";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "RouteDurationMins";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var id = (int)DataBinder.Eval(m.DataItem, "Id");
+                var allowDelete = (bool)DataBinder.Eval(m.DataItem, "AllowDelete");
+
+                ViewContext.Writer.Write("<form class='form-horizontal' id='_deleteMarketRoute'>" + Html.AntiForgeryToken() + "<a class='btn fa fa-pencil' href='/marketroutes/edit/" + id +"' role='button'></a>" +
+                    "<a class='btn fa fa-random' href='/marketroutes/routemarkets/" + id + "' role='button' title='Manage Route markets'></a>" +
+                    "<a class='btn fa fa-print' target='_blank' href='/Reports/MarketRoutePrint/" + id + "' role='button'></a>" +
+                    "<a class='btn fa fa-trash' style='" + (allowDelete ? "" : "display:none") + "' role='button' data-valueid='" + id + "' data-controller='MarketRoutes' id='deleteBtn' data-title='Delete Route' data-message='This cannot be reversed, are you sure you want to delete this?' data-toggle='modal' data-target='#confirm-delete'></a></form>");
+            });
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+
+    }).Bind(Model.MarketRouteViewModel).GetHtml()

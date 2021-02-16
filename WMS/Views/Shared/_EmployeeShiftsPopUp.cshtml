@@ -1,0 +1,27 @@
+﻿@using System.Web.UI.WebControls
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "ModelCreateEmployeeShifts";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.CallbackRouteValues = new { Controller = "EmployeeShifts", Action = "Create", Method = "GET" };
+
+
+        settings.Width = 900;
+        settings.Height = 600;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+        settings.ShowHeader = false;
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        settings.EnableClientSideAPI = true;
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ beginCallBackEmployeeShift(s,e); }";
+        settings.ClientSideEvents.EndCallback = "endOrderDetailCallback";
+
+//settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
+}).GetHtml()

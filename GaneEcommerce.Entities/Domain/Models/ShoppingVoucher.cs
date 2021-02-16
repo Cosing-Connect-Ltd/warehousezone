@@ -100,7 +100,7 @@ namespace Ganedata.Core.Entities.Domain
         public int RewardPointTriggerId { get; set; }
         [Display(Name = "Title")]
         public string Title { get; set; }
-        [Display(Name = "Title")]
+        [Display(Name = "Description")]
         public string Description { get; set; }
         [Display(Name = "Type")]
         public VoucherDiscountTriggerEnum TriggerType { get; set; }
@@ -114,6 +114,9 @@ namespace Ganedata.Core.Entities.Domain
         public decimal? MinimumOrderValueToTrigger { get; set; }
         public FoodOrderTypeEnum? FoodOrderTypeToTrigger { get; set; }
         public int? MaximumAllowed { get; set; }
+        public int? TenantId { get; set; }
+        public int? WarehouseId { get; set; }
+        public bool? IsDeleted { get; set; }
 
     }
 }

@@ -1,0 +1,63 @@
+﻿@model Ganedata.Core.Entities.Domain.AuthActivityGroup
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Edit Activity Group";
+}
+
+<h2><span>Edit Activity Group</span></h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-md-6 pull-left">
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ActivityGroupId)
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ActivityGroupName, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ActivityGroupName)
+                @Html.ValidationMessageFor(model => model.ActivityGroupName)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ActivityGroupDetail, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ActivityGroupDetail)
+                @Html.ValidationMessageFor(model => model.ActivityGroupDetail)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.IsActive, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+        </div>
+    </div>
+
+}

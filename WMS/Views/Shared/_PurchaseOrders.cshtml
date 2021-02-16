@@ -1,0 +1,73 @@
+﻿@using Ganedata.Core.Entities.Enums
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "_PurchaseOrderListGridView";
+        settings.CallbackRouteValues = new { Controller = "Order", Action = "_PurchaseOrders" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.KeyFieldName = "OrderID";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Account";
+            c.Caption = "Account";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNumber";
+            c.Caption = "Order Number";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "POStatus";
+            c.Caption = "PO Status";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetValues(typeof(AccountStatusEnum));
+        });
+
+        settings.SettingsDetail.ShowDetailRow = true;
+        settings.PreRender = (sender, e) =>
+        {
+            ((MVCxGridView)sender).DetailRows.ExpandRow(0);
+        };
+        settings.SetDetailRowTemplateContent(c =>
+        {
+
+            Html.DevExpress().PageControl(s =>
+            {
+                s.EnableTabScrolling = true;
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.Name = DataBinder.Eval(c.DataItem, "OrderID").ToString();
+                s.TabPages.Add("Order Details").SetContent(() =>
+                {
+                    Html.RenderAction("_PODetails", "PurchaseOrders", new { Id = DataBinder.Eval(c.DataItem, "OrderID") });
+                });
+
+            }).GetHtml();
+        });
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,213 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "consignmentgridview" + ViewBag.productId;
+        settings.CallbackRouteValues = new { Controller = "SalesOrders", Action = "_Consignments" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Paging,
+        new { Controller = "SalesOrders", Action = "_ConsignmentsPaging", id = ViewBag.productId }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "SalesOrders", Action = "_ConsignmentsFiltering", id = ViewBag.productId }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "SalesOrders", Action = "_ConsignmentsSorting", id = ViewBag.productId }
+        );
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OrderProcessID";
+            col.Visible = false;
+        });
+
+        settings.KeyFieldName = "OrderProcessID";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PickContainerCode";
+            c.Caption = "Pick Container Code";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DeliveryNO";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNumber";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CompanyName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AccountCode";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCreated";
+            c.Caption = "Date Created";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+        if (ViewBag.ConsignmentId == null)
+        {
+            settings.Columns.Add(c =>
+            {
+
+                c.Caption = "Status";
+                c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                c.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+                comboSettings.DataSource = Enum.GetNames(typeof(OrderProcessStatusEnum));
+
+                c.SetDataItemTemplateContent(m =>
+                {
+                    var status = DataBinder.Eval(m.DataItem, "status");
+                    if (status != null)
+                    {
+                        var orderProcessStatusId = (OrderProcessStatusEnum)DataBinder.Eval(m.DataItem, "status");
+                        ViewContext.Writer.Write(orderProcessStatusId);
+                    }
+                });
+            });
+
+        }
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Actions";
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+            column.SetDataItemTemplateContent(m =>
+            {
+                var id = (int)DataBinder.Eval(m.DataItem, "OrderProcessID");
+                var orderStatus = (OrderStatusEnum?)DataBinder.Eval(m.DataItem, "orderstatus");
+
+                var orderProcessStatusId = (OrderProcessStatusEnum?)DataBinder.Eval(m.DataItem, "status");
+                if (orderProcessStatusId.HasValue)
+                {
+                    if (orderProcessStatusId == OrderProcessStatusEnum.Dispatched)
+                    {
+                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + id + " data-statusid = '2' data-type = 'CO' alt='Mark delivery as completed' class='make-order-active btn fa fa-arrow-left pull-left'></a>");
+
+
+                    }
+
+                    if (orderProcessStatusId != OrderProcessStatusEnum.Active && (orderStatus.HasValue && (OrderStatusEnum)orderStatus != OrderStatusEnum.BeingPicked
+                    && (OrderStatusEnum)orderStatus != OrderStatusEnum.Hold && (OrderStatusEnum)orderStatus != OrderStatusEnum.Active))
+                    {
+                        var functon = string.Format("CustomEmails({0},{1})", id, 8);
+                        ViewContext.Writer.Write("<form class='form-horizontal'>" + Html.AntiForgeryToken() + "<a target='_blank' alt='Print delivery note' title='Print delivery note' class='btn fa fa-print' href='/Reports/DeliveryNotePrint/" + id + "' role='button'></a></form>");
+                        ViewContext.Writer.Write("<a target='_blank' alt='Send Custom Email' class='btn fa fa-envelope' onclick=" + functon + "></a>");
+                    }
+
+                    if (WMS.Helpers.LayoutHelpers.ActivityValidator("Pallets", "MarkedOrderProcessAsDispatch"))
+                    {
+                        if (orderProcessStatusId != OrderProcessStatusEnum.Dispatched && (orderProcessStatusId != OrderProcessStatusEnum.PostedToAccounts && orderProcessStatusId != OrderProcessStatusEnum.Delivered
+                        && orderProcessStatusId != OrderProcessStatusEnum.Invoiced))
+                        {
+                            var orderProcessID = (int)DataBinder.Eval(m.DataItem, "OrderProcessID");
+                            var functon = string.Format("MarkedOrderProcessAsDispatch({0})", orderProcessID);
+                            ViewContext.Writer.Write("<a target='javascript:;' alt='Mark order as dispatched' title='Mark order as dispatched' class='btn fa fa-check' onclick=" + functon + " role='button'></a>");
+                        }
+                    }
+                    if (WMS.Helpers.LayoutHelpers.ActivityValidator("SalesOrders", "EditDeliveryAddress"))
+                    {
+                        var functon = string.Format("EditDeliveryAddress({0},{1})", id, "true");
+                        ViewContext.Writer.Write("<a target='javascript:;' alt='Edit delivery' title='Edit delivery' class='btn fa fa-pencil' onclick=" + functon + " role='button'></a>");
+                    }
+                }
+
+            });
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(2);
+            column.Caption = "Notifs";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var orderId = (int)DataBinder.Eval(m.DataItem, "OrderID");
+                var emailcount = (int?)DataBinder.Eval(m.DataItem, "EmailCount");
+
+                var functon = string.Format("showEmails({0},{1})", orderId, 4);
+                if (emailcount.HasValue && emailcount > 0)
+                {
+                    ViewContext.Writer.Write("<a target='javascript:;' alt='Show Emails' class='fa fa-send-o' onclick=" + functon + ">     <b>" + emailcount + "</b></a>");
+                }
+
+            });
+        });
+
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            Html.DevExpress().PageControl(s =>
+            {
+                s.EnableTabScrolling = true;
+                s.Name = DataBinder.Eval(c.DataItem, "OrderProcessID").ToString();
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.TabPages.Add("Details").SetContent(() =>
+                {
+                    Html.RenderAction("_ConsignmentDetails", new { ProcessId = DataBinder.Eval(c.DataItem, "OrderProcessID") });
+                });
+                s.TabPages.Add("Dispatches").SetContent(() =>
+                {
+                    Html.RenderAction("_PalletsDispatch", "Pallets", new { ProcessId = DataBinder.Eval(c.DataItem, "OrderProcessID") });
+                });
+                s.TabPages.Add("Address Details").SetContent(() =>
+                {
+                    Html.RenderAction("_ConsignmentAddressDetails", new { ProcessId = DataBinder.Eval(c.DataItem, "OrderProcessID") });
+                });
+
+            }).GetHtml();
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "OnBeginConsigment";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()

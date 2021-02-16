@@ -1,0 +1,181 @@
+﻿@model Ganedata.Core.Entities.Domain.Locations
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Delete Location";
+}
+
+<h2><span>Delete Location</span></h2>
+
+<h3 class="alert alert-danger">Are you sure you want to delete this?</h3> you sure you want to delete this?</h3>
+<div>
+
+    <dl class="dl-horizontal">
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocationCode)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationWeight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocationWeight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationHeight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocationHeight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationWidth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocationWidth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationDepth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocationDepth)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelOfDetail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelOfDetail)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StagingLocation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StagingLocation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MixContainer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MixContainer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AllowPutAway)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AllowPutAway)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AllowPick)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AllowPick)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AllowReplenish)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AllowReplenish)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PutAwaySeq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PutAwaySeq)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PickSeq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PickSeq)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplenishSeq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReplenishSeq)
+        </dd>
+        @if (ViewBag.Products != null)
+        {
+            <dd>
+                <strong>Products</strong>
+            </dd>
+            <dd>
+                @foreach (var item in ViewBag.Products as List<string>)
+
+                {
+
+                    <p>@item</p>
+
+                }
+            </dd>
+
+        }
+
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+                <div class="btn btn-default"> @Html.ActionLink("Cancel", "Index", "Locations")</div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,1 @@
+Only add views with right path where it needs to match specific theme

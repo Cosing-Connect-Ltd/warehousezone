@@ -1,0 +1,140 @@
+﻿@model Ganedata.Core.Entities.Domain.StockTake
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2><span>Stocktake Details</span></h2>
+
+<div class="col-md-12 p-0 table-responsive">
+    <table class="table table-bordered pull-left">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tenant.TenantName)
+            </th>
+
+            <td>
+                @Html.DisplayFor(model => model.Tenant.TenantName)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TenantWarehouse.WarehouseName)
+            </th>
+
+            <td>
+                @Html.DisplayFor(model => model.TenantWarehouse.WarehouseName)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StockTakeReference)
+            </th>
+
+            <td>
+                @Html.DisplayFor(model => model.StockTakeReference)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StockTakeDescription)
+            </th>
+
+            <td>
+                @Html.DisplayFor(model => model.StockTakeDescription)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+
+            <td>
+                @DateTimeToLocal.Convert(Model.StartDate, ViewBag.TimeZone)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+
+            <td>
+                @DateTimeToLocal.Convert(Model.EndDate, ViewBag.TimeZone)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+
+            <td>
+                @LayoutHelpers.GetStStatusString(Model.Status)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+
+            <td>
+                @DateTimeToLocal.Convert(Model.DateCreated, ViewBag.TimeZone)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateUpdated)
+            </th>
+
+            <td>
+                @DateTimeToLocal.Convert(Model.DateUpdated, ViewBag.TimeZone)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+
+            <td>
+                @LayoutHelpers.GetUserName(Model.CreatedBy)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </th>
+
+            <td>
+                @LayoutHelpers.GetUserName(Model.CreatedBy)
+            </td>
+    </table>
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("StockTakes", "FullReport"))
+    {
+        @Html.ActionLink("Complete Report", "FullReport/" + Model.StockTakeId, null, new { @class = "btn btn-primary" })
+    }
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("StockTakes", "VarianceReport"))
+    {
+        @Html.ActionLink("Variance Report", "VarianceReport/" + Model.StockTakeId, null, new { @class = "btn btn-primary" })
+    }
+
+    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+
+</div>

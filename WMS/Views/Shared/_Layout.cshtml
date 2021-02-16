@@ -1,0 +1,210 @@
+﻿@using StackExchange.Profiling;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noimageindex">
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/images/WZ_favicon.ico" />
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/Themes/UI-WZ/uiwz")
+    @Styles.Render("~/Content/fontawesome-bundle")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Theme/default/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/cldr")
+    @Scripts.Render("~/bundles/globalize")
+    @Scripts.Render("~/bundles/cookie")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/ace")
+    @Scripts.Render("~/bundles/custom")
+    @Scripts.Render("~/bundles/ext-language")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/unobtrusive")
+    <script src="~/Scripts/jscolor.js"></script>
+
+    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/Default/ui-settings.css"})" rel="stylesheet" type="text/css" />
+
+    @RenderSection("scripts", required: false)
+
+    @{ bool loginStatus = LayoutHelpers.UserLoginStatus(); }
+    @{ bool isSuperUser = LayoutHelpers.IsSuperUser(); }
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+</head>
+<body>
+    <div id="dvbusy" class="se-pre-con"></div>
+    <div id="infoMsg" style="display:none;">
+
+    </div>
+    @Html.DevExpress().LoadingPanel(
+        settings =>
+        {
+            settings.Name = "LoadingPanel";
+            settings.Modal = true;
+        }
+        ).GetHtml()
+
+    <div class="navbar fixed-top navbar-expand-md ">
+        <div class="container p-0">
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">&#x2630;</button>
+            <div class="application-logo">
+                <a href="@Url.Action("index","home")"><img src="@Url.Content("~/Content/images/logo.png")"></a>
+            </div>
+            <div class="top-right">
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav layout-header-actions">
+                        @if (loginStatus)
+                        {
+                            <li class="nav-item">
+                                Welcome : <b> @LayoutHelpers.GetCurrentUserName() </b>
+                            </li>
+                        }
+                        <li class="nav-item">@Html.Raw(WMS.Helpers.LayoutHelpers.WarehDropdown())</li>
+
+                        <li class="nav-item">
+                            <a href="/" class="fa fa-home nav-link" title="home"></a>
+                            <a href="/Home/Contact" title="Contact" class="fa fa-phone nav-link"></a>
+
+                            @if (loginStatus)
+                            {
+                                <a href="/user/logout" title="Logout" class="fa fa-power-off nav-link"></a>
+                            }
+                            else
+                            {
+                                <a href="/user/login" title="Login" class="fa fa-sign-in nav-link"></a>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @if (loginStatus && isSuperUser)
+        {
+            <div class="settings-bar">
+                <div class="settings-bar-switch" onclick="javascript:toggleSettingsBar();">
+                    <b class="fa fa-paint-brush fa-lg" title="Toggle Settings"></b>
+                </div>
+
+                <div id="settings-bar-content">
+                    @Html.Action("SettingsBar", "UISettings")
+                </div>
+            </div>
+        }
+        <div class="main-left">
+            @*Error / warning / info / success Mesagess*@
+            @*Error Message*@
+            @if (ViewBag.Error != null || TempData["Error"] != null)
+            {
+                if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
+                if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["Error"]</div>
+                }
+            }
+            @*Warning Message*@
+            @if (ViewBag.Warning != null || TempData["Warning"] != null)
+            {
+                if (ViewBag.Warning != null)
+                {
+                    <div class="alert alert-warning">@ViewBag.Warning</div>
+                }
+                if (TempData["Warning"] != null)
+                {
+                    <div class="alert alert-warning">@TempData["Warning"]</div>
+                }
+            }
+            @*Info Message*@
+            @if (ViewBag.Info != null || TempData["Info"] != null)
+            {
+                if (ViewBag.Info != null)
+                {
+                    <div class="alert alert-info">@ViewBag.Info</div>
+                }
+                if (TempData["info"] != null)
+                {
+                    <div class="alert alert-info">@TempData["info"]</div>
+                }
+            }
+            @*Info Message*@
+            @if (ViewBag.Success != null || TempData["Success"] != null)
+            {
+                if (ViewBag.Success != null)
+                {
+                    <div class="alert alert-success">@ViewBag.Success</div>
+                }
+                if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success">@TempData["Success"]</div>
+                }
+            }
+            @Html.Partial("_ModalAccountAddress")
+            @Html.Partial("_ModalAccountContact")
+            @Html.Partial("_ProductPopups")
+            @Html.Partial("_OrderPopups")
+            @Html.Partial("_LocationPopups")
+            @Html.Partial("_GRPopup")
+            @Html.Partial("_BSPopup")
+            @Html.Partial("_EmployeeShiftsPopUp")
+            @RenderBody()
+        </div>
+        <div class="main-right side-nav">
+
+            @if (loginStatus)
+            {
+                <div class="nav-expand">
+                    <b class="fa fa-caret-left" id="btn-toggleApptView" onclick="javascript:navToggleView();" title="Maximize size"></b>
+                </div>
+            }
+            <div id="right-nav" style="display: none">
+                @Html.Raw(WMS.Helpers.LayoutHelpers.NavigationMenus())
+            </div>
+        </div>
+    </div>
+
+    @* Mini Profiler *@
+    @MiniProfiler.Current.RenderIncludes()
+
+    <div class="modal fade" id="modalDialog" role="dialog" aria-labelledby="dialogLabel" aria-hidden="true" style="display: none; z-index: 10000000;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-valueid="1" id="deleteConfirm" data-controller="Roles">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+
+            var newPageGuid = '@(ViewBag.ForceRegeneratedPageToken ?? Guid.NewGuid())';
+
+            var forceRegenerate = '@ViewBag.ForceRegeneratePageToken' === "True";
+
+            updatePageSessionToken(newPageGuid, forceRegenerate);
+
+        });
+    </script>
+
+</body>
+</html>

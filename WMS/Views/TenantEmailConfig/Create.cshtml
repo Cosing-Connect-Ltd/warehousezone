@@ -1,0 +1,181 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantEmailConfig
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PageControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PageControl },
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+
+    <div class="content">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+
+
+            <h4>TenantEmailConfig</h4>
+            <hr />
+            <div class="col-md-6 pull-left">
+
+                <table class="table tdclear">
+                    <caption>
+                        @Html.ValidationSummary(true)
+                    </caption>
+
+
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.TenantId, new { @class = "col-md-4" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.TenantId)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(model => model.TenantId)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.SmtpHost, new { @class = "col-md-4" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.SmtpHost)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(model => model.SmtpHost)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.SmtpPort, new { @class = "col-md-4" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.SmtpPort)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(model => model.SmtpPort)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.UserEmail, new { @class = "col-md-4" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.UserEmail)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(model => model.UserEmail)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Password, new { @class = "col-md-4" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.Password)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.EnableSsl, new { @class = "col-md-4" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.EnableSsl)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(model => model.EnableSsl)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.DateUpdated, new { @class = "col-md-4" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.DateUpdated)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(model => model.DateUpdated)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.UpdatedBy, new { @class = "col-md-4" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.UpdatedBy)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(model => model.UpdatedBy)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.IsActive, new { @class = "col-md-4" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.IsActive)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(model => model.IsActive)
+                        </td>
+                    </tr>
+
+
+                </table>
+            </div><!--left-->
+            <div class="col-md-6 pull-left">
+                <table class="table tdclear">
+
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;  </td>
+                        <td><input type="submit" value="Create" class="btn btn-primary" style="width:55px;" /></td>
+                    </tr>
+
+                </table>
+            </div>
+
+
+            <div class="clear"></div>
+
+
+
+        }
+    </div>
+
+    <div class="col-md-12 p-0">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</body>
+</html>
+

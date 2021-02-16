@@ -1,0 +1,55 @@
+@model  List<Ganedata.Core.Models.AccountStatusAuditViewModel>
+@using Ganedata.Core.Entities.Helpers
+@using System.Web.UI.WebControls
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "gridviewAccountAudits" + ViewData["AccountID"];
+        settings.CallbackRouteValues = new { Controller = "Account", Action = "_AccountAudits", id = ViewData["AccountID"] };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Styles.Header.CssClass = "";
+
+        settings.KeyFieldName = "AccountStatusAuditId";
+        settings.Columns.Add("AccountStatusAuditId", "#ID").Width = System.Web.UI.WebControls.Unit.Pixel(50);
+        settings.Columns.Add("LastStatus", "Previous Status");
+        settings.Columns.Add("NewStatus");
+        settings.Columns.Add("Reason").Width = System.Web.UI.WebControls.Unit.Percentage(50);
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.Caption = "User Name";
+            c.FieldName = "UserName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateUpdated";
+            c.Caption = "Updated";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.Width = Unit.Pixel(120);
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateUpdated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+
+    }).Bind(Model).GetHtml()

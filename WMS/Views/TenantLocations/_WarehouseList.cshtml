@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.TenantLocations>
+<div class="col-md-12 p-0">
+
+
+    <table class="table table-hover table-bordered tsort">
+        <thead>
+            <tr>
+                <th>
+                    @Html.Label("Select")
+
+                </th>
+              
+                <th>
+                    @Html.DisplayNameFor(model => model.WarehouseName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CountyState)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PostalCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GlobalCountry.CountryName)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="radio" name="id" class="selkey" value="@item.WarehouseId">
+
+                    </td>
+                  
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WarehouseName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CountyState)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostalCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GlobalCountry.CountryName)
+                    </td>
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>

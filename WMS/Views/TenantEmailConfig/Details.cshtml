@@ -1,0 +1,98 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantEmailConfig
+@using Ganedata.Core.Entities.Helpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>TenantEmailConfig</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TenantId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TenantId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SmtpHost)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SmtpHost)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SmtpPort)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SmtpPort)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UserEmail)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UserEmail)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Password)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.EnableSsl)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EnableSsl)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DateUpdated)
+            </dt>
+
+            <dd>
+                @DateTimeToLocal.Convert(Model.DateUpdated, ViewBag.TimeZone)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UpdatedBy)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IsActive)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.TenantEmailConfigId }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

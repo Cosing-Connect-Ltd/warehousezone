@@ -1,0 +1,146 @@
+﻿@model Ganedata.Core.Entities.Domain.PalletTracking
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Domain
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+            new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+             new StyleSheet { ExtensionType = ExtensionType.ComboBox, Theme = GaneStaticAppExtensions.DevexTheme }
+            )
+
+    @Html.DevExpress().GetScripts(
+            new Script { ExtensionType = ExtensionType.PopupControl },
+            new Script { ExtensionType = ExtensionType.SpinEdit },
+            new Script { ExtensionType = ExtensionType.DateEdit },
+            new Script { ExtensionType = ExtensionType.ComboBox }
+            )
+}
+@{
+    ViewBag.Title = "Create Pallet Tracking";
+}
+<script>
+    function GenerateBulkLabelPrint() {
+        
+        var selectedIds = $("#PalletTrackingIds").val();
+        if (selectedIds.length <= 0) { alert("No pallets to generate label print"); return; }
+        window.open('/Reports/PrintLabelReport/?PalletTrackingIds=' + selectedIds, '_blank');
+       
+    }
+
+</script>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { htmlattributes = new{@class= "frmPallet" } }))
+{
+    @Html.Hidden("InventoryTransactionTypeId",200)
+     @Html.Hidden("PalletTrackingIds")
+    @Html.AntiForgeryToken()
+    <h2><span>@ViewBag.Title</span></h2>
+    <div class="col-md-12 pull-left">
+        <div class="col-md-5 p-0 pull-left mb-2">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "col-md-4 prdlbl" })
+                <div class="col-md-8">
+                    @Html.Partial("ProductLargeDataComboBoxPartial")
+                    @Html.ValidationMessageFor(model => model.ProductId)
+                </div>
+            </div>
+
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ExpiryDate, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DevExpress().DateEditFor(m => m.ExpiryDate,
+                                        settings =>
+                                        {
+                                            settings.Name = "ExpiryDate";
+                                            settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                                            settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+                                            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                            settings.ControlStyle.CssClass = "form-control";
+                                            settings.Properties.MinDate = DateTime.Today.AddDays(1);
+                                        }
+                                        ).GetHtml()
+
+                    @Html.ValidationMessageFor(model => model.ExpiryDate)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">No of Pallets</label>
+
+                <div class="col-md-8">
+
+                    @Html.DevExpress().SpinEdit(
+                     settings =>
+                     {
+                         settings.Name = "NoOfPallets";
+                         settings.Properties.MaxValue = 999999999;
+                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                         settings.ControlStyle.CssClass = "form-control";
+                         settings.Properties.MinValue = 1;
+                        
+                         
+                     }).GetHtml()
+
+
+                </div>
+            </div>
+
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.TotalCases, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+
+                    @Html.DevExpress().SpinEditFor(m=>m.TotalCases,
+                     settings =>
+                     {
+                         settings.Name = "TotalCases";
+                         settings.Properties.MaxValue = 999999999;
+                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                         settings.ControlStyle.CssClass = "form-control";
+                         
+                         settings.Properties.MinValue = 1;
+                     }).GetHtml()
+
+                    @Html.ValidationMessageFor(model => model.TotalCases)
+
+                </div>
+            </div>
+
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.BatchNo, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.BatchNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BatchNo, "", new { @class = "text-danger" })
+
+
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="bottom-right">
+                <input type="button" value="Generate Labels" class="btn btn-primary"  onclick="CreatePalletTracking();"/>
+                <input type="button" value="Print Labels" class="btn btn-primary print-label" style="display:none"  onclick="GenerateBulkLabelPrint();"/>
+                <div class="btn btn-default">
+                    @Html.ActionLink("Back to List", "Index", "PalletTracking", null, null,null, null, null)
+                </div>
+            </div>
+
+        </div>
+    </div>
+        }
+
+        

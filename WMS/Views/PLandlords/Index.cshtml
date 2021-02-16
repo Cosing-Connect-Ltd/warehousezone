@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.PLandlord>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Manage Landlords";
+}
+
+<h2><span>Manage Landlords</span></h2>
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<div class="col-md-12 p-0">
+    <div class="col-md-12 p-0">
+        @Html.Action("PLandlordsGridview")
+
+    </div>  
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PLandlords", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+    }  
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PLandlords", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction", @id = "lnkPLandlordsUpdate" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PLandlords", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction", @id = "lnkPLandlordsDelete" })
+    }       
+</div>

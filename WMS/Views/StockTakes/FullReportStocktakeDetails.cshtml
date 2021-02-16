@@ -1,0 +1,58 @@
+﻿@using System.Web.UI.WebControls
+@model Ganedata.Core.Entities.Domain.StockTakeReportResponse
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "StocktakeCurrentScans";
+        settings.CallbackRouteValues = new { Controller = "StockTakes", Action = "FullReportGridPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.KeyFieldName = "InventoryStockId";
+
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("ProductCode");
+        settings.Columns.Add("ProductName");
+
+        settings.Columns.Add("PreviousQuantity");
+        settings.Columns.Add("CurrentQuantity");
+
+        var actionsColumn = new MVCxGridViewColumn("InventoryStockId", "Actions") { Width = Unit.Pixel(120), CellStyle = { HorizontalAlign = HorizontalAlign.Center } };
+        actionsColumn.SetDataItemTemplateContent(m =>
+        {
+            var serialised = (bool)DataBinder.Eval(m.DataItem, "IsSerialised");
+            var currQuantity = (decimal)DataBinder.Eval(m.DataItem, "CurrentQuantity");
+
+            if (serialised && currQuantity > 0)
+            {
+                var stockId = DataBinder.Eval(m.DataItem, "InventoryStockId").ToString();
+
+                ViewContext.Writer.Write("<div class='view-stocktake-serials' onclick='ASPx.GVShowDetailRow('accountsGridView',"+ stockId + ",event);event.cancelBubble = true'><i class='fa fa-list stocktake-glyph-icons'></i> View Serials</div>");
+            }
+        });
+
+
+        settings.Columns.Add(actionsColumn);
+
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ stockTakeScanBeginCallback(s,e); }";
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+        settings.SettingsPager.PageSize = 10;
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsDetail.ShowDetailRow = true;
+        settings.SettingsDetail.ShowDetailButtons = false;
+    });
+}
+
+@grid.Bind(Model.StockTakeReportResponseItems).GetHtml()

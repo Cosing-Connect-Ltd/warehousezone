@@ -1,0 +1,61 @@
+﻿@{
+
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "InventoryDetailGridView";
+        settings.CallbackRouteValues = new { Controller = "InventoryStocks", Action = "AdjustmentDetail" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowSort = false;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.KeyFieldName = "item1";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Item1";
+            c.Caption = "Account Number";
+
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Item2";
+            c.Caption = "Order Number";
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Item3";
+            c.Caption = "Allocated";
+
+        });
+        settings.HtmlRowPrepared = (s, e) =>
+        {
+            bool? flag;
+            if (e.RowType != GridViewRowType.Data) return;
+
+            flag = Convert.ToBoolean(e.GetValue("Item4"));
+
+            if (flag == true)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightCoral;
+                e.Row.ForeColor = System.Drawing.Color.Black;
+            }
+        };
+
+        settings.ClientSideEvents.BeginCallback = "beginAddAdjustmentCallBack";
+
+    });
+}
+@grid.Bind(Model).GetHtml()

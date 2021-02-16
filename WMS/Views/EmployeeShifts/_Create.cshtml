@@ -1,0 +1,108 @@
+﻿@model Ganedata.Core.Entities.Domain.ResourceShifts
+@using Ganedata.Core.Entities.Enums
+@using Ganedata.Core.Entities.Helpers
+
+
+
+@using (Ajax.BeginForm("CreateResourceShift", "EmployeeShifts", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess" }, new { @class = "validate-popup-form" }))
+{
+
+
+    @Html.HiddenFor(m => m.DateCreated)
+    @Html.HiddenFor(m => m.Date)
+    @Html.HiddenFor(m => m.TenantId)
+    @Html.HiddenFor(m => m.Id)
+
+    @Html.AntiForgeryToken()
+    <h2>
+        @if (Model == null || Model.Id == 0)
+        {
+
+            <span>Create Time Log</span>
+        }
+        else
+        {
+            <span>Edit Time Log</span>
+        }
+    </h2>
+
+    <div class="leftcol order-detail">
+        @Html.ValidationSummary(true, "", new { @id = "vldOrdDet" })
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+
+            <label class="control-label col-md-4">Resource Name</label>
+
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.ResourceId, ViewBag.ResourceIds as IEnumerable<SelectListItem>, "Select Resource", new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.TerminalId, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.TerminalId, ViewBag.TerminalId as IEnumerable<SelectListItem>, new { @class = "chosen-select", id = "terminals" })
+                @Html.ValidationMessageFor(model => model.TerminalId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.TimeStamp, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().DateEditFor(m => m.TimeStamp,
+                  settings =>
+                  {
+
+
+                      settings.Name = "TimeStamp";
+                      settings.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                      settings.Properties.TimeSectionProperties.Visible = true;
+                      settings.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.DateTime;
+                      settings.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                      settings.Date = DateTime.Today;
+                      settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                      settings.ControlStyle.CssClass = "form-control";
+                      settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+
+                  }
+              ).GetHtml()
+                @Html.ValidationMessageFor(model => model.TimeStamp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.StatusType, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.StatusType,
+                  new List<SelectListItem>
+                    {
+                      new SelectListItem{ Text = "In", Value = "In"},
+                      new SelectListItem{ Text = "Out", Value = "Out" }
+                   }, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.StatusType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+
+            @if (Model == null || Model.Id == 0)
+            {
+                <input type="submit" onclick="PopupFormValidationCheck(event)" value="Add" class="btn btn-primary pull-right" />
+            }
+            else
+            {
+                <input type="submit" onclick="PopupFormValidationCheck(event)" value="Modify" class="btn btn-primary pull-right" />
+
+            }
+
+            <input type="button" value="Cancel" onclick="javascript: ModelCreateEmployeeShifts.Hide();" class="btn btn-default pull-right" />
+
+
+
+        </div>
+
+    </div>
+
+}
