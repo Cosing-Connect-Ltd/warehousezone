@@ -85,13 +85,13 @@ namespace WMS.CustomBindings
             foreach (var stock in stocks)
             {
                 var stockLevel = stockLevels.FirstOrDefault(m => m.ProductID == stock.ProductId);//RH: This has to be filtered with WarehouseId based on ProductStockLevel table, however leaving with what is done currently
-                if (stockLevel != null && stock.Available > 0 && stockLevel.MinStockQuantity > 0)
+                if (stockLevel != null && stockLevel.MinStockQuantity > 0)
                 {
                     if (stock.Available < stockLevel.MinStockQuantity)
                     {
                         stock.StockLevelColor = "#F08080";
                     }
-                    if (stock.Available > stockLevel.MinStockQuantity && stock.Available < stockLevel.MinStockQuantity * 1.1m)
+                    if (stock.InStock > stockLevel.MinStockQuantity && stock.InStock < stockLevel.MinStockQuantity * 1.1m)
                     {
                         stock.StockLevelColor = "#FFAA80";
                     }

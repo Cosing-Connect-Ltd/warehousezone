@@ -29,6 +29,15 @@
         new { Controller = "InventoryStocks", Action = "_InventoryStocksSorting" }
         );
 
+        settings.HtmlRowPrepared = (s, e) =>
+        {
+            var color = e.GetValue("StockLevelColor");
+            if (color != null && !string.IsNullOrWhiteSpace(color.ToString()))
+            {
+                e.Row.BackColor = System.Drawing.Color.FromName(color.ToString());
+            }
+              
+        }; 
 
         settings.Settings.ShowHeaderFilterButton = false;
         settings.SettingsPopup.HeaderFilter.Height = 200;
