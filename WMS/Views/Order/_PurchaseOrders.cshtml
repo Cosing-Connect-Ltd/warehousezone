@@ -191,15 +191,15 @@
 
                 if (statusId == (int)OrderStatusEnum.Hold)
                 {
-                    ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid='1' data-type='PO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
+                    ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid='1' data-type='PO' alt='Make Order Active' title='Make Order Active' class='make-order-active btn fa fa-play'></a>");
                 }
                 if (statusId == (int)OrderStatusEnum.BeingPicked)
                 {
-                    ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid='1' data-type='PO' alt='Unlock order for picking' class='unlock-order btn fa fa-unlock'></a>");
+                    ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid='1' data-type='PO' title='Unlock order for picking' class='unlock-order btn fa fa-unlock'></a>");
                 }
                 if (statusId == (int)OrderStatusEnum.Complete)
                 {
-                    ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid='1' data-type='PO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
+                    ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid='1' data-type='PO' alt='Make Order Active' title='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
                 }
                 if (statusId == (int)OrderStatusEnum.BeingPicked || statusId == (int)OrderStatusEnum.Hold || statusId == (int)OrderStatusEnum.Active || statusId == (int)OrderStatusEnum.Pending)
                 {

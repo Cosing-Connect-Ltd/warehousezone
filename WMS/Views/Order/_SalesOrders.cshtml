@@ -249,24 +249,22 @@
                     }
                     if (statusId == (int)OrderStatusEnum.Hold)
                     {
-                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
+                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' title='Make Order Active' class='make-order-active btn fa fa-play'></a>");
                     }
                     if (statusId == (int)OrderStatusEnum.BeingPicked)
                     {
-                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Unlock order for picking' class='unlock-order btn fa fa-unlock'></a>");
+                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' title='Unlock order for picking' class='unlock-order btn fa fa-unlock'></a>");
                     }
                     if (statusId == (int)OrderStatusEnum.Complete)
                     {
-                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
+                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' title='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
                     }
                     if (statusId == (int)OrderStatusEnum.BeingPicked || statusId == (int)OrderStatusEnum.Hold || statusId == (int)OrderStatusEnum.Active || statusId == (int)OrderStatusEnum.Pending)
                     {
                         var assignPicker = string.Format("AssignPicker({0})", orderId);
                         ViewContext.Writer.Write("<a target='_blank' alt='Assign Picker' title='Assign Picker' class='btn fa fa-user' onclick=" + assignPicker + "></a>");
                     }
-
-
-
+                     
                 });
             });
 
