@@ -19,13 +19,15 @@ namespace WMS.Controllers
         private readonly IProductServices _productService;
         private readonly IAdminServices _adminServices;
         private readonly IActivityServices _activityServices;
+        private readonly ITenantLocationServices _tenantLocationServices;
         private readonly ILookupServices _lookupServices;
 
-        public InventoryStocksController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productService, IAdminServices adminServices, IActivityServices activityServices) : base(orderService, propertyService, accountServices, lookupServices)
+        public InventoryStocksController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productService, IAdminServices adminServices, IActivityServices activityServices, ITenantLocationServices tenantLocationServices) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productService = productService;
             _adminServices = adminServices;
             _activityServices = activityServices;
+            _tenantLocationServices = tenantLocationServices;
             _lookupServices = lookupServices;
         }
         // GET: InventoryStocks
@@ -288,6 +290,7 @@ namespace WMS.Controllers
             ViewBag.ProductId = productid;
             return PartialView("__InventoryLocationsList", model);
         }
+
 
         public ActionResult MoveStock(int? id)
         {

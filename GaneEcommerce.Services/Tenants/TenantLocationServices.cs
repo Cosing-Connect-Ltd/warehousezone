@@ -137,5 +137,25 @@ namespace Ganedata.Core.Services
 
             return levels;
         }
+        public IQueryable<WarehouseProductLevelViewModel> GetAllStockLevelsForTenant(int tenantId)
+        {
+            var allProducts = _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.IsDeleted != true);
+            var allStockLevels = _currentDbContext.ProductLocationStockLevels.Where(m =>  m.IsDeleted != true);
+            var levels =
+                from p in allProducts
+                join a in allStockLevels on p.ProductId equals a.ProductMasterID into tmpGroups
+                from g in tmpGroups.DefaultIfEmpty()
+                select new WarehouseProductLevelViewModel()
+                {
+                    ProductName = p.Name,
+                    SKUCode = p.SKUCode,
+                    ProductID = p.ProductId,
+                    ReOrderQuantity = p.ReorderQty ?? 0,
+                    MinStockQuantity = g == null ? 0 : g.MinStockQuantity,
+                    ProductLocationStockLevelID = g == null ? 0 : g.ProductLocationStockLevelID
+                };
+
+            return levels;
+        }
     }
 }

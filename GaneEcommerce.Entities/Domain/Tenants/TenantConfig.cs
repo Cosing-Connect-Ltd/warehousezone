@@ -7,10 +7,11 @@ namespace Ganedata.Core.Entities.Domain
 {
     public class TenantConfig : PersistableEntity<int>
     {
-        [Key]
-        public int TenantConfigId { get; set; }
+        [Key] public int TenantConfigId { get; set; }
+
         [Display(Name = "MinimumProductPrice")]
         public bool AlertMinimumProductPrice { get; set; }
+
         public bool EnforceMinimumProductPrice { get; set; }
         public string AlertMinimumPriceMessage { get; set; }
         public string EnforceMinimumPriceMessage { get; set; }
@@ -20,8 +21,10 @@ namespace Ganedata.Core.Entities.Domain
         public string SoReportFooterMsg2 { get; set; }
         public string DnReportFooterMsg1 { get; set; }
         public string DnReportFooterMsg2 { get; set; }
+
         [Display(Name = "WorksScheduleByMarginHours")]
         public int? WorksOrderScheduleByMarginHours { get; set; }
+
         public bool? WorksOrderScheduleByAmPm { get; set; }
         public bool? EnableLiveEmails { get; set; }
         public bool? MiniProfilerEnabled { get; set; }
@@ -36,10 +39,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool EnableStockVarianceAlerts { get; set; }
         public string AuthorisationAdminEmail { get; set; }
         public int? DefaultCashAccountID { get; set; }
-        [ForeignKey("DefaultCashAccountID")]
-        public virtual Account DefaultCashAccount { get; set; }
-        [ForeignKey("TenantId")]
-        public virtual Tenant Tenant { get; set; }
+        [ForeignKey("DefaultCashAccountID")] public virtual Account DefaultCashAccount { get; set; }
+        [ForeignKey("TenantId")] public virtual Tenant Tenant { get; set; }
         public string TenantReceiptPrintHeaderLine1 { get; set; }
         public string TenantReceiptPrintHeaderLine2 { get; set; }
         public string TenantReceiptPrintHeaderLine3 { get; set; }
@@ -63,14 +64,15 @@ namespace Ganedata.Core.Entities.Domain
         public bool AllowOrderStatusEmailConfigChange { get; set; }
         public bool AllowOrderStatusSmsConfigChange { get; set; }
         public int? SiteId { get; set; }
-        [ForeignKey("SiteId")]
-        public virtual TenantWebsites TenantWebsites { get; set; }
+        [ForeignKey("SiteId")] public virtual TenantWebsites TenantWebsites { get; set; }
         public bool MandatoryLocationScan { get; set; }
 
         [Display(Name = "Default Sales Nominal Code")]
         public int? DefaultSaleNominalCode { get; set; }
+
         [Display(Name = "Default Purchases Nominal Code")]
         public int? DefaultPurchaseNominalCode { get; set; }
+
         public bool ShowDeliveryServiceInOrdersList { get; set; }
         public bool ShowExternalShopSiteNameInOrdersList { get; set; }
         public bool EnableDynamicPriceCalculation { get; set; }
@@ -86,5 +88,6 @@ namespace Ganedata.Core.Entities.Domain
 
         public decimal? StandardDeliveryCost { get; set; }
         public decimal? NextDayDeliveryCost { get; set; }
+
     }
 }

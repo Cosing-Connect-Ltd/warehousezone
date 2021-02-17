@@ -35,6 +35,17 @@
             c.Caption = "Location Code";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
+
+        settings.HtmlRowPrepared = (s, e) =>
+        {
+            var color = e.GetValue("StockLevelColor");
+            if (color != null && !string.IsNullOrWhiteSpace(color.ToString()))
+            {
+                e.Row.BackColor = System.Drawing.Color.FromName(color.ToString());
+            }
+              
+        }; 
+
         settings.Columns.Add(c =>
         {
             c.FieldName = "Decription";

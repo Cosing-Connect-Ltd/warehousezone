@@ -62,7 +62,7 @@ namespace Ganedata.Core.Entities.Domain
         public bool? PalletProduct { get; set; }
         public bool? SerialProduct { get; set; }
         public bool? StockIssue { get; set; }
-
+        public string StockLevelColor { get; set; }
     }
 
     public class InventoryCalculationViewModel
