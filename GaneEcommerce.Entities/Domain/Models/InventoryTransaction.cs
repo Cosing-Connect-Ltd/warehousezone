@@ -70,6 +70,16 @@ namespace Ganedata.Core.Entities.Domain
         public virtual Terminals Terminals { get; set; }
         [ForeignKey("CreatedBy")]
         public virtual AuthUser AuthUsers { get; set; }
+
+        [Display(Name = "In Stock")]
+        public decimal InStock { get; set; }
+        [Display(Name = "On Order")]
+        public decimal OnOrder { get; set; }
+        [Display(Name = "Allocated")]
+        public decimal Allocated { get; set; }
+        [Display(Name = "Available")]
+        public decimal Available { get; set; }
+
     }
 
     [Table("WastageReason")]
