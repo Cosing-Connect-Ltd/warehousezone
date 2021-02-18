@@ -89,11 +89,11 @@ namespace WMS.CustomBindings
                 {
                     if (stock.Available < stockLevel.MinStockQuantity)
                     {
-                        stock.StockLevelColor = "#F08080";
+                        stock.StockLevelColor = "#FFC1C1";
                     }
                     if (stock.InStock > stockLevel.MinStockQuantity && stock.InStock < stockLevel.MinStockQuantity * 1.1m)
                     {
-                        stock.StockLevelColor = "#FFAA80";
+                        stock.StockLevelColor = "#FFA535";
                     }
                 }
             }
