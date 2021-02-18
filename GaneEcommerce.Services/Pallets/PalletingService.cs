@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.WebPages;
 
 namespace Ganedata.Core.Services
 {
@@ -162,6 +163,7 @@ namespace Ganedata.Core.Services
         public async Task<string> DispatchPallets(PalletDispatchViewModel dispatch, int userId)
         {
             string result = "";
+            int? consignmentNumber = null;
 
             if (dispatch.PalletDispatchId > 0)
             {
@@ -211,6 +213,7 @@ namespace Ganedata.Core.Services
                 if (dispatch.DeliveryMethod == DeliveryMethods.DPD)
                 {
                     var model = MapModelWithRealValues(item.PalletsDispatchID, dispatch.NetworkCode);
+
                     result = _dataImportFactory.PostShipmentData(item.PalletsDispatchID, model);
                 }
                 return result;
@@ -276,8 +279,14 @@ namespace Ganedata.Core.Services
 
                 if (orderToUpdate != null && apiCredentials != null)
                 {
-                    await _dataImportFactory.PrestaShopOrderStatusUpdate(orderToUpdate.PrestaShopOrderId ?? 0, orderToUpdate.TenentId,
-                   orderToUpdate.WarehouseId ?? 0, apiCredentials.ApiUrl, apiCredentials.ApiKey, apiCredentials.Id);
+                    var dispatchDetails = _currentDbContext.PalletsDispatches.FirstOrDefault(m => m.PalletsDispatchID == dispatch.PalletDispatchId);
+                    if (dispatchDetails != null)
+                    {
+                        consignmentNumber = dispatchDetails.ConsignmentNumber.AsInt();
+                    }
+
+                    await _dataImportFactory.PrestaShopOrderStatusUpdate(orderToUpdate.PrestaShopOrderId ?? 0, orderToUpdate.TenentId, 
+                   orderToUpdate.WarehouseId ?? 0, apiCredentials.ApiUrl, apiCredentials.ApiKey, apiCredentials.Id, PrestashopOrderStateEnum.Shipped, consignmentNumber);
                 }
 
                 return result;

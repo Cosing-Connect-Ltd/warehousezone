@@ -3360,7 +3360,7 @@ namespace Ganedata.Core.Data.Helpers
                     if (order == null)
                     {
                         order = new Order();
-
+                        
                         string orderNumber = $"{item.Id}-{item.Reference}";
                         order.OrderNumber = orderNumber;
                         var duplicateOrder = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.Equals(orderNumber, StringComparison.CurrentCultureIgnoreCase) && m.IsDeleted != true);
@@ -3681,17 +3681,15 @@ namespace Ganedata.Core.Data.Helpers
         }
 
 
-        public async Task<string> PrestaShopOrderStatusUpdate(int orderId, int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
+        public async Task<string> PrestaShopOrderStatusUpdate(int prestashopOrderId, int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId, PrestashopOrderStateEnum status, int? consignmentNumber)
         {
             DateTime requestTime = new DateTime(2000, 01, 01);
-            var dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
             WebResponse httpResponse = null;
             DateTime requestSentTime = DateTime.UtcNow;
             string url = "";
             try
             {
-                var _currentDbContext = new ApplicationContext();
-                url = PrestashopUrl + "orders/" + orderId;
+                url = PrestashopUrl + "orders/" + prestashopOrderId;
                 PrestashopOrderSingle prestaShopOrder = new PrestashopOrderSingle();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
@@ -3704,18 +3702,20 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     var serializer = new XmlSerializer(typeof(PrestashopOrderSingle));
 
-                    Current_state currentState = new Current_state();
-                    currentState.Text = 5;
+                    Current_state currentState = new Current_state {Text = (int) status};
 
                     prestaShopOrder = serializer.Deserialize(streamReader) as PrestashopOrderSingle;
-                    prestaShopOrder.Order.Current_state = currentState;
+                    
+                    if(prestaShopOrder == null) throw new Exception("Failed to Deserialize, unable to locate the order " + url);
 
-                    if (prestaShopOrder != null)
+                    prestaShopOrder.Order.Current_state = currentState;
+                    if (consignmentNumber.HasValue)
                     {
-                        url = PrestashopUrl + "orders";
-                        UpdatePrestaShopOrder(url, PrestashopKey, prestaShopOrder);
+                        prestaShopOrder.Order.Shipping_number = new Shipping_number() { NotFilterable = consignmentNumber.Value.ToString() };
                     }
 
+                    url = PrestashopUrl + "orders";
+                    UpdatePrestaShopOrder(url, PrestashopKey, prestaShopOrder);
                 }
             }
             catch (Exception e)
@@ -3728,6 +3728,50 @@ namespace Ganedata.Core.Data.Helpers
             return "Order Status updated successfully";
 
         }
+
+        //public async Task<string> PrestaShopOrderUpdateConsignmentNumber(int palletDispatchId)
+        //{
+        //    var palletDispatch = _context.PalletDispatches.FirstOrDefault(m=> m.PalletDispatchId==palletDispatchId);
+
+        //    DateTime requestTime = new DateTime(2000, 01, 01);
+        //    WebResponse httpResponse = null;
+        //    DateTime requestSentTime = DateTime.UtcNow;
+        //    string url = "";
+        //    try
+        //    {
+        //        url = PrestashopUrl + "orders/" + prestashopOrderId;
+        //        PrestashopOrderSingle prestaShopOrder = new PrestashopOrderSingle();
+        //        var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+        //        httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
+
+        //        httpWebRequest.Method = "GET";
+        //        httpWebRequest.ContentType = "application/json";
+        //        requestSentTime = DateTime.UtcNow;
+        //        httpResponse = await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
+        //        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        //        {
+        //            var serializer = new XmlSerializer(typeof(PrestashopOrderSingle));
+
+        //            prestaShopOrder = serializer.Deserialize(streamReader) as PrestashopOrderSingle;
+
+        //            if(prestaShopOrder == null) throw new Exception("Failed to Deserialize, unable to locate the order " + url);
+
+        //            prestaShopOrder.Order.Shipping_number = new Shipping_number(){ NotFilterable  = consignmentNumber };
+
+        //            url = PrestashopUrl + "orders";
+        //            UpdatePrestaShopOrder(url, PrestashopKey, prestaShopOrder);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, null, tenantId);
+        //        EventLog.WriteEntry(e.Source, e.Message);
+        //        return "Unable to update order status";
+        //    }
+
+        //    return "Order Status updated successfully";
+
+        //}
 
         public string UpdatePrestaShopOrder(string prestashopUrl, string prestashopKey, PrestashopOrderSingle order)
         {
@@ -3788,7 +3832,7 @@ namespace Ganedata.Core.Data.Helpers
 
         }
 
-        public void CreateWebSiteSyncLog(DateTime RequestTime, string ErrorCode, bool synced, int resultCount, DateTime RequestedTime, int SiteId, int TenantId)
+        public void CreateWebSiteSyncLog(DateTime RequestTime, string ErrorCode, bool synced, int resultCount, DateTime RequestedTime, int? SiteId=null, int TenantId=1)
         {
             var dbcontext = new ApplicationContext();
             TerminalLogTypeEnum logType = (TerminalLogTypeEnum)Enum.Parse(typeof(TerminalLogTypeEnum), "PrestaShopOrderSync");

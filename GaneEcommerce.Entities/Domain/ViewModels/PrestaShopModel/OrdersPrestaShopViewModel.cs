@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Ganedata.Core.Entities.Domain.ViewModels
@@ -254,5 +251,48 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         public string Xlink { get; set; }
     }
 
+    public enum PrestashopOrderStateEnum
+    {
+        Preparation=3,
+        PaymentError=8,
+        RemotePaymentAccepted=11,
+        OrderAccepted=2,
+        PickAndPack=4,
+        Shipped=5,
+        Canceled=6,
+        Refunded=7,
+        OnBackorderPaid=9,
+        OnBackorderNotPaid=12,
+        PendingPayment=14,
+        OnHold=17,
+        PartiallyPaid=18,
+        AwaitingForBraintreePayment=19,
+        AwaitingForBraintreeValidation=20,
+        Updating=21,
+        KlarnaPendingPayment=22,
+        KlarnaPaymentStopped=23,
+        KlarnaFraudReviewPending=24,
+        KlarnaCaptureError=25,
+        KlarnaPendingInvoice=26,
+        KlarnaPendingPartpayment=27,
+        KlarnaAcceptedInvoice=28,
+        KlarnaAcceptedPartpayment=29,
+        KlarnaPaymentAccepted=30,
+        KlarnaPaymentRejected=31,
+        AwaitingForSofortPayment=38,
+        StripePartialRefund=39,
+        WaitingForStripecapture=40,
+        WaitingForSepaPayment=41,
+        SepaDispute=42,
+        AwaitingCashOnDeliveryValidation=13,
+        WaitingForPayPalPayment=32,
+        WaitingForCreditCardPayment=33,
+        WaitingForLocalPaymentMethodPayment=34,
+        AuthorizedToBeCapturedByMerchant=35,
+        PartialRefund=36,
+        WaitingCapture=37,
+        AwaitingCheckPayment=1,
+        AwaitingBankWirePayment=10
+    }
 
 }
