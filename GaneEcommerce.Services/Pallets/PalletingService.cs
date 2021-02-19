@@ -274,10 +274,8 @@ namespace Ganedata.Core.Services
 
                 // update Order Status in presta shop
                 var process = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == dispatch.OrderProcessId);
-                var orderToUpdate = _currentDbContext.Order.FirstOrDefault(x => x.OrderID == process.OrderID);
-                var apiCredentials = _currentDbContext.ApiCredentials.FirstOrDefault(x => x.Id == orderToUpdate.ApiCredentialId && x.ApiTypes == ApiTypes.PrestaShop);
-
-                if (orderToUpdate != null && apiCredentials != null)
+             
+                if (process != null && process.OrderID.HasValue)
                 {
                     var dispatchDetails = _currentDbContext.PalletsDispatches.FirstOrDefault(m => m.PalletsDispatchID == dispatch.PalletDispatchId);
                     if (dispatchDetails != null)
@@ -285,8 +283,7 @@ namespace Ganedata.Core.Services
                         consignmentNumber = dispatchDetails.ConsignmentNumber.AsInt();
                     }
 
-                    await _dataImportFactory.PrestaShopOrderStatusUpdate(orderToUpdate.PrestaShopOrderId ?? 0, orderToUpdate.TenentId, 
-                   orderToUpdate.WarehouseId ?? 0, apiCredentials.ApiUrl, apiCredentials.ApiKey, apiCredentials.Id, PrestashopOrderStateEnum.Shipped, consignmentNumber);
+                    await _dataImportFactory.PrestaShopOrderStatusUpdate(process.OrderID.Value, PrestashopOrderStateEnum.Shipped, consignmentNumber);
                 }
 
                 return result;

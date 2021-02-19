@@ -13,6 +13,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Elmah.ContentSyndication;
+using Ganedata.Core.Data.Helpers;
+using Ganedata.Core.Entities.Domain.ViewModels;
 
 namespace Ganedata.Core.Services
 {
@@ -807,6 +809,13 @@ namespace Ganedata.Core.Services
                     var model = new InventoryTransaction() { OrderID = orderId, ProductId = orderDetail.ProductId, Quantity = qtyDifference, TenentId = order.TenentId, WarehouseId = orderDetail.WarehouseId, CreatedBy = userId };
                     Inventory.StockTransaction(model, order.InventoryTransactionTypeId, null, "", orderDetail.OrderDetailID, null);
                 }
+            }
+            if (statusId == OrderStatusEnum.BeingPicked)
+            {
+                // ship if any order details to be shipped automatically 
+                var currentUser = _userService.GetAuthUserById(userId);
+                var dataImportFactory = new DataImportFactory();
+                dataImportFactory.PrestaShopOrderStatusUpdate(orderId, PrestashopOrderStateEnum.PickAndPack, null, currentUser.DisplayNameWithEmail);
             }
 
             var schOrder = _currentDbContext.Order.Find(orderId);

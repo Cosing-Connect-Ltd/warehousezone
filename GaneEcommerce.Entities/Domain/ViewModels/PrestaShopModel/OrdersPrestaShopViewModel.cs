@@ -221,7 +221,9 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         [XmlElement(ElementName = "conversion_rate")]
         public string Conversion_rate { get; set; }
         [XmlElement(ElementName = "reference")]
-        public string Reference { get; set; }
+        public string Reference { get; set; } 
+        [XmlElement(ElementName = "actionby")]
+        public string PickedByName { get; set; }
         [XmlElement(ElementName = "associations")]
         public AssociationsOrders Associations { get; set; }
     }

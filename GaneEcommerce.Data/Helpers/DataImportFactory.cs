@@ -3379,9 +3379,10 @@ namespace Ganedata.Core.Data.Helpers
 
                         var warehouse = _currentDbContext.TenantWarehouses.FirstOrDefault(w => w.WarehouseId == warehouseId && w.IsDeleted != true && w.TenantId == tenantId);
 
-                        if (!warehouse.AutoAllowProcess)
+                        if (!warehouse.AutoAllowProcess || item.Current_state.Text== (int)PrestashopOrderStateEnum.Updating)
                         {
                             order.OrderStatusID = OrderStatusEnum.Hold;
+                            order.OrderNotes.Add(new OrderNotes(){ TenantId = tenantId, DateCreated = DateTime.Now, Notes = "Prestashop order is set to 'Updating' status"});
                         }
                         else
                         {
@@ -3436,6 +3437,16 @@ namespace Ganedata.Core.Data.Helpers
                             }
                         }
 
+                        var warehouse = _currentDbContext.TenantWarehouses.FirstOrDefault(w => w.WarehouseId == warehouseId && w.IsDeleted != true && w.TenantId == tenantId);
+
+                        if (!warehouse.AutoAllowProcess || item.Current_state.Text == (int)PrestashopOrderStateEnum.Updating)
+                        {
+                            order.OrderStatusID = OrderStatusEnum.Hold;
+                        }
+                        else
+                        {
+                            order.OrderStatusID = OrderStatusEnum.Active;
+                        }
                         order.DateUpdated = DateTime.UtcNow;
                         order.TenentId = tenantId;
                         order.UpdatedBy = 1;
@@ -3681,18 +3692,22 @@ namespace Ganedata.Core.Data.Helpers
         }
 
 
-        public async Task<string> PrestaShopOrderStatusUpdate(int prestashopOrderId, int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId, PrestashopOrderStateEnum status, int? consignmentNumber)
+        public async Task<string> PrestaShopOrderStatusUpdate(int orderId, PrestashopOrderStateEnum status, int? consignmentNumber, string packedByName=null)
         {
+            var _currentDbContext = new ApplicationContext();
+            var orderToUpdate = _currentDbContext.Order.FirstOrDefault(x => x.OrderID == orderId);
+            var apiCredentials = _currentDbContext.ApiCredentials.FirstOrDefault(x => x.Id == orderToUpdate.ApiCredentialId && x.ApiTypes == ApiTypes.PrestaShop);
+
             DateTime requestTime = new DateTime(2000, 01, 01);
             WebResponse httpResponse = null;
             DateTime requestSentTime = DateTime.UtcNow;
             string url = "";
             try
             {
-                url = PrestashopUrl + "orders/" + prestashopOrderId;
+                url = apiCredentials.ApiUrl + "orders/" + orderToUpdate.PrestaShopOrderId;
                 PrestashopOrderSingle prestaShopOrder = new PrestashopOrderSingle();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
+                httpWebRequest.Credentials = new NetworkCredential(apiCredentials.ApiKey, "");
 
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
@@ -3714,13 +3729,18 @@ namespace Ganedata.Core.Data.Helpers
                         prestaShopOrder.Order.Shipping_number = new Shipping_number() { NotFilterable = consignmentNumber.Value.ToString() };
                     }
 
-                    url = PrestashopUrl + "orders";
-                    UpdatePrestaShopOrder(url, PrestashopKey, prestaShopOrder);
+                    if (status == PrestashopOrderStateEnum.PickAndPack)
+                    {
+                        prestaShopOrder.Order.PickedByName = packedByName;
+                    }
+
+                    url = apiCredentials.ApiUrl + "orders";
+                    UpdatePrestaShopOrder(url, apiCredentials.ApiKey, prestaShopOrder);
                 }
             }
             catch (Exception e)
             {
-                CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, SiteId, tenantId);
+                CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, apiCredentials.Id, orderToUpdate.TenentId);
                 EventLog.WriteEntry(e.Source, e.Message);
                 return "Unable to update order status";
             }
