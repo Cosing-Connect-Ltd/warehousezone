@@ -94,6 +94,7 @@
     <ul>
         <li><a href="#SOA">Unassigned Orders</a></li>
         <li><a href="#SOC">Assigned Orders</a></li>
+        <li><a href="#SOP">Orders Updating</a></li>
     </ul>
 
     <div class="col-md-12 p-0 legend-pane">
@@ -117,6 +118,16 @@
             <a type="button" class="btn btn-primary" href="javascript:unassignOrders()"><b class="fa fa-chain-broken"></b>UnAssign Orders</a>
             <a type="button" class="btn btn-primary" href="javascript:assigneOrders()"><b class="fa fa-chain"></b>Re-Assign Orders</a>
             <a type="button" class="btn btn-primary" href="~/Reports/PickersOrdersReport"><b class="fa fa-chain"></b>Print Assigned Orders</a>
+        </div>
+    </div>
+    <div id="SOP">
+        <div class="alert alert-danger">
+            <h4>Order is currently being updated, so you can't assign pickers yet</h4>
+        </div>
+
+        @Html.Action("_SalesOrders", "Order", new {pickerId = ViewBag.PickerId, type = 5})
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <a type="button" class="btn btn-primary" href="~/Reports/PickersOrdersReport"><b class="fa fa-chain"></b>Print Order</a>
         </div>
     </div>
 </div>

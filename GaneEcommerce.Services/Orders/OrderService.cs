@@ -3470,7 +3470,7 @@ namespace Ganedata.Core.Services
         public bool UpdatePickerId(int OrderId, int? pickerId, int userId)
         {
             var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == OrderId);
-            if (order != null)
+            if (order != null && (order.OrderStatusID == OrderStatusEnum.Active || order.OrderStatusID == OrderStatusEnum.Hold || order.OrderStatusID == OrderStatusEnum.BeingPicked || order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation ))
             {
                 order.OrderStatusID = OrderStatusEnum.Active;
                 order.PickerId = pickerId;
@@ -3488,7 +3488,7 @@ namespace Ganedata.Core.Services
         {
             foreach (var orderId in orderIds)
             {
-                var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
+                var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId && u.OrderStatusID!= OrderStatusEnum.OrderUpdating);
                 if (order != null)
                 {
                     order.OrderStatusID = pickerId == null ? OrderStatusEnum.Hold : OrderStatusEnum.Active;
@@ -3499,9 +3499,7 @@ namespace Ganedata.Core.Services
                     _currentDbContext.Entry(order).State = EntityState.Modified;
                 }
             }
-
             _currentDbContext.SaveChanges();
-
             return true;
         }
     }

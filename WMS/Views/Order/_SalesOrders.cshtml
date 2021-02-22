@@ -283,7 +283,7 @@
 
                     Html.DevExpress().ProgressBar(pb =>
                     {
-                        pb.Name = "pb" + (int)DataBinder.Eval(m.DataItem, "OrderID");
+                        pb.Name = "pb"+ Guid.NewGuid().ToString("N") + (int)DataBinder.Eval(m.DataItem, "OrderID");
                         pb.ToolTip = Qty + "/" + (processQty - returnQty) + " processed";
                         pb.Properties.IndicatorStyle.BackColor = System.Drawing.Color.DarkRed;
                         pb.EnableTheming = false;

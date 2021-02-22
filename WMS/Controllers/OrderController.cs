@@ -575,6 +575,9 @@ namespace WMS.Controllers
                 case 4:
                     gridControlName = "_SalesOrderListGridView_PickerUnassigned";
                     break;
+                case 5:
+                    gridControlName = "_SalesOrderListGridView_PickingOnHold";
+                    break;
             }
 
             ViewBag.Name = gridControlName;
@@ -602,6 +605,8 @@ namespace WMS.Controllers
 
                 case 4:
                     return _SalesOrdersPickerUnassignedGridActionCore(viewModel);
+                case 5:
+                    return _SalesOrdersUpdatingGridActionCore(viewModel, type);
 
                 default:
                     return _SalesOrdersAwaitingGridActionCore(viewModel, type);
@@ -620,6 +625,21 @@ namespace WMS.Controllers
                     {
                         OrdersCustomBinding.SalesOrderCompletedGetData(args, CurrentTenantId, CurrentWarehouseId);
                     })
+            );
+            return PartialView("_SalesOrders", gridViewModel);
+        }
+        public ActionResult _SalesOrdersUpdatingGridActionCore(GridViewModel gridViewModel, int? type)
+        {
+            gridViewModel.ProcessCustomBinding(
+                new GridViewCustomBindingGetDataRowCountHandler(args =>
+                {
+                    OrdersCustomBinding.SalesOrderUpdatingGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
+                }),
+
+                new GridViewCustomBindingGetDataHandler(args =>
+                {
+                    OrdersCustomBinding.SalesOrderUpdatingGetData(args, CurrentTenantId, CurrentWarehouseId);
+                })
             );
             return PartialView("_SalesOrders", gridViewModel);
         }
@@ -813,7 +833,7 @@ namespace WMS.Controllers
             ViewBag.orderid = Id;
             return PartialView("_SalesOrderDetails", OrderService.GetSalesOrderDetails(Id, CurrentTenantId));
         }
-
+        
         public ActionResult _DirectSalesOrderDetails(int Id)
         {
             //setname and routevalues are required to reuse order detail list.

@@ -3331,7 +3331,7 @@ namespace Ganedata.Core.Data.Helpers
                     requestTime = GetSyncRecored.DateCreated;
                     dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
                 }
-                url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&filter[current_state]=2&display=full";
+                url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&display=full";//RH: Removed &filter[current_state]=2  as its not downloading OrderUpdated records
                 PrestashopOrders orderSearch = new PrestashopOrders();
                 requestSentTime = DateTime.UtcNow;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -3381,7 +3381,7 @@ namespace Ganedata.Core.Data.Helpers
 
                         if (!warehouse.AutoAllowProcess || item.Current_state.Text== (int)PrestashopOrderStateEnum.Updating)
                         {
-                            order.OrderStatusID = OrderStatusEnum.Hold;
+                            order.OrderStatusID = OrderStatusEnum.OrderUpdating;
                             order.OrderNotes.Add(new OrderNotes(){ TenantId = tenantId, DateCreated = DateTime.Now, Notes = "Prestashop order is set to 'Updating' status"});
                         }
                         else
@@ -3441,7 +3441,8 @@ namespace Ganedata.Core.Data.Helpers
 
                         if (!warehouse.AutoAllowProcess || item.Current_state.Text == (int)PrestashopOrderStateEnum.Updating)
                         {
-                            order.OrderStatusID = OrderStatusEnum.Hold;
+                            order.OrderStatusID = OrderStatusEnum.OrderUpdating;
+                            order.OrderNotes.Add(new OrderNotes() { TenantId = tenantId, DateCreated = DateTime.Now, Notes = "Prestashop order is set to 'Updating' status" });
                         }
                         else
                         {
@@ -3727,6 +3728,7 @@ namespace Ganedata.Core.Data.Helpers
                     if (consignmentNumber.HasValue)
                     {
                         prestaShopOrder.Order.Shipping_number = new Shipping_number() { NotFilterable = consignmentNumber.Value.ToString() };
+                        prestaShopOrder.Order.Delivery_number = consignmentNumber.Value.ToString();
                     }
 
                     if (status == PrestashopOrderStateEnum.PickAndPack)
@@ -3735,7 +3737,7 @@ namespace Ganedata.Core.Data.Helpers
                     }
 
                     url = apiCredentials.ApiUrl + "orders";
-                    UpdatePrestaShopOrder(url, apiCredentials.ApiKey, prestaShopOrder);
+                    var response = UpdatePrestaShopOrder(url, apiCredentials.ApiKey, prestaShopOrder);
                 }
             }
             catch (Exception e)

@@ -182,7 +182,12 @@ namespace Ganedata.Core.Entities.Enums
         Finalised = 25,
         Accepted = 26,
         PartiallyRefunded = 27,
-        FullyRefunded = 28
+        FullyRefunded = 28,
+        /// <summary>
+        /// When an order is set to "Updating" in prestashop, this means we need to hold the order being picked or being processed.
+        /// So instead of Hold, we use this status, which will be available only after Prestashop sets the order as active and then Pickers can be assigned against it
+        /// </summary>
+        OrderUpdating = 29
     }
 
     public enum PalletStatusEnum

@@ -9,6 +9,8 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Web.Mvc;
+using Ganedata.Core.Data.Helpers;
+using Ganedata.Core.Entities.Domain.ViewModels;
 
 namespace WMS.Controllers
 {
@@ -24,6 +26,9 @@ namespace WMS.Controllers
         }
         public ActionResult Index()
         {
+            var dp = new DataImportFactory();
+            //dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.PickAndPack, null, "Riyaz Packer");
+            dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.Shipped, 105918999);
 
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
