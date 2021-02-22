@@ -3331,7 +3331,7 @@ namespace Ganedata.Core.Data.Helpers
                     requestTime = GetSyncRecored.DateCreated;
                     dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
                 }
-                url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&filter[current_state]=2&display=full";
+                url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&display=full";//RH: Removed &filter[current_state]=2  as its not downloading OrderUpdated records
                 PrestashopOrders orderSearch = new PrestashopOrders();
                 requestSentTime = DateTime.UtcNow;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -3360,7 +3360,7 @@ namespace Ganedata.Core.Data.Helpers
                     if (order == null)
                     {
                         order = new Order();
-
+                        
                         string orderNumber = $"{item.Id}-{item.Reference}";
                         order.OrderNumber = orderNumber;
                         var duplicateOrder = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.Equals(orderNumber, StringComparison.CurrentCultureIgnoreCase) && m.IsDeleted != true);
@@ -3379,9 +3379,10 @@ namespace Ganedata.Core.Data.Helpers
 
                         var warehouse = _currentDbContext.TenantWarehouses.FirstOrDefault(w => w.WarehouseId == warehouseId && w.IsDeleted != true && w.TenantId == tenantId);
 
-                        if (!warehouse.AutoAllowProcess)
+                        if (!warehouse.AutoAllowProcess || item.Current_state.Text== (int)PrestashopOrderStateEnum.Updating)
                         {
-                            order.OrderStatusID = OrderStatusEnum.Hold;
+                            order.OrderStatusID = OrderStatusEnum.OrderUpdating;
+                            order.OrderNotes.Add(new OrderNotes(){ TenantId = tenantId, DateCreated = DateTime.Now, Notes = "Prestashop order is set to 'Updating' status"});
                         }
                         else
                         {
@@ -3436,6 +3437,17 @@ namespace Ganedata.Core.Data.Helpers
                             }
                         }
 
+                        var warehouse = _currentDbContext.TenantWarehouses.FirstOrDefault(w => w.WarehouseId == warehouseId && w.IsDeleted != true && w.TenantId == tenantId);
+
+                        if (!warehouse.AutoAllowProcess || item.Current_state.Text == (int)PrestashopOrderStateEnum.Updating)
+                        {
+                            order.OrderStatusID = OrderStatusEnum.OrderUpdating;
+                            order.OrderNotes.Add(new OrderNotes() { TenantId = tenantId, DateCreated = DateTime.Now, Notes = "Prestashop order is set to 'Updating' status" });
+                        }
+                        else
+                        {
+                            order.OrderStatusID = OrderStatusEnum.Active;
+                        }
                         order.DateUpdated = DateTime.UtcNow;
                         order.TenentId = tenantId;
                         order.UpdatedBy = 1;
@@ -3681,20 +3693,22 @@ namespace Ganedata.Core.Data.Helpers
         }
 
 
-        public async Task<string> PrestaShopOrderStatusUpdate(int orderId, int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
+        public async Task<string> PrestaShopOrderStatusUpdate(int orderId, PrestashopOrderStateEnum status, int? consignmentNumber, string packedByName=null)
         {
+            var _currentDbContext = new ApplicationContext();
+            var orderToUpdate = _currentDbContext.Order.FirstOrDefault(x => x.OrderID == orderId);
+            var apiCredentials = _currentDbContext.ApiCredentials.FirstOrDefault(x => x.Id == orderToUpdate.ApiCredentialId && x.ApiTypes == ApiTypes.PrestaShop);
+
             DateTime requestTime = new DateTime(2000, 01, 01);
-            var dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
             WebResponse httpResponse = null;
             DateTime requestSentTime = DateTime.UtcNow;
             string url = "";
             try
             {
-                var _currentDbContext = new ApplicationContext();
-                url = PrestashopUrl + "orders/" + orderId;
+                url = apiCredentials.ApiUrl + "orders/" + orderToUpdate.PrestaShopOrderId;
                 PrestashopOrderSingle prestaShopOrder = new PrestashopOrderSingle();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
+                httpWebRequest.Credentials = new NetworkCredential(apiCredentials.ApiKey, "");
 
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
@@ -3704,23 +3718,31 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     var serializer = new XmlSerializer(typeof(PrestashopOrderSingle));
 
-                    Current_state currentState = new Current_state();
-                    currentState.Text = 5;
+                    Current_state currentState = new Current_state {Text = (int) status};
 
                     prestaShopOrder = serializer.Deserialize(streamReader) as PrestashopOrderSingle;
-                    prestaShopOrder.Order.Current_state = currentState;
+                    
+                    if(prestaShopOrder == null) throw new Exception("Failed to Deserialize, unable to locate the order " + url);
 
-                    if (prestaShopOrder != null)
+                    prestaShopOrder.Order.Current_state = currentState;
+                    if (consignmentNumber.HasValue)
                     {
-                        url = PrestashopUrl + "orders";
-                        UpdatePrestaShopOrder(url, PrestashopKey, prestaShopOrder);
+                        prestaShopOrder.Order.Shipping_number = new Shipping_number() { NotFilterable = consignmentNumber.Value.ToString() };
+                        prestaShopOrder.Order.Delivery_number = consignmentNumber.Value.ToString();
                     }
 
+                    if (status == PrestashopOrderStateEnum.PickAndPack)
+                    {
+                        prestaShopOrder.Order.PickedByName = packedByName;
+                    }
+
+                    url = apiCredentials.ApiUrl + "orders";
+                    var response = UpdatePrestaShopOrder(url, apiCredentials.ApiKey, prestaShopOrder);
                 }
             }
             catch (Exception e)
             {
-                CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, SiteId, tenantId);
+                CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, apiCredentials.Id, orderToUpdate.TenentId);
                 EventLog.WriteEntry(e.Source, e.Message);
                 return "Unable to update order status";
             }
@@ -3728,6 +3750,50 @@ namespace Ganedata.Core.Data.Helpers
             return "Order Status updated successfully";
 
         }
+
+        //public async Task<string> PrestaShopOrderUpdateConsignmentNumber(int palletDispatchId)
+        //{
+        //    var palletDispatch = _context.PalletDispatches.FirstOrDefault(m=> m.PalletDispatchId==palletDispatchId);
+
+        //    DateTime requestTime = new DateTime(2000, 01, 01);
+        //    WebResponse httpResponse = null;
+        //    DateTime requestSentTime = DateTime.UtcNow;
+        //    string url = "";
+        //    try
+        //    {
+        //        url = PrestashopUrl + "orders/" + prestashopOrderId;
+        //        PrestashopOrderSingle prestaShopOrder = new PrestashopOrderSingle();
+        //        var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+        //        httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
+
+        //        httpWebRequest.Method = "GET";
+        //        httpWebRequest.ContentType = "application/json";
+        //        requestSentTime = DateTime.UtcNow;
+        //        httpResponse = await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
+        //        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        //        {
+        //            var serializer = new XmlSerializer(typeof(PrestashopOrderSingle));
+
+        //            prestaShopOrder = serializer.Deserialize(streamReader) as PrestashopOrderSingle;
+
+        //            if(prestaShopOrder == null) throw new Exception("Failed to Deserialize, unable to locate the order " + url);
+
+        //            prestaShopOrder.Order.Shipping_number = new Shipping_number(){ NotFilterable  = consignmentNumber };
+
+        //            url = PrestashopUrl + "orders";
+        //            UpdatePrestaShopOrder(url, PrestashopKey, prestaShopOrder);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, null, tenantId);
+        //        EventLog.WriteEntry(e.Source, e.Message);
+        //        return "Unable to update order status";
+        //    }
+
+        //    return "Order Status updated successfully";
+
+        //}
 
         public string UpdatePrestaShopOrder(string prestashopUrl, string prestashopKey, PrestashopOrderSingle order)
         {
@@ -3788,7 +3854,7 @@ namespace Ganedata.Core.Data.Helpers
 
         }
 
-        public void CreateWebSiteSyncLog(DateTime RequestTime, string ErrorCode, bool synced, int resultCount, DateTime RequestedTime, int SiteId, int TenantId)
+        public void CreateWebSiteSyncLog(DateTime RequestTime, string ErrorCode, bool synced, int resultCount, DateTime RequestedTime, int? SiteId=null, int TenantId=1)
         {
             var dbcontext = new ApplicationContext();
             TerminalLogTypeEnum logType = (TerminalLogTypeEnum)Enum.Parse(typeof(TerminalLogTypeEnum), "PrestaShopOrderSync");

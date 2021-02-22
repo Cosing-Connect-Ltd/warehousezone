@@ -1734,6 +1734,7 @@ namespace Ganedata.Core.Services
                 var newPallet = _currentDbContext.PalletTracking.Find(pallet.PalletTrackingId);
                 newPallet.RemainingCases = pallet.RemainingCases;
                 newPallet.Status = pallet.Status;
+
                 newPallet.DateUpdated = DateTime.UtcNow;
                 _currentDbContext.Entry(newPallet).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();

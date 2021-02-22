@@ -13,6 +13,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Elmah.ContentSyndication;
+using Ganedata.Core.Data.Helpers;
+using Ganedata.Core.Entities.Domain.ViewModels;
 
 namespace Ganedata.Core.Services
 {
@@ -807,6 +809,13 @@ namespace Ganedata.Core.Services
                     var model = new InventoryTransaction() { OrderID = orderId, ProductId = orderDetail.ProductId, Quantity = qtyDifference, TenentId = order.TenentId, WarehouseId = orderDetail.WarehouseId, CreatedBy = userId };
                     Inventory.StockTransaction(model, order.InventoryTransactionTypeId, null, "", orderDetail.OrderDetailID, null);
                 }
+            }
+            if (statusId == OrderStatusEnum.BeingPicked)
+            {
+                // ship if any order details to be shipped automatically 
+                var currentUser = _userService.GetAuthUserById(userId);
+                var dataImportFactory = new DataImportFactory();
+                dataImportFactory.PrestaShopOrderStatusUpdate(orderId, PrestashopOrderStateEnum.PickAndPack, null, currentUser.DisplayNameWithEmail);
             }
 
             var schOrder = _currentDbContext.Order.Find(orderId);
@@ -3461,7 +3470,7 @@ namespace Ganedata.Core.Services
         public bool UpdatePickerId(int OrderId, int? pickerId, int userId)
         {
             var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == OrderId);
-            if (order != null)
+            if (order != null && (order.OrderStatusID == OrderStatusEnum.Active || order.OrderStatusID == OrderStatusEnum.Hold || order.OrderStatusID == OrderStatusEnum.BeingPicked || order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation ))
             {
                 order.OrderStatusID = OrderStatusEnum.Active;
                 order.PickerId = pickerId;
@@ -3479,7 +3488,7 @@ namespace Ganedata.Core.Services
         {
             foreach (var orderId in orderIds)
             {
-                var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
+                var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId && u.OrderStatusID!= OrderStatusEnum.OrderUpdating);
                 if (order != null)
                 {
                     order.OrderStatusID = pickerId == null ? OrderStatusEnum.Hold : OrderStatusEnum.Active;
@@ -3490,9 +3499,7 @@ namespace Ganedata.Core.Services
                     _currentDbContext.Entry(order).State = EntityState.Modified;
                 }
             }
-
             _currentDbContext.SaveChanges();
-
             return true;
         }
     }

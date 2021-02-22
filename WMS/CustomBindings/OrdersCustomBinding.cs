@@ -241,6 +241,7 @@ namespace WMS.CustomBindings
 
             return transactions;
         }
+       
 
         public static void SalesOrderCompletedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
@@ -248,7 +249,12 @@ namespace WMS.CustomBindings
 
             SortFilterAndSetDataCount(e, transactions);
         }
+        public static void SalesOrderCompletedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
+        {
+            var transactions = GetSalesOrderCompletedDataset(tenantId, warehouseId);
 
+            SortFilterAndSetData(e, transactions);
+        }
         private static void SortFilterAndSetDataCount(GridViewCustomBindingGetDataRowCountArgs e, IQueryable<SalesOrderViewModel> transactions)
         {
             if (e.State.SortedColumns.Count() > 0)
@@ -276,12 +282,6 @@ namespace WMS.CustomBindings
             e.DataRowCount = transactions.Count();
         }
 
-        public static void SalesOrderCompletedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
-        {
-            var transactions = GetSalesOrderCompletedDataset(tenantId, warehouseId);
-
-            SortFilterAndSetData(e, transactions);
-        }
 
         public static void SalesOrderPickerAssignedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
@@ -417,7 +417,10 @@ namespace WMS.CustomBindings
         private static IQueryable<SalesOrderViewModel> GetSalesOrderActiveDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
-            var transactions = orderServices.GetAllActiveSalesOrdersIq(CurrentTenantId, CurrentWarehouseId);
+            var transactions = orderServices.GetAllActiveSalesOrdersIq(CurrentTenantId, CurrentWarehouseId, new List<OrderStatusEnum>()
+            {
+                OrderStatusEnum.Active , OrderStatusEnum.Hold , OrderStatusEnum.BeingPicked , OrderStatusEnum.AwaitingAuthorisation
+            });
             return transactions;
         }
 
@@ -937,6 +940,28 @@ namespace WMS.CustomBindings
 
             viewModel.Pager.PageSize = 10;
             return viewModel;
+        }
+        private static IQueryable<SalesOrderViewModel> GetSalesOrderUpdatingDataset(int CurrentTenantId, int CurrentWarehouseId)
+        {
+            var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
+            return orderServices.GetAllActiveSalesOrdersIq(CurrentTenantId, CurrentWarehouseId, new List<OrderStatusEnum>()
+                {
+                    OrderStatusEnum.OrderUpdating
+                });
+        }
+
+        public static void SalesOrderUpdatingGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int currentTenantId, int currentWarehouseId)
+        {
+            var transactions = GetSalesOrderUpdatingDataset(currentTenantId, currentWarehouseId);
+
+            SortFilterAndSetDataCount(e, transactions);
+        }
+
+        public static void SalesOrderUpdatingGetData(GridViewCustomBindingGetDataArgs e, int currentTenantId, int currentWarehouseId)
+        {
+            var transactions = GetSalesOrderUpdatingDataset(currentTenantId, currentWarehouseId);
+
+            SortFilterAndSetData(e, transactions);
         }
     }
 }

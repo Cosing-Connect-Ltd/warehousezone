@@ -53,6 +53,7 @@
     <ul>
         <li><a href="#SOA">Active</a></li>
         <li><a href="#SOC">Completed</a></li>
+        <li><a href="#SOP">Order Updating</a></li>
     </ul>
 
     <div class="col-md-12 p-0 legend-pane">
@@ -114,6 +115,23 @@
             @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "SalesOrderPrint"))
             {
                 @Html.ActionLink("Print Order", "SalesOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkSalesOrderCompleteUpdate", target = "_blank" })
+            }
+
+        </div>
+    </div>
+
+
+    <div id="SOP">
+            <div class="alert alert-danger">
+                <h4>Order is currently being updated, so you can't assign pickers yet</h4>
+            </div>
+        @Html.Action("_SalesOrders", "Order", new {type = 5})
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+        
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "SalesOrderPrint"))
+            {
+                @Html.ActionLink("Print Order", "SalesOrderPrint", "Reports", null, new {@class = "btn btn-primary Caction", @id = "lnkSalesOrderCompleteUpdate", target = "_blank"})
             }
 
         </div>

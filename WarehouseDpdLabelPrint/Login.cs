@@ -135,7 +135,7 @@ namespace WarehouseDpdLabelPrint
 
             if (labelPrintData.ShipmentId != null && labelPrintData.GeoAccount != null && labelPrintData.ApiUrl != null && labelPrintData.GeoSession != null)
             {
-
+                
                 string url = String.Format($"{labelPrintData.ApiUrl}shipping/shipment/{labelPrintData.ShipmentId}/label/");
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Method = "GET";
