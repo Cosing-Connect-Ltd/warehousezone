@@ -26,9 +26,9 @@ namespace WMS.Controllers
         }
         public ActionResult Index()
         {
-            var dp = new DataImportFactory();
+            //var dp = new DataImportFactory();
             //dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.PickAndPack, null, "Riyaz Packer");
-            dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.Shipped, 105918999);
+            //dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.Shipped, 105918999);
 
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
