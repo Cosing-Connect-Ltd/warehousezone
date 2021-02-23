@@ -201,6 +201,16 @@
             c.PropertiesEdit.EncodeHtml = false;
             c.Settings.AllowAutoFilter = DefaultBoolean.False;
             c.Settings.AllowSort = DefaultBoolean.False;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var notes = DataBinder.Eval(m.DataItem, "OrderNotesListText").ToString();
+
+                if (!string.IsNullOrWhiteSpace(notes))
+                {
+                    ViewContext.Writer.Write("<i class='fa  fa-file-text-o' title='" + notes + "'></i>");
+                }
+
+            });
         });
 
         if (type != 3 && type != 4)
@@ -264,7 +274,7 @@
                         var assignPicker = string.Format("AssignPicker({0})", orderId);
                         ViewContext.Writer.Write("<a target='_blank' alt='Assign Picker' title='Assign Picker' class='btn fa fa-user' onclick=" + assignPicker + "></a>");
                     }
-                     
+
                 });
             });
 
