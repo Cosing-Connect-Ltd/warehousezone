@@ -870,7 +870,7 @@ namespace Ganedata.Core.Services
 
             if (context.SaveChanges() > 0)
             {
-                StockRecalculate(productId, warehouseId, tenantId, userId);
+                StockRecalculate(productId, warehouseId, tenantId, userId, transaction: transaction);
                 AdjustRecipeItemsInventory(transaction);
 
                 //calculate location stock
@@ -992,8 +992,7 @@ namespace Ganedata.Core.Services
             return inStock;
         }
 
-        public static bool StockRecalculate(int productId, int warehouseId, int tenantId, int userId,
-            bool saveContext = true, IApplicationContext context = null)
+        public static bool StockRecalculate(int productId, int warehouseId, int tenantId, int userId, bool saveContext = true, IApplicationContext context = null, InventoryTransaction transaction = null)
         {
             if (context == null)
             {
@@ -1053,7 +1052,7 @@ namespace Ganedata.Core.Services
             }
 
             // Allocated
-            var itemsOnSalesOrders = context.Order
+            var allocatedOnOrders = context.Order
                 .Where(m =>
                     (m.InventoryTransactionTypeId ==
                         InventoryTransactionTypeEnum.SalesOrder || m.InventoryTransactionTypeId ==
@@ -1100,7 +1099,7 @@ namespace Ganedata.Core.Services
                     .DefaultIfEmpty(0)
                     .Sum()).DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
 
-            var itemsAllocated = itemsOnSalesOrders - itemsDispatched;
+            var itemsAllocated = allocatedOnOrders - itemsDispatched;
 
             if (itemsAllocated < 1)
             {
@@ -1155,6 +1154,16 @@ namespace Ganedata.Core.Services
                 AddProductToNotifyQueue(productId, tenantId, warehouseId, context);
                 context.InventoryStocks.Add(newStock);
             }
+
+            if (transaction != null)
+            {
+                transaction.InStock = inStock;
+                transaction.Allocated = itemsAllocated;
+                transaction.OnOrder = itemsOnOrder;
+                transaction.Available = available;
+                context.Entry(transaction).State = EntityState.Modified;
+            }
+
 
             if (saveContext)
             {

@@ -48,15 +48,14 @@ namespace Ganedata.Core.Services
 
         public string GenerateNextOrderNumber(InventoryTransactionTypeEnum type, int tenantId)
         {
-            var lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == type)
-                .OrderByDescending(m => m.OrderNumber)
-                .FirstOrDefault();
+            Order lastOrder = null;
 
             var prefix = "ON-";
             switch (type)
             {
                 case InventoryTransactionTypeEnum.PurchaseOrder:
                     prefix = "PO-";
+                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder && p.OrderNumber.Contains(prefix)).OrderByDescending(m => m.OrderNumber).FirstOrDefault();
                     break;
 
                 case InventoryTransactionTypeEnum.SalesOrder:
@@ -65,54 +64,57 @@ namespace Ganedata.Core.Services
                 case InventoryTransactionTypeEnum.Samples:
                     prefix = "SO-";
                     lastOrder = _currentDbContext.Order.Where(p =>
-                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder ||
+                    (p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder ||
                     p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma ||
                     p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation ||
-                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
+                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples) && p.OrderNumber.Contains(prefix)
                     ).OrderByDescending(m => m.OrderNumber)
                      .FirstOrDefault();
                     break;
 
                 case InventoryTransactionTypeEnum.WorksOrder:
                     prefix = "MO-";
+                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder).OrderByDescending(m => m.OrderNumber).FirstOrDefault();
                     break;
 
                 case InventoryTransactionTypeEnum.DirectSales:
                     prefix = "DO-";
+                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales && p.OrderNumber.Contains(prefix)).OrderByDescending(m => m.OrderNumber).FirstOrDefault();
                     break;
 
                 case InventoryTransactionTypeEnum.TransferIn:
                 case InventoryTransactionTypeEnum.TransferOut:
+                    prefix = "TO-";
                     lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn ||
                     p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut && p.OrderNumber.Length == 11)
                     .OrderByDescending(m => m.OrderNumber)
                     .FirstOrDefault();
-                    prefix = "TO-";
                     break;
 
                 case InventoryTransactionTypeEnum.Returns:
+                    prefix = "RO-";
                     lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns && p.OrderNumber.Length == 11)
                    .OrderByDescending(m => m.OrderNumber).FirstOrDefault();
-                    prefix = "RO-";
                     break;
 
                 case InventoryTransactionTypeEnum.Wastage:
+                    prefix = "WO-";
                     lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage && p.OrderNumber.Length == 11)
                   .OrderByDescending(m => m.OrderNumber).FirstOrDefault();
-                    prefix = "WO-";
                     break;
 
                 case InventoryTransactionTypeEnum.AdjustmentIn:
                 case InventoryTransactionTypeEnum.AdjustmentOut:
+                    prefix = "AO-";
                     lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn ||
                      p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentOut && p.OrderNumber.Length == 11)
                      .OrderByDescending(m => m.OrderNumber)
                      .FirstOrDefault();
-                    prefix = "AO-";
 
                     break;
 
                 case InventoryTransactionTypeEnum.Exchange:
+                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Exchange).OrderByDescending(m => m.OrderNumber).FirstOrDefault();
                     prefix = "EO-";
                     break;
             }

@@ -158,15 +158,14 @@ namespace Ganedata.Core.Entities.Domain
         {
             get
             {
-                var notes = "";
                 if (OrderNotesList != null)
                 {
-                    foreach (var m in OrderNotesList)
-                    {
-                        notes = notes + "<br/>" + m.Notes + " <small>(" + m.NotesByName + " : " + m.NotesDate.ToString("dd/MM/yyyy") + ")</small>";
-                    }
+                    var list = OrderNotesList.Select(m =>
+                        m.Notes + " <small>(" + m.NotesByName + " : " + m.NotesDate.ToString("dd/MM/yyyy") +
+                        ")</small>").ToList();
+                    return string.Join("<br/>", list);
                 }
-                return notes;
+                return string.Empty;
             }
         }
     }
