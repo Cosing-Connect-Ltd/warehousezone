@@ -1403,22 +1403,11 @@ namespace Ganedata.Core.Services
                 x.ProductId == productId && x.TenantId == tenantId &&
                 x.WarehouseId == warehouseId && x.IsDeleted != true)?.InStock ?? 0;
 
-
-            if (transType == InventoryTransactionTypeEnum.AdjustmentIn ||
-                transType == InventoryTransactionTypeEnum.PurchaseOrder ||
-                transType == InventoryTransactionTypeEnum.Returns
-                || transType == InventoryTransactionTypeEnum.TransferIn)
+            if  (InventoryExtensions.StockInTransactionTypeList.Contains(transType))
             {
                 totalStock = currentStock + newStock;
             }
-            else if (transType == InventoryTransactionTypeEnum.AdjustmentOut ||
-                     transType == InventoryTransactionTypeEnum.DirectSales ||
-                     transType == InventoryTransactionTypeEnum.Loan
-                     || transType == InventoryTransactionTypeEnum.SalesOrder ||
-                     transType == InventoryTransactionTypeEnum.Samples ||
-                     transType == InventoryTransactionTypeEnum.TransferOut
-                     || transType == InventoryTransactionTypeEnum.WorksOrder ||
-                     transType == InventoryTransactionTypeEnum.Wastage)
+            else if (InventoryExtensions.StockInTransactionTypeList.Contains(transType))
             {
                 totalStock = currentStock - newStock;
             }
@@ -1460,7 +1449,6 @@ namespace Ganedata.Core.Services
             return status;
         }
 
-        // correct pallet remaining cases
         public static void AdjustPalletRemainingCases(int palletTrackingId, int WarehouseId, int TenantId, int UserId,
             bool saveContext = true, IApplicationContext context = null)
         {

@@ -1804,25 +1804,25 @@ namespace Ganedata.Core.Services
         {
             if (details == 1)
             {
-                var orderId = _currentDbContext.OrderDetail.Where(m => m.ProductId == productId && (m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
+                var allocatedOrders = _currentDbContext.OrderDetail.Where(m => m.ProductId == productId && (m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
                     || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
                     || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Exchange || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut) && m.Order.WarehouseId == WarehouseId &&
                                 m.Order.OrderStatusID != OrderStatusEnum.Complete && m.Order.OrderStatusID != OrderStatusEnum.Cancelled && m.Order.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.Order.OrderStatusID != OrderStatusEnum.Invoiced
-                                && m.Order.IsDeleted != true).Select(u => u.OrderID).ToList();
+                                && m.Order.IsDeleted != true).Select(u => u.Order).ToList();
 
                 List<Tuple<string, string, decimal, bool>> detail = new List<Tuple<string, string, decimal, bool>>();
-                foreach (var item in orderId)
+                foreach (var item in allocatedOrders)
                 {
-                    var OrderNumber = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == item)?.OrderNumber;
-                    var AccountNumber = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == item)?.Account?.AccountCode;
-                    var itemsOnSalesOrders = _currentDbContext.Order.Select(m => m.OrderDetails.Where(p => p.OrderID == item && p.ProductId == productId && p.IsDeleted != true).Select(x => x.Qty).DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
+                    var OrderNumber = item.OrderNumber;
+                    var AccountNumber = item.Account?.AccountCode;
+                    var itemsOnSalesOrders = item.OrderDetails.Where(p => p.ProductId == productId && p.IsDeleted != true).Select(x => x.Qty).DefaultIfEmpty(0).Sum();
 
                     var itemsDispatched = _currentDbContext.Order
-                                      .Select(m => m.OrderProcess.Where(p => p.OrderID == item).Select(o => o.OrderProcessDetail.Where(p => p.ProductId == productId && p.IsDeleted != true).Select(q => q.QtyProcessed).DefaultIfEmpty(0)
+                                      .Select(m => m.OrderProcess.Select(o => o.OrderProcessDetail.Where(p => p.ProductId == productId && p.IsDeleted != true).Select(q => q.QtyProcessed).DefaultIfEmpty(0)
                                   .Sum()).DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
 
                     var itemsAllocated = itemsOnSalesOrders - itemsDispatched;
-                    bool directship = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == item)?.DirectShip ?? false;
+                    bool directship = item?.DirectShip ?? false;
                     if (itemsAllocated > 0 && detail.Count(u => u.Item2 == OrderNumber) <= 0)
                     {
                         detail.Add(new Tuple<string, string, decimal, bool>(AccountNumber, OrderNumber, itemsAllocated, directship));
