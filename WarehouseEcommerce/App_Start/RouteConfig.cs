@@ -14,16 +14,18 @@ namespace WarehouseEcommerce
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "GetStarted",
-                url: "page/get-started",
-                defaults: new { controller = "Home", action = "GetStarted" }
-            );
-
-            routes.MapRoute(
                 name: "Home",
                 url: "page/{pageUrl}/{blogDetail}",
                 defaults: new { controller = "Home", action = "page", pageUrl = UrlParameter.Optional, blogDetail = UrlParameter.Optional }
             );
+
+
+            routes.MapRoute(
+                name: "GetStarted",
+                url: "pages/get-started",
+                defaults: new { controller = "Pages", action = "GetStarted" }
+            );
+
 
             routes.MapRoute(
                 name: "Default",

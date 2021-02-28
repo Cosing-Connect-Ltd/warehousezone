@@ -11,7 +11,7 @@ namespace WMS.App_Start
 
     public class ThemedRazorViewEngine : RazorViewEngine
     {
-        public static bool ThemingEnabled = false;
+        public static bool ThemingEnabled = true;
         private string[] _newAreaViewLocations = new string[]
         {
         "~/Areas/{2}/Views/Theme/%1/{1}/{0}.cshtml",

@@ -55,7 +55,7 @@ namespace Ganedata.Core.Services
 
             if (HttpContext.Current.Session["CurrentTenantWebsites"] == null)
             {
-                var tenantWeb = context.TenantWebsites.FirstOrDefault(e => e.HostName == hostName && e.IsActive == true && e.IsDeleted != true);
+                var tenantWeb = context.TenantWebsites.FirstOrDefault(e => (e.HostName == hostName || hostName.StartsWith("localhost:")) && e.IsActive == true && e.IsDeleted != true);
                 if (tenantWeb != null)
                 {
                     tenantWebsite.SiteID = tenantWeb.SiteID;

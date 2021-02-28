@@ -34,6 +34,10 @@ namespace WarehouseEcommerce.Controllers
         private readonly ITenantWebsiteService _tenantWebsiteService;
         private readonly IAdyenPaymentService _adyenPaymentService;
         private readonly string _paypalClientId;
+        private readonly string _paypalReturnUrl;
+        private readonly string _paypalUrl;
+        private readonly string _paypalIpnUrl;
+
         public OrdersController(IProductServices productServices,
                                 IProductLookupService productlookupServices,
                                 ICoreOrderService orderService,
@@ -62,6 +66,10 @@ namespace WarehouseEcommerce.Controllers
             _tenantLocationServices = tenantLocationServices;
             _tenantWebsiteService = tenantWebsiteService;
             _adyenPaymentService = adyenPaymentService;
+
+            _paypalReturnUrl = ConfigurationManager.AppSettings["PAYPAL_RET_URL"] ?? "";
+            _paypalUrl = ConfigurationManager.AppSettings["PAYPAL_URL"] ?? "";
+            _paypalIpnUrl = ConfigurationManager.AppSettings["PAYPAL_IPN_URL"] ?? "";
         }
         // GET: Orders
         public ActionResult Index()
@@ -762,6 +770,30 @@ namespace WarehouseEcommerce.Controllers
             return View("Payments/OrderConfirmation", order);
         }
 
+        public ActionResult Success(int Id)
+
+        {
+            ViewBag.Id = Id;
+            return View();
+        }
+        public ActionResult Failed(int Id)
+        {
+            ViewBag.Id = Id;
+            return View();
+        }
+
+        private async Task<bool> ValidateIpnAsync(IEnumerable<KeyValuePair<string, string>> ipn)
+        {
+            using (var client = new HttpClient())
+            {
+                // This is necessary in order for PayPal to not resend the IPN.
+                await client.PostAsync(_paypalUrl, new StringContent(string.Empty));
+                var response = await client.PostAsync(_paypalUrl, new FormUrlEncodedContent(ipn));
+                var responseString = await response.Content.ReadAsStringAsync();
+                return (responseString == "VERIFIED");
+            }
+
+        }
         #endregion
     }
 }

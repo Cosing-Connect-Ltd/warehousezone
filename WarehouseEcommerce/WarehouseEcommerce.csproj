@@ -300,6 +300,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UISettingsController.cs" />
@@ -1373,7 +1374,7 @@
     <Content Include="Views\Theme\ElecTech\Shared\_FooterPartialArea.cshtml" />
     <Content Include="Views\Theme\ElecTech\Home\Index.cshtml" />
     <Content Include="Views\Theme\ElecTech\Home\Services.cshtml" />
-    <Content Include="Views\Theme\ElecTech\Home\GetStarted.cshtml" />
+    <Content Include="Views\Theme\ElecTech\Pages\GetStarted.cshtml" />
     <Content Include="Views\Theme\ElecTech\Home\Blog.cshtml" />
     <Content Include="Views\Theme\ElecTech\Home\AboutUs.cshtml" />
     <Content Include="Views\Theme\ElecTech\Home\Promotions.cshtml" />
