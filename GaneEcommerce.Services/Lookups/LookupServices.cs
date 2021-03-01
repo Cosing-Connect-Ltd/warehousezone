@@ -655,7 +655,7 @@ namespace Ganedata.Core.Services
             {
                 foreach (var item in data.StockMovements)
                 {
-                    status = Inventory.AdjustStockMovementTransactions(item);
+                    status = InventoryStockMoveExtensions.AdjustStockMovementTransactions(item);
                     if (status == false) { break; }
                 }
 

@@ -240,7 +240,7 @@ namespace WarehouseEcommerce.Controllers
 
             model.Prices = _tenantWebsiteService.GetPricesForProducts(new List<int> { model.Product.ProductId }, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId).FirstOrDefault();
 
-            model.AvailableProductCount = Inventory.GetAvailableProductCount(model.Product, CurrentTenantWebsite.SiteID);
+            model.AvailableProductCount = InventoryAvailabilityExtensions.GetAvailableProductCount(model.Product, CurrentTenantWebsite.SiteID);
 
             model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId);
 
@@ -310,7 +310,7 @@ namespace WarehouseEcommerce.Controllers
                     var finalKitProducts = kitProductsList.Select(p => new
                     {
                         Product = p,
-                        AvailableProductCount = Inventory.GetAvailableProductCount(p, CurrentTenantWebsite.SiteID),
+                        AvailableProductCount = InventoryAvailabilityExtensions.GetAvailableProductCount(p, CurrentTenantWebsite.SiteID),
                     })
                     .Where(p => !inStockOnly || p.AvailableProductCount > 0)
                     .OrderByDescending(p => p.AvailableProductCount != null && p.AvailableProductCount > 0);
@@ -482,12 +482,12 @@ namespace WarehouseEcommerce.Controllers
 
         public JsonResult IsProductInWishList(int productId)
         {
-            return Json(Inventory.IsProductInWishList(productId, CurrentUserId), JsonRequestBehavior.AllowGet);
+            return Json(InventoryAvailabilityExtensions.IsProductInWishList(productId, CurrentUserId), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult IsProductInNotifyList(int productId)
         {
-            return Json(Inventory.IsProductInNotifyList(productId, CurrentUserId), JsonRequestBehavior.AllowGet);
+            return Json(InventoryAvailabilityExtensions.IsProductInNotifyList(productId, CurrentUserId), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult WishList()

@@ -60,26 +60,27 @@
 
 
 
+@using (Html.BeginForm())
+{
+    <div class="col-md-12 p-0 View">
+        @Html.Action("AccountList", new {Mid = ViewBag.marketId})
 
-<div class="col-md-12 p-0 View">
-    @Html.Action("AccountList", new { Mid = ViewBag.marketId })
+    </div>
+}
+    <div class="col-md-offset-2 col-md-10 bottom-right">
 
-</div>
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Create"))
+        {
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
 
-<div class="col-md-offset-2 col-md-10 bottom-right">
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Edit"))
+        {
+            <a href="javascript:;" class="btn btn-primary" onclick="EditAccount();">Update</a>
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Delete"))
+        {
+            @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
+        }
 
-    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Create"))
-    {
-        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
-
-    }
-    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Edit"))
-    {
-        <a href="javascript:;" class="btn btn-primary" onclick="EditAccount();">Update</a>
-    }
-    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Delete"))
-    {
-        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
-    }
-
-</div>
+    </div>
