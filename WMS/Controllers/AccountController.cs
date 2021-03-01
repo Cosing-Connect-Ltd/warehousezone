@@ -340,7 +340,7 @@ namespace WMS.Controllers
 
         public ActionResult DownloadAllAccountsWithContacts()
         {
-
+            return new FileContentResult(null, null);
         }
 
 
