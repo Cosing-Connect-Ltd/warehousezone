@@ -798,11 +798,11 @@ namespace Ganedata.Core.Services
 
         public Order UpdateOrderStatus(int orderId, OrderStatusEnum statusId, int userId)
         {
+            var order = GetOrderById(orderId);
 
             if (statusId == OrderStatusEnum.Complete)
             {
                 // ship if any order details to be shipped automatically 
-                var order = GetOrderById(orderId);
                 var orderDetailsToProcess = order.OrderDetails.Where(x => x.IsDeleted != true && x.ProductMaster.IsAutoShipment).Where(m => m.ProcessedQty < m.Qty).ToList();
 
                 foreach (var orderDetail in orderDetailsToProcess)
@@ -812,12 +812,12 @@ namespace Ganedata.Core.Services
                     Inventory.StockTransaction(model, order.InventoryTransactionTypeId, null, "", orderDetail.OrderDetailID, null);
                 }
             }
-            if (statusId == OrderStatusEnum.BeingPicked)
+            if (statusId == OrderStatusEnum.BeingPicked && order.PrestaShopOrderId.HasValue)
             {
                 // ship if any order details to be shipped automatically 
                 var currentUser = _userService.GetAuthUserById(userId);
                 var dataImportFactory = new DataImportFactory();
-                dataImportFactory.PrestaShopOrderStatusUpdate(orderId, PrestashopOrderStateEnum.PickAndPack, null, currentUser.DisplayNameWithEmail);
+                dataImportFactory.PrestaShopOrderStatusUpdate(orderId, PrestashopOrderStateEnum.PickAndPack, null, currentUser?.DisplayNameWithEmail);
             }
 
             var schOrder = _currentDbContext.Order.Find(orderId);
