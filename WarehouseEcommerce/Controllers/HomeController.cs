@@ -346,53 +346,6 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult GetStarted()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult GetStarted(DemoBooking model)
-        {
-            if (ModelState.IsValid)
-            {
-                var body = "<p><strong>Name:</strong> {0} <br/> <strong> Phone: </strong> {1} <br/> <strong> Email: </strong> {2} <br/> <strong> Message: </strong> {3}</p>";
-                var message = new MailMessage();
-                message.To.Add(new MailAddress(ConfigurationManager.AppSettings["ContactFormEmailAddress"]));
-                message.From = new MailAddress(model.Email);
-                message.Subject = "Demo Booking Request";
-                message.Body = string.Format(body, model.Name, model.Phone, model.Email, model.Message);
-                message.IsBodyHtml = true;
-
-                using (var smtp = new SmtpClient())
-                {
-                    var credential = new NetworkCredential
-                    {
-                        UserName = ConfigurationManager.AppSettings["SmtpClientUserName"],
-                        Password = ConfigurationManager.AppSettings["SmtpClientPassword"]
-                    };
-                    smtp.Credentials = credential;
-                    smtp.Host = "smtp.gmail.com";
-                    smtp.Port = 587;
-                    smtp.EnableSsl = true;
-                    try
-                    {
-                        smtp.Send(message);
-                    }
-                    catch (Exception ex)
-                    {
-                        Session["EXCP"] = ex;
-                        return RedirectToAction("GetStarted", "Home", new { area = "" });
-                    }
-
-
-                    Session["success"] = 1;
-                    return RedirectToAction("GetStarted", "Home", new { area = "" });
-                }
-            }
-            return View(model);
-        }
-
         public ActionResult Blog()
         {
             var data = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.Type == ContentType.post).OrderByDescending(u => u.DateCreated).Take(12).ToList();

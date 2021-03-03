@@ -300,7 +300,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            Inventory.AdjustPalletRemainingCasesAll(CurrentTenantId, CurrentWarehouseId, CurrentUserId);
+            InventoryPalletExtensions.AdjustPalletRemainingCasesAll(CurrentTenantId, CurrentWarehouseId, CurrentUserId);
 
             ViewBag.Title = "Operation was Successful";
             ViewBag.Message = "Operation was Successful";
@@ -314,7 +314,7 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             //int[] palletIds = Enumerable.Range(10300, 21).ToArray();
-            Inventory.AdjustPalletRemainingCases(pallettrackingId, CurrentTenantId, CurrentWarehouseId, CurrentUserId);
+            InventoryPalletExtensions.AdjustPalletRemainingCases(pallettrackingId, CurrentTenantId, CurrentWarehouseId, CurrentUserId);
 
             ViewBag.Title = "Operation was Successful";
             ViewBag.Message = "Operation was Successful";
@@ -336,7 +336,7 @@ namespace WMS.Controllers
                     var palletTracking = _adminServices.GetPalletTrackingsbyProductId(Id, CurrentTenantId, CurrentWarehouseId).ToList();
                     foreach (var item in palletTracking)
                     {
-                        var Processedqunatity = Inventory.CalculatePalletQuantity(item.PalletTrackingId);
+                        var Processedqunatity = InventoryPalletExtensions.CalculatePalletQuantity(item.PalletTrackingId);
                         var remianingquantity = product.ProductsPerCase * item.RemainingCases;
 
                         if (Processedqunatity != remianingquantity)
@@ -363,7 +363,7 @@ namespace WMS.Controllers
                     var palletTrackings = _adminServices.GetPalletTrackingsbyProductId(item.ProductId, CurrentTenantId, CurrentWarehouseId).ToList();
                     foreach (var palletTracking in palletTrackings)
                     {
-                        var Processedqunatity = Inventory.CalculatePalletQuantity(palletTracking.PalletTrackingId);
+                        var Processedqunatity = InventoryPalletExtensions.CalculatePalletQuantity(palletTracking.PalletTrackingId);
                         var remianingquantity = (item.ProductsPerCase ?? 1) * palletTracking.RemainingCases;
                         if (Processedqunatity != remianingquantity)
                         {
@@ -669,7 +669,7 @@ namespace WMS.Controllers
             {
                 var locationId = Inventory.GetLocation(CurrentTenantId, CurrentWarehouseId, CurrentUserId, item.LocationId);
 
-                Result = Inventory.AdjustStockLocations(item.ProductId, 0, locationId,
+                Result = InventoryStockMoveExtensions.AdjustStockLocations(item.ProductId, 0, locationId,
                     item.Quantity, item.WarehouseId, item.TenentId,
                     CurrentUserId, null, null, true);
             }

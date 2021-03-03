@@ -16,9 +16,9 @@ namespace Ganedata.Core.Entities.Domain
         public int WarehouseId { get; set; }
         [Display(Name = "In Stock")]
         public decimal InStock { get; set; }
-        [Display(Name = "In Stock")]
-        public decimal OnOrder { get; set; }
         [Display(Name = "On Order")]
+        public decimal OnOrder { get; set; }
+        [Display(Name = "Allocated")]
         public decimal Allocated { get; set; }
         [Display(Name = "Available")]
         public decimal Available { get; set; }

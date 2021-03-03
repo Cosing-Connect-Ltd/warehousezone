@@ -209,6 +209,23 @@
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
 
+        settings.Toolbars.Add(t => {
+                                       t.SettingsAdaptivity.Enabled = true;
+                                       t.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+                                       t.Items.Add(GridViewToolbarCommand.ExportToPdf);
+                                       t.Items.Add(GridViewToolbarCommand.ExportToXlsx);
+                                       t.Items.Add(GridViewToolbarCommand.ExportToCsv);
+        });
+        settings.SettingsExport.EnableClientSideExportAPI = true;
+        settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.WYSIWYG;
+        settings.SettingsExport.RenderBrick = (sender, e) => {
+                                                                 if (e.RowType == GridViewRowType.Data && e.VisibleIndex % 2 == 0)
+                                                                     e.BrickStyle.BackColor = System.Drawing.Color.FromArgb(0xEE, 0xEE, 0xEE);
+        };
+        settings.PreRender = (sender, e) => {
+                                                ((MVCxGridView)sender).ExpandAll();
+        };
+
         settings.CustomJSProperties = (s, e) =>
         {
             MVCxGridView g = s as MVCxGridView;

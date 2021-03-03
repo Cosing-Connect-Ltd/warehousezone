@@ -1271,6 +1271,14 @@
     <Compile Include="Migrations\202102151249464_UpdatedRewardTriggers.designer.cs">
       <DependentUpon>202102151249464_UpdatedRewardTriggers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202102231305160_AddedInventoryChangesToTransactions.cs" />
+    <Compile Include="Migrations\202102231305160_AddedInventoryChangesToTransactions.designer.cs">
+      <DependentUpon>202102231305160_AddedInventoryChangesToTransactions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103031152587_AddedOrderStatusToTransactions.cs" />
+    <Compile Include="Migrations\202103031152587_AddedOrderStatusToTransactions.designer.cs">
+      <DependentUpon>202103031152587_AddedOrderStatusToTransactions.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2545,6 +2553,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102151249464_UpdatedRewardTriggers.resx">
       <DependentUpon>202102151249464_UpdatedRewardTriggers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102231305160_AddedInventoryChangesToTransactions.resx">
+      <DependentUpon>202102231305160_AddedInventoryChangesToTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103031152587_AddedOrderStatusToTransactions.resx">
+      <DependentUpon>202103031152587_AddedOrderStatusToTransactions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

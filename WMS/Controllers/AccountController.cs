@@ -334,10 +334,14 @@ namespace WMS.Controllers
                         AccountCustomBinding.AccountGetData(args, CurrentTenantId, marketId);
                     })
             );
+
             return PartialView("_AccountList", gridViewModel);
         }
 
-
+        public ActionResult DownloadAllAccountsWithContacts()
+        {
+            return new FileContentResult(null, null);
+        }
 
 
         public ActionResult _AccountAddress()

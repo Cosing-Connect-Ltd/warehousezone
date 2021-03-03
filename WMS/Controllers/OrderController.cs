@@ -45,6 +45,7 @@ namespace WMS.Controllers
             _palletingService = palletingService;
             _userService = userService;
             _mapper = mapper;
+
         }
 
         // GET: /PO/

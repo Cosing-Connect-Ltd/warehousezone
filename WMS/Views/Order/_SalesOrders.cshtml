@@ -207,7 +207,8 @@
 
                 if (!string.IsNullOrWhiteSpace(notes))
                 {
-                    ViewContext.Writer.Write("<i class='fa  fa-file-text-o' title='" + notes + "'></i>");
+                    notes = notes.Replace("'", "");
+                    ViewContext.Writer.Write("<i class='fa  fa-file-text-o' onclick=\"Gane.Helpers.ShowPopupMessage('Notes','"+ notes + "')\"></i>");
                 }
 
             });
