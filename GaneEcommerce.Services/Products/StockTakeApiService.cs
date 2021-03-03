@@ -985,7 +985,7 @@ namespace Ganedata.Core.Services
                             _context.Entry(productSerial).State = EntityState.Modified;
                             _context.SaveChanges();
 
-                            Inventory.StockTransaction(inventoryProduct.ProductId, productSerial.CurrentStatus, 1, null, serialStocktakeDetail.FirstOrDefault().StockTakeDetail.LocationId, null, productSerial.SerialID);
+                            Inventory.StockTransaction(inventoryProduct.ProductId, productSerial.CurrentStatus, 1, null, serialStocktakeDetail.FirstOrDefault()?.StockTakeDetail?.LocationId, null, productSerial.SerialID);
 
                         }
                     }

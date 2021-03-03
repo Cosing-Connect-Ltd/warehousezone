@@ -80,6 +80,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Available")]
         public decimal Available { get; set; }
 
+        public OrderStatusEnum? OrderStatus { get; set; }
     }
 
     [Table("WastageReason")]

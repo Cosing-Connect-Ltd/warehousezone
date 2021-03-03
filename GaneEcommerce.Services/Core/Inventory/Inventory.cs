@@ -78,7 +78,7 @@ namespace Ganedata.Core.Services
 
             if (context.SaveChanges() > 0)
             {
-                StockRecalculate(productId, warehouse.WarehouseId, tenant.TenantId, user.UserId);
+                StockRecalculate(productId, warehouse.WarehouseId, tenant.TenantId, user.UserId, transaction: transaction);
                 status = true;
                 AdjustRecipeItemsInventory(transaction);
 
@@ -242,7 +242,7 @@ namespace Ganedata.Core.Services
                     context.SaveChanges();
 
                     StockRecalculate(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.warehouseId,
-                        goodsReturnRequestSync.tenantId, user);
+                        goodsReturnRequestSync.tenantId, user, transaction: tans);
 
                     //calculate location stock
                     if (!dontMonitorStock)
@@ -351,7 +351,7 @@ namespace Ganedata.Core.Services
                 context.SaveChanges();
 
                 StockRecalculate(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.warehouseId,
-                    goodsReturnRequestSync.tenantId, UserId);
+                    goodsReturnRequestSync.tenantId, UserId, transaction: trans);
 
                 //calculate location stock
                 if (!dontMonitorStock)
@@ -777,7 +777,7 @@ namespace Ganedata.Core.Services
                         type, dontMonitorStock);
                     context.InventoryTransactions.Add(model);
                     context.SaveChanges();
-                    StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy);
+                    StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy, transaction: model);
 
                     //calculate location stock
                     if (!dontMonitorStock)
@@ -794,7 +794,7 @@ namespace Ganedata.Core.Services
 
                 context.InventoryTransactions.Add(model);
                 context.SaveChanges();
-                StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy);
+                StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy, transaction: model);
 
                 //calculate location stock
                 if (!dontMonitorStock)
@@ -813,7 +813,7 @@ namespace Ganedata.Core.Services
                 context.InventoryTransactions.Add(AutoTransferInventoryTransaction);
                 context.SaveChanges();
                 StockRecalculate(AutoTransferInventoryTransaction.ProductId,
-                    AutoTransferInventoryTransaction.WarehouseId, model.TenentId, model.CreatedBy);
+                    AutoTransferInventoryTransaction.WarehouseId, model.TenentId, model.CreatedBy, transaction: model);
 
                 //calculate location stock
                 if (!dontMonitorStock)
@@ -930,7 +930,7 @@ namespace Ganedata.Core.Services
                     lstTemp.Add(trans);
 
                     context.SaveChanges();
-                    StockRecalculate(product, warehouseId, tenantId, userId);
+                    StockRecalculate(product, warehouseId, tenantId, userId, transaction: trans);
 
                     //calculate location stock
                     if (!dontMonitorStock)
@@ -1109,11 +1109,13 @@ namespace Ganedata.Core.Services
 
             if (transaction != null)
             {
-                transaction.InStock = inStock;
-                transaction.Allocated = itemsAllocated;
-                transaction.OnOrder = itemsOnOrder;
-                transaction.Available = available;
-                context.Entry(transaction).State = EntityState.Modified;
+                var ts = context.InventoryTransactions.FirstOrDefault(m => m.InventoryTransactionId == transaction.InventoryTransactionId);
+                ts.InStock = inStock;
+                ts.Allocated = itemsAllocated;
+                ts.OnOrder = itemsOnOrder;
+                ts.Available = available;
+                ts.OrderStatus = transaction.Order?.OrderStatusID;
+                context.Entry(ts).State = EntityState.Modified;
             }
 
 
