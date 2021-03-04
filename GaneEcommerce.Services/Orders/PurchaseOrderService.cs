@@ -971,7 +971,7 @@ namespace Ganedata.Core.Services
                     return _currentDbContext.PalletTracking.AsNoTracking().FirstOrDefault(u => u.PalletSerial == serial && u.ProductId == productId && u.TenantId == tenantId && u.WarehouseId == warehouseId && (u.OrderId == null || (orderId.HasValue && u.OrderId == orderId)) && u.Status == PalletTrackingStatusEnum.Active && u.RemainingCases > 0);
                 }
             }
-            return _currentDbContext.PalletTracking.AsNoTracking().FirstOrDefault(u => u.PalletSerial == serial && u.ProductId == productId && u.TenantId == tenantId && u.WarehouseId == warehouseId && u.Status == PalletTrackingStatusEnum.Created);
+            return _currentDbContext.PalletTracking.AsNoTracking().FirstOrDefault(u => u.PalletSerial == serial && u.ProductId == productId && u.TenantId == tenantId && (u.WarehouseId == warehouseId|| warehouseId==0) && (u.Status == PalletTrackingStatusEnum.Created|| u.Status == PalletTrackingStatusEnum.Active));
         }
 
         public int ProcessPalletTrackingSerial(GoodsReturnRequestSync serials, string groupToken = null, bool process = false)

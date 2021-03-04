@@ -291,7 +291,11 @@ namespace WMS.Controllers
             decimal qty = int.Parse(Request.Params["qty"]);
             ViewBag.ProcessedQuantity = receivedQty;
             int prodId = int.Parse(Request.Params["pid"]);
-            ViewBag.OrderDetailId = int.Parse(Request.Params["line_id"]);
+            if (!string.IsNullOrEmpty(Request.Params["line_id"]))
+            {
+                ViewBag.OrderDetailId = int.Parse(Request.Params["line_id"]);
+            }
+
             ViewBag.RequiredQuantity = qty - receivedQty;
             ViewBag.PalletPerCase = _productServices.GetProductMasterById(prodId).ProductsPerCase ?? 1;
             decimal caseperpallet = ((decimal)ViewBag.RequiredQuantity / (decimal?)ViewBag.PalletPerCase ?? 1);
