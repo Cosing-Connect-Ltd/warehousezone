@@ -275,7 +275,7 @@ namespace Ganedata.Core.Services
                 // update Order Status in presta shop
                 var process = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == dispatch.OrderProcessId);
              
-                if (process != null && process.OrderID.HasValue)
+                if (process != null && process.OrderID.HasValue && process.Order!=null && process.Order.PrestaShopOrderId.HasValue)
                 {
                     var dispatchDetails = _currentDbContext.PalletsDispatches.FirstOrDefault(m => m.PalletsDispatchID == dispatch.PalletDispatchId);
                     if (dispatchDetails != null)

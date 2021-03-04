@@ -926,7 +926,7 @@ namespace Ganedata.Core.Services
 
         public PalletTracking GetVerifedPallet(string serial, int productId, int tenantId, int warehouseId, int? type = null, int? palletTrackingId = null, DateTime? dates = null, int? orderId = null)
         {
-            if (type.HasValue)
+            if (type.HasValue && orderId.HasValue)
             {
                 switch (type)
                 {
