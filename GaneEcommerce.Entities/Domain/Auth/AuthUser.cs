@@ -74,5 +74,6 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<AuthUserprofile> AuthUserprofiles { get; set; }
         public string PersonalReferralCode { get; set; }
         public bool ReferralConfirmed { get; set; }
+        public string PaypalCustomerId { get; set; }
     }
 }

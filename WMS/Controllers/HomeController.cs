@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using Ganedata.Core.Data.Helpers;
 using Ganedata.Core.Entities.Domain.ViewModels;
+using Ganedata.Core.Models.PaypalPayments;
 
 namespace WMS.Controllers
 {
@@ -18,14 +19,25 @@ namespace WMS.Controllers
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
         private readonly IUserService _userService;
+        private readonly IOrderService _orderService;
 
-        public HomeController(ITenantWebsiteService tenantWebsiteService, IUserService userService)
+        public HomeController(ITenantWebsiteService tenantWebsiteService, IUserService userService, IOrderService orderService)
         {
             _tenantWebsiteService = tenantWebsiteService;
             _userService = userService;
+            _orderService = orderService;
         }
         public ActionResult Index()
         {
+            var p = new PaypalPaymentServices(_orderService, _userService);
+            var status = p.SubmitPaypalAuthorisation(new PaypalPaymentAuthorisationRequest()
+            {
+                AuthorisationNonceCode = "819fa56a-ffe9-0606-7f33-0fe4c96275d0",
+                PaymentAmount =29.94m,
+                PaymentReference = "RIYAZ TEST",
+                UserId = 51,
+                OrderID = 990
+            });
             //var dp = new DataImportFactory();
             //dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.PickAndPack, null, "Riyaz Packer");
             //dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.Shipped, 105918999);

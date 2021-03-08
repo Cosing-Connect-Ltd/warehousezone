@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.EnterpriseServices;
 using Ganedata.Core.Entities.Enums;
+using Braintree;
 
 namespace Ganedata.Core.Models.AdyenPayments
 {
-
     public class ShoppingVoucherValidationRequestModel
     {
         public string Username { get; set; }

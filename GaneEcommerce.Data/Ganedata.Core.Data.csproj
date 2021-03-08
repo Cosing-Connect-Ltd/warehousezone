@@ -1279,6 +1279,10 @@
     <Compile Include="Migrations\202103031152587_AddedOrderStatusToTransactions.designer.cs">
       <DependentUpon>202103031152587_AddedOrderStatusToTransactions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103051624082_AddedPaypalCustomerIdToUsers.cs" />
+    <Compile Include="Migrations\202103051624082_AddedPaypalCustomerIdToUsers.designer.cs">
+      <DependentUpon>202103051624082_AddedPaypalCustomerIdToUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2559,6 +2563,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103031152587_AddedOrderStatusToTransactions.resx">
       <DependentUpon>202103031152587_AddedOrderStatusToTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103051624082_AddedPaypalCustomerIdToUsers.resx">
+      <DependentUpon>202103051624082_AddedPaypalCustomerIdToUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

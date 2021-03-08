@@ -426,5 +426,16 @@ namespace Ganedata.Core.Services
             }
             return user;
         }
+        public AuthUser UpdateUserPaypalCustomerId(int authUserId, string paypalCustomerId)
+        {
+            var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserId == authUserId);
+            if (user != null && !string.IsNullOrWhiteSpace(paypalCustomerId))
+            {
+                user.PaypalCustomerId = paypalCustomerId;
+                _currentDbContext.Entry(user).State = EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+            return user;
+        }
     }
 }

@@ -42,5 +42,6 @@ namespace Ganedata.Core.Services
         AuthUser UpdateUserPassword(int authUserId, string resetPasswordCode, string newPassword);
         string GetNextUniquePersonalReferralCode();
         void UpdateAllUsersWithPersonalReferralCode();
+        AuthUser UpdateUserPaypalCustomerId(int authUserId, string paypalCustomerId);
     }
 }
