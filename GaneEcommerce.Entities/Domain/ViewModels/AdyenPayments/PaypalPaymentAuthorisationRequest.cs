@@ -1,9 +1,20 @@
 ﻿
+using System;
 using System.Collections.Generic;
+using Braintree;
 
 namespace Ganedata.Core.Models.PaypalPayments
 {
-   
+    public class PaypalPaymentWebhookRequest
+    {
+        public WebhookKind Kind { get; set; }
+        public DateTime Timestamp { get; set; }
+        public Transaction Transaction { get; set; }
+
+        public string bt_signature { get; set; }
+        public string bt_payload { get; set; }
+    }
+
     public class PaypalPaymentAuthorisationRequest
     {
         public int OrderID { get; set; }
@@ -25,7 +36,7 @@ namespace Ganedata.Core.Models.PaypalPayments
         public List<string> FailureReasons { get; set; }
         public string AcquirerReferenceNumber { get; set; }
         public string AuthorizedTransactionId { get; set; }
-        public string TransactionStatus { get; set; }
+        public TransactionStatus TransactionStatus { get; set; }
     }
 
 }

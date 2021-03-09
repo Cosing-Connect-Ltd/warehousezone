@@ -193,6 +193,7 @@ namespace Ganedata.Core.Data
 
         DbSet<Feedback> Feedbacks  { get; set; }
         DbSet<AdyenOrderPaylink> AdyenOrderPaylinks { get; set; }
+        DbSet<PaymentPaypalTransaction> PaymentPaypalTransactions { get; set; }
 
         DbSet<ShoppingVoucher> ShoppingVouchers { get; set; }
         DbSet<ShoppingVoucherUsage> ShoppingVoucherUsages { get; set; }

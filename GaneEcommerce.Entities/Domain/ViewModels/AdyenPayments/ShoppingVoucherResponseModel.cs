@@ -30,6 +30,7 @@ namespace Ganedata.Core.Models.AdyenPayments
         public DateTime? UsedDate { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public int? RewardProductId { get; set; }
+        public RewardProductCategoryEnum? RewardProductCategory { get; set; }
     }
 
     public class PromotionsSyncRequest

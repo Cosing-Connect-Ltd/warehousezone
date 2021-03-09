@@ -222,6 +222,7 @@ namespace Ganedata.Core.Data
         public DbSet<AuthUserVerifyCodes> AuthUserVerifyCodes { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<AdyenOrderPaylink> AdyenOrderPaylinks { get; set; }
+        public DbSet<PaymentPaypalTransaction> PaymentPaypalTransactions { get; set; }
         public DbSet<ShoppingVoucher> ShoppingVouchers { get; set; }
         public DbSet<ShoppingVoucherUsage> ShoppingVoucherUsages { get; set; }
         public DbSet<RewardPointTrigger> RewardPointTriggers { get; set; }

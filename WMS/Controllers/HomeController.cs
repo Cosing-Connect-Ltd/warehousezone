@@ -18,26 +18,24 @@ namespace WMS.Controllers
     public class HomeController : Controller
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        private readonly IUserService _userService;
-        private readonly IOrderService _orderService;
+        private readonly IPaypalPaymentServices _paypalPaymentServices;
 
-        public HomeController(ITenantWebsiteService tenantWebsiteService, IUserService userService, IOrderService orderService)
+        public HomeController(ITenantWebsiteService tenantWebsiteService, IPaypalPaymentServices paypalPaymentServices)
         {
             _tenantWebsiteService = tenantWebsiteService;
-            _userService = userService;
-            _orderService = orderService;
+            _paypalPaymentServices = paypalPaymentServices;
         }
         public ActionResult Index()
         {
-            var p = new PaypalPaymentServices(_orderService, _userService);
-            var status = p.SubmitPaypalAuthorisation(new PaypalPaymentAuthorisationRequest()
-            {
-                AuthorisationNonceCode = "819fa56a-ffe9-0606-7f33-0fe4c96275d0",
-                PaymentAmount =29.94m,
-                PaymentReference = "RIYAZ TEST",
-                UserId = 51,
-                OrderID = 990
-            });
+
+            //var status = _paypalPaymentServices.SubmitPaypalAuthorisation(new PaypalPaymentAuthorisationRequest()
+            //{
+            //    AuthorisationNonceCode = "57278366-0132-051d-7b89-10285349d9bb",
+            //    PaymentAmount = 39.92m,
+            //    PaymentReference = "RIYAZ TEST",
+            //    UserId = 25,
+            //    OrderID = 990
+            //});
             //var dp = new DataImportFactory();
             //dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.PickAndPack, null, "Riyaz Packer");
             //dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.Shipped, 105918999);

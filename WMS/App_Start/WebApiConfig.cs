@@ -98,7 +98,8 @@ namespace WMS
             config.Routes.MapHttpRoute("GetPalletDispatchLabel", "api/sync/get-dispatch-for-label", new { controller = "ApiPalletsSync", action = "GetPalletDispatchLabelPrint", tenantId = string.Empty, userId = string.Empty });
             config.Routes.MapHttpRoute("GetPalletDispatchLabelStatus", "api/sync/update-dispatch-for-label", new { controller = "ApiPalletsSync", action = "UpdatePalletDispatchLabelPrintStatus", shipmentId = string.Empty });
             config.Routes.MapHttpRoute("SendNotificationForAbandonedCarts", "api/Websites/SendNotificationForAbandonedCarts", new { controller = "ApiWebsites", action = "SendNotificationForAbandonedCarts" });
-            config.Routes.MapHttpRoute("SendProductAvailabilityNotifications", "api/Websites/SendProductAvailabilityNotifications", new { controller = "ApiWebsites", action = "SendProductAvailabilityNotifications" });
+            config.Routes.MapHttpRoute("SendProductAvailabilityNotifications", "api/Websites/SendProductAvailabilityNotif" +
+                                                                               "ications", new { controller = "ApiWebsites", action = "SendProductAvailabilityNotifications" });
             config.Routes.MapHttpRoute("DeliverectChannelStatusUpdated", "api/deliverect/channelStatusUpdated", new { controller = "DeliverectWebhooks", action = "ChannelStatusUpdated" });
             config.Routes.MapHttpRoute("DeliverectMenuPushed", "api/deliverect/menuPushed", new { controller = "DeliverectWebhooks", action = "MenuPushed" });
             config.Routes.MapHttpRoute("DeliverectProductSnoozeChanged", "api/deliverect/productSnoozeChanged", new { controller = "DeliverectWebhooks", action = "ProductSnoozeChanged" });
@@ -112,6 +113,9 @@ namespace WMS
             config.Routes.MapHttpRoute("OrderVoucherDetails", "api/vouchers/validate", new { controller = "ApiOrderVouchers", action = "ValidateShoppingVoucher" });
             config.Routes.MapHttpRoute("PromotionsSync", "api/sync/user-promotions", new { controller = "ApiOrderVouchers", action = "UserPromotions" });
             config.Routes.MapHttpRoute("ReferralPromotion", "api/sync/user-referrals", new { controller = "ApiOrderVouchers", action = "AddPromotion" });
+            config.Routes.MapHttpRoute("PaypalAuthorisation", "api/paypal/pay-authorised", new { controller = "ApiOrderPayments", action = "AuthorizePaypalPayment" });
+            config.Routes.MapHttpRoute("OrderStatus", "api/order/status/{id}", new { controller = "ApiOrderPayments", action = "GetOrderStatus", id = string.Empty });
+            config.Routes.MapHttpRoute("ReceivePaypalWebhook", "api/paypal/hook-authorise", new { controller = "ApiOrderPayments", action = "ReceivePaypalWebhook" });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

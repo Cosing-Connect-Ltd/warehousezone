@@ -1283,6 +1283,10 @@
     <Compile Include="Migrations\202103051624082_AddedPaypalCustomerIdToUsers.designer.cs">
       <DependentUpon>202103051624082_AddedPaypalCustomerIdToUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103091331183_AddedRewardProductCategory.cs" />
+    <Compile Include="Migrations\202103091331183_AddedRewardProductCategory.designer.cs">
+      <DependentUpon>202103091331183_AddedRewardProductCategory.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2566,6 +2570,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103051624082_AddedPaypalCustomerIdToUsers.resx">
       <DependentUpon>202103051624082_AddedPaypalCustomerIdToUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103091331183_AddedRewardProductCategory.resx">
+      <DependentUpon>202103091331183_AddedRewardProductCategory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

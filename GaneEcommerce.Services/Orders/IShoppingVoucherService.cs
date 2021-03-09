@@ -98,6 +98,7 @@ namespace Ganedata.Core.Services
             }
 
             response.RewardProductId = voucher.RewardProductId;
+            response.RewardProductCategory = voucher.RewardProductCategory;
 
             return response;
         }
@@ -242,7 +243,7 @@ namespace Ganedata.Core.Services
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         
                         var voucher400 = GetVoucher(freeItemVoucher, userId,
-                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint400RewardProductId, $"{point1.LoyaltyPointToTrigger} Loyalty Points - Free ({product400?.Name})");
+                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint400RewardProductId, $"{point1.LoyaltyPointToTrigger} Loyalty Points - Free ({product400?.Name})", RewardProductCategoryEnum.Milkshake);
                         voucher400.RewardProductId = point1.ShoppingVoucher.RewardProductId;
                         voucher400.DiscountType = point1.ShoppingVoucher.DiscountType;
                         voucher400.DiscountFigure = point1.ShoppingVoucher.DiscountFigure;
@@ -259,7 +260,7 @@ namespace Ganedata.Core.Services
                         var product800 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint800RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher800 = GetVoucher(freeItemVoucher, userId,
-                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint800RewardProductId, $"{point2.LoyaltyPointToTrigger} Loyalty Points - Free ({product800?.Name})");
+                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint800RewardProductId, $"{point2.LoyaltyPointToTrigger} Loyalty Points - Free ({product800?.Name})", RewardProductCategoryEnum.CheeseCake);
                         voucher800.RewardProductId = point1.ShoppingVoucher.RewardProductId;
                         voucher800.DiscountType = point1.ShoppingVoucher.DiscountType;
                         voucher800.DiscountFigure = point1.ShoppingVoucher.DiscountFigure;
@@ -275,7 +276,7 @@ namespace Ganedata.Core.Services
                         var product1200 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint1200RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher1200 = GetVoucher(freeItemVoucher, userId,
-                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint1200RewardProductId, $"{point3.LoyaltyPointToTrigger} Loyalty Points - Free ({product1200?.Name})");
+                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint1200RewardProductId, $"{point3.LoyaltyPointToTrigger} Loyalty Points - Free ({product1200?.Name})", RewardProductCategoryEnum.CookieDough);
                         voucher1200.RewardProductId = point1.ShoppingVoucher.RewardProductId;
                         voucher1200.DiscountType = point1.ShoppingVoucher.DiscountType;
                         voucher1200.DiscountFigure = point1.ShoppingVoucher.DiscountFigure;
@@ -295,7 +296,7 @@ namespace Ganedata.Core.Services
 
         }
 
-        private ShoppingVoucher GetVoucher(string voucherCode, int userId, ShoppingVoucherDiscountTypeEnum discountType,  int createdUserId, decimal discountFigure = 0, int? rewardProductId = null, string title="")
+        private ShoppingVoucher GetVoucher(string voucherCode, int userId, ShoppingVoucherDiscountTypeEnum discountType,  int createdUserId, decimal discountFigure = 0, int? rewardProductId = null, string title="", RewardProductCategoryEnum rewardProductCategory = RewardProductCategoryEnum.Milkshake)
         {
             var voucher = new ShoppingVoucher()
             {
@@ -307,6 +308,7 @@ namespace Ganedata.Core.Services
                 DiscountFigure = discountFigure,
                 RewardProductId = rewardProductId,
                 VoucherTitle = title,
+                RewardProductCategory = rewardProductCategory,
                 MaximumAllowedUse = 1,
                 VoucherExpiryDate = DateTime.Now.AddDays(30)
             };
