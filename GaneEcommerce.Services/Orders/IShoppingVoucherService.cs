@@ -36,7 +36,7 @@ namespace Ganedata.Core.Services
     {
         private readonly IApplicationContext _currentDbContext;
 
-        private static int ReferralFreeRewardProductId = (WebConfigurationManager.AppSettings["ReferralFreeRewardProductId"] ??"309").AsInt();
+        private static int ReferralFreeRewardProductId = (WebConfigurationManager.AppSettings["ReferralFreeRewardProductId"] ?? "309").AsInt();
         private static int LoyaltyPoint400RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint400RewardProductId"] ?? "309").AsInt();
         private static int LoyaltyPoint800RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint800RewardProductId"] ?? "341").AsInt();
         private static int LoyaltyPoint1200RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint1200RewardProductId"] ?? "558").AsInt();
@@ -73,6 +73,7 @@ namespace Ganedata.Core.Services
             response.MinimumOrderPrice = voucher.MinimumOrderPrice??0;
             response.ExpiryDate = voucher.VoucherExpiryDate;
             response.RewardProductCategory = voucher.RewardProductCategory;
+            response.RewardProductId = voucher.RewardProductId;
 
             if (voucher.VoucherExpiryDate < DateTime.Now)
             {
@@ -97,8 +98,6 @@ namespace Ganedata.Core.Services
                 response.DiscountFigure = voucher.DiscountFigure;
                 response.DiscountType = (int)voucher.DiscountType;
             }
-
-            response.RewardProductId = voucher.RewardProductId;
 
             return response;
         }
@@ -254,50 +253,53 @@ namespace Ganedata.Core.Services
                         var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point1.LoyaltyPointToTrigger??400), LoyaltyPoint400RewardProductId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
                         _currentDbContext.SaveChanges();
-                        return;
                     }
-                    if (oldPoint < point2.LoyaltyPointToTrigger && newPoint >= point2.LoyaltyPointToTrigger && newPoint < point3.LoyaltyPointToTrigger)
+                    else if (oldPoint < point2.LoyaltyPointToTrigger && newPoint >= point2.LoyaltyPointToTrigger && newPoint < point3.LoyaltyPointToTrigger)
                     {
                         var product800 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint800RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher800 = GetVoucher(freeItemVoucher, userId,
                             ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint800RewardProductId, $"{point2.LoyaltyPointToTrigger} Loyalty Points - Free ({product800?.Name})", RewardProductCategoryEnum.CheeseCake);
-                        voucher800.RewardProductId = point1.ShoppingVoucher.RewardProductId;
-                        voucher800.DiscountType = point1.ShoppingVoucher.DiscountType;
-                        voucher800.DiscountFigure = point1.ShoppingVoucher.DiscountFigure;
+                        voucher800.RewardProductId = point2.ShoppingVoucher.RewardProductId;
+                        voucher800.DiscountType = point2.ShoppingVoucher.DiscountType;
+                        voucher800.DiscountFigure = point2.ShoppingVoucher.DiscountFigure;
                         _currentDbContext.ShoppingVouchers.Add(voucher800);
 
-                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point1.LoyaltyPointToTrigger ?? 800), LoyaltyPoint800RewardProductId);
+                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point2.LoyaltyPointToTrigger ?? 800), LoyaltyPoint800RewardProductId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
                         _currentDbContext.SaveChanges();
-                        return;
                     }
-                    if (oldPoint < point3.LoyaltyPointToTrigger && newPoint >= point3.LoyaltyPointToTrigger)
+                    else if (oldPoint < point3.LoyaltyPointToTrigger && newPoint >= point3.LoyaltyPointToTrigger)
                     {
                         var product1200 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint1200RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher1200 = GetVoucher(freeItemVoucher, userId,
                             ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint1200RewardProductId, $"{point3.LoyaltyPointToTrigger} Loyalty Points - Free ({product1200?.Name})", RewardProductCategoryEnum.CookieDough);
-                        voucher1200.RewardProductId = point1.ShoppingVoucher.RewardProductId;
-                        voucher1200.DiscountType = point1.ShoppingVoucher.DiscountType;
-                        voucher1200.DiscountFigure = point1.ShoppingVoucher.DiscountFigure;
+                        voucher1200.RewardProductId = point3.ShoppingVoucher.RewardProductId;
+                        voucher1200.DiscountType = point3.ShoppingVoucher.DiscountType;
+                        voucher1200.DiscountFigure = point3.ShoppingVoucher.DiscountFigure;
                         _currentDbContext.ShoppingVouchers.Add(voucher1200);
 
-                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point1.LoyaltyPointToTrigger ?? 1200), LoyaltyPoint1200RewardProductId);
+                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point3.LoyaltyPointToTrigger ?? 1200), LoyaltyPoint1200RewardProductId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
-
-                        account.AccountLoyaltyPoints = newPoint - (point1.LoyaltyPointToTrigger ?? 1200);
-                        _currentDbContext.Entry(account).State = EntityState.Modified;
                         _currentDbContext.SaveChanges();
-                        return;
                     }
+
+                    if (newPoint > (point3.LoyaltyPointToTrigger ?? 1200))
+                    {
+                        newPoint = newPoint - (point3.LoyaltyPointToTrigger ?? 1200);
+                    }
+
+                    account.AccountLoyaltyPoints = newPoint;
+                    _currentDbContext.Entry(account).State = EntityState.Modified;
+                    _currentDbContext.SaveChanges();
                 }
 
             }
 
         }
 
-        private ShoppingVoucher GetVoucher(string voucherCode, int userId, ShoppingVoucherDiscountTypeEnum discountType,  int createdUserId, decimal discountFigure = 0, int? rewardProductId = null, string title="", RewardProductCategoryEnum rewardProductCategory = RewardProductCategoryEnum.Milkshake)
+        private ShoppingVoucher GetVoucher(string voucherCode, int userId, ShoppingVoucherDiscountTypeEnum discountType,  int createdUserId, decimal discountFigure = 0, int? rewardProductId = null, string title= "", RewardProductCategoryEnum rewardProductCategory = RewardProductCategoryEnum.Milkshake)
         {
             var voucher = new ShoppingVoucher()
             {
@@ -309,9 +311,9 @@ namespace Ganedata.Core.Services
                 DiscountFigure = discountFigure,
                 RewardProductId = rewardProductId,
                 VoucherTitle = title,
-                RewardProductCategory = rewardProductCategory,
                 MaximumAllowedUse = 1,
-                VoucherExpiryDate = DateTime.Now.AddDays(30)
+                VoucherExpiryDate = DateTime.Now.AddDays(30),
+                RewardProductCategory = rewardProductCategory
             };
             return voucher;
         }

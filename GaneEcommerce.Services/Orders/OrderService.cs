@@ -1378,10 +1378,9 @@ namespace Ganedata.Core.Services
                     };
                     _currentDbContext.AccountRewardPoints.Add(reward);
                     
-                    account.AccountLoyaltyPoints += reward.PointsEarned;
-                    _currentDbContext.Entry(account).State = EntityState.Modified;
+                    //_currentDbContext.Entry(account).State = EntityState.Modified;
 
-                    var newLoyaltyPoint = account.AccountLoyaltyPoints;
+                    var newLoyaltyPoint = account.AccountLoyaltyPoints + reward.PointsEarned;
                     _currentDbContext.SaveChanges();
 
                     _shoppingVoucherService.TriggerRewardsBasedForCurrentVoucher(item.CreatedBy, oldLoyaltyPoint, newLoyaltyPoint, item.OrderID, string.IsNullOrWhiteSpace(item.VoucherCode));
