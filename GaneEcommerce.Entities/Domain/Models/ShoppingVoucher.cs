@@ -72,6 +72,7 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("RewardProductId")]
         public virtual ProductMaster RewardProduct { get; set; }
 
+        public RewardProductCategoryEnum? RewardProductCategory { get; set; }
     }
 
     public class ShoppingVoucherUsage : BaseAuditInfo

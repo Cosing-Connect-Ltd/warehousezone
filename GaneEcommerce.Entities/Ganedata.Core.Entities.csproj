@@ -54,6 +54,9 @@
     <Reference Include="BCrypt.Net-Next, Version=4.0.0.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt.Net-Next.4.0.0\lib\net472\BCrypt.Net-Next.dll</HintPath>
     </Reference>
+    <Reference Include="Braintree, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31b586f34d3e96c7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Braintree.5.4.0\lib\net452\Braintree.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.15.0.44797, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.15.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
@@ -188,6 +191,7 @@
     <Compile Include="Domain\Auth\AuthUserGroups.cs" />
     <Compile Include="Domain\Auth\AuthUserVerifyCodes.cs" />
     <Compile Include="Domain\Auth\caTenantBase.cs" />
+    <Compile Include="Domain\Auth\PaymentPaypalTransaction.cs" />
     <Compile Include="Domain\Employee\Address.cs" />
     <Compile Include="Domain\AttLogs\AttLogsStamps.cs" />
     <Compile Include="Domain\AttLogs\AttLogs.cs" />
@@ -246,6 +250,8 @@
     <Compile Include="Domain\Models\UISetting.cs" />
     <Compile Include="Domain\ViewModels\AdyenPayments\AdyenPaylinkPaymentNotificationModel.cs" />
     <Compile Include="Domain\ViewModels\AdyenPayments\CreatePayLinkRequestViewModel.cs" />
+    <Compile Include="Domain\ViewModels\AdyenPayments\PaypalPaymentAuthorisationRequest.cs" />
+    <Compile Include="Domain\ViewModels\AdyenPayments\PaypalWebhookSaleCompleteRequest.cs" />
     <Compile Include="Domain\ViewModels\AdyenPayments\ShoppingVoucherResponseModel.cs" />
     <Compile Include="Domain\ViewModels\ApiModels\ProductLocationStocksSync.cs" />
     <Compile Include="Domain\ViewModels\ProductPriceViewModel.cs" />

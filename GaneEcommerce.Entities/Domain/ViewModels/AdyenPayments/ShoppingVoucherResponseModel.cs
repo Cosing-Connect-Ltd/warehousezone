@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.EnterpriseServices;
 using Ganedata.Core.Entities.Enums;
+using Braintree;
 
 namespace Ganedata.Core.Models.AdyenPayments
 {
-
     public class ShoppingVoucherValidationRequestModel
     {
         public string Username { get; set; }
@@ -28,6 +30,7 @@ namespace Ganedata.Core.Models.AdyenPayments
         public DateTime? UsedDate { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public int? RewardProductId { get; set; }
+        public RewardProductCategoryEnum? RewardProductCategory { get; set; }
     }
 
     public class PromotionsSyncRequest

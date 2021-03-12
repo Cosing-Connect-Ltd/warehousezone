@@ -1,0 +1,18 @@
+﻿namespace Ganedata.Core.Data.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class AddedLoyaltyAutoAcceptFlag : DbMigration
+    {
+        public override void Up()
+        {
+            AddColumn("dbo.TenantLocations", "LoyaltyAutoAcceptOrders", c => c.Boolean());
+        }
+        
+        public override void Down()
+        {
+            DropColumn("dbo.TenantLocations", "LoyaltyAutoAcceptOrders");
+        }
+    }
+}

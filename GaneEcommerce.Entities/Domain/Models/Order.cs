@@ -278,7 +278,8 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("BillingAccountAddressID")]
         public AccountAddresses BillingAccountAddress { get; set; }
 
-        public int? ShopDeliveryTypeID;
+        public int? ShopDeliveryTypeID { get; set; }
+        public string PaypalBillingAgreementID { get; set; }
 
         public int? ShoppingVoucherId { get; set; }
         [ForeignKey("ShoppingVoucherId")]
@@ -286,6 +287,12 @@ namespace Ganedata.Core.Entities.Domain
         public string VoucherCode { get; set; }
         public decimal? VoucherCodeDiscount { get; set; }
         public decimal? DeliveryCharges { get; set; }
-
+        public string PaypalBraintreeNonce { get; set; }
+        public string PaypalTransactionFee { get; set; }
+        public string PaypalPaymentId { get; set; }
+        public string PaypalPayerEmail { get; set; }
+        public string PaypalPayerFirstName { get; set; }
+        public string PaypalPayerSurname { get; set; }
+        public string PaypalAuthorizationId { get; set; }
     }
 }

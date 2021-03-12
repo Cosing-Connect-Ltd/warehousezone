@@ -11,6 +11,12 @@ namespace Ganedata.Core.Models
         public List<OrdersSync> Orders { get; set; }
     }
 
+    public class OrderStatusSync
+    {
+        public int OrderID { get; set; }
+        public string OrderNumber { get; set; }
+        public OrderStatusEnum OrderStatusID { get; set; }
+    }
 
     public class OrdersSync
     {
@@ -96,6 +102,7 @@ namespace Ganedata.Core.Models
         public string MobileNumber { get; set; }
         public bool OfflineSale { get; set; }
         public string VoucherCode { get; set; }
+        public string PaypalBraintreeNonce { get; set; }
     }
 
     public class OrderDetailSync

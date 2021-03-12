@@ -1207,14 +1207,22 @@ namespace Ganedata.Core.Services
             int defaultTimeMinutes = 30;
             var warehouse = _tenantLocationServices.GetActiveTenantLocationById(terminal.WarehouseId);
 
+            var orderStatus  = (item.OrderStatusID.HasValue && item.OrderStatusID > 0) ? item.OrderStatusID.Value : OrderStatusEnum.Active;
+
             if (terminal.IgnoreWarehouseForOrderPost)
             {
                 warehouse = _tenantLocationServices.GetActiveTenantLocationById(item.WarehouseId);
+                
             }
             var tenantConfig = _currentDbContext.TenantConfigs.FirstOrDefault(m => m.TenantId == terminal.TenantId);
 
             if (item.FoodOrderType != null)
             {
+                if (warehouse.LoyaltyAutoAcceptOrders == true)
+                {
+                    orderStatus = OrderStatusEnum.Preparing;
+                }
+
                 //Will need to review why Deliverect need this code
                 //if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Internal && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
                 //{
@@ -1296,7 +1304,7 @@ namespace Ganedata.Core.Services
                     InventoryTransactionTypeId = item.InventoryTransactionTypeId,
                     DateCreated = item.DateCreated,
                     CreatedBy = item.CreatedBy,
-                    OrderStatusID = (item.OrderStatusID.HasValue && item.OrderStatusID > 0) ? item.OrderStatusID.Value : OrderStatusEnum.Active,
+                    OrderStatusID = orderStatus,
                     IsCancel = false,
                     IsActive = false,
                     Posted = false,
@@ -1320,8 +1328,14 @@ namespace Ganedata.Core.Services
                     VoucherCode = item.VoucherCode,
                     VoucherCodeDiscount = item.VoucherCodeDiscount,
                     OrderCost = item.OrderProcessTotal,
-                    DeliveryCharges = item.FoodOrderType == FoodOrderTypeEnum.Delivery ? warehouse.DeliveryCharges : 0
+                    DeliveryCharges = item.FoodOrderType == FoodOrderTypeEnum.Delivery ? warehouse.DeliveryCharges : 0,
+                    PaypalBraintreeNonce = item.PaypalBraintreeNonce
                 };
+
+                if (warehouse.LoyaltyAutoAcceptOrders == true && (item.FoodOrderType == FoodOrderTypeEnum.Delivery || item.FoodOrderType == FoodOrderTypeEnum.Collection || item.FoodOrderType == FoodOrderTypeEnum.EatIn))
+                {
+                    order.OrderStatusID = OrderStatusEnum.Preparing;
+                }
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
                 {
@@ -1565,37 +1579,7 @@ namespace Ganedata.Core.Services
                 result.OrderID = order.OrderID;
                 result.OrderStatusID = order.OrderStatusID;
 
-                if (item.AccountTransactionInfo != null && item.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation && item.FoodOrderType.HasValue)
-                {
-                    if (item.AccountTransactionInfo.AccountId > 0)
-                    {
-                        if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales)
-                        {
-                            //create an account transaction for order
-                            UpdateAccountTransactionInfo(item, terminal.TenantId, AccountTransactionTypeEnum.InvoicedToAccount, order.OrderID);
-                        }
-                        else if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns || item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn)
-                        {
-                            //create an account transaction for returns order
-                            UpdateAccountTransactionInfo(item, terminal.TenantId, AccountTransactionTypeEnum.Refund, order.OrderID);
-                        }
-                    }
-
-                    if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales)
-                    {
-                        // create a paid transaction for the amount customer paid if paid amount is greater then zero
-                        var transaction = UpdateAccountTransactionInfo(item, terminal.TenantId, AccountTransactionTypeEnum.PaidByAccount, order.OrderID);
-
-                        if (item.AccountTransactionFiles != null)
-                        {
-                            foreach (var transFile in item.AccountTransactionFiles)
-                            {
-                                transFile.AccountTransactionID = transaction.AccountTransactionId;
-                                _accountServices.AddAccountTransactionFile(transFile, terminal.TenantId);
-                            }
-                        }
-                    }
-                }
+                UpdateTransactionInformation(item, terminal, order);
 
                 return result;
             }
@@ -1774,6 +1758,7 @@ namespace Ganedata.Core.Services
 
                 _currentDbContext.SaveChanges();
                 item.OrderProcessID = orderProcess.OrderProcessID;
+
                 if (item.AccountTransactionInfo != null && item.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation)
                 {
                     if (item.AccountTransactionInfo.AccountId > 0)
@@ -1806,35 +1791,9 @@ namespace Ganedata.Core.Services
                     }
                 }
 
-                if (item.ProgressInfo != null)
-                {
-                    var progressInfo = _mapper.Map(item.ProgressInfo, new MarketRouteProgress());
-                    progressInfo.Latitude = item.ProgressInfo.Latitude;
-                    progressInfo.Longitude = item.ProgressInfo.Longitude;
-                    progressInfo.OrderId = order.OrderID;
-                    progressInfo.DateCreated = item.DateCreated == DateTime.MinValue ? DateTime.UtcNow : item.DateCreated;
-                    progressInfo.DateUpdated = DateTime.UtcNow;
-                    progressInfo.TenantId = terminal.TenantId;
-                    if (progressInfo.RouteProgressId == Guid.Empty) { progressInfo.RouteProgressId = Guid.NewGuid(); }
-                    _currentDbContext.MarketRouteProgresses.Add(progressInfo);
-                    _currentDbContext.SaveChanges();
-                }
+                UpdateVansalesProgressInfo(item, terminal, order);
 
-                if (item.OrderProofOfDeliverySync != null)
-                {
-                    foreach (var orderprocessIds in order.OrderProcess)
-                    {
-                        OrderProofOfDelivery orderProofOfDelivery = new OrderProofOfDelivery();
-                        orderProofOfDelivery.DateCreated = DateTime.UtcNow;
-                        orderProofOfDelivery.DateUpdated = DateTime.UtcNow;
-                        orderProofOfDelivery.SignatoryName = item.OrderProofOfDeliverySync?.SignatoryName ?? "";
-                        orderProofOfDelivery.OrderProcessID = orderprocessIds.OrderProcessID;
-                        orderProofOfDelivery.FileName = ByteToFile(item.OrderProofOfDeliverySync?.FileContent ?? null);
-                        orderProofOfDelivery.TenantId = item.TenentId;
-                        orderProofOfDelivery.NoOfCases = item.OrderProofOfDeliverySync?.NoOfCases ?? 0;
-                        _currentDbContext.OrderProofOfDelivery.Add(orderProofOfDelivery);
-                    }
-                }
+                UpdateProofOfDeliveryInfo(item, order);
 
                 _currentDbContext.SaveChanges();
 
@@ -1872,6 +1831,85 @@ namespace Ganedata.Core.Services
             }
 
             return new OrdersSync() { RequestSuccess = true, RequestStatus = "Order processed successfully" };
+        }
+
+        private void UpdateVansalesProgressInfo(OrderProcessesSync item, Terminals terminal, Order order)
+        {
+            if (item.ProgressInfo != null)
+            {
+                var progressInfo = _mapper.Map(item.ProgressInfo, new MarketRouteProgress());
+                progressInfo.Latitude = item.ProgressInfo.Latitude;
+                progressInfo.Longitude = item.ProgressInfo.Longitude;
+                progressInfo.OrderId = order.OrderID;
+                progressInfo.DateCreated = item.DateCreated == DateTime.MinValue ? DateTime.UtcNow : item.DateCreated;
+                progressInfo.DateUpdated = DateTime.UtcNow;
+                progressInfo.TenantId = terminal.TenantId;
+                if (progressInfo.RouteProgressId == Guid.Empty)
+                {
+                    progressInfo.RouteProgressId = Guid.NewGuid();
+                }
+
+                _currentDbContext.MarketRouteProgresses.Add(progressInfo);
+                _currentDbContext.SaveChanges();
+            }
+        }
+
+        private void UpdateProofOfDeliveryInfo(OrderProcessesSync item, Order order)
+        {
+            if (item.OrderProofOfDeliverySync != null)
+            {
+                foreach (var orderprocessIds in order.OrderProcess)
+                {
+                    OrderProofOfDelivery orderProofOfDelivery = new OrderProofOfDelivery();
+                    orderProofOfDelivery.DateCreated = DateTime.UtcNow;
+                    orderProofOfDelivery.DateUpdated = DateTime.UtcNow;
+                    orderProofOfDelivery.SignatoryName = item.OrderProofOfDeliverySync?.SignatoryName ?? "";
+                    orderProofOfDelivery.OrderProcessID = orderprocessIds.OrderProcessID;
+                    orderProofOfDelivery.FileName = ByteToFile(item.OrderProofOfDeliverySync?.FileContent ?? null);
+                    orderProofOfDelivery.TenantId = item.TenentId;
+                    orderProofOfDelivery.NoOfCases = item.OrderProofOfDeliverySync?.NoOfCases ?? 0;
+                    _currentDbContext.OrderProofOfDelivery.Add(orderProofOfDelivery);
+                }
+            }
+        }
+
+        private void UpdateTransactionInformation(OrderProcessesSync item, Terminals terminal, Order order)
+        {
+            if (item.AccountTransactionInfo != null && item.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation &&
+                item.FoodOrderType.HasValue)
+            {
+                if (item.AccountTransactionInfo.AccountId > 0)
+                {
+                    if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales)
+                    {
+                        //create an account transaction for order
+                        UpdateAccountTransactionInfo(item, terminal.TenantId, AccountTransactionTypeEnum.InvoicedToAccount,
+                            order.OrderID);
+                    }
+                    else if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns ||
+                             item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn)
+                    {
+                        //create an account transaction for returns order
+                        UpdateAccountTransactionInfo(item, terminal.TenantId, AccountTransactionTypeEnum.Refund, order.OrderID);
+                    }
+                }
+
+                if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales)
+                {
+                    // create a paid transaction for the amount customer paid if paid amount is greater then zero
+                    var transaction = UpdateAccountTransactionInfo(item, terminal.TenantId,
+                        AccountTransactionTypeEnum.PaidByAccount, order.OrderID);
+
+                    if (item.AccountTransactionFiles != null)
+                    {
+                        foreach (var transFile in item.AccountTransactionFiles)
+                        {
+                            transFile.AccountTransactionID = transaction.AccountTransactionId;
+                            _accountServices.AddAccountTransactionFile(transFile, terminal.TenantId);
+                        }
+                    }
+                }
+            }
         }
 
         private AccountTransaction UpdateAccountTransactionInfo(OrderProcessesSync item, int tenantId, AccountTransactionTypeEnum type, int orderId = 0)
@@ -3501,6 +3539,24 @@ namespace Ganedata.Core.Services
                     _currentDbContext.Entry(order).State = EntityState.Modified;
                 }
             }
+            _currentDbContext.SaveChanges();
+            return true;
+        }
+        
+        public bool UpdateOrderPaypalPaymentInfo(int orderId, string nonce, Braintree.Transaction transaction)
+        {
+            var order = _currentDbContext.Order.FirstOrDefault(m => m.OrderID == orderId);
+            if (order == null) return false;
+            order.PaypalBraintreeNonce = nonce;
+            order.PaypalBillingAgreementID = transaction.PayPalDetails.BillingAgreementId;
+            order.PaypalTransactionFee = transaction.PayPalDetails.TransactionFeeAmount;
+            order.PaypalPaymentId = transaction.PayPalDetails.PaymentId;
+            order.PaypalPayerEmail = transaction.PayPalDetails.PayerEmail;
+            order.PaypalPayerFirstName= transaction.PayPalDetails.PayerFirstName;
+            order.PaypalPayerSurname= transaction.PayPalDetails.PayerLastName;
+            order.PaypalAuthorizationId = transaction.PayPalDetails.AuthorizationId;
+         
+            _currentDbContext.Entry(order).State = EntityState.Modified;
             _currentDbContext.SaveChanges();
             return true;
         }

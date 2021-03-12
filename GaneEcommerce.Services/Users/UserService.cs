@@ -83,12 +83,16 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.AuthUsers.Where(x => x.AccountId == accountId).FirstOrDefault();
         }
-
-
-
+         
         public AuthUser GetAuthUserByUserName(string userName, int tenantId)
         {
-            return _currentDbContext.AuthUsers.Where(x => x.UserName.ToLower() == userName.ToLower() && x.TenantId == tenantId).FirstOrDefault();
+            return _currentDbContext.AuthUsers.FirstOrDefault(x => x.UserName.ToLower() == userName.ToLower() && x.TenantId == tenantId);
+        }
+        public AuthUser GetAuthUserByUserInfo(string email, string phoneNumber, int tenantId)
+        {
+            return _currentDbContext.AuthUsers.FirstOrDefault(x =>
+                (x.UserMobileNumber.ToLower() == phoneNumber.ToLower() || (email!=null &&  x.UserEmail.ToLower() == email.ToLower()))
+                && x.TenantId == tenantId);
         }
 
         public AuthUser GetAuthUserByName(string userName)
@@ -269,9 +273,9 @@ namespace Ganedata.Core.Services
         {
             UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
 
-            var user = _currentDbContext.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase)
-            && e.UserPassword.Equals(loginStatus.Md5Pass.Trim(), StringComparison.CurrentCultureIgnoreCase)
-            && (e.WebUser == webUser) && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true).FirstOrDefault();
+            var user = _currentDbContext.AuthUsers.AsNoTracking().FirstOrDefault(e => (e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase) || e.UserMobileNumber.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase))
+                                                                                      && e.UserPassword.Equals(loginStatus.Md5Pass.Trim(), StringComparison.CurrentCultureIgnoreCase)
+                                                                                      && (e.WebUser == webUser) && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true);
             if (user != null)
             {
                 _shoppingVoucherService.LoadDefaultSystemVouchersForNewUser(user.UserId);
@@ -421,6 +425,17 @@ namespace Ganedata.Core.Services
                 user.UserPassword = GaneStaticAppExtensions.GetMd5(newPassword);
                 user.ResetPasswordCodeExpiry = null;
                 user.ResetPasswordCode = null;
+                _currentDbContext.Entry(user).State = EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+            return user;
+        }
+        public AuthUser UpdateUserPaypalCustomerId(int authUserId, string paypalCustomerId)
+        {
+            var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserId == authUserId);
+            if (user != null && !string.IsNullOrWhiteSpace(paypalCustomerId))
+            {
+                user.PaypalCustomerId = paypalCustomerId;
                 _currentDbContext.Entry(user).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
             }

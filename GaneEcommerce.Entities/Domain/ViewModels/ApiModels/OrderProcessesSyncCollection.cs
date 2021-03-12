@@ -67,6 +67,7 @@ namespace Ganedata.Core.Models
         public string VoucherCode { get; set; }
         public decimal? VoucherCodeDiscount { get; set; }
         public bool? RedeemLoyaltyDiscount { get; set; }
+        public string PaypalBraintreeNonce { get; set; }
     }
 
     public class MarketRouteProgressSync

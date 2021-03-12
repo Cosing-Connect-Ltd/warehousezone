@@ -300,6 +300,12 @@ namespace WMS.Controllers.WebAPI
                     return BadRequest("Username already exist, please choose another one");
                 }
 
+                existingUser = _userService.GetAuthUserByUserInfo(user.UserEmail, user.UserMobileNumber,  user.TenantId);
+
+                if (existingUser != null)
+                {
+                    return BadRequest("Phone Number or Email already registered, please choose another one");
+                }
 
                 AuthUser authUser = new AuthUser();
                 Account account = new Account();

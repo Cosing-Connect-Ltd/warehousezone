@@ -11,21 +11,31 @@ using System.Reflection;
 using System.Web.Mvc;
 using Ganedata.Core.Data.Helpers;
 using Ganedata.Core.Entities.Domain.ViewModels;
+using Ganedata.Core.Models.PaypalPayments;
 
 namespace WMS.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        private readonly IUserService _userService;
+        private readonly IPaypalPaymentServices _paypalPaymentServices;
 
-        public HomeController(ITenantWebsiteService tenantWebsiteService, IUserService userService)
+        public HomeController(ITenantWebsiteService tenantWebsiteService, IPaypalPaymentServices paypalPaymentServices)
         {
             _tenantWebsiteService = tenantWebsiteService;
-            _userService = userService;
+            _paypalPaymentServices = paypalPaymentServices;
         }
         public ActionResult Index()
         {
+
+            //var status = _paypalPaymentServices.SubmitPaypalAuthorisation(new PaypalPaymentAuthorisationRequest()
+            //{
+            //    AuthorisationNonceCode = "57278366-0132-051d-7b89-10285349d9bb",
+            //    PaymentAmount = 39.92m,
+            //    PaymentReference = "RIYAZ TEST",
+            //    UserId = 25,
+            //    OrderID = 990
+            //});
             //var dp = new DataImportFactory();
             //dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.PickAndPack, null, "Riyaz Packer");
             //dp.PrestaShopOrderStatusUpdate(246, PrestashopOrderStateEnum.Shipped, 105918999);

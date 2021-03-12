@@ -655,4 +655,11 @@ namespace Ganedata.Core.Entities.Enums
         OnReferringFriend = 3
     }
 
+    public enum RewardProductCategoryEnum
+    {
+        Milkshake = 1,
+        CheeseCake = 2,
+        CookieDough = 3
+    }
+
 }
