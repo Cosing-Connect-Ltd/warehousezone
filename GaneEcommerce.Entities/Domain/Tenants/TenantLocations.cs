@@ -152,6 +152,9 @@ namespace Ganedata.Core.Entities.Domain
         public int? DefaultCollectionTimeMinutes { get; set; }
         [Display(Name = "EatIn Time in Minutes")]
         public int? DefaultEatInTimeMinutes { get; set; }
+        [Display(Name = "Accept Food Orders Automatically")]
+        public bool? LoyaltyAutoAcceptOrders { get; set; }
+
 
         [ForeignKey("DeliveryPriceGroupId")]
         public virtual TenantPriceGroups DeliveryPriceGroup { get; set; }

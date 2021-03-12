@@ -251,6 +251,7 @@
     <Compile Include="Domain\ViewModels\AdyenPayments\AdyenPaylinkPaymentNotificationModel.cs" />
     <Compile Include="Domain\ViewModels\AdyenPayments\CreatePayLinkRequestViewModel.cs" />
     <Compile Include="Domain\ViewModels\AdyenPayments\PaypalPaymentAuthorisationRequest.cs" />
+    <Compile Include="Domain\ViewModels\AdyenPayments\PaypalWebhookSaleCompleteRequest.cs" />
     <Compile Include="Domain\ViewModels\AdyenPayments\ShoppingVoucherResponseModel.cs" />
     <Compile Include="Domain\ViewModels\ApiModels\ProductLocationStocksSync.cs" />
     <Compile Include="Domain\ViewModels\ProductPriceViewModel.cs" />

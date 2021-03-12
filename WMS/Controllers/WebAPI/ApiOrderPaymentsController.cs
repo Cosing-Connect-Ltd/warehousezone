@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
 using Ganedata.Core.Models;
@@ -27,7 +28,7 @@ namespace WMS.Controllers.WebAPI
         }
 
         [HttpPost]
-        public IHttpActionResult ReceivePaypalWebhook(PaypalPaymentWebhookRequest model)
+        public IHttpActionResult ReceivePaypalWebhook(PaypalWebhookSaleCompleteRequest model)
         {
             var result = _paypalPaymentServices.ReceiveWebHook(model);
 
@@ -35,11 +36,16 @@ namespace WMS.Controllers.WebAPI
         }
 
         [HttpGet]
-      public IHttpActionResult GetOrderStatus(int id)
+      public async Task<IHttpActionResult> GetOrderStatus(int id)
       {
-          var result = _orderService.GetOrderById(id);
-          var order = new OrdersSync();
-          _mapper.Map(result, order);
+          var result = await Task.Run(() => _orderService.GetOrderById(id));
+
+          var order = new OrderStatusSync()
+          {
+              OrderStatusID = result.OrderStatusID,
+              OrderID = result.OrderID,
+              OrderNumber = result.OrderNumber
+          };
             return Ok(order);
         }
 

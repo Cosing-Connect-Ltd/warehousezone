@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using Braintree;
 
 namespace Ganedata.Core.Models.PaypalPayments
-{
+{    
     public class PaypalPaymentWebhookRequest
     {
+    
         public WebhookKind Kind { get; set; }
         public DateTime Timestamp { get; set; }
         public Transaction Transaction { get; set; }

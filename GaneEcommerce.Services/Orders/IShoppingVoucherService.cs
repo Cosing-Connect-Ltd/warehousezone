@@ -36,8 +36,8 @@ namespace Ganedata.Core.Services
     {
         private readonly IApplicationContext _currentDbContext;
 
-        private static int ReferralFreeRewardProductId = (WebConfigurationManager.AppSettings["ReferralFreeRewardProductId"] ??"290").AsInt();
-        private static int LoyaltyPoint400RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint400RewardProductId"] ?? "290").AsInt();
+        private static int ReferralFreeRewardProductId = (WebConfigurationManager.AppSettings["ReferralFreeRewardProductId"] ??"309").AsInt();
+        private static int LoyaltyPoint400RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint400RewardProductId"] ?? "309").AsInt();
         private static int LoyaltyPoint800RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint800RewardProductId"] ?? "341").AsInt();
         private static int LoyaltyPoint1200RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint1200RewardProductId"] ?? "558").AsInt();
 
@@ -72,6 +72,7 @@ namespace Ganedata.Core.Services
             response.VoucherTitle = voucher.VoucherTitle;
             response.MinimumOrderPrice = voucher.MinimumOrderPrice??0;
             response.ExpiryDate = voucher.VoucherExpiryDate;
+            response.RewardProductCategory = voucher.RewardProductCategory;
 
             if (voucher.VoucherExpiryDate < DateTime.Now)
             {
@@ -98,7 +99,6 @@ namespace Ganedata.Core.Services
             }
 
             response.RewardProductId = voucher.RewardProductId;
-            response.RewardProductCategory = voucher.RewardProductCategory;
 
             return response;
         }
@@ -162,7 +162,8 @@ namespace Ganedata.Core.Services
                 RewardProductId = ReferralFreeRewardProductId,
                 DiscountFigure = 0,
                 VoucherTitle = $"Referral Free Product ({product?.Name})",
-                MaximumAllowedUse = 1
+                MaximumAllowedUse = 1,
+                RewardProductCategory = RewardProductCategoryEnum.Milkshake
             };
             _currentDbContext.ShoppingVouchers.Add(voucher);
 

@@ -1287,6 +1287,18 @@
     <Compile Include="Migrations\202103091331183_AddedRewardProductCategory.designer.cs">
       <DependentUpon>202103091331183_AddedRewardProductCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103101624535_AddedLoyaltyAutoAcceptFlag.cs" />
+    <Compile Include="Migrations\202103101624535_AddedLoyaltyAutoAcceptFlag.designer.cs">
+      <DependentUpon>202103101624535_AddedLoyaltyAutoAcceptFlag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103111220405_OrderPaypalSettlementInfo.cs" />
+    <Compile Include="Migrations\202103111220405_OrderPaypalSettlementInfo.designer.cs">
+      <DependentUpon>202103111220405_OrderPaypalSettlementInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103111657526_AddedPaypalColumns.cs" />
+    <Compile Include="Migrations\202103111657526_AddedPaypalColumns.designer.cs">
+      <DependentUpon>202103111657526_AddedPaypalColumns.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2573,6 +2585,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103091331183_AddedRewardProductCategory.resx">
       <DependentUpon>202103091331183_AddedRewardProductCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103101624535_AddedLoyaltyAutoAcceptFlag.resx">
+      <DependentUpon>202103101624535_AddedLoyaltyAutoAcceptFlag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103111220405_OrderPaypalSettlementInfo.resx">
+      <DependentUpon>202103111220405_OrderPaypalSettlementInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103111657526_AddedPaypalColumns.resx">
+      <DependentUpon>202103111657526_AddedPaypalColumns.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

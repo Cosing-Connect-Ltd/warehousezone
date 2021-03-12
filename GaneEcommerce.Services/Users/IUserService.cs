@@ -15,6 +15,7 @@ namespace Ganedata.Core.Services
         IEnumerable<AuthUser> GetAuthUserByIds(int[] userIds);
         AuthUser GetAuthUserByAccountId(int? accountId);
         AuthUser GetAuthUserByUserName(string userName, int tenantId);
+        AuthUser GetAuthUserByUserInfo(string email, string phoneNumber, int tenantId);
         List<AuthUser> GetAuthUsersByTenantAndDateUpdated(int tenantId, DateTime dateUpdated);
         int SaveAuthUser(AuthUser user, int userId, int tenantId);
         int CreateNewEcommerceUser(string email, string firstName, string lastName, string password, int accountId, int siteId, int tenantId, int currentUserId);
