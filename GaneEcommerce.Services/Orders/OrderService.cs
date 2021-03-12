@@ -1215,7 +1215,7 @@ namespace Ganedata.Core.Services
                 
             }
             var tenantConfig = _currentDbContext.TenantConfigs.FirstOrDefault(m => m.TenantId == terminal.TenantId);
-
+             
             if (item.FoodOrderType != null)
             {
                 if (warehouse.LoyaltyAutoAcceptOrders == true)
@@ -1223,6 +1223,17 @@ namespace Ganedata.Core.Services
                     orderStatus = OrderStatusEnum.Preparing;
                 }
 
+                if (item.FoodOrderType == FoodOrderTypeEnum.Collection || item.FoodOrderType == FoodOrderTypeEnum.EatIn)
+                {
+                    if (warehouse.LoyaltyAutoAcceptOrders == true)
+                    {
+                        orderStatus = OrderStatusEnum.Preparing;
+                    }
+                    else
+                    {
+                        orderStatus = OrderStatusEnum.Complete;
+                    }
+                }
                 //Will need to review why Deliverect need this code
                 //if (tenantConfig != null && tenantConfig.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Internal && (item.OrderStatusID == OrderStatusEnum.Active || item.OrderStatusID == OrderStatusEnum.Complete))
                 //{
