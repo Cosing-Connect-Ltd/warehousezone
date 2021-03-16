@@ -23,6 +23,13 @@
         <div class="input-group h-100 justify-content-center align-items-center">
             <label class="col-md-4">Is Color Typed</label>
             <div class="col-md-8">
+                @Html.EditorFor(model => model.IsPriced)
+                @Html.ValidationMessageFor(model => model.IsPriced)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-4">Is Color Typed</label>
+            <div class="col-md-8">
                 @Html.EditorFor(model => model.IsColorTyped)
                 @Html.ValidationMessageFor(model => model.IsColorTyped)
             </div>

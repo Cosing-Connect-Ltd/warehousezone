@@ -94,4 +94,18 @@ namespace Ganedata.Core.Entities.Domain
         public UserVerifyTypes Type { get; set; }
         public string Code { get; set; }
     }
+    public class UserPasswordResetRequestModel
+    {
+        public string SerialNo { get; set; }
+        public int UserId { get; set; }
+        public string EmailAddress { get; set; }
+    }
+
+    public class UserVerifyResponseModel
+    {
+        public string Code { get; set; }
+        public int UserId { get; set; }
+        public string EmailAddress { get; set; }
+    }
+
 }

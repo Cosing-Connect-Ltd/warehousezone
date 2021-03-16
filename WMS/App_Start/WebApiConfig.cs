@@ -25,6 +25,9 @@ namespace WMS
             config.Routes.MapHttpRoute("UsersSync", "api/sync/users/{reqDate}/{serialNo}", new { controller = "ApiTerminalUserSync", action = "GetUsers", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountsSync", "api/sync/accounts/{reqDate}/{serialNo}", new { controller = "ApiAccountSync", action = "GetAccounts", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountsSyncResetPassword", "api/user/reset-password", new { controller = "ApiAccountSync", action = "AccountResetPassword" });
+            config.Routes.MapHttpRoute("UsersSyncResetPasswordApp", "api/users/password-reset-verify", new { controller = "ApiTerminalUserSync", action = "PostPasswordResetRequest" });
+            config.Routes.MapHttpRoute("UsersSyncUpdateUserApp", "api/users/update", new { controller = "ApiTerminalUserSync", action = "PostUserUpdateRequest" });
+            config.Routes.MapHttpRoute("UsersSyncDetailsUserApp", "api/users/details/{id}/{serialNumber}", new { controller = "ApiTerminalUserSync", action = "UserDetails", id = string.Empty, serialNo = string.Empty });
 
             config.Routes.MapHttpRoute("UserAccountSync", "api/sync/user-account/{accountId}/{serialNo}", new { controller = "ApiAccountSync", action = "GetAccount", accountId = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountAddressesSync", "api/sync/account-addresses/{reqDate}/{serialNo}/{accountId}", new { controller = "ApiAccountSync", action = "GetAccountAddresses", reqDate = string.Empty, serialNo = string.Empty, accountId = string.Empty });

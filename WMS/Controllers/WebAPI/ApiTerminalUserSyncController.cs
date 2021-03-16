@@ -363,9 +363,9 @@ namespace WMS.Controllers.WebAPI
 
             var resp = await _userService.CreateUserVerificationCode(request.UserId, terminal.TenantId, request.Type);
 
-            if (resp == true)
+            if (resp != null)
             {
-                return Ok(resp);
+                return Ok(true);
             }
             else
             {
@@ -404,6 +404,73 @@ namespace WMS.Controllers.WebAPI
             {
                 return StatusCode(HttpStatusCode.NotAcceptable);
             }
+        }
+
+
+        public async Task<IHttpActionResult> PostPasswordResetRequest(UserPasswordResetRequestModel model)
+        {
+            string serialNo = model?.SerialNo?.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            var response  = await _userService.CreateUserVerificationCode(model.EmailAddress, terminal.TenantId, UserVerifyTypes.Mobile);
+             
+            return Ok(new UserVerifyResponseModel(){  UserId = response.UserId, Code = response .Code, EmailAddress = response .EmailAddress});
+        }
+
+        public IHttpActionResult PostUserUpdateRequest(UserSyncUpdateViewModel model)
+        {
+            string serialNo = model?.TerminalSerialNumber?.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = _userService.GetAuthUserById(model.UserId);
+
+            user.UserFirstName = model.FirstName;
+            user.UserLastName = model.Surname;
+            user.UserMobileNumber = model.MobileNumber;
+            user.UserPassword = model.PasswordMd5;
+            user.IsActive = true;
+            _userService.UpdateAuthUser(user, model.UserId, terminal.TenantId, true);
+
+            var result = GetUserInfo(model.UserId, serialNo);
+
+            return Ok(result);
+        }
+
+        private UserSyncUpdateViewModel GetUserInfo(int userId, string serialNumber)
+        {
+            var user = _userService.GetAuthUserById(userId);
+
+            var result = new UserSyncUpdateViewModel()
+            {
+                FirstName = user.UserFirstName,
+                Surname = user.UserLastName,
+                EmailAddress = user.UserEmail,
+                MobileNumber = user.UserMobileNumber,
+                PasswordMd5 = user.UserPassword,
+                TerminalSerialNumber = serialNumber,
+                UserId = userId,
+                Username = user.UserName
+            };
+
+            return result;
+        }
+
+        public IHttpActionResult UserDetails(int id, string serialNumber)
+        {
+            var result = GetUserInfo(id, serialNumber);
+            return Ok(result);
         }
     }
 }
