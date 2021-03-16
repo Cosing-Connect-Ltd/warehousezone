@@ -38,8 +38,8 @@ namespace Ganedata.Core.Services
 
         private static int ReferralFreeRewardProductId = (WebConfigurationManager.AppSettings["ReferralFreeRewardProductId"] ?? "309").AsInt();
         private static int LoyaltyPoint400RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint400RewardProductId"] ?? "309").AsInt();
-        private static int LoyaltyPoint800RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint800RewardProductId"] ?? "341").AsInt();
-        private static int LoyaltyPoint1200RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint1200RewardProductId"] ?? "558").AsInt();
+        private static int LoyaltyPoint800RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint800RewardProductId"] ?? "92").AsInt();
+        private static int LoyaltyPoint1200RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint1200RewardProductId"] ?? "383").AsInt();
 
         public static bool EnableDiscountForFirstOnlineOrder = true;
         public static decimal? FirstOrderOnlineDiscountMinimumOrderValue = 5;

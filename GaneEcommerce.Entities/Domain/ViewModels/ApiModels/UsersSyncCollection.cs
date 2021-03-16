@@ -3,6 +3,18 @@ using System.Collections.Generic;
 
 namespace Ganedata.Core.Models
 {
+    public class UserSyncUpdateViewModel
+    {
+        public int UserId { get; set; }
+        public string PasswordMd5 { get; set; }
+        public string FirstName { get; set; }
+        public string Surname { get; set; }
+        public string Username { get; set; }
+        public string EmailAddress { get; set; }
+        public string MobileNumber { get; set; }
+        public string TerminalSerialNumber { get; set; }
+    }
+
     public class UserSync
     {
         public int UserId { get; set; }

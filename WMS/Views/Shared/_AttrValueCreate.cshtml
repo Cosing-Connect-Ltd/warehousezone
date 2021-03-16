@@ -20,6 +20,18 @@
                 @Html.ValidationMessageFor(model => model.SortOrder)
             </div>
         </div>
+        
+        @*@if (Model.ProductAttributes!=null && Model.ProductAttributes.IsPriced)
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-3">Custom Price<span style="color:red">*</span></label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.AttributeSpecificPrice)
+                    @Html.ValidationMessageFor(model => model.AttributeSpecificPrice)
+                </div>
+            </div>
+        }*@
+
         <div class="input-group h-100 justify-content-center align-items-center">
             <label class="col-md-3">Color</label>
             <div class="col-md-9">

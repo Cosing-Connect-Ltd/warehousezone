@@ -1299,6 +1299,10 @@
     <Compile Include="Migrations\202103111657526_AddedPaypalColumns.designer.cs">
       <DependentUpon>202103111657526_AddedPaypalColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103151652150_ProductAttributePricing.cs" />
+    <Compile Include="Migrations\202103151652150_ProductAttributePricing.designer.cs">
+      <DependentUpon>202103151652150_ProductAttributePricing.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2594,6 +2598,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103111657526_AddedPaypalColumns.resx">
       <DependentUpon>202103111657526_AddedPaypalColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103151652150_ProductAttributePricing.resx">
+      <DependentUpon>202103151652150_ProductAttributePricing.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

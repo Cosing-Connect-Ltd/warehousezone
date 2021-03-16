@@ -72,7 +72,7 @@ namespace WMS.Controllers.WebAPI
         }
 
         // GET http://localhost:8005/api/sync/account/{accountId}/{serialNo}
-        // GET http://localhost:8005/api/sync/account/2/920013c000814
+        // GET http://localhost:8005/api/sync/account/2/GHR9X20620001413
         public IHttpActionResult GetAccount(int accountId, string serialNo)
         {
             serialNo = serialNo.Trim().ToLower();

@@ -163,16 +163,36 @@ namespace Ganedata.Core.Services
             return authUser.UserId;
         }
 
-        public void UpdateAuthUser(AuthUser user, int userId, int tenantId)
+        public void UpdateAuthUser(AuthUser user, int userId, int tenantId, bool hashedPwd = false)
         {
             user.UpdateUpdatedInfo(userId);
             _currentDbContext.AuthUsers.Attach(user);
             var entry = _currentDbContext.Entry(user);
-            entry.Property("UserName").IsModified = true;
-            entry.Property("UserFirstName").IsModified = true;
-            entry.Property(e => e.UserLastName).IsModified = true;
-            entry.Property(e => e.UserEmail).IsModified = true;
-            entry.Property(e => e.IsActive).IsModified = true;
+            if (!string.IsNullOrWhiteSpace(user.UserFirstName))
+            {
+                entry.Property(e => e.UserName).IsModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.UserMobileNumber))
+            {
+                entry.Property(e => e.UserMobileNumber).IsModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.UserLastName))
+            {
+                entry.Property(e => e.UserLastName).IsModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.UserFirstName))
+            {
+                entry.Property(e => e.UserFirstName).IsModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.UserEmail))
+            {
+                entry.Property(e => e.UserEmail).IsModified = true;
+            }
+
             entry.Property(e => e.DateUpdated).IsModified = true;
             entry.Property(e => e.UpdatedBy).IsModified = true;
             entry.Property(e => e.IsActive).IsModified = true;
@@ -181,12 +201,19 @@ namespace Ganedata.Core.Services
             entry.Property(e => e.MobileNumberVerified).IsModified = true;
             entry.Property(e => e.VerificationRequired).IsModified = true;
             //dont change password if password field is blank/null
-            if (user.UserPassword != null)
+            if (!hashedPwd && user.UserPassword != null)
             {
                 // change user password into MD5 hash value
                 user.UserPassword = GaneStaticAppExtensions.GetMd5(user.UserPassword);
                 entry.Property(e => e.UserPassword).IsModified = true;
             }
+
+            if (hashedPwd && user.UserPassword != null)
+            {
+                // Keep the user password with MD5 as it is and set it to be modified
+                entry.Property(e => e.UserPassword).IsModified = true;
+            }
+
             _currentDbContext.SaveChanges();
         }
 
@@ -332,29 +359,32 @@ namespace Ganedata.Core.Services
             return authUserGroups;
         }
 
-        public async Task<bool> CreateUserVerificationCode(int userId, int tenantId, UserVerifyTypes type)
+
+        public async Task<UserVerifyResponseModel> CreateUserVerificationCode(int userId, int tenantId, UserVerifyTypes type)
+        {
+            var user = GetAuthUserById(userId);
+            return user == null ? null : await CreateUserVerificationCodeByUser(user, tenantId, type);
+        }
+
+        public async Task<UserVerifyResponseModel> CreateUserVerificationCodeByUser(AuthUser user, int tenantId, UserVerifyTypes vtype = UserVerifyTypes.Mobile)
         {
             var res = false;
             var code = GenerateVerifyRandomNo();
-            var user = GetAuthUserById(userId);
             var tenant = _tenantServices.GetByClientId(tenantId);
 
-            if (type == UserVerifyTypes.Mobile)
+            if (vtype == UserVerifyTypes.Mobile)
             {
-                res = await SendSmsBroadcast(user.UserMobileNumber, tenant.TenantName, user.UserId.ToString(), $"{code} is your verification code");
-            }
-            else if (type == UserVerifyTypes.Email)
-            {
-                // TODO: to be implemented
+                res = await SendSmsBroadcast(user.UserMobileNumber, tenant.TenantName, user.UserId.ToString(),
+                    $"{code} is your verification code");
             }
 
-            if (res == true)
+            if (res)
             {
                 AuthUserVerifyCodes record = new AuthUserVerifyCodes
                 {
-                    UserId = userId,
+                    UserId = user.UserId,
                     VerifyCode = code,
-                    VerifyType = type,
+                    VerifyType = vtype,
                     TenantId = tenantId,
                     DateCreated = DateTime.Now,
                     Expiry = DateTime.Now
@@ -362,12 +392,22 @@ namespace Ganedata.Core.Services
 
                 _currentDbContext.AuthUserVerifyCodes.Add(record);
                 _currentDbContext.SaveChanges();
-                return true;
+                return new UserVerifyResponseModel()
+                {
+                    UserId = user.UserId,
+                    Code = code,
+                    EmailAddress = user.UserEmail
+                };
             }
-            else
-            {
-                return false;
-            }
+
+            return  null;
+        }
+
+        public async Task<UserVerifyResponseModel> CreateUserVerificationCode(string emailAddress, int tenantId, UserVerifyTypes type)
+        {
+            var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserEmail.ToLower() == emailAddress.ToLower() && m.IsActive && m.IsDeleted!=true);
+
+            return user == null ? null : await CreateUserVerificationCodeByUser(user, tenantId, type);
         }
 
         public bool VerifyUserVerificationCode(int userId, int tenantId, string code, UserVerifyTypes type)

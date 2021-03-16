@@ -19,7 +19,7 @@ namespace Ganedata.Core.Services
         List<AuthUser> GetAuthUsersByTenantAndDateUpdated(int tenantId, DateTime dateUpdated);
         int SaveAuthUser(AuthUser user, int userId, int tenantId);
         int CreateNewEcommerceUser(string email, string firstName, string lastName, string password, int accountId, int siteId, int tenantId, int currentUserId);
-        void UpdateAuthUser(AuthUser user, int userId, int tenantId);
+        void UpdateAuthUser(AuthUser user, int userId, int tenantId, bool hashedPwd = false);
         void DeleteAuthUser(AuthUser user, int userId);
         int SaveAuthUserLogin(AuthUserLogin userLogin, int userId, int tenantId);
         int IsUserNameExists(string userName, int tenantId);
@@ -35,7 +35,8 @@ namespace Ganedata.Core.Services
         AuthUserGroups GetUserGroupsById(int groupId);
         AuthUserGroups RemoveUserGroupsById(int groupId, int UserId);
         IEnumerable<AuthUserGroups> GetAllAuthUserGroups(int TenantId);
-        Task<bool> CreateUserVerificationCode(int userId, int tenantId, UserVerifyTypes type);
+        Task<UserVerifyResponseModel> CreateUserVerificationCode(int userId, int tenantId, UserVerifyTypes type);
+        Task<UserVerifyResponseModel> CreateUserVerificationCode(string emailAddress, int tenantId, UserVerifyTypes type);
         bool VerifyUserVerificationCode(int userId, int tenantId, string code, UserVerifyTypes type);
         Task<bool> SendSmsBroadcast(string to, string from, string reference, string message);
         string GenerateVerifyRandomNo();

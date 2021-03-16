@@ -27,5 +27,6 @@ namespace Ganedata.Core.Entities.Domain
         public string Color { get; set; }
         public virtual ProductAttributes ProductAttributes { get; set; }
         public virtual ICollection<ProductAttributeValuesMap> ProductAttributeValuesMap { get; set; }
+        public decimal? AttributeSpecificPrice { get; set; }
     }
 }

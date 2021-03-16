@@ -20,6 +20,8 @@ namespace Ganedata.Core.Entities.Domain
         public string AttributeName { get; set; }
         [Display(Name = "Sort Order")]
         public int SortOrder { get; set; }
+        [Display(Name = "Has Different Price")]
+        public bool IsPriced { get; set; }
         [Display(Name = "Is Color Typed")]
         public bool IsColorTyped { get; set; }
         public bool IsDeleted{ get; set; }
