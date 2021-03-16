@@ -1218,6 +1218,9 @@ namespace Ganedata.Core.Services
              
             if (item.FoodOrderType != null)
             {
+                //TODO: This is a hack, had to set this to complete for StoreApp to sync properly until Paypal GoLive happens
+                orderStatus = OrderStatusEnum.Complete;
+
                 if (warehouse.LoyaltyAutoAcceptOrders == true)
                 {
                     orderStatus = OrderStatusEnum.Preparing;

@@ -590,6 +590,7 @@ namespace Ganedata.Core.Services
                 previousAddress.IsDeleted = true;
                 previousAddress.DateUpdated = DateTime.UtcNow;
                 previousAddress.UpdatedBy = currentUserId;
+                previousAddress.IsActive = true;
                 var entry2 = _currentDbContext.Entry(previousAddress);
                 entry2.Property(e => e.DateUpdated).IsModified = true;
                 entry2.Property(e => e.UpdatedBy).IsModified = true;
@@ -600,7 +601,8 @@ namespace Ganedata.Core.Services
             customeraddresses.DateUpdated = DateTime.UtcNow;
             customeraddresses.CreatedBy = currentUserId;
             customeraddresses.UpdatedBy = currentUserId;
-            customeraddresses.IsDeleted = false;
+            customeraddresses.IsDeleted = null;
+            customeraddresses.IsActive = true;
 
             _currentDbContext.AccountAddresses.Add(customeraddresses);
 
