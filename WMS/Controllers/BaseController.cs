@@ -431,16 +431,7 @@ namespace WMS.Controllers
 
         public bool IsFoodDeliveryEnabled()
         {
-            var tenant = CurrentTenant;
-
-            if (CurrentTenant.TenantModules != null && CurrentTenant.TenantModules.Select(x => x.ModuleId).Contains(TenantModuleEnum.FoodDelivery))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return CurrentTenant.TenantModules != null && CurrentTenant.TenantModules.Select(x => x.ModuleId).Contains(TenantModuleEnum.FoodDelivery);
         }
 
         public void VerifyOrderStatus(int orderId)

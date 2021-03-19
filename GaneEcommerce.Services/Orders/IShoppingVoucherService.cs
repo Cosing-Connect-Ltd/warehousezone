@@ -38,8 +38,8 @@ namespace Ganedata.Core.Services
 
         private static int ReferralFreeRewardProductId = (WebConfigurationManager.AppSettings["ReferralFreeRewardProductId"] ?? "309").AsInt();
         private static int LoyaltyPoint400RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint400RewardProductId"] ?? "309").AsInt();
-        private static int LoyaltyPoint800RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint800RewardProductId"] ?? "92").AsInt();
-        private static int LoyaltyPoint1200RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint1200RewardProductId"] ?? "383").AsInt();
+        private static int LoyaltyPoint800RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint800RewardProductId"] ?? "94").AsInt();
+        private static int LoyaltyPoint1200RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint1200RewardProductId"] ?? "381").AsInt();
 
         public static bool EnableDiscountForFirstOnlineOrder = true;
         public static decimal? FirstOrderOnlineDiscountMinimumOrderValue = 5;
@@ -243,7 +243,7 @@ namespace Ganedata.Core.Services
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         
                         var voucher400 = GetVoucher(freeItemVoucher, userId,
-                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint400RewardProductId, $"{point1.LoyaltyPointToTrigger} Loyalty Points - Free ({product400?.Name})", RewardProductCategoryEnum.Milkshake);
+                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint400RewardProductId, $"{point1.LoyaltyPointToTrigger} Loyalty Points - Free Milkshake", RewardProductCategoryEnum.Milkshake);
                         voucher400.RewardProductId = point1.ShoppingVoucher.RewardProductId;
                         voucher400.DiscountType = point1.ShoppingVoucher.DiscountType;
                         voucher400.DiscountFigure = point1.ShoppingVoucher.DiscountFigure;
@@ -259,7 +259,7 @@ namespace Ganedata.Core.Services
                         var product800 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint800RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher800 = GetVoucher(freeItemVoucher, userId,
-                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint800RewardProductId, $"{point2.LoyaltyPointToTrigger} Loyalty Points - Free ({product800?.Name})", RewardProductCategoryEnum.CheeseCake);
+                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint800RewardProductId, $"{point2.LoyaltyPointToTrigger} Loyalty Points - Free Cheesecake", RewardProductCategoryEnum.CheeseCake);
                         voucher800.RewardProductId = point2.ShoppingVoucher.RewardProductId;
                         voucher800.DiscountType = point2.ShoppingVoucher.DiscountType;
                         voucher800.DiscountFigure = point2.ShoppingVoucher.DiscountFigure;
@@ -274,7 +274,7 @@ namespace Ganedata.Core.Services
                         var product1200 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint1200RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher1200 = GetVoucher(freeItemVoucher, userId,
-                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint1200RewardProductId, $"{point3.LoyaltyPointToTrigger} Loyalty Points - Free ({product1200?.Name})", RewardProductCategoryEnum.CookieDough);
+                            ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint1200RewardProductId, $"{point3.LoyaltyPointToTrigger} Loyalty Points - Free Choc Cookie Dough", RewardProductCategoryEnum.CookieDough);
                         voucher1200.RewardProductId = point3.ShoppingVoucher.RewardProductId;
                         voucher1200.DiscountType = point3.ShoppingVoucher.DiscountType;
                         voucher1200.DiscountFigure = point3.ShoppingVoucher.DiscountFigure;

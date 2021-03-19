@@ -166,6 +166,16 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         public string Date_upd { get; set; }
         [XmlElement(ElementName = "shipping_number")]
         public Shipping_number Shipping_number { get; set; }
+
+        
+      
+        [XmlElement(ElementName = "dpd_shipment_id")]
+        public string Dpd_Shipment_Id { get; set; }
+        [XmlElement(ElementName = "dpd_parcel_numbers")]
+        public string Dpd_Parcel_numbers { get; set; }
+        [XmlElement(ElementName = "dpd_consignment_numbers")]
+        public string Dpd_Consignment_numbers { get; set; }
+
         [XmlElement(ElementName = "id_shop_group")]
         public string Id_shop_group { get; set; }
         [XmlElement(ElementName = "id_shop")]
