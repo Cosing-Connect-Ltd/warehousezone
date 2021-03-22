@@ -112,6 +112,7 @@ namespace Ganedata.Core.Models
         public List<ProductKitMapViewModel> ProductKitMapViewModel { get; set; }
         public string LocationCode { get; set; }
         public string Notes { get; set; }
+        public int? ProductAttributeValueId { get; set; }
     }
 
     public class AccountTransactionInfoSync

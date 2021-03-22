@@ -7,13 +7,13 @@ namespace Ganedata.Core.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class AddedAccountRewardLogs : IMigrationMetadata
+    public sealed partial class AddedProductAttributeValueToOrderDetails : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedAccountRewardLogs));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedProductAttributeValueToOrderDetails));
         
         string IMigrationMetadata.Id
         {
-            get { return "202102111649457_AddedAccountRewardLogs"; }
+            get { return "202103221558442_AddedProductAttributeValueToOrderDetails"; }
         }
         
         string IMigrationMetadata.Source

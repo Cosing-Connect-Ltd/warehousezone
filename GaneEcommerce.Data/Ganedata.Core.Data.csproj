@@ -1263,10 +1263,6 @@
     <Compile Include="Migrations\202102110831465_AddedRewardPointTriggers.designer.cs">
       <DependentUpon>202102110831465_AddedRewardPointTriggers.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202102111649457_AddedAccountRewardLogs.cs" />
-    <Compile Include="Migrations\202102111649457_AddedAccountRewardLogs.designer.cs">
-      <DependentUpon>202102111649457_AddedAccountRewardLogs.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202102151249464_UpdatedRewardTriggers.cs" />
     <Compile Include="Migrations\202102151249464_UpdatedRewardTriggers.designer.cs">
       <DependentUpon>202102151249464_UpdatedRewardTriggers.cs</DependentUpon>
@@ -1306,6 +1302,10 @@
     <Compile Include="Migrations\202103181306079_TenantLocationOrderTypes.cs" />
     <Compile Include="Migrations\202103181306079_TenantLocationOrderTypes.designer.cs">
       <DependentUpon>202103181306079_TenantLocationOrderTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103221558442_AddedProductAttributeValueToOrderDetails.cs" />
+    <Compile Include="Migrations\202103221558442_AddedProductAttributeValueToOrderDetails.designer.cs">
+      <DependentUpon>202103221558442_AddedProductAttributeValueToOrderDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
@@ -2576,9 +2576,6 @@
     <EmbeddedResource Include="Migrations\202102110831465_AddedRewardPointTriggers.resx">
       <DependentUpon>202102110831465_AddedRewardPointTriggers.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202102111649457_AddedAccountRewardLogs.resx">
-      <DependentUpon>202102111649457_AddedAccountRewardLogs.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102151249464_UpdatedRewardTriggers.resx">
       <DependentUpon>202102151249464_UpdatedRewardTriggers.cs</DependentUpon>
     </EmbeddedResource>
@@ -2608,6 +2605,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103181306079_TenantLocationOrderTypes.resx">
       <DependentUpon>202103181306079_TenantLocationOrderTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103221558442_AddedProductAttributeValueToOrderDetails.resx">
+      <DependentUpon>202103221558442_AddedProductAttributeValueToOrderDetails.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

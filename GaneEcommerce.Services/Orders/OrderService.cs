@@ -1367,7 +1367,8 @@ namespace Ganedata.Core.Services
                     WarrantyAmount = m.WarrantyAmount,
                     TaxID = m.TaxID,
                     TaxAmount = m.TaxAmount,
-                    Notes = m.Notes
+                    Notes = m.Notes,
+                    ProductAttributeValueId = m.ProductAttributeValueId
                 }).ToList();
 
                 order = CreateOrder(order, terminal.TenantId, warehouse.WarehouseId, order.CreatedBy, orderDetails);
@@ -1378,6 +1379,23 @@ namespace Ganedata.Core.Services
 
                     var oldLoyaltyPoint = account.AccountLoyaltyPoints;
 
+                    var rewardPointsEarned = (int) Math.Round(order.OrderTotal, 1) * 20;
+                    if (rewardPointsEarned > 400)
+                    {
+                        rewardPointsEarned = 400;
+                    }
+
+                    var today = DateTime.Today;
+                    var pointsEarnedToday =
+                        _currentDbContext.AccountRewardPoints.Where(m =>
+                            DbFunctions.TruncateTime(m.DateCreated) == today && m.PointsEarned>0).Sum(m=> m.PointsEarned);
+
+                    if (rewardPointsEarned > (400 - pointsEarnedToday))
+                    {
+                        rewardPointsEarned = (400 - pointsEarnedToday);
+                    }
+
+
                     var reward = new AccountRewardPoint()
                     {
                         TenantId = terminal.TenantId,
@@ -1387,7 +1405,7 @@ namespace Ganedata.Core.Services
                         OrderID = order.OrderID,
                         CreatedBy = order.CreatedBy,
                         OrderDateTime = order.DateCreated,
-                        PointsEarned = (int)Math.Round(order.OrderTotal, 1) * 20, //Todo: RH To be removed after testing
+                        PointsEarned = rewardPointsEarned, //Todo: RH To be removed after testing
                         UserID = item.CreatedBy
                     };
                     _currentDbContext.AccountRewardPoints.Add(reward);

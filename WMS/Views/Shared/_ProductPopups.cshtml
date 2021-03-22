@@ -150,7 +150,7 @@
         settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
         settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
         settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
-
+        settings.ClientSideEvents.BeginCallback = "function(s,e){  beginProductAttributeValueAdd(s,e);  }";
         //settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
     }).GetHtml()
 

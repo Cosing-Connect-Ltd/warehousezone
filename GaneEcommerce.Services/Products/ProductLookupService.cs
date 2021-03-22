@@ -433,7 +433,10 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.ProductAttributeValues.Find(productAttributeValueId);
         }
-
+        public ProductAttributes GetProductAttributeById(int productAttributeId)
+        {
+            return _currentDbContext.ProductAttributes.Find(productAttributeId);
+        }
         public ProductAttributeValuesMap GetProductAttributeValueMap(int productId, int attributeValueId)
         {
             return _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(a => a.ProductId == productId && a.AttributeValueId == attributeValueId);
@@ -443,7 +446,8 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(a => a.Id == id && a.IsDeleted != true);
         }
 
-        public ProductAttributes SaveProductAttribute(string attributeName, int sortOrder, bool isColorTyped, int? attributeId = null)
+        public ProductAttributes SaveProductAttribute(string attributeName, int sortOrder, bool isColorTyped, int? attributeId = null,
+            bool isPriced=false)
         {
             var att = _currentDbContext.ProductAttributes.FirstOrDefault(a => a.AttributeName.Equals(attributeName, StringComparison.CurrentCultureIgnoreCase) && (!attributeId.HasValue || a.AttributeId == attributeId));
             if (att != null)
@@ -452,19 +456,17 @@ namespace Ganedata.Core.Services
                 att.AttributeName = attributeName;
                 att.SortOrder = sortOrder;
                 att.IsColorTyped = isColorTyped;
+                att.IsPriced = isPriced;
                 _currentDbContext.Entry(att).State = EntityState.Modified;
-
-
             }
             else
             {
-                ;
-
                 att = new ProductAttributes()
                 {
                     AttributeName = attributeName,
                     SortOrder = sortOrder,
-                    IsColorTyped = isColorTyped
+                    IsColorTyped = isColorTyped,
+                    IsPriced = isPriced
                 };
 
                 _currentDbContext.Entry(att).State = EntityState.Added;

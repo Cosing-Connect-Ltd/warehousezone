@@ -64,11 +64,14 @@ namespace Ganedata.Core.Entities.Domain
         public int SortOrder { get; set; }
         public OrderStatusEnum? OrderDetailStatusId { get; set; }
         public int? ProductGroupId { get; set; }
+
         [ForeignKey("ProductGroupId")]
         public virtual ProductGroups ProductGroups { get; set; }
 
         public virtual Order Order { get; set; }
         public virtual ProductMaster ProductMaster { get; set; }
+
+        
         public virtual TenantLocations TenantWarehouse { get; set; }
         public virtual GlobalTax TaxName { get; set; }
         public virtual TenantWarranty Warranty { get; set; }
@@ -96,6 +99,9 @@ namespace Ganedata.Core.Entities.Domain
             }
         }
 
+        public int? ProductAttributeValueId { get; set; }
+        [ForeignKey("ProductAttributeValueId")]
+        public virtual ProductAttributeValues ProductAttributeValue { get; set; }
 
     }
 

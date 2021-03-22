@@ -520,9 +520,22 @@ namespace WMS.Controllers
         {
             return PartialView();
         }
-        public ActionResult _AttrValueCreate()
+        public ActionResult _AttrValueCreate(int? id)
         {
-            return PartialView();
+            if (!id.HasValue)
+                return HttpNotFound("Product Attribute Id cannot be blank.");
+            var productAttribute = _productLookupService.GetProductAttributeById(id.Value);
+            var model = new ProductAttributeValues()
+            {
+                ProductAttributes = new ProductAttributes()
+                {
+                    AttributeId = id??0,
+                    IsPriced = productAttribute.IsPriced,
+                    IsColorTyped = productAttribute.IsColorTyped
+                }
+            };
+
+            return PartialView(model);
         }
         [HttpPost]
         public JsonResult _AttributesValueSubmit(ProductAttributeValues model)
@@ -550,7 +563,7 @@ namespace WMS.Controllers
         {
             try
             {
-                var chkAttribute = _productLookupService.SaveProductAttribute(model.AttributeName, model.SortOrder, model.IsColorTyped);
+                var chkAttribute = _productLookupService.SaveProductAttribute(model.AttributeName, model.SortOrder, model.IsColorTyped, null, model.IsPriced);
                 if (chkAttribute == null)
                     throw new Exception("Attribute Already exists");
 
