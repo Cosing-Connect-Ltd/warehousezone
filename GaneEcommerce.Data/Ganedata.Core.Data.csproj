@@ -1303,6 +1303,10 @@
     <Compile Include="Migrations\202103151652150_ProductAttributePricing.designer.cs">
       <DependentUpon>202103151652150_ProductAttributePricing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103181306079_TenantLocationOrderTypes.cs" />
+    <Compile Include="Migrations\202103181306079_TenantLocationOrderTypes.designer.cs">
+      <DependentUpon>202103181306079_TenantLocationOrderTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2601,6 +2605,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103151652150_ProductAttributePricing.resx">
       <DependentUpon>202103151652150_ProductAttributePricing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103181306079_TenantLocationOrderTypes.resx">
+      <DependentUpon>202103181306079_TenantLocationOrderTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

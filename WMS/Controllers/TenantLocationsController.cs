@@ -73,7 +73,7 @@ namespace WMS.Controllers
             ViewBag.TenantLocations = LookupServices.GetAllWarehousesForTenant(CurrentTenantId).Select(m => new SelectListItem() { Value = m.WarehouseId.ToString(), Text = m.WarehouseName });
             ViewBag.AllTerminals = _terminalServices.GetAllTerminalsWithoutMobileLocationLinks(CurrentTenantId).Select(m => new SelectListItem() { Value = m.TerminalId.ToString(), Text = m.TerminalName + " " + m.TermainlSerial });
             ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " " + m.FirstName });
-            ViewBag.CountryId = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryId", "CountryName");
+            ViewBag.CountryId = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryId", "CountryName", "1");
             ViewBag.AllVehicles = _marketServices.GetAllValidMarketVehicles(CurrentTenantId).MarketVehicles.Select(m => new SelectListItem() { Value = m.Id.ToString(), Text = m.Name });
             ViewBag.PriceGroups = LookupServices.GetAllPriceGroups(CurrentTenantId).Select(m => new SelectListItem() { Value = m.PriceGroupID.ToString(), Text = m.Name });
 

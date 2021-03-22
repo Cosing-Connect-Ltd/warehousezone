@@ -63,16 +63,17 @@
     </div>
 
 
-
+@if (ViewBag.IsFoodDeliveryEnabled != true)
+{
 
     <div class="input-group h-100 justify-content-center align-items-center">
         <label class="col-md-4"> Pallet Tracking Scheme</label>
         <div class="col-md-8">
-            @Html.EnumDropDownListFor(m => m.PalletTrackingScheme, new { @class = "chosen-select" })
+            @Html.EnumDropDownListFor(m => m.PalletTrackingScheme, new {@class = "chosen-select"})
             @Html.ValidationMessageFor(model => model.PalletTrackingScheme)
         </div>
     </div>
-
+}
     <div class="input-group h-100 justify-content-center align-items-center">
         @Html.LabelFor(m => m.DeliveryMinimumOrderValue, new { @class = "col-md-4" })
         <div class="col-md-8">
@@ -81,36 +82,32 @@
             @Html.ValidationMessageFor(model => model.DeliveryMinimumOrderValue)
         </div>
     </div>
+  
+@if (ViewBag.IsFoodDeliveryEnabled != true)
+{
     <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.AllowStocktakeAddNew, new { @class = "col-md-4" })
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.AllowStocktakeAddNew)
-            @Html.ValidationMessageFor(model => model.AllowStocktakeAddNew)
-        </div>
-    </div>
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.ConsolidateOrderProcesses, new { @class = "col-md-4" })
+        @Html.LabelFor(model => model.ConsolidateOrderProcesses, new {@class = "col-md-4"})
         <div class="col-md-8">
             @Html.EditorFor(model => model.ConsolidateOrderProcesses)
             @Html.ValidationMessageFor(model => model.ConsolidateOrderProcesses)
         </div>
     </div>
     <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.AutoAllowProcess, new { @class = "col-md-4" })
+        @Html.LabelFor(model => model.AutoAllowProcess, new {@class = "col-md-4"})
         <div class="col-md-8">
             @Html.EditorFor(model => model.AutoAllowProcess)
             @Html.ValidationMessageFor(model => model.AutoAllowProcess)
         </div>
     </div>
     <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.AllowShipToAccountAddress, new { @class = "col-md-4" })
+        @Html.LabelFor(model => model.AllowShipToAccountAddress, new {@class = "col-md-4"})
         <div class="col-md-8">
             @Html.EditorFor(model => model.AllowShipToAccountAddress)
             @Html.ValidationMessageFor(model => model.AllowShipToAccountAddress)
         </div>
     </div>
     <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.SendOrderStatusByEmail, new { @class = "col-md-4" })
+        @Html.LabelFor(model => model.SendOrderStatusByEmail, new {@class = "col-md-4"})
         <div class="col-md-8">
             @Html.EditorFor(model => model.SendOrderStatusByEmail)
             @Html.ValidationMessageFor(model => model.SendOrderStatusByEmail)
@@ -118,21 +115,46 @@
     </div>
 
     <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.SendOrderStatusBySms, new { @class = "col-md-4" })
+        @Html.LabelFor(model => model.SendOrderStatusBySms, new {@class = "col-md-4"})
         <div class="col-md-8">
             @Html.EditorFor(model => model.SendOrderStatusBySms)
             @Html.ValidationMessageFor(model => model.SendOrderStatusBySms)
         </div>
     </div>
-
+}
+    @if (ViewBag.IsFoodDeliveryEnabled == true)
+    {
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LoyaltyDeliveryOrdersEnabled, new {@class = "col-md-4"})
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.LoyaltyDeliveryOrdersEnabled)
+                @Html.ValidationMessageFor(model => model.LoyaltyDeliveryOrdersEnabled)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LoyaltyCollectionOrdersEnabled, new {@class = "col-md-4"})
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.LoyaltyCollectionOrdersEnabled)
+                @Html.ValidationMessageFor(model => model.LoyaltyCollectionOrdersEnabled)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LoyaltyEatInOrdersEnabled, new {@class = "col-md-4"})
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.LoyaltyEatInOrdersEnabled)
+                @Html.ValidationMessageFor(model => model.LoyaltyEatInOrdersEnabled)
+            </div>
+        </div>
+    }
+@if (ViewBag.IsFoodDeliveryEnabled != true)
+{
     <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.NotifiableOrderStatuses, new { @class = "col-md-4" })
+        @Html.LabelFor(model => model.NotifiableOrderStatuses, new {@class = "col-md-4"})
         <div class="col-md-8">
-            @Html.ListBox("SelectedNotifiableOrderStatuses",
-                                       new MultiSelectList(Enum.GetValues(typeof(OrderStatusEnum)).Cast<OrderStatusEnum>().Select(v => new { Id = (int)v, Value = v.ToString() }).ToList(), "Id", "Value"),
-                                       new { @class = "chosen-select", Multiple = "multiple" })
+            @Html.ListBox("SelectedNotifiableOrderStatuses", new MultiSelectList(Enum.GetValues(typeof(OrderStatusEnum)).Cast<OrderStatusEnum>().Select(v => new {Id = (int) v, Value = v.ToString()}).ToList(), "Id", "Value"), new {@class = "chosen-select", Multiple = "multiple"})
         </div>
     </div>
+}
 </div>
     <div class="col-md-6 pull-left">
         <div class="input-group h-100 justify-content-center align-items-center">
@@ -179,48 +201,60 @@
                 @Html.ValidationMessageFor(model => model.DeliveryMinimumOrderValueForFree)
             </div>
         </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.EnableGlobalProcessByPallet, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.EnableGlobalProcessByPallet)
-                @Html.ValidationMessageFor(model => model.EnableGlobalProcessByPallet)
+        
+        @if (ViewBag.IsFoodDeliveryEnabled != true)
+        {
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.EnableGlobalProcessByPallet, new {@class = "col-md-4"})
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.EnableGlobalProcessByPallet)
+                    @Html.ValidationMessageFor(model => model.EnableGlobalProcessByPallet)
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AllowStocktakeEdit, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AllowStocktakeEdit)
-                @Html.ValidationMessageFor(model => model.AllowStocktakeEdit)
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowStocktakeAddNew, new {@class = "col-md-4"})
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.AllowStocktakeAddNew)
+                    @Html.ValidationMessageFor(model => model.AllowStocktakeAddNew)
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.ShowTaxInBlindShipment, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.ShowTaxInBlindShipment)
-                @Html.ValidationMessageFor(model => model.ShowTaxInBlindShipment)
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AllowStocktakeEdit, new {@class = "col-md-4"})
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.AllowStocktakeEdit)
+                    @Html.ValidationMessageFor(model => model.AllowStocktakeEdit)
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.ShowPriceInBlindShipment, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.ShowPriceInBlindShipment)
-                @Html.ValidationMessageFor(model => model.ShowPriceInBlindShipment)
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ShowTaxInBlindShipment, new {@class = "col-md-4"})
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ShowTaxInBlindShipment)
+                    @Html.ValidationMessageFor(model => model.ShowTaxInBlindShipment)
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.ShowQtyInBlindShipment, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.ShowQtyInBlindShipment)
-                @Html.ValidationMessageFor(model => model.ShowQtyInBlindShipment)
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ShowPriceInBlindShipment, new {@class = "col-md-4"})
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ShowPriceInBlindShipment)
+                    @Html.ValidationMessageFor(model => model.ShowPriceInBlindShipment)
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.IsMobile, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.IsMobile)
-                @Html.ValidationMessageFor(model => model.IsMobile)
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ShowQtyInBlindShipment, new {@class = "col-md-4"})
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ShowQtyInBlindShipment)
+                    @Html.ValidationMessageFor(model => model.ShowQtyInBlindShipment)
+                </div>
             </div>
-        </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.IsMobile, new {@class = "col-md-4"})
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.IsMobile)
+                    @Html.ValidationMessageFor(model => model.IsMobile)
+                </div>
+            </div>
+        }
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.IsActive, new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -380,6 +414,7 @@
                 </div>
             </div>
         </div>
+       
     }
 
     <div class="col-md-offset-2 col-md-10 bottom-right">

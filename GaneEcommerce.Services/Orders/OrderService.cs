@@ -817,7 +817,7 @@ namespace Ganedata.Core.Services
                 // ship if any order details to be shipped automatically 
                 var currentUser = _userService.GetAuthUserById(userId);
                 var dataImportFactory = new DataImportFactory();
-                dataImportFactory.PrestaShopOrderStatusUpdate(orderId, PrestashopOrderStateEnum.PickAndPack, null, currentUser?.DisplayNameWithEmail);
+                dataImportFactory.PrestaShopOrderStatusUpdate(orderId, PrestashopOrderStateEnum.PickAndPack, currentUser?.DisplayNameWithEmail);
             }
 
             var schOrder = _currentDbContext.Order.Find(orderId);

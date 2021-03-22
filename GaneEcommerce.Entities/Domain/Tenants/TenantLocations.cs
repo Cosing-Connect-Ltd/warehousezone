@@ -155,6 +155,13 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Accept Food Orders Automatically")]
         public bool? LoyaltyAutoAcceptOrders { get; set; }
 
+        [Display(Name = "Allow Delivery Orders")]
+        public bool? LoyaltyDeliveryOrdersEnabled { get; set; }
+        [Display(Name = "Allow Click & Collect")]
+        public bool? LoyaltyCollectionOrdersEnabled { get; set; }
+
+        [Display(Name = "Allow Table/Eat-In Orders")]
+        public bool? LoyaltyEatInOrdersEnabled { get; set; }
 
         [ForeignKey("DeliveryPriceGroupId")]
         public virtual TenantPriceGroups DeliveryPriceGroup { get; set; }

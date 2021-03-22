@@ -81,5 +81,9 @@ namespace Ganedata.Core.Models
         public bool? IsDeleted { get; set; }
         public string TelephoneNumber1 { get; set; }
         public string TelephoneNumber2 { get; set; }
+
+        public bool? LoyaltyDeliveryOrdersEnabled { get; set; }
+        public bool? LoyaltyCollectionOrdersEnabled { get; set; }
+        public bool? LoyaltyEatInOrdersEnabled { get; set; }
     }
 }

@@ -23,7 +23,6 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
     private ReportFooterBand ReportFooter;
     public XRLabel FooterMsg1;
     public XRLabel FooterMsg2;
-    public XRLabel xrLabel26;
     private XRLabel xrLabel30;
     private XRLabel xrLabel31;
     private XRLabel xrLabel37;
@@ -78,6 +77,13 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
     private XRLabel xrLabel40;
     private XRPanel xrPanel3;
     public XRLabel xrLabel16;
+    private XRLabel xrLabel26;
+    private XRLabel xrLabel3;
+    private XRLine xrLine4;
+    private XRLine xrLine3;
+    private XRLine xrLine2;
+    private XRLabel xrLabel48;
+    private XRLabel xrLabel29;
 
     /// <summary>
     /// Required designer variable.
@@ -134,10 +140,16 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel31 = new DevExpress.XtraReports.UI.XRLabel();
             this.paramOrderProcessId = new DevExpress.XtraReports.Parameters.Parameter();
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
+            this.xrLabel48 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel29 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLine4 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine3 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine2 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLabel26 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel37 = new DevExpress.XtraReports.UI.XRLabel();
             this.FooterMsg1 = new DevExpress.XtraReports.UI.XRLabel();
             this.FooterMsg2 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel26 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel38 = new DevExpress.XtraReports.UI.XRLabel();
             this.calcSumQtyProcessed = new DevExpress.XtraReports.UI.CalculatedField();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
@@ -386,15 +398,83 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
             // ReportFooter
             // 
             this.ReportFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel48,
+            this.xrLabel29,
+            this.xrLabel3,
+            this.xrLine4,
+            this.xrLine3,
+            this.xrLine2,
+            this.xrLabel26,
             this.xrLabel37,
             this.FooterMsg1,
             this.FooterMsg2,
-            this.xrLabel26,
             this.xrLabel38});
-            this.ReportFooter.HeightF = 155.2083F;
+            this.ReportFooter.HeightF = 167.2501F;
             this.ReportFooter.KeepTogether = true;
             this.ReportFooter.Name = "ReportFooter";
             this.ReportFooter.PrintAtBottom = true;
+            // 
+            // xrLabel48
+            // 
+            this.xrLabel48.CanGrow = false;
+            this.xrLabel48.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.xrLabel48.LocationFloat = new DevExpress.Utils.PointFloat(287.3826F, 144.25F);
+            this.xrLabel48.Name = "xrLabel48";
+            this.xrLabel48.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel48.SizeF = new System.Drawing.SizeF(41.66663F, 23F);
+            this.xrLabel48.StylePriority.UseFont = false;
+            this.xrLabel48.Text = "SIGN";
+            // 
+            // xrLabel29
+            // 
+            this.xrLabel29.CanGrow = false;
+            this.xrLabel29.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.xrLabel29.LocationFloat = new DevExpress.Utils.PointFloat(2.55212F, 144.25F);
+            this.xrLabel29.Name = "xrLabel29";
+            this.xrLabel29.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel29.SizeF = new System.Drawing.SizeF(41.66663F, 23F);
+            this.xrLabel29.StylePriority.UseFont = false;
+            this.xrLabel29.Text = "NAME";
+            // 
+            // xrLabel3
+            // 
+            this.xrLabel3.CanGrow = false;
+            this.xrLabel3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(556.0895F, 144.25F);
+            this.xrLabel3.Name = "xrLabel3";
+            this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(37.49997F, 23.00001F);
+            this.xrLabel3.StylePriority.UseFont = false;
+            this.xrLabel3.Text = "DATE";
+            // 
+            // xrLine4
+            // 
+            this.xrLine4.LocationFloat = new DevExpress.Utils.PointFloat(593.764F, 144.25F);
+            this.xrLine4.Name = "xrLine4";
+            this.xrLine4.SizeF = new System.Drawing.SizeF(174.236F, 23F);
+            // 
+            // xrLine3
+            // 
+            this.xrLine3.LocationFloat = new DevExpress.Utils.PointFloat(330.2916F, 144.25F);
+            this.xrLine3.Name = "xrLine3";
+            this.xrLine3.SizeF = new System.Drawing.SizeF(215.1176F, 23F);
+            // 
+            // xrLine2
+            // 
+            this.xrLine2.LocationFloat = new DevExpress.Utils.PointFloat(54.22223F, 144.25F);
+            this.xrLine2.Name = "xrLine2";
+            this.xrLine2.SizeF = new System.Drawing.SizeF(211.8716F, 23F);
+            // 
+            // xrLabel26
+            // 
+            this.xrLabel26.CanGrow = false;
+            this.xrLabel26.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel26.LocationFloat = new DevExpress.Utils.PointFloat(2.552122F, 110F);
+            this.xrLabel26.Name = "xrLabel26";
+            this.xrLabel26.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel26.SizeF = new System.Drawing.SizeF(263.5417F, 18F);
+            this.xrLabel26.StylePriority.UseFont = false;
+            this.xrLabel26.Text = "GOODS RECEIVED IN GOOD CONDITION";
             // 
             // xrLabel37
             // 
@@ -414,7 +494,7 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
             this.FooterMsg1.BorderColor = System.Drawing.Color.Gray;
             this.FooterMsg1.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.FooterMsg1.BorderWidth = 2F;
-            this.FooterMsg1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FooterMsg1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FooterMsg1.LocationFloat = new DevExpress.Utils.PointFloat(0.05540114F, 35.41665F);
             this.FooterMsg1.Name = "FooterMsg1";
             this.FooterMsg1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -431,37 +511,17 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
             this.FooterMsg2.BorderColor = System.Drawing.Color.Gray;
             this.FooterMsg2.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.FooterMsg2.BorderWidth = 2F;
-            this.FooterMsg2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FooterMsg2.LocationFloat = new DevExpress.Utils.PointFloat(0.05516639F, 62.58334F);
+            this.FooterMsg2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FooterMsg2.LocationFloat = new DevExpress.Utils.PointFloat(0.05517006F, 62.58335F);
             this.FooterMsg2.Name = "FooterMsg2";
             this.FooterMsg2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.FooterMsg2.SizeF = new System.Drawing.SizeF(776.9448F, 28.83326F);
+            this.FooterMsg2.SizeF = new System.Drawing.SizeF(776.9448F, 42.99984F);
             this.FooterMsg2.StylePriority.UseBorderColor = false;
             this.FooterMsg2.StylePriority.UseBorders = false;
             this.FooterMsg2.StylePriority.UseBorderWidth = false;
             this.FooterMsg2.StylePriority.UseFont = false;
             this.FooterMsg2.StylePriority.UseTextAlignment = false;
             this.FooterMsg2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
-            // xrLabel26
-            // 
-            this.xrLabel26.BorderColor = System.Drawing.Color.Gray;
-            this.xrLabel26.Borders = DevExpress.XtraPrinting.BorderSide.None;
-            this.xrLabel26.BorderWidth = 2F;
-            this.xrLabel26.CanShrink = true;
-            this.xrLabel26.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel26.LocationFloat = new DevExpress.Utils.PointFloat(0.05516639F, 91.41664F);
-            this.xrLabel26.Name = "xrLabel26";
-            this.xrLabel26.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel26.SizeF = new System.Drawing.SizeF(776.9448F, 35.04175F);
-            this.xrLabel26.StylePriority.UseBorderColor = false;
-            this.xrLabel26.StylePriority.UseBorders = false;
-            this.xrLabel26.StylePriority.UseBorderWidth = false;
-            this.xrLabel26.StylePriority.UseFont = false;
-            this.xrLabel26.StylePriority.UseTextAlignment = false;
-            this.xrLabel26.Text = "GOODS RECEIVED IN GOOD CONDITION     _____________________________     DATE     _" +
-    "__________________";
-            this.xrLabel26.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
             // 
             // xrLabel38
             // 

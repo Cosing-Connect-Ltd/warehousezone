@@ -278,12 +278,7 @@ namespace Ganedata.Core.Services
                 if (process != null && process.OrderID.HasValue && process.Order!=null && process.Order.PrestaShopOrderId.HasValue)
                 {
                     var dispatchDetails = _currentDbContext.PalletsDispatches.FirstOrDefault(m => m.PalletsDispatchID == dispatch.PalletDispatchId);
-                    if (dispatchDetails != null)
-                    {
-                        consignmentNumber = dispatchDetails.ConsignmentNumber.AsInt();
-                    }
-
-                    await _dataImportFactory.PrestaShopOrderStatusUpdate(process.OrderID.Value, PrestashopOrderStateEnum.Shipped, consignmentNumber);
+                    await _dataImportFactory.PrestaShopOrderStatusUpdate(process.OrderID.Value, PrestashopOrderStateEnum.Shipped, null, dispatchDetails);
                 }
 
                 return result;

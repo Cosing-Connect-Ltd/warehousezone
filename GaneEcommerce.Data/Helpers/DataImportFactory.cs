@@ -3379,14 +3379,19 @@ namespace Ganedata.Core.Data.Helpers
 
                         var warehouse = _currentDbContext.TenantWarehouses.FirstOrDefault(w => w.WarehouseId == warehouseId && w.IsDeleted != true && w.TenantId == tenantId);
 
-                        if (!warehouse.AutoAllowProcess || item.Current_state.Text== (int)PrestashopOrderStateEnum.Updating)
+                        if (item.Current_state.Text == (int)PrestashopOrderStateEnum.Updating)
                         {
                             order.OrderStatusID = OrderStatusEnum.OrderUpdating;
-                            order.OrderNotes.Add(new OrderNotes(){ TenantId = tenantId, DateCreated = DateTime.Now, Notes = "Prestashop order is set to 'Updating' status"});
+                            order.OrderNotes.Add(new OrderNotes() { TenantId = tenantId, DateCreated = DateTime.Now, Notes = "Prestashop order is set to 'Updating' status" });
                         }
                         else
                         {
-                            order.OrderStatusID = OrderStatusEnum.Active;
+                            if (!warehouse.AutoAllowProcess)
+                            {
+                                order.OrderStatusID = OrderStatusEnum.Hold;
+
+                            }
+                            else order.OrderStatusID = OrderStatusEnum.Active;
                         }
 
                         var accounts = await GetPrestaShopAccount(item.Id_customer.Text, null, tenantId, 1, item.Id_address_delivery.Text, item.Id_address_invoice.Text, PrestashopUrl, PrestashopKey);
@@ -3439,15 +3444,21 @@ namespace Ganedata.Core.Data.Helpers
 
                         var warehouse = _currentDbContext.TenantWarehouses.FirstOrDefault(w => w.WarehouseId == warehouseId && w.IsDeleted != true && w.TenantId == tenantId);
 
-                        if (!warehouse.AutoAllowProcess || item.Current_state.Text == (int)PrestashopOrderStateEnum.Updating)
+                        if (item.Current_state.Text == (int)PrestashopOrderStateEnum.Updating)
                         {
                             order.OrderStatusID = OrderStatusEnum.OrderUpdating;
                             order.OrderNotes.Add(new OrderNotes() { TenantId = tenantId, DateCreated = DateTime.Now, Notes = "Prestashop order is set to 'Updating' status" });
                         }
                         else
                         {
-                            order.OrderStatusID = OrderStatusEnum.Active;
+                            if (!warehouse.AutoAllowProcess)
+                            {
+                                order.OrderStatusID = OrderStatusEnum.Hold;
+
+                            }
+                            else order.OrderStatusID = OrderStatusEnum.Active;
                         }
+
                         order.DateUpdated = DateTime.UtcNow;
                         order.TenentId = tenantId;
                         order.UpdatedBy = 1;
@@ -3477,8 +3488,6 @@ namespace Ganedata.Core.Data.Helpers
                         order.TenantDeliveryServiceId = deliveryService.Id;
                         order.DeliveryMethod = deliveryService.DeliveryMethod;
                     }
-
-
 
                     _currentDbContext.Entry(order).State = order.OrderID > 0 ? EntityState.Modified : EntityState.Added;
                     decimal? ordTotal = 0;
@@ -3524,7 +3533,11 @@ namespace Ganedata.Core.Data.Helpers
 
                     order.OrderTotal = (decimal)ordTotal;
                     order.OrderCost = (decimal)ordTotal;
-                    order.PrestaShopOrderId = item.Id;
+                    if (item.Id > 0)
+                    {
+                        order.PrestaShopOrderId = item.Id;
+                    }
+
                     order.ApiCredentialId = ApiId;
                     _currentDbContext.SaveChanges();
                 }
@@ -3532,6 +3545,8 @@ namespace Ganedata.Core.Data.Helpers
             catch (Exception ex)
             {
                 CreateWebSiteSyncLog(requestTime, "Error", false, 0, requestSentTime, ApiId, tenantId);
+
+                throw ex;
                 EventLog.WriteEntry(ex.Source, ex.Message);
                 return ex.Message;
             }
@@ -3693,7 +3708,7 @@ namespace Ganedata.Core.Data.Helpers
         }
 
 
-        public async Task<string> PrestaShopOrderStatusUpdate(int orderId, PrestashopOrderStateEnum status, int? consignmentNumber, string packedByName=null)
+        public async Task<string> PrestaShopOrderStatusUpdate(int orderId, PrestashopOrderStateEnum status, string packedByName=null, PalletsDispatch dispatchInfo=null)
         {
             var _currentDbContext = new ApplicationContext();
             var orderToUpdate = _currentDbContext.Order.FirstOrDefault(x => x.OrderID == orderId);
@@ -3725,10 +3740,11 @@ namespace Ganedata.Core.Data.Helpers
                     if(prestaShopOrder == null) throw new Exception("Failed to Deserialize, unable to locate the order " + url);
 
                     prestaShopOrder.Order.Current_state = currentState;
-                    if (consignmentNumber.HasValue)
+                    if (dispatchInfo!=null)
                     {
-                        prestaShopOrder.Order.Shipping_number = new Shipping_number() { NotFilterable = consignmentNumber.Value.ToString() };
-                        prestaShopOrder.Order.Delivery_number = consignmentNumber.Value.ToString();
+                        prestaShopOrder.Order.Dpd_Parcel_numbers = dispatchInfo.ParcelNumbers;
+                        prestaShopOrder.Order.Dpd_Consignment_numbers = dispatchInfo.ConsignmentNumber;
+                        prestaShopOrder.Order.Dpd_Shipment_Id = dispatchInfo.ShipmentId;
                     }
 
                     if (status == PrestashopOrderStateEnum.PickAndPack)
