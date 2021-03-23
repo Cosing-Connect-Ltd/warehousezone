@@ -61,6 +61,28 @@ namespace Ganedata.Core.Models
         public string MainImage { get; set; }
         public List<string> ProductTags { get; set; }
         public int SortOrder { get; set; }
+        public List<ProductAttributeSync> ProductAttributeVariations { get; set; }
+    }
+
+    public enum LoyaltyProductAttributeTypeEnumSync
+    {
+        Size = 1,
+        Scoop = 2
+    }
+
+    public class ProductAttributeSync
+    {
+        //For Auditing purpose
+        public int ProductAttributeId { get; set; }
+        public string ProductAttributeName { get; set; }
+        
+        //Size/Scoop that helps the UI to show its elements
+        public LoyaltyProductAttributeTypeEnumSync ProductAttributeType { get; set; }
+        //This will uniquely identify the selected attribute per product
+        public int ProductAttributeValueId { get; set; }
+        public string ProductAttributeValueName { get; set; }
+        public decimal? AttributeSpecificPrice { get; set; }
+        public int SortOrder { get; set; }
     }
 
     [Serializable]

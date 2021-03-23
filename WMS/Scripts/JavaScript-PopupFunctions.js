@@ -13,6 +13,12 @@ function beginProductLabelPrintCallback(s, e) {
     e.customArgs["OrderDetailId"] = labelPrintOrderDetailId;
 }
 
+function beginProductAttributeValueAdd(s, e) {
+    var productAttributeId = $("#drpattribute").val(); 
+    e.customArgs["id"] = productAttributeId;
+}
+
+
 function printProductLabel() {
     printPalletOrProductLabel("Product");
 }

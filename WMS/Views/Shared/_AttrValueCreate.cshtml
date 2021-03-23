@@ -20,8 +20,8 @@
                 @Html.ValidationMessageFor(model => model.SortOrder)
             </div>
         </div>
-        
-        @*@if (Model.ProductAttributes!=null && Model.ProductAttributes.IsPriced)
+
+        @if (Model.ProductAttributes != null && Model.ProductAttributes.IsPriced)
         {
             <div class="input-group h-100 justify-content-center align-items-center">
                 <label class="col-md-3">Custom Price<span style="color:red">*</span></label>
@@ -30,16 +30,19 @@
                     @Html.ValidationMessageFor(model => model.AttributeSpecificPrice)
                 </div>
             </div>
-        }*@
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-            <label class="col-md-3">Color</label>
-            <div class="col-md-9">
-                @Html.DevExpress().ColorEditFor(model => model.Color, ColorEditorHelper.ColorEditSettingsMethod).GetHtml()
-                @Html.ValidationMessageFor(model => model.Color)
+        }
+        @if (Model.ProductAttributes != null && Model.ProductAttributes.IsColorTyped)
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-3">Color</label>
+                <div class="col-md-9">
+                    @Html.DevExpress().ColorEditFor(model => model.Color, ColorEditorHelper.ColorEditSettingsMethod).GetHtml()
+                    @Html.ValidationMessageFor(model => model.Color)
+                </div>
             </div>
-        </div>
+        }
     </div>
+
     <div class="col-md-offset-2 col-md-10 bottom-right-popup">
         <input type="button" onclick="attributesvalueSave()" value="Save" class="btn btn-primary" />
         <input type="button" onclick="pcModalAttributeValues.Hide()" value="Cancel" class="btn btn-default" />

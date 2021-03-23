@@ -22,7 +22,7 @@ namespace WMS.Controllers.WebAPI
             _mapper = mapper;
         }
         // GET: api/HandheldUserSync
-        // call example through URI http://localhost:8005/api/GetProducts?ReqDate=2014-11-23&SerialNo=920013c000814
+        // call example through URI http://localhost:8005/api/GetProducts?ReqDate=2014-11-23&SerialNo=869619042650264
         public IHttpActionResult GetProducts(DateTime reqDate, string serialNo)
         {
             serialNo = serialNo.Trim().ToLower();
@@ -54,6 +54,18 @@ namespace WMS.Controllers.WebAPI
                 var filePath = p.ProductFiles.Where(a => imageFormats.Contains(new DirectoryInfo(a.FilePath).Extension, StringComparer.CurrentCultureIgnoreCase) && a.IsDeleted != true)
                     .OrderBy(a => a.SortOrder).FirstOrDefault()?.FilePath;
                 mappedProduct.MainImage = filePath == null ? "" : baseUrl + filePath;
+                mappedProduct.ProductAttributeVariations = p.ProductAttributeValuesMap!=null && p.ProductAttributeValuesMap.Any() ?  p.ProductAttributeValuesMap
+                    .Select(m => m.ProductAttributeValues).Select(m => new ProductAttributeSync()
+                    {
+                        AttributeSpecificPrice = m.AttributeSpecificPrice,
+                        ProductAttributeId = m.AttributeId,
+                        ProductAttributeName = m.ProductAttributes.AttributeName,
+                        SortOrder = m.SortOrder,
+                        ProductAttributeValueId = m.AttributeValueId,
+                        ProductAttributeValueName = m.Value,
+                        ProductAttributeType = m.ProductAttributes.AttributeName.Equals("size", StringComparison.CurrentCultureIgnoreCase) 
+                            ? LoyaltyProductAttributeTypeEnumSync.Size: LoyaltyProductAttributeTypeEnumSync.Scoop
+                    }).ToList(): null;
                 products.Add(mappedProduct);
             }
 

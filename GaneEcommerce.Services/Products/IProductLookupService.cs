@@ -38,7 +38,7 @@ namespace Ganedata.Core.Services
         PalletType UpdatePalletType(PalletType model, int userId);
         PalletType GetPalletTypeById(int palletTypeId);
         void DeletePalletType(int palletTypeId, int userId);
-        ProductAttributes SaveProductAttribute(string attributeName, int sortOrder, bool isColorTyped, int? attributeId=null);
+        ProductAttributes SaveProductAttribute(string attributeName, int sortOrder, bool isColorTyped, int? attributeId=null, bool isPriced = false);
         ProductAttributeValues SaveProductAttributeValue(int attributeId, string attributeValue, int sortOrder, string color, int userId = 0, int? attributeValueId = null);
         bool SaveProductAttributeValueMap(int attributeValueId, int userId, int tenantId, int productId, int? productAttributeValueMapId);
         void DeleteProductAttributeValuesMap(int productId, int attributeValueId, int userId, int tenantId);
@@ -87,5 +87,6 @@ namespace Ganedata.Core.Services
         bool RemoveProductAttriubte(int id);
 
         Dictionary<string, List<string>> ReadFiltersString(string filterString);
+        ProductAttributes GetProductAttributeById(int productAttributeId);
     }
 }

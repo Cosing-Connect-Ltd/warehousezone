@@ -129,6 +129,7 @@ namespace Ganedata.Core.Models
         public bool? IsDeleted { get; set; }
         public OrderStatusEnum? OrderDetailStatusId { get; set; }
         public int SortOrder { get; set; }
+        public int? ProductAttributeValueId { get; set; }
     }
 
     public class SerialProcessStatus

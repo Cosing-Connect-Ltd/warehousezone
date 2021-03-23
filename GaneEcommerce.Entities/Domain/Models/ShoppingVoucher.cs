@@ -28,7 +28,8 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime? DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
     }
-    
+
+    [Serializable]
     public class ShoppingVoucher : BaseAuditInfo
     {
         [Key]
