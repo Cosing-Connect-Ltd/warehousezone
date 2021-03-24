@@ -36,6 +36,19 @@ namespace WMS.Helpers
             if (success) result = outInt;
             return result;
         }
+        public static decimal AsDecimal(this string input, int roundingDigits = 2)
+        {
+            decimal result = 0;
+            decimal outInt;
+            bool success = decimal.TryParse(input, out outInt);
+            if (success) result = outInt;
+            return Math.Round(result, roundingDigits);
+        }
+        public static decimal AsRoundedDecimal(this decimal input, int roundingDigits = 2)
+        {
+            return Math.Round(input, roundingDigits);
+        }
+
         //usage: var lst =  Enum<myenum>.GetSelectList();
         public static List<SelectListItem> GetSelectList<T>()
         {

@@ -467,6 +467,7 @@ function getPrice() {
 }
 
 function VerifySerial(e, cnt) {
+    debugger;
     var Req_url = window.location.href;
     var type;
     var data = {};
@@ -2082,7 +2083,6 @@ function SaveSerials() {
     var prid = $('#prodId').val();
     var DeliveryNo = $('#delivery').val();
     var orderDetailId = $("#OrderDetailID").val();
-    debugger;
     var type = $('#type').val();
 
     var url = "/PurchaseOrders/_SubmitPalleteSerials/";
