@@ -1307,6 +1307,10 @@
     <Compile Include="Migrations\202103221558442_AddedProductAttributeValueToOrderDetails.designer.cs">
       <DependentUpon>202103221558442_AddedProductAttributeValueToOrderDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103251220014_StripeChargeInformationAdded.cs" />
+    <Compile Include="Migrations\202103251220014_StripeChargeInformationAdded.designer.cs">
+      <DependentUpon>202103251220014_StripeChargeInformationAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2608,6 +2612,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103221558442_AddedProductAttributeValueToOrderDetails.resx">
       <DependentUpon>202103221558442_AddedProductAttributeValueToOrderDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103251220014_StripeChargeInformationAdded.resx">
+      <DependentUpon>202103251220014_StripeChargeInformationAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

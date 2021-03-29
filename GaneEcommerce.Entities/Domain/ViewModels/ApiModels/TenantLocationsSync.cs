@@ -85,5 +85,29 @@ namespace Ganedata.Core.Models
         public bool? LoyaltyDeliveryOrdersEnabled { get; set; }
         public bool? LoyaltyCollectionOrdersEnabled { get; set; }
         public bool? LoyaltyEatInOrdersEnabled { get; set; }
+
+        public WarehouseOpeningTimeViewModel OpeningHours { get; set; }
     }
+
+    public class WarehouseOpeningTimeViewModel
+    {
+        public int WarehouseId { get; set; }
+        public WarehouseOpeningHoursViewModel SundayOpeningHoursViewModel { get; set; }
+        public WarehouseOpeningHoursViewModel MondayOpeningHoursViewModel { get; set; }
+        public WarehouseOpeningHoursViewModel TuesdayOpeningHoursViewModel { get; set; }
+        public WarehouseOpeningHoursViewModel WednesdayOpeningHoursViewModel { get; set; }
+        public WarehouseOpeningHoursViewModel ThursdayOpeningHoursViewModel { get; set; }
+        public WarehouseOpeningHoursViewModel FridayOpeningHoursViewModel { get; set; }
+        public WarehouseOpeningHoursViewModel SaturdayOpeningHoursViewModel { get; set; }
+    }
+
+    public class WarehouseOpeningHoursViewModel
+    {
+        public int OpeningTimeHour { get; set; }
+        public int OpeningTimeMins { get; set; }
+        public int ClosingTimeHour { get; set; }
+        public int ClosingTimeMins { get; set; }
+        public bool IsClosed { get; set; }
+    }
+
 }

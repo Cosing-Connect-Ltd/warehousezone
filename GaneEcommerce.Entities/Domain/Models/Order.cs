@@ -294,5 +294,25 @@ namespace Ganedata.Core.Entities.Domain
         public string PaypalPayerFirstName { get; set; }
         public string PaypalPayerSurname { get; set; }
         public string PaypalAuthorizationId { get; set; }
+
+        public int? StripeChargeConfirmationId { get; set; }
+        [ForeignKey("StripeChargeConfirmationId")]
+        public virtual StripeChargeInformation StripeChargeInformation { get; set; }
+    }
+
+    public class StripeChargeInformation
+    {
+        [Key]
+        [Display(Name = "Stripe Transaction Id")]
+        public int Id { get; set; }
+        public decimal StripeChargedAmount { get; set; }
+        public string StripeChargedCurrency { get; set; }
+        public string StripeChargeCreatedId { get; set; }
+        public string StripeChargeToken { get; set; }
+        public bool StripeAutoCharge { get; set; }
+        public DateTime? StripeChargedCreatedDate { get; set; }
+        public DateTime? StripeChargedConfirmedDate { get; set; }
+
+        public int? OrderId { get; set; } 
     }
 }

@@ -119,6 +119,9 @@ namespace WMS
             config.Routes.MapHttpRoute("PaypalAuthorisation", "api/paypal/pay-authorised", new { controller = "ApiOrderPayments", action = "AuthorizePaypalPayment" });
             config.Routes.MapHttpRoute("OrderStatus", "api/paypal/order-status/{id}", new { controller = "ApiOrderPayments", action = "GetOrderStatus", id = string.Empty });
             config.Routes.MapHttpRoute("ReceivePaypalWebhook", "api/paypal/hook-authorise", new { controller = "ApiOrderPayments", action = "ReceivePaypalWebhook" });
+            config.Routes.MapHttpRoute("StripePaymentsCreate", "api/stripe/post-payment", new { controller = "ApiStripePayments", action = "Create" });
+            config.Routes.MapHttpRoute("StripePaymentsCharge", "api/stripe/charge-order", new { controller = "ApiStripePayments", action = "Charge" });
+            config.Routes.MapHttpRoute("WarehouseOpeningTimes", "api/lookup/warehouse/{warehouseId} ", new { controller = "ApiTenantLocationsSync", action = "GetTenantLoction", warehouseId = string.Empty });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

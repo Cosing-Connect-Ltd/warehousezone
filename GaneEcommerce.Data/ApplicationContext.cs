@@ -18,7 +18,6 @@ namespace Ganedata.Core.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-            //modelBuilder.Entity<Order>().HasIndex(d => d.OrderNumber).IsUnique();
             Database.SetInitializer<ApplicationContext>(null);
             base.OnModelCreating(modelBuilder);
         }
@@ -226,6 +225,7 @@ namespace Ganedata.Core.Data
         public DbSet<ShoppingVoucher> ShoppingVouchers { get; set; }
         public DbSet<ShoppingVoucherUsage> ShoppingVoucherUsages { get; set; }
         public DbSet<RewardPointTrigger> RewardPointTriggers { get; set; }
+        public DbSet<StripeChargeInformation> StripeChargeInformations { get; set; }
 
         //#end region
     }

@@ -107,6 +107,7 @@ namespace WMS
             container.RegisterType<IFeedbackService, FeedbackService>();
             container.RegisterType<IShoppingVoucherService, ShoppingVoucherService>();
             container.RegisterType<IPaypalPaymentServices, PaypalPaymentServices>();
+            container.RegisterType<IStripePaymentService, StripePaymentService>();
 
             container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());
 

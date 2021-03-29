@@ -1379,22 +1379,23 @@ namespace Ganedata.Core.Services
 
                     var oldLoyaltyPoint = account.AccountLoyaltyPoints;
 
-                    var rewardPointsEarned = (int) Math.Round(order.OrderTotal, 1) * 20;
+                    var rewardPointsEarned = (int) Math.Round(order.OrderCost??0, 1) * 20;
                     if (rewardPointsEarned > 400)
                     {
                         rewardPointsEarned = 400;
                     }
 
                     var today = DateTime.Today;
-                    var pointsEarnedToday =
+                    var pointsEarnedTodayItems =
                         _currentDbContext.AccountRewardPoints.Where(m =>
-                            DbFunctions.TruncateTime(m.DateCreated) == today && m.PointsEarned>0).Sum(m=> m.PointsEarned);
+                            DbFunctions.TruncateTime(m.DateCreated) == today && m.PointsEarned>0);
 
-                    if (rewardPointsEarned > (400 - pointsEarnedToday))
+                    var todaysPoints = (pointsEarnedTodayItems!=null && pointsEarnedTodayItems.Count()>0) ? (pointsEarnedTodayItems.Sum(m => m.PointsEarned)): 0;
+
+                    if (rewardPointsEarned > (400 - todaysPoints))
                     {
-                        rewardPointsEarned = (400 - pointsEarnedToday);
+                        rewardPointsEarned = (400 - todaysPoints);
                     }
-
 
                     var reward = new AccountRewardPoint()
                     {
@@ -1409,11 +1410,14 @@ namespace Ganedata.Core.Services
                         UserID = item.CreatedBy
                     };
                     _currentDbContext.AccountRewardPoints.Add(reward);
-                    
-                    //_currentDbContext.Entry(account).State = EntityState.Modified;
 
                     var newLoyaltyPoint = account.AccountLoyaltyPoints + reward.PointsEarned;
                     _currentDbContext.SaveChanges();
+
+                    if (item.OrderID < 1)
+                    {
+                        item.OrderID = order.OrderID;
+                    }
 
                     _shoppingVoucherService.TriggerRewardsBasedForCurrentVoucher(item.CreatedBy, oldLoyaltyPoint, newLoyaltyPoint, item.OrderID, string.IsNullOrWhiteSpace(item.VoucherCode));
                 }
