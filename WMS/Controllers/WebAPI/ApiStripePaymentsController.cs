@@ -16,19 +16,19 @@ namespace WMS.Controllers.WebAPI
             _stripePaymentService = stripePaymentService;
         }
 
-        //api/stripe/create-intent  
-        //[System.Web.Mvc.HttpPost]
-        public IHttpActionResult Create()
+        //api/stripe/create-intent
+        [HttpPost]
+        public IHttpActionResult Create(StripePaymentRequestModel model)
         {
-            var model = new StripePaymentRequestModel()
-            {
-                UserId = 25,
-                PersonalReferralCode = "riyaz@ganedata.co.uk",
-                Amount = 25.2m,
-                SerialNumber = "123456789",
-                ChargeToken = "tok_1IYCb8HE8E2m6CoU6ukzLvpf"
-            };
             var result = _stripePaymentService.CreatePayment(model);
+            return Ok(result);
+        }
+        //api/stripe/charge-order
+        [HttpPost]
+        public IHttpActionResult Charge(StripePaymentChargeCapture model)
+        {
+            //var charge = _stripePaymentService.GetChargeInformation();
+            var result = _stripePaymentService.ChargeOrder(model);
             return Ok(result);
         }
     }

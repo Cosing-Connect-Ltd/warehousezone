@@ -24,6 +24,18 @@ namespace WMS.Controllers.WebAPI
             _LookupService = LookupService;
             _mapper = mapper;
         }
+        // GET http://localhost:8005/api/lookup/warehouse/{warehouseId}
+        public IHttpActionResult GetTenantLoction(int warehouseId)
+        {
+            var warehouse = TenantLocationServices.GetTenantIdByTenantLocationId(warehouseId);
+            var result = new TenantLocationsSync();
+            
+            _mapper.Map(warehouse, result);
+
+            result.OpeningHours = TenantLocationServices.GetOpeningTimesByWarehouseId(warehouseId);
+
+            return Ok(result);
+        }
 
         // GET http://localhost:8005/api/sync/tenant-locations/2014-11-23/920013c000814
         public IHttpActionResult GetTenantLoctions(DateTime reqDate, string serialNo)
@@ -47,6 +59,7 @@ namespace WMS.Controllers.WebAPI
             {
                 result.TenantLocationSync[i].TelephoneNumber1 = allTenantLocations[i].ContactNumbers?.HomeNumber;
                 result.TenantLocationSync[i].TelephoneNumber2 = allTenantLocations[i].ContactNumbers?.WorkNumber?? allTenantLocations[i].ContactNumbers?.MobileNumber;
+                result.TenantLocationSync[i].OpeningHours = TenantLocationServices.GetOpeningTimesByWarehouseId(result.TenantLocationSync[i].WarehouseId);
             }
 
             result.Count = result.TenantLocationSync?.Count() ?? 0;
@@ -55,5 +68,6 @@ namespace WMS.Controllers.WebAPI
                     TerminalLogTypeEnum.TenantLocationsSyncLog).TerminalLogId;
             return Ok(result);
         }
+
     }
 }

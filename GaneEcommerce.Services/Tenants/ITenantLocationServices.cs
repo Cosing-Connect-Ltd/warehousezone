@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Models;
 
 namespace Ganedata.Core.Services
 {
@@ -25,5 +26,6 @@ namespace Ganedata.Core.Services
 
         IQueryable<WarehouseProductLevelViewModel> GetAllStockLevelsForWarehouse(int warehouseId);
         IQueryable<WarehouseProductLevelViewModel> GetAllStockLevelsForTenant(int tenantId);
+        WarehouseOpeningTimeViewModel GetOpeningTimesByWarehouseId(int warehouseId);
     }
 }

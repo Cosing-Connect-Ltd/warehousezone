@@ -198,5 +198,6 @@ namespace Ganedata.Core.Data
         DbSet<ShoppingVoucher> ShoppingVouchers { get; set; }
         DbSet<ShoppingVoucherUsage> ShoppingVoucherUsages { get; set; }
         DbSet<RewardPointTrigger> RewardPointTriggers { get; set; }
+        DbSet<StripeChargeInformation> StripeChargeInformations { get; set; }
     }
 }

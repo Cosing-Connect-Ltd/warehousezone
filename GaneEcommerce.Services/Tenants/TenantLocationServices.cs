@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Helpers;
+using Ganedata.Core.Models;
 
 namespace Ganedata.Core.Services
 {
@@ -156,6 +158,23 @@ namespace Ganedata.Core.Services
                 };
 
             return levels;
+        }
+
+        public WarehouseOpeningTimeViewModel GetOpeningTimesByWarehouseId(int warehouseId)
+        {
+            if(!_currentDbContext.TenantWarehouses.Any(m=> m.WarehouseId==warehouseId && m.IsActive)) return new WarehouseOpeningTimeViewModel();
+
+            return new WarehouseOpeningTimeViewModel()
+            {
+                WarehouseId = warehouseId,
+                SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
+                MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
+                TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
+                WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
+                ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
+                FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
+                SaturdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
+            };
         }
     }
 }

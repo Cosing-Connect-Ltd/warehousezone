@@ -632,8 +632,14 @@ namespace Ganedata.Core.Services
             List<int> productAttributesIds,
             List<int> productLocationIds, List<int> AttributeIds, int userId, int tenantId, List<int> SiteId, List<RecipeProductItemRequest> recipeProductItems)
         {
+            if (productMaster.ProductGroupId == 0)
+            {
+                productMaster.ProductGroupId = null;
+            }
             if (productMaster.ProductId > 0)
             {
+              
+
                 productMaster.ProductCategoryId = productMaster.ProductCategoryId > 0 ? productMaster.ProductCategoryId : null;
                 productMaster.UpdateCreatedInfo(userId);
                 productMaster.UpdateUpdatedInfo(userId);

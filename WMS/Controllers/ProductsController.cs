@@ -290,6 +290,7 @@ namespace WMS.Controllers
                 }
                 catch (Exception ex)
                 {
+                    throw ex;
                     SetProductCreateViewBags(productMaster.SKUCode);
                     ViewBag.Error = ex.Message;
                     return View(productMaster);

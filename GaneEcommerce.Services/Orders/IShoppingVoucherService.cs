@@ -238,8 +238,6 @@ namespace Ganedata.Core.Services
 
                     if (oldPoint < point1.LoyaltyPointToTrigger && newPoint >= point1.LoyaltyPointToTrigger && newPoint< point2.LoyaltyPointToTrigger)
                     {
-                        var product400 = _currentDbContext.ProductMaster.FirstOrDefault(m =>  m.ProductId == LoyaltyPoint400RewardProductId);
-                        
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         
                         var voucher400 = GetVoucher(freeItemVoucher, userId,
@@ -256,7 +254,6 @@ namespace Ganedata.Core.Services
                     }
                     else if (oldPoint < point2.LoyaltyPointToTrigger && newPoint >= point2.LoyaltyPointToTrigger && newPoint < point3.LoyaltyPointToTrigger)
                     {
-                        var product800 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint800RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher800 = GetVoucher(freeItemVoucher, userId,
                             ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint800RewardProductId, $"{point2.LoyaltyPointToTrigger} Loyalty Points - Free Cheesecake", RewardProductCategoryEnum.CheeseCake);
@@ -271,7 +268,6 @@ namespace Ganedata.Core.Services
                     }
                     else if (oldPoint < point3.LoyaltyPointToTrigger && newPoint >= point3.LoyaltyPointToTrigger)
                     {
-                        var product1200 = _currentDbContext.ProductMaster.FirstOrDefault(m => m.ProductId == LoyaltyPoint1200RewardProductId);
                         var freeItemVoucher = GetNextUniquePersonalVoucherCode();
                         var voucher1200 = GetVoucher(freeItemVoucher, userId,
                             ShoppingVoucherDiscountTypeEnum.FreeProduct, userId, 0, LoyaltyPoint1200RewardProductId, $"{point3.LoyaltyPointToTrigger} Loyalty Points - Free Choc Cookie Dough", RewardProductCategoryEnum.CookieDough);
