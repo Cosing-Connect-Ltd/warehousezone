@@ -178,19 +178,19 @@ namespace Ganedata.Core.Services
 
             if (warehouseId == 11 && (DateTime.Now.DayOfWeek == DayOfWeek.Monday || DateTime.Now.DayOfWeek == DayOfWeek.Tuesday))
             {
-                result.MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()  { OpeningTimeHour = 0, OpeningTimeMins = 0, ClosingTimeHour = 0, ClosingTimeMins = 0 };
-                result.TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 0, OpeningTimeMins = 0, ClosingTimeHour = 0, ClosingTimeMins = 0 };
+                result.MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()  { IsClosed = true};
+                result.TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
             } 
             if (warehouseId == 14 && (DateTime.Now.DayOfWeek == DayOfWeek.Wednesday || DateTime.Now.DayOfWeek == DayOfWeek.Thursday))
             {
-                result.WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()  { OpeningTimeHour = 0, OpeningTimeMins = 0, ClosingTimeHour = 0, ClosingTimeMins = 0 };
-                result.ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 0, OpeningTimeMins = 0, ClosingTimeHour = 0, ClosingTimeMins = 0 };
+                result.WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()  { IsClosed = true };
+                result.ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
             }
             if (warehouseId == 13 && (DateTime.Now.DayOfWeek == DayOfWeek.Friday || DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday))
             {
-                result.FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 0, OpeningTimeMins = 0, ClosingTimeHour = 0, ClosingTimeMins = 0 };
-                result.SaturdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 0, OpeningTimeMins = 0, ClosingTimeHour = 0, ClosingTimeMins = 0 };
-                result.SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 0, OpeningTimeMins = 0, ClosingTimeHour = 0, ClosingTimeMins = 0 };
+                result.FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
+                result.SaturdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
+                result.SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
             }
 
             return result;

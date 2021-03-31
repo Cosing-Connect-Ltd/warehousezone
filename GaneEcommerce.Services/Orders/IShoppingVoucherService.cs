@@ -192,7 +192,7 @@ namespace Ganedata.Core.Services
             return code;
         }
 
-        private AccountRewardPoint GetAccountRewardPoint(int accountId, int userId, int? orderId, int rewardPoint, int productId)
+        private AccountRewardPoint GetAccountRewardPoint(int accountId, int userId, int? orderId, int rewardPoint, int productId, int tenantId =1)
         {
             return new AccountRewardPoint()
             {
@@ -203,7 +203,8 @@ namespace Ganedata.Core.Services
                 OrderDateTime = DateTime.Now,
                 PointsEarned = rewardPoint,
                 UserID = userId,
-                RewardProductId = productId
+                RewardProductId = productId,
+                TenantId = tenantId
             };
         }
 
@@ -248,7 +249,7 @@ namespace Ganedata.Core.Services
 
                         _currentDbContext.ShoppingVouchers.Add(voucher400);
 
-                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point1.LoyaltyPointToTrigger??400), LoyaltyPoint400RewardProductId);
+                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point1.LoyaltyPointToTrigger??400), LoyaltyPoint400RewardProductId, account.TenantId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
                         _currentDbContext.SaveChanges();
                     }
@@ -262,7 +263,7 @@ namespace Ganedata.Core.Services
                         voucher800.DiscountFigure = point2.ShoppingVoucher.DiscountFigure;
                         _currentDbContext.ShoppingVouchers.Add(voucher800);
 
-                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point2.LoyaltyPointToTrigger ?? 800), LoyaltyPoint800RewardProductId);
+                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point2.LoyaltyPointToTrigger ?? 800), LoyaltyPoint800RewardProductId, account.TenantId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
                         _currentDbContext.SaveChanges();
                     }
@@ -276,7 +277,7 @@ namespace Ganedata.Core.Services
                         voucher1200.DiscountFigure = point3.ShoppingVoucher.DiscountFigure;
                         _currentDbContext.ShoppingVouchers.Add(voucher1200);
 
-                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point3.LoyaltyPointToTrigger ?? 1200), LoyaltyPoint1200RewardProductId);
+                        var rewardUse = GetAccountRewardPoint(account.AccountID, userId, orderId, -(point3.LoyaltyPointToTrigger ?? 1200), LoyaltyPoint1200RewardProductId, account.TenantId);
                         _currentDbContext.AccountRewardPoints.Add(rewardUse);
                         _currentDbContext.SaveChanges();
                     }
