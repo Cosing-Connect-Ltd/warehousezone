@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Elmah;
 using Ganedata.Core.Services;
+using Newtonsoft.Json;
 using Stripe;
 using Stripe.Checkout;
 
@@ -27,9 +30,18 @@ namespace WMS.Controllers.WebAPI
         [HttpPost]
         public IHttpActionResult Charge(StripePaymentChargeCapture model)
         {
-            //var charge = _stripePaymentService.GetChargeInformation();
             var result = _stripePaymentService.ChargeOrder(model);
             return Ok(result);
         }
+
+        [HttpPost]
+        ///api/stripe/chargehook
+        public IHttpActionResult WebhookReceive(StripeWebhookRequest model)
+        {
+            var result = _stripePaymentService.ProcessWebhook(model);
+            return Ok(result);
+        }
+
+
     }
 }

@@ -1,10 +1,9 @@
 ﻿@model Ganedata.Core.Models.AdyenPayments.AdyenPaylinkRefundRequest
 @using System.Web.UI.WebControls
-@using Ganedata.Core.Entities.Enums
 
 <h2><span>@ViewBag.Title</span></h2>
 
-<form class="form-horizontal" action='@Url.Action("RequestRefund","DirectSales")' method="post" id="frmRefunds">
+<form class="form-horizontal" action='@Url.Action("ProcessRefundForOrder","OrderPayment")' method="post" id="frmRefunds">
     @Html.AntiForgeryToken()
     @Html.HiddenFor(c => c.OrderID)
 

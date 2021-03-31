@@ -19,11 +19,39 @@ using WMS.Helpers;
 
 namespace WMS.Controllers
 {
+    
+
+    public class OrderPaymentController : BaseController
+    {
+        private readonly IStripePaymentService _stripePaymentService;
+
+        public OrderPaymentController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IStripePaymentService stripePaymentService) : base(orderService, propertyService, accountServices, lookupServices)
+        {
+            _stripePaymentService = stripePaymentService;
+        }
+
+        [Authorize]
+        public ActionResult ProcessRefundForOrder(StripeRefundOrderPaymentRequest model)
+        {
+            var response = _stripePaymentService.ProcessRefundByOrderId(model.OrderID, CurrentUser.PersonalCode);
+            if (response.Success)
+            {
+                TempData["SuccessMessage"] = "Refund Processed successfully";
+                return RedirectToAction("Index", "SalesOrders");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Refund failed, " +  response.ErrorMessages[0];
+                return RedirectToAction("Index", "SalesOrders");
+            }
+        }
+
+    }
+
     public class OrderController : BaseReportsController
     {
         private readonly IProductLookupService _productLookupService;
         private readonly IProductServices _productServices;
-        private readonly ITenantLocationServices _tenantLocationServices;
         private readonly IProductPriceService _productPriceService;
         private readonly ICommonDbServices _commonDbServices;
         private readonly IEmailServices _emailServices;
@@ -32,13 +60,12 @@ namespace WMS.Controllers
         private readonly IMapper _mapper;
 
         public OrderController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAppointmentsService appointmentsService, IPalletingService palletingService,
-            IProductLookupService productLookupService, IProductServices productServices, ITenantLocationServices tenantLocationServices, IProductPriceService productPriceService, IGaneConfigurationsHelper ganeConfigurationsHelper,
+            IProductLookupService productLookupService, IProductServices productServices, IProductPriceService productPriceService, IGaneConfigurationsHelper ganeConfigurationsHelper,
             IEmailServices emailServices, ICommonDbServices commonDbServices, ITenantLocationServices tenantLocationservices, ITenantsServices tenantsServices, IUserService userService, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices, appointmentsService, ganeConfigurationsHelper, emailServices, tenantLocationservices, tenantsServices)
         {
             _productLookupService = productLookupService;
             _productServices = productServices;
-            _tenantLocationServices = tenantLocationServices;
             _productPriceService = productPriceService;
             _commonDbServices = commonDbServices;
             _emailServices = emailServices;

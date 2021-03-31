@@ -18,6 +18,7 @@ namespace Ganedata.Core.Services
         public string UserFirstName { get; private set; }
         public string UserLastName { get; private set; }
         public string UserEmail { get; private set; }
+        public string PersonalCode { get; set; }
         public DateTime? DateCreated { get; private set; }
         public DateTime? DateUpdated { get; private set; }
         public int? CreatedBy { get; private set; }
@@ -75,6 +76,7 @@ namespace Ganedata.Core.Services
                 UserLastName = user.UserLastName;
                 UserEmail = user.UserEmail;
                 DateCreated = user.DateCreated;
+                PersonalCode = user.PersonalReferralCode;
                 DateUpdated = user.DateUpdated;
                 CreatedBy = user.CreatedBy;
                 UpdatedBy = user.UpdatedBy;
@@ -142,6 +144,7 @@ namespace Ganedata.Core.Services
                 CreatedBy = user.CreatedBy;
                 UpdatedBy = user.UpdatedBy;
                 IsActive = user.IsActive;
+                PersonalCode = user.PersonalReferralCode;
                 IsDeleted = user.IsDeleted;
                 TenantId = user.TenantId;
                 AuthPermissions = user.AuthPermissions;

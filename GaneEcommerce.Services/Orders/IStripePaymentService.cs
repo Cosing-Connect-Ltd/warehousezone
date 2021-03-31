@@ -4,9 +4,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Configuration;
+using Elmah;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using Newtonsoft.Json;
 using Stripe;
 using Stripe.Checkout;
 
@@ -17,7 +19,9 @@ namespace Ganedata.Core.Services
     {
         StripePaymentAuthorisationResponse CreatePayment(StripePaymentRequestModel request);
         StripePaymentAuthorisationResponse ChargeOrder(StripePaymentChargeCapture model);
+        StripePaymentRefundResponse ProcessRefundByOrderId(int orderId, string customerToken);
         object GetChargeInformation();
+        StripePaymentRefundResponse ProcessWebhook(StripeWebhookRequest model);
     }
 
     public class StripePaymentService : IStripePaymentService
@@ -212,6 +216,63 @@ namespace Ganedata.Core.Services
             };
         }
 
+
+        public StripePaymentRefundResponse ProcessRefundByOrderId(int orderId, string customerToken)
+        {
+            var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.PersonalReferralCode.Equals(customerToken) && m.IsActive);
+
+            if (user == null)
+            {
+                return new StripePaymentRefundResponse  { Success= false, ErrorMessages = new List<string>(){ "User cannot be found" } };
+            }
+             
+            var order = _currentDbContext.Order.FirstOrDefault(m => m.OrderID == orderId);
+            if (order == null || order.StripeChargeInformation==null)
+            {
+                return new StripePaymentRefundResponse { Success = false, ErrorMessages = new List<string>() { "Order or payment cannot be found" }};
+            }
+
+            try
+            {
+                StripeConfiguration.ApiKey = GetSecretKey();
+
+                var options = new RefundCreateOptions
+                {
+                    Charge = order.StripeChargeInformation.StripeChargeCreatedId
+                };
+                var service = new RefundService();
+                var refundResponse = service.Create(options);
+
+                if (refundResponse.Status.Equals("succeeded", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    order.OrderStatusID = OrderStatusEnum.FullyRefunded;
+
+                    if (order.StripeChargeInformation != null)
+                    {
+                        order.StripeChargeInformation.RefundId = refundResponse.Id;
+                        order.StripeChargeInformation.RefundBalanceTransactionId = refundResponse.BalanceTransactionId;
+                        order.StripeChargeInformation.RefundCreatedDate = refundResponse.Created;
+                        order.StripeChargeInformation.RefundAmount = refundResponse.Amount;
+                        order.StripeChargeInformation.RefundAmountCurrency = refundResponse.Currency;
+                    }
+
+                    _currentDbContext.Entry(order).State = EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                     
+                    return new StripePaymentRefundResponse { Success = true, OrderId = orderId, OrderNumber = order.OrderNumber, RefundAuthorisationCode = order.StripeChargeInformation.RefundId };
+                }
+                else
+                {
+                    return new StripePaymentRefundResponse { Success = false, OrderNumber = order.OrderNumber, ErrorMessages = new List<string> { refundResponse.FailureReason}  };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new StripePaymentRefundResponse { Success = false, ErrorMessages = new List<string> { ex.Message, ex.Source, ex.StackTrace}};
+            }
+        }
+
         public object GetChargeInformation()
         {
             StripeConfiguration.ApiKey = GetSecretKey();
@@ -221,6 +282,12 @@ namespace Ganedata.Core.Services
             return result;
         }
 
+        public StripePaymentRefundResponse ProcessWebhook(StripeWebhookRequest model)
+        {
+            var json = JsonConvert.SerializeObject(model);
+            ErrorSignal.FromCurrentContext().Raise(new Exception("Refund payment hook", new Exception(json)));
+            return new StripePaymentRefundResponse() {Success = true};
+        }
     }
 
     #region Models
@@ -253,6 +320,72 @@ namespace Ganedata.Core.Services
         public List<string> FailureReasons { get; set; }
         public string AuthorisationCode { get; set; }
     }
+
+    public class StripeRefundOrderPaymentRequest
+    {
+        public int OrderID { get; set; }
+    }
+
+    public class StripePaymentRefundResponse
+    {
+        public int OrderId { get; set; }
+        public string OrderNumber { get; set; }
+        public string RefundAuthorisationCode { get; set; }
+        public bool Success { get; set; }
+        public List<string> ErrorMessages { get; set; }
+
+    }
+
+     
+
+    public class StripeWebhookRequestItem
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("object")]
+        public string Object { get; set; }
+
+        [JsonProperty("api_version")]
+        public object ApiVersion { get; set; }
+
+        [JsonProperty("application")]
+        public object Application { get; set; }
+
+        [JsonProperty("created")]
+        public int Created { get; set; }
+
+        [JsonProperty("description")]
+        public object Description { get; set; }
+
+        [JsonProperty("enabled_events")]
+        public List<string> EnabledEvents { get; set; }
+
+        [JsonProperty("livemode")]
+        public bool Livemode { get; set; }
+
+        [JsonProperty("status")]
+        public string Status { get; set; }
+
+        [JsonProperty("url")]
+        public string Url { get; set; }
+    }
+
+    public class StripeWebhookRequest
+    {
+        [JsonProperty("object")]
+        public string Object { get; set; }
+
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
+        [JsonProperty("has_more")]
+        public bool HasMore { get; set; }
+
+        [JsonProperty("data")]
+        public List<StripeWebhookRequestItem> Data { get; set; }
+    }
+
 
     #endregion
 }
