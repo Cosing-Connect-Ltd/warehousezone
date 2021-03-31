@@ -319,5 +319,11 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime? RefundCreatedDate { get; set; }
         public long? RefundAmount { get; set; }
         public string RefundAmountCurrency { get; set; }
+
+        public DateTime? StripeChargePendingDate { get; set; }
+        public DateTime? StripeChargeCapturedDate { get; set; }
+        public DateTime? StripeChargeSucceededDate { get; set; }
+        public DateTime? StripeChargeRefundedDate { get; set; }
+        public DateTime? StripeChargeFailedDate { get; set; }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using Elmah;
 using Ganedata.Core.Services;
@@ -36,12 +39,39 @@ namespace WMS.Controllers.WebAPI
 
         [HttpPost]
         ///api/stripe/chargehook
-        public IHttpActionResult WebhookReceive(StripeWebhookRequest model)
+        public async Task<IHttpActionResult> WebhookReceive()
         {
-            var result = _stripePaymentService.ProcessWebhook(model);
-            return Ok(result);
-        }
+            var requestJson = await Request.Content.ReadAsStringAsync();
 
+            try
+            {
+                ErrorSignal.FromCurrentContext().Raise(new Exception(requestJson));
+
+                var stripeEvent = EventUtility.ParseEvent(requestJson);
+                 
+                if (stripeEvent.Type == Events.ChargePending || stripeEvent.Type == Events.ChargeCaptured ||
+                    stripeEvent.Type == Events.ChargeSucceeded || stripeEvent.Type == Events.ChargeRefunded ||
+                    stripeEvent.Type == Events.ChargeFailed)
+                {
+                    var charge = stripeEvent.Data.Object as Charge;
+                    if (charge != null)
+                    {
+
+                        _stripePaymentService.UpdateChargeInformation(stripeEvent.Type, charge.Id);
+                    }
+                    return Ok("Success");
+                }
+                else  
+                {
+                    ErrorSignal.FromCurrentContext().Raise(new Exception("Unhandled Event : "+ stripeEvent.Type + "; Content: " + requestJson));
+                }
+                return Ok("Success - Event not handled");
+            }
+            catch (StripeException e)
+            {
+                return BadRequest();
+            }
+        }
 
     }
 }

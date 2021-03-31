@@ -22,6 +22,9 @@ namespace Ganedata.Core.Services
         StripePaymentRefundResponse ProcessRefundByOrderId(int orderId, string customerToken);
         object GetChargeInformation();
         StripePaymentRefundResponse ProcessWebhook(StripeWebhookRequest model);
+
+        StripeChargeInformation GetStripeInformationByChargeId(string chargeId);
+        StripeChargeInformation UpdateChargeInformation(string evt, string chargeId);
     }
 
     public class StripePaymentService : IStripePaymentService
@@ -287,6 +290,41 @@ namespace Ganedata.Core.Services
             var json = JsonConvert.SerializeObject(model);
             ErrorSignal.FromCurrentContext().Raise(new Exception("Refund payment hook", new Exception(json)));
             return new StripePaymentRefundResponse() {Success = true};
+        }
+
+        public StripeChargeInformation GetStripeInformationByChargeId(string chargeId)
+        {
+            return _currentDbContext.StripeChargeInformations.FirstOrDefault(m => m.StripeChargeCreatedId == chargeId);
+        }
+
+        public StripeChargeInformation UpdateChargeInformation(string evt, string chargeId)
+        {
+            var stripeInfo = GetStripeInformationByChargeId(chargeId);
+            if (stripeInfo != null)
+            {
+                switch (evt)
+                {
+                    case Events.ChargePending:
+                        stripeInfo.StripeChargePendingDate = DateTime.Now;
+                        break;
+                    case Events.ChargeCaptured:
+                        stripeInfo.StripeChargeCapturedDate = DateTime.Now;
+                        break;
+                    case Events.ChargeSucceeded:
+                        stripeInfo.StripeChargeSucceededDate = DateTime.Now;
+                        break;
+                    case Events.ChargeRefunded:
+                        stripeInfo.StripeChargeRefundedDate = DateTime.Now;
+                        break;
+                    case Events.ChargeFailed:
+                        stripeInfo.StripeChargeFailedDate = DateTime.Now;
+                        break;
+                }
+                _currentDbContext.Entry(stripeInfo).State = EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+
+            return stripeInfo;
         }
     }
 

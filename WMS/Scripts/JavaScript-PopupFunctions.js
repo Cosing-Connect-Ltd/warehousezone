@@ -15,7 +15,6 @@ function beginProductLabelPrintCallback(s, e) {
 
 function beginProductAttributeValueAdd(s, e) {
     var productAttributeId = $("#drpattribute").val();
-    debugger;
     if (productAttributeId == '' || productAttributeId == null) {
         productAttributeId = $("#AttributeId").val();
     }
