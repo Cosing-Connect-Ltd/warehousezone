@@ -25,14 +25,15 @@ namespace WMS.Controllers.WebAPI
             _mapper = mapper;
         }
         // GET http://localhost:8005/api/lookup/warehouse/{warehouseId}
-        public IHttpActionResult GetTenantLoction(int warehouseId)
+        [HttpGet]
+        public IHttpActionResult GetTenantLocation(int id)
         {
-            var warehouse = TenantLocationServices.GetTenantIdByTenantLocationId(warehouseId);
+            var warehouse = TenantLocationServices.GetTenantLocationById(id);
             var result = new TenantLocationsSync();
             
             _mapper.Map(warehouse, result);
 
-            result.OpeningHours = TenantLocationServices.GetOpeningTimesByWarehouseId(warehouseId);
+            result.OpeningHours = TenantLocationServices.GetOpeningTimesByWarehouseId(id);
 
             return Ok(result);
         }

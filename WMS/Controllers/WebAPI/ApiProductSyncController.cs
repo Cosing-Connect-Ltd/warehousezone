@@ -22,7 +22,7 @@ namespace WMS.Controllers.WebAPI
             _mapper = mapper;
         }
         // GET: api/HandheldUserSync
-        // call example through URI http://localhost:8005/api/GetProducts?ReqDate=2014-11-23&SerialNo=869619042650264
+        // call example through URI http://localhost:8005/api/sync/products/2014-11-23/WesWiCR4dostoBr7
         public IHttpActionResult GetProducts(DateTime reqDate, string serialNo)
         {
             serialNo = serialNo.Trim().ToLower();

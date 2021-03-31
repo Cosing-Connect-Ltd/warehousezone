@@ -14,9 +14,12 @@ function beginProductLabelPrintCallback(s, e) {
 }
 
 function beginProductAttributeValueAdd(s, e) {
-    var productAttributeId = $("#drpattribute").val(); 
+    var productAttributeId = $("#drpattribute").val();
+    if (productAttributeId == '' || productAttributeId == null) {
+        productAttributeId = $("#AttributeId").val();
+    }
     e.customArgs["id"] = productAttributeId;
-}
+} 
 
 
 function printProductLabel() {

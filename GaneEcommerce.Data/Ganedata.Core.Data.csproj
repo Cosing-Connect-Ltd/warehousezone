@@ -1311,6 +1311,14 @@
     <Compile Include="Migrations\202103251220014_StripeChargeInformationAdded.designer.cs">
       <DependentUpon>202103251220014_StripeChargeInformationAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103301359521_AddedStripeRefundInformation.cs" />
+    <Compile Include="Migrations\202103301359521_AddedStripeRefundInformation.designer.cs">
+      <DependentUpon>202103301359521_AddedStripeRefundInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103311612440_AddedStripeWebhookHandlers.cs" />
+    <Compile Include="Migrations\202103311612440_AddedStripeWebhookHandlers.designer.cs">
+      <DependentUpon>202103311612440_AddedStripeWebhookHandlers.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2615,6 +2623,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103251220014_StripeChargeInformationAdded.resx">
       <DependentUpon>202103251220014_StripeChargeInformationAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103301359521_AddedStripeRefundInformation.resx">
+      <DependentUpon>202103301359521_AddedStripeRefundInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103311612440_AddedStripeWebhookHandlers.resx">
+      <DependentUpon>202103311612440_AddedStripeWebhookHandlers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

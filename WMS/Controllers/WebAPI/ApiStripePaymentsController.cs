@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using Elmah;
 using Ganedata.Core.Services;
+using Newtonsoft.Json;
 using Stripe;
 using Stripe.Checkout;
 
@@ -27,9 +33,45 @@ namespace WMS.Controllers.WebAPI
         [HttpPost]
         public IHttpActionResult Charge(StripePaymentChargeCapture model)
         {
-            //var charge = _stripePaymentService.GetChargeInformation();
             var result = _stripePaymentService.ChargeOrder(model);
             return Ok(result);
         }
+
+        [HttpPost]
+        ///api/stripe/chargehook
+        public async Task<IHttpActionResult> WebhookReceive()
+        {
+            var requestJson = await Request.Content.ReadAsStringAsync();
+
+            try
+            {
+                ErrorSignal.FromCurrentContext().Raise(new Exception(requestJson));
+
+                var stripeEvent = EventUtility.ParseEvent(requestJson);
+                 
+                if (stripeEvent.Type == Events.ChargePending || stripeEvent.Type == Events.ChargeCaptured ||
+                    stripeEvent.Type == Events.ChargeSucceeded || stripeEvent.Type == Events.ChargeRefunded ||
+                    stripeEvent.Type == Events.ChargeFailed)
+                {
+                    var charge = stripeEvent.Data.Object as Charge;
+                    if (charge != null)
+                    {
+
+                        _stripePaymentService.UpdateChargeInformation(stripeEvent.Type, charge.Id);
+                    }
+                    return Ok("Success");
+                }
+                else  
+                {
+                    ErrorSignal.FromCurrentContext().Raise(new Exception("Unhandled Event : "+ stripeEvent.Type + "; Content: " + requestJson));
+                }
+                return Ok("Success - Event not handled");
+            }
+            catch (StripeException e)
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

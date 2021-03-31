@@ -562,9 +562,9 @@ namespace Ganedata.Core.Services
                 ProductId = ord.ProductId,
                 ProductMaster = ord.ProductMaster,
                 OrderDetailID = ord.OrderDetailID,
-                Product = ord.ProductMaster.Name,
+                Product = ord.ProductMaster.Name + ((ord.ProductAttributeValue != null && ord.ProductAttributeValue.Value!=null) ? $"({ord.ProductAttributeValue.Value})" : ""),
                 Qty = ord.Qty,
-                Price = ord.Price,
+                Price = (ord.ProductAttributeValue!=null && ord.ProductAttributeValue.AttributeSpecificPrice.HasValue)? ord.ProductAttributeValue.AttributeSpecificPrice.Value : ord.Price,
                 TotalWarrantyAmount = ord.WarrantyAmount * ord.Qty,
                 WarrantyAmount = ord.WarrantyAmount,
                 TaxName = ord.TaxName,
@@ -572,7 +572,7 @@ namespace Ganedata.Core.Services
                 ExpectedDate = ord.ExpectedDate,
                 TotalAmount = ord.TotalAmount,
                 DateCreated = ord.DateCreated,
-                TransType = _currentDbContext.Order.Find(ord.OrderID).InventoryTransactionTypeId,
+                TransType = ord.Order.InventoryTransactionTypeId,
                 DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && (ord.ProductMaster.ProductLocations != null && ord.ProductMaster.ProductLocations.Count < 1)
             }).ToList();
 
@@ -1368,7 +1368,7 @@ namespace Ganedata.Core.Services
                     TaxID = m.TaxID,
                     TaxAmount = m.TaxAmount,
                     Notes = m.Notes,
-                    ProductAttributeValueId = m.ProductAttributeValueId
+                    ProductAttributeValueId = (m.ProductAttributeValueId>0 ? m.ProductAttributeValueId : (int?)null)
                 }).ToList();
 
                 order = CreateOrder(order, terminal.TenantId, warehouse.WarehouseId, order.CreatedBy, orderDetails);
@@ -1388,7 +1388,7 @@ namespace Ganedata.Core.Services
                     var today = DateTime.Today;
                     var pointsEarnedTodayItems =
                         _currentDbContext.AccountRewardPoints.Where(m =>
-                            DbFunctions.TruncateTime(m.DateCreated) == today && m.PointsEarned>0);
+                            DbFunctions.TruncateTime(m.DateCreated) == today && m.PointsEarned>0 && m.AccountID== order.AccountID);
 
                     var todaysPoints = (pointsEarnedTodayItems!=null && pointsEarnedTodayItems.Count()>0) ? (pointsEarnedTodayItems.Sum(m => m.PointsEarned)): 0;
 
@@ -1419,7 +1419,7 @@ namespace Ganedata.Core.Services
                         item.OrderID = order.OrderID;
                     }
 
-                    _shoppingVoucherService.TriggerRewardsBasedForCurrentVoucher(item.CreatedBy, oldLoyaltyPoint, newLoyaltyPoint, item.OrderID, string.IsNullOrWhiteSpace(item.VoucherCode));
+                    _shoppingVoucherService.TriggerRewardsBasedForCurrentVoucher(item.CreatedBy, oldLoyaltyPoint, newLoyaltyPoint, order.OrderID, string.IsNullOrWhiteSpace(item.VoucherCode));
                 }
                 //Order has to be created and processed immediately
                 // If OrderStatus is AwaitingAuthorisation then dont process the items

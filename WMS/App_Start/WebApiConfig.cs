@@ -52,6 +52,8 @@ namespace WMS
             config.Routes.MapHttpRoute("LocationSync", "api/sync/Locations/{reqDate}/{serialNo}", new { controller = "ApiLocationSync", action = "GetLoctions", serialNo = string.Empty, reqDate = string.Empty });
             config.Routes.MapHttpRoute("LocationStocksSync", "api/sync/locations-stocks/{reqDate}/{serialNo}", new { controller = "ApiLocationSync", action = "GetLoctionsStocks", serialNo = string.Empty, reqDate = string.Empty });
             config.Routes.MapHttpRoute("TenantLocationSync", "api/sync/tenant-locations/{reqDate}/{serialNo}", new { controller = "ApiTenantLocationsSync", action = "GetTenantLoctions", serialNo = string.Empty, reqDate = string.Empty });
+            config.Routes.MapHttpRoute("WarehouseOpeningTimes", "api/lookup/warehouse/{id}", new { controller = "ApiTenantLocationsSync", action = "GetTenantLocation", id = string.Empty });
+
             config.Routes.MapHttpRoute("StockMovementUpdateSync", "api/sync/post-stockmovement-detail", new { controller = "ApiLocationSync", action = "PostStockMovementDetail" });
             config.Routes.MapHttpRoute("PalletsUpdateProductsSync", "api/sync/pallet-products-processes/{serialNo}", new { controller = "ApiPalletsSync", action = "UpdatePalletProducts", serialNo = string.Empty });
             config.Routes.MapHttpRoute("PalletsDispatchesSync", "api/sync/pallet-dispatch/{serialNo}/{palletId}", new { controller = "ApiPalletsSync", action = "DispatchPallet", serialNo = string.Empty, palletId = string.Empty, statusId = string.Empty });
@@ -121,7 +123,7 @@ namespace WMS
             config.Routes.MapHttpRoute("ReceivePaypalWebhook", "api/paypal/hook-authorise", new { controller = "ApiOrderPayments", action = "ReceivePaypalWebhook" });
             config.Routes.MapHttpRoute("StripePaymentsCreate", "api/stripe/post-payment", new { controller = "ApiStripePayments", action = "Create" });
             config.Routes.MapHttpRoute("StripePaymentsCharge", "api/stripe/charge-order", new { controller = "ApiStripePayments", action = "Charge" });
-            config.Routes.MapHttpRoute("WarehouseOpeningTimes", "api/lookup/warehouse/{warehouseId} ", new { controller = "ApiTenantLocationsSync", action = "GetTenantLoction", warehouseId = string.Empty });
+            config.Routes.MapHttpRoute("StripePaymentsWebhook", "api/stripe/chargehook", new { controller = "ApiStripePayments", action = "WebhookReceive" });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
