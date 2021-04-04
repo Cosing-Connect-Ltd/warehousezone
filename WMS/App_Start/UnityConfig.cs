@@ -52,7 +52,6 @@ namespace WMS
             container.RegisterType<IPropertyService, PropertyService>();
             container.RegisterType<IProductServices, ProductServices>();
             container.RegisterType<IProductLookupService, ProductLookupService>();
-            container.RegisterType<ITenantsServices, TenantsServices>();
             container.RegisterType<IEmployeeShiftsServices, EmployeeShiftsServices>();
             container.RegisterType<IEmployeeServices, EmployeeServices>();
             container.RegisterType<ITenantLocationServices, TenantLocationServices>();
@@ -78,7 +77,6 @@ namespace WMS
             container.RegisterType<ICoreOrderService, CoreOrderService>();
             container.RegisterType<IMarketServices, MarketServices>();
             container.RegisterType<IUserService, UserService>();
-            container.RegisterType<IEmailNotificationService, EmailNotificationService>();
             container.RegisterType<IActivityServices, ActivityServices>();
             container.RegisterType<ITenantEmailConfigServices, TenantEmailConfigServices>();
             container.RegisterType<IAdminServices, AdminServices>();
