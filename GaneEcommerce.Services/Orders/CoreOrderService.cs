@@ -684,6 +684,11 @@ namespace Ganedata.Core.Services
             return OrderService.UpdateOrderPaypalPaymentInfo(orderId, nonce, transaction);
         }
 
+        public Order UpdateLoyaltPointsForAccount(int orderId)
+        {
+            return OrderService.UpdateLoyaltPointsForAccount(orderId);
+        }
+
         public List<ProductOrdersDetailViewModel> GetAllOrdersByProductId(InventoryTransactionTypeEnum[] inventoryTransactionType, int productId, DateTime startDate, DateTime endDate, int tenantId, int warehouseId, int[] accountIds, int[] ownerIds, int[] accountSectorIds, int? marketId) {
             return SalesOrderService.GetAllOrdersByProductId(inventoryTransactionType, productId, startDate, endDate, tenantId, warehouseId, accountIds, ownerIds, accountSectorIds, marketId);
         }

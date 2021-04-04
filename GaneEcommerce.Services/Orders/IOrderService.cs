@@ -120,6 +120,6 @@ namespace Ganedata.Core.Services
         bool UpdatePickerId(int OrderId, int? pickerId, int userId);
         bool UpdateOrdersPicker(int[] orderIds, int? pickerId, int userId);
         bool UpdateOrderPaypalPaymentInfo(int orderId, string nonce, Braintree.Transaction transaction);
-
+        Order UpdateLoyaltPointsForAccount(int orderId);
     }
 }

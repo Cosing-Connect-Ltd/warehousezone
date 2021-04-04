@@ -55,15 +55,16 @@ namespace WMS.Controllers.WebAPI
                     .OrderBy(a => a.SortOrder).FirstOrDefault()?.FilePath;
                 mappedProduct.MainImage = filePath == null ? "" : baseUrl + filePath;
                 mappedProduct.ProductAttributeVariations = p.ProductAttributeValuesMap!=null && p.ProductAttributeValuesMap.Any() ?  p.ProductAttributeValuesMap
-                    .Select(m => m.ProductAttributeValues).Select(m => new ProductAttributeSync()
+                    .Select(m => (m, m.ProductAttributeValues))
+                    .Select(s => new ProductAttributeSync()
                     {
-                        AttributeSpecificPrice = m.AttributeSpecificPrice,
-                        ProductAttributeId = m.AttributeId,
-                        ProductAttributeName = m.ProductAttributes.AttributeName,
-                        SortOrder = m.SortOrder,
-                        ProductAttributeValueId = m.AttributeValueId,
-                        ProductAttributeValueName = m.Value,
-                        ProductAttributeType = m.ProductAttributes.AttributeName.Equals("size", StringComparison.CurrentCultureIgnoreCase) 
+                        AttributeSpecificPrice = s.m.AttributeSpecificPrice,
+                        ProductAttributeId = s.ProductAttributeValues.AttributeId,
+                        ProductAttributeName = s.ProductAttributeValues.ProductAttributes.AttributeName,
+                        SortOrder = s.ProductAttributeValues.SortOrder,
+                        ProductAttributeValueId = s.ProductAttributeValues.AttributeValueId,
+                        ProductAttributeValueName = s.ProductAttributeValues.Value,
+                        ProductAttributeType = s.ProductAttributeValues.ProductAttributes.AttributeName.Equals("size", StringComparison.CurrentCultureIgnoreCase) 
                             ? LoyaltyProductAttributeTypeEnumSync.Size: LoyaltyProductAttributeTypeEnumSync.Scoop
                     }).ToList(): null;
                 products.Add(mappedProduct);

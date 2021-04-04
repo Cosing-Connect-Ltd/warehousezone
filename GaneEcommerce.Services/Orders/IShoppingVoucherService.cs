@@ -30,11 +30,13 @@ namespace Ganedata.Core.Services
         RewardPointTrigger SaveRewardTrigger(RewardPointTrigger trigger, int userId);
 
         List<RewardPointTrigger> GetAllValidRewardTriggers(int tenantId, DateTime? onlyUpdatedAfter = null, bool includeDeleted = false);
+        void WithdrawLoyaltyPointsOnRefund(int orderId, int refundUserId);
     }
 
     public class ShoppingVoucherService : IShoppingVoucherService
     {
         private readonly IApplicationContext _currentDbContext;
+        private readonly IOrderService _orderService;
 
         private static int ReferralFreeRewardProductId = (WebConfigurationManager.AppSettings["ReferralFreeRewardProductId"] ?? "309").AsInt();
         private static int LoyaltyPoint400RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint400RewardProductId"] ?? "309").AsInt();
@@ -50,9 +52,10 @@ namespace Ganedata.Core.Services
         public static int FirstOrderHomeDeliveryDiscountPercent = (WebConfigurationManager.AppSettings["LoyaltyPoint1200RewardProductId"] ?? "25").AsInt();
         public static string FirstOrderHomeDeliveryDiscountVoucher= "FIRSTHOMEDELORDER";
          
-        public ShoppingVoucherService(IApplicationContext currentDbContext)
+        public ShoppingVoucherService(IApplicationContext currentDbContext, IOrderService orderService)
         {
             _currentDbContext = currentDbContext;
+            _orderService = orderService;
         }
 
         public ShoppingVoucherValidationResponseModel MapVoucherToModel(ShoppingVoucher voucher)
@@ -493,5 +496,41 @@ namespace Ganedata.Core.Services
                 && (m.VoucherUser.UserMobileNumber!=null && m.VoucherUser.UserMobileNumber.EndsWith(phone.Trim()) )).OrderByDescending(m=> m.DateCreated).Select(MapVoucherToModel).ToList();
             return vouchers;
         }
+
+        public void WithdrawLoyaltyPointsOnRefund(int orderId, int refundUserId)
+        {
+            var order = _orderService.GetOrderById(orderId);
+            var accountPoint = _currentDbContext.AccountRewardPoints.FirstOrDefault(m => m.OrderID == orderId && m.PointsEarned > 0);
+            if (order != null && accountPoint != null)
+            {
+                var point = new AccountRewardPoint()
+                {
+                    OrderID = orderId,
+                    AccountID = order.AccountID,
+                    PointsEarned = -accountPoint.PointsEarned,
+                    TenantId = order.TenentId,
+                    CreatedBy = refundUserId,
+                    DateCreated = DateTime.Now,
+                    OrderTotal = -accountPoint.OrderTotal,
+                    UserID = refundUserId,
+                    OrderDateTime = accountPoint.OrderDateTime
+                };
+                _currentDbContext.AccountRewardPoints.Add(point);
+                if (accountPoint.RewardProductId > 0)
+                {
+                    var voucher =
+                        _currentDbContext.ShoppingVouchers.FirstOrDefault(m => m.VoucherUserId == accountPoint.UserID && m.RewardProductId == accountPoint.RewardProductId && !m.VoucherUsedDate.HasValue);
+                    if (voucher != null)
+                    {
+                        voucher.VoucherUsedDate = DateTime.Now;
+                        voucher.DateUpdated = DateTime.Now;
+                    }
+
+                    _currentDbContext.Entry(voucher).State = EntityState.Modified;
+                }
+                _currentDbContext.SaveChanges();
+            }
+        }
+
     }
 }

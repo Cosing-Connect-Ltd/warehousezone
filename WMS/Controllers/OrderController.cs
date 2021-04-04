@@ -33,7 +33,7 @@ namespace WMS.Controllers
         [Authorize]
         public ActionResult ProcessRefundForOrder(StripeRefundOrderPaymentRequest model)
         {
-            var response = _stripePaymentService.ProcessRefundByOrderId(model.OrderID, CurrentUser.PersonalCode);
+            var response = _stripePaymentService.ProcessRefundByOrderId(model.OrderID, CurrentUser.PersonalCode, CurrentUserId);
             if (response.Success)
             {
                 TempData["SuccessMessage"] = "Refund Processed successfully";

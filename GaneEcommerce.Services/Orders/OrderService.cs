@@ -564,7 +564,8 @@ namespace Ganedata.Core.Services
                 OrderDetailID = ord.OrderDetailID,
                 Product = ord.ProductMaster.Name + ((ord.ProductAttributeValue != null && ord.ProductAttributeValue.Value!=null) ? $"({ord.ProductAttributeValue.Value})" : ""),
                 Qty = ord.Qty,
-                Price = (ord.ProductAttributeValue!=null && ord.ProductAttributeValue.AttributeSpecificPrice.HasValue)? ord.ProductAttributeValue.AttributeSpecificPrice.Value : ord.Price,
+                Price = (ord.ProductAttributeValue!=null && ord.ProductAttributeValueId>0) 
+                    ? (GetProductValueMapByAttribute(ord.ProductId, ord.ProductAttributeValueId.Value).AttributeSpecificPrice??0) : ord.Price,
                 TotalWarrantyAmount = ord.WarrantyAmount * ord.Qty,
                 WarrantyAmount = ord.WarrantyAmount,
                 TaxName = ord.TaxName,
@@ -577,6 +578,11 @@ namespace Ganedata.Core.Services
             }).ToList();
 
             return results;
+        }
+
+        private ProductAttributeValuesMap GetProductValueMapByAttribute(int productId, int attributeValueId)
+        {
+            return _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(m => m.ProductId == productId && m.AttributeValueId == attributeValueId && m.IsDeleted != true);
         }
 
         public List<OrderDetailsViewModel> GetPalletOrdersDetails(int id, int tenantId, bool excludeProcessed = false)
@@ -1372,55 +1378,11 @@ namespace Ganedata.Core.Services
                 }).ToList();
 
                 order = CreateOrder(order, terminal.TenantId, warehouse.WarehouseId, order.CreatedBy, orderDetails);
-
-                if (order.OrderID > 0 && order.OrderTotal > 0)
+                if (item.AccountTransactionInfo.AccountPaymentModeId != AccountPaymentModeEnum.Card)
                 {
-                    var account = _currentDbContext.Account.AsNoTracking().FirstOrDefault(m=> m.AccountID == order.AccountID);
-
-                    var oldLoyaltyPoint = account.AccountLoyaltyPoints;
-
-                    var rewardPointsEarned = (int) Math.Round(order.OrderCost??0, 1) * 20;
-                    if (rewardPointsEarned > 400)
-                    {
-                        rewardPointsEarned = 400;
-                    }
-
-                    var today = DateTime.Today;
-                    var pointsEarnedTodayItems =
-                        _currentDbContext.AccountRewardPoints.Where(m =>
-                            DbFunctions.TruncateTime(m.DateCreated) == today && m.PointsEarned>0 && m.AccountID== order.AccountID);
-
-                    var todaysPoints = (pointsEarnedTodayItems!=null && pointsEarnedTodayItems.Count()>0) ? (pointsEarnedTodayItems.Sum(m => m.PointsEarned)): 0;
-
-                    if (rewardPointsEarned > (400 - todaysPoints))
-                    {
-                        rewardPointsEarned = (400 - todaysPoints);
-                    }
-
-                    var reward = new AccountRewardPoint()
-                    {
-                        TenantId = terminal.TenantId,
-                        DateCreated = DateTime.Now,
-                        OrderTotal = order.OrderTotal,
-                        AccountID = order.AccountID,
-                        OrderID = order.OrderID,
-                        CreatedBy = order.CreatedBy,
-                        OrderDateTime = order.DateCreated,
-                        PointsEarned = rewardPointsEarned, //Todo: RH To be removed after testing
-                        UserID = item.CreatedBy
-                    };
-                    _currentDbContext.AccountRewardPoints.Add(reward);
-
-                    var newLoyaltyPoint = account.AccountLoyaltyPoints + reward.PointsEarned;
-                    _currentDbContext.SaveChanges();
-
-                    if (item.OrderID < 1)
-                    {
-                        item.OrderID = order.OrderID;
-                    }
-
-                    _shoppingVoucherService.TriggerRewardsBasedForCurrentVoucher(item.CreatedBy, oldLoyaltyPoint, newLoyaltyPoint, order.OrderID, string.IsNullOrWhiteSpace(item.VoucherCode));
+                    UpdateLoyaltPointsForAccount(order.OrderID);
                 }
+
                 //Order has to be created and processed immediately
                 // If OrderStatus is AwaitingAuthorisation then dont process the items
                 if (item?.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation)
@@ -1866,6 +1828,57 @@ namespace Ganedata.Core.Services
             }
 
             return new OrdersSync() { RequestSuccess = true, RequestStatus = "Order processed successfully" };
+        }
+
+        public Order UpdateLoyaltPointsForAccount(int orderId)
+        {
+            var order = GetOrderById(orderId);
+
+            if (order.OrderID > 0 && order.OrderTotal > 0)
+            {
+                var account = _currentDbContext.Account.AsNoTracking().FirstOrDefault(m => m.AccountID == order.AccountID);
+
+                var oldLoyaltyPoint = account.AccountLoyaltyPoints;
+
+                var rewardPointsEarned = (int)Math.Round(order.OrderCost ?? 0, 1) * 20;
+                if (rewardPointsEarned > 400)
+                {
+                    rewardPointsEarned = 400;
+                }
+
+                var today = DateTime.Today;
+                var pointsEarnedTodayItems =
+                    _currentDbContext.AccountRewardPoints.Where(m =>
+                        DbFunctions.TruncateTime(m.DateCreated) == today && m.PointsEarned > 0 && m.AccountID == order.AccountID);
+
+                var todaysPoints = (pointsEarnedTodayItems != null && pointsEarnedTodayItems.Count() > 0) ? (pointsEarnedTodayItems.Sum(m => m.PointsEarned)) : 0;
+
+                if (rewardPointsEarned > (400 - todaysPoints))
+                {
+                    rewardPointsEarned = (400 - todaysPoints);
+                }
+
+                var reward = new AccountRewardPoint()
+                {
+                    TenantId = order.TenentId,
+                    DateCreated = DateTime.Now,
+                    OrderTotal = order.OrderTotal,
+                    AccountID = order.AccountID,
+                    OrderID = order.OrderID,
+                    CreatedBy = order.CreatedBy,
+                    OrderDateTime = order.DateCreated,
+                    PointsEarned = rewardPointsEarned, //Todo: RH To be removed after testing
+                    UserID = order.CreatedBy
+                };
+                _currentDbContext.AccountRewardPoints.Add(reward);
+
+                var newLoyaltyPoint = account.AccountLoyaltyPoints + reward.PointsEarned;
+                _currentDbContext.SaveChanges();
+
+                _shoppingVoucherService.TriggerRewardsBasedForCurrentVoucher(order.CreatedBy, oldLoyaltyPoint, newLoyaltyPoint, order.OrderID, string.IsNullOrWhiteSpace(order.VoucherCode));
+            }
+
+            return order;
         }
 
         private void UpdateVansalesProgressInfo(OrderProcessesSync item, Terminals terminal, Order order)
