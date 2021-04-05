@@ -1319,6 +1319,10 @@
     <Compile Include="Migrations\202103311612440_AddedStripeWebhookHandlers.designer.cs">
       <DependentUpon>202103311612440_AddedStripeWebhookHandlers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104041130344_MovedProductAttributeValueChanges.cs" />
+    <Compile Include="Migrations\202104041130344_MovedProductAttributeValueChanges.designer.cs">
+      <DependentUpon>202104041130344_MovedProductAttributeValueChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2629,6 +2633,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103311612440_AddedStripeWebhookHandlers.resx">
       <DependentUpon>202103311612440_AddedStripeWebhookHandlers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104041130344_MovedProductAttributeValueChanges.resx">
+      <DependentUpon>202104041130344_MovedProductAttributeValueChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

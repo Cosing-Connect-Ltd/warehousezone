@@ -19,7 +19,7 @@ namespace Ganedata.Core.Services
     {
         StripePaymentAuthorisationResponse CreatePayment(StripePaymentRequestModel request);
         StripePaymentAuthorisationResponse ChargeOrder(StripePaymentChargeCapture model);
-        StripePaymentRefundResponse ProcessRefundByOrderId(int orderId, string customerToken);
+        StripePaymentRefundResponse ProcessRefundByOrderId(int orderId, string customerToken, int userId);
         object GetChargeInformation();
         StripePaymentRefundResponse ProcessWebhook(StripeWebhookRequest model);
 
@@ -33,14 +33,16 @@ namespace Ganedata.Core.Services
         private readonly IAccountServices _accountServices;
         private readonly IOrderService _orderService;
         private readonly IApplicationContext _currentDbContext;
+        private readonly IShoppingVoucherService _shoppingVoucherService;
 
         public StripePaymentService(IUserService userService, IAccountServices accountServices,
-            IOrderService orderService, IApplicationContext currentDbContext)
+            IOrderService orderService, IApplicationContext currentDbContext, IShoppingVoucherService shoppingVoucherService)
         {
             _userService = userService;
             _accountServices = accountServices;
             _orderService = orderService;
             _currentDbContext = currentDbContext;
+            _shoppingVoucherService = shoppingVoucherService;
         }
 
         public static bool StripeIsLive => (WebConfigurationManager.AppSettings["StripeIsLive"]??"").ToLower()=="true";
@@ -156,6 +158,8 @@ namespace Ganedata.Core.Services
                             }
                         }
 
+                        _orderService.UpdateLoyaltPointsForAccount(request.OrderId);
+
                         return new StripePaymentAuthorisationResponse
                         {
                             AuthorisationCode = response.Id,
@@ -220,7 +224,7 @@ namespace Ganedata.Core.Services
         }
 
 
-        public StripePaymentRefundResponse ProcessRefundByOrderId(int orderId, string customerToken)
+        public StripePaymentRefundResponse ProcessRefundByOrderId(int orderId, string customerToken, int userId)
         {
             var user = _currentDbContext.AuthUsers.FirstOrDefault(m => m.PersonalReferralCode.Equals(customerToken) && m.IsActive);
 
@@ -261,7 +265,9 @@ namespace Ganedata.Core.Services
 
                     _currentDbContext.Entry(order).State = EntityState.Modified;
                     _currentDbContext.SaveChanges();
-                     
+
+                    _shoppingVoucherService.WithdrawLoyaltyPointsOnRefund(order.OrderID, userId);
+
                     return new StripePaymentRefundResponse { Success = true, OrderId = orderId, OrderNumber = order.OrderNumber, RefundAuthorisationCode = order.StripeChargeInformation.RefundId };
                 }
                 else

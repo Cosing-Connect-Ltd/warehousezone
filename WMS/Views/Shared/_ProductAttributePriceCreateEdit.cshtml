@@ -1,0 +1,66 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductAttributeValuesMap
+<hgroup>
+    <h2><span>@(Model == null || Model.ProductAttributeValues.AttributeId == 0 ? "Assign New " : "Edit ") Attribute Value</span></h2>
+    <h3><span>@Html.ValidationSummary("", new { @id = "vldAttributeValue" })</span></h3>
+</hgroup>
+@using (Html.BeginForm("SaveProductAttributeValueMap", "Products", FormMethod.Post, new { @id = "frmProductAttribute" }))
+{
+
+    <div class="col-md-12 pull-left">
+        @if (Model == null || Model.ProductAttributeValues.AttributeId == 0)
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Product Attribute</label>
+                <div class="col-md-8">
+                    <div class="col-11 p-0 mt-1 pull-left">
+                        @Html.DropDownListFor(m => m.ProductAttributeValues.AttributeId, new SelectList(ViewBag.Attributes, "AttributeId", "AttributeName"), new { id = "drpattribute", @class = "chosen-select", onchange = "AttributeChange()" })
+                    </div>
+                    <div class="col-1 p-0 pull-left">
+                        <input type="button" onclick="javascript: pcModalAttributes.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.ProductAttributeValues.AttributeId)
+            @Html.Hidden("productAttributeValueMapId", (ViewBag.ProductAttributeValuesMapId as int?) ?? 0)
+        }
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-4">Attribute Value<span style="color:red"> *</span></label>
+            <div class="col-md-8">
+                <div class="col-11 p-0 mt-1 pull-left">
+
+                    @Html.DropDownListFor(m => m.AttributeValueId, new SelectList(ViewBag.AttributeValues, "AttributeValueId", "Value"), new { @class = "chosen-select drpAttrValue" })
+                    @Html.ValidationMessageFor(model => model.AttributeValueId)
+                </div>
+                <div class="col-1 p-0 pull-left">
+                    <input type="button" onclick="javascript: pcModalAttributeValues.Show();" id="ProdAttributeValueAdd" class="btn btn-primary" value="+">
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-4">Attribute Specific Price<span style="color:red"> *</span></label>
+            <div class="col-md-8">
+                <div class="col-11 p-0 mt-1 pull-left">
+                    @Html.DevExpress().SpinEdit(m =>
+                    {
+                        m.Name = "spnAttributeSpecificPrice";
+                        m.Properties.DecimalPlaces = 2;
+                        m.ControlStyle.CssClass = "form-control";
+                    }).GetHtml()
+                    @*@Html.TextBox("AttributeSpecificPrice", "", new { @class = "form-control" })*@
+                    @Html.ValidationMessageFor(model => model.AttributeValueId)
+                </div>
+                <div class="col-1 p-0 pull-left">
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+        <input type="button" onclick="PostProductAttributeValue()" value="Save" class="btn btn-primary" />
+        <input type="button" onclick="CancelPostProductAttributeValue()" value="Cancel" class="btn btn-default" />
+    </div>
+}

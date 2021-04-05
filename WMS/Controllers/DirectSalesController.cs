@@ -175,7 +175,7 @@ namespace WMS.Controllers
 
         public ActionResult DirectSalesRefund(int id)
         {
-            var refundResponse = _paymentService.ProcessRefundByOrderId(id, CurrentUser.PersonalCode);
+            var refundResponse = _paymentService.ProcessRefundByOrderId(id, CurrentUser.PersonalCode, CurrentUserId);
             var order = OrderService.GetOrderById(id);
 
             if (!refundResponse.Success)

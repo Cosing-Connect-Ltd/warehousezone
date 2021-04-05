@@ -25,6 +25,7 @@ namespace Ganedata.Core.Entities.Domain
         public bool? IsDeleted { get; set; }
         [Display(Name = "Client")]
         public int TenantId { get; set; }
+        public decimal? AttributeSpecificPrice { get; set; }
         public virtual ProductMaster ProductMaster { get; set; }
         public virtual ProductAttributeValues ProductAttributeValues { get; set; }
     }

@@ -9,6 +9,7 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
+using Ganedata.Core.Models.AdyenPayments;
 using Microsoft.Ajax.Utilities;
 
 namespace Ganedata.Core.Services
@@ -437,6 +438,36 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.ProductAttributes.Find(productAttributeId);
         }
+
+        public ProductAttributeValuesMap SaveProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId, int tenantId)
+        {
+            var map = new ProductAttributeValuesMap()
+            {
+                AttributeSpecificPrice = model.AttributeSpecificPrice,
+                TenantId = tenantId,
+                ProductId = model.ProductId,
+                AttributeValueId = model.AttributeValueId,
+                CreatedBy = userId,
+                DateCreated = DateTime.Now
+            };
+            _currentDbContext.ProductAttributeValuesMap.Add(map);
+            _currentDbContext.SaveChanges();
+            return map;
+        }
+        public bool DeleteProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId)
+        {
+            var map = _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(m => m.Id == model.AttributeMapId);
+            if (map == null) return false;
+
+            map.IsDeleted = true;
+            map.DateUpdated = DateTime.Now;
+            map.UpdatedBy = userId;
+
+            _currentDbContext.Entry(map).State = EntityState.Modified;
+            _currentDbContext.SaveChanges();
+            return true;
+        }
+
         public ProductAttributeValuesMap GetProductAttributeValueMap(int productId, int attributeValueId)
         {
             return _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(a => a.ProductId == productId && a.AttributeValueId == attributeValueId);
