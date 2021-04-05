@@ -15,6 +15,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Ganedata.Core.Models.AdyenPayments;
 using WMS.CustomBindings;
 
 namespace WMS.Controllers
@@ -134,6 +135,7 @@ namespace WMS.Controllers
 
             ProductMaster productMaster = _productServices.GetProductMasterById(id.Value);
 
+
             if (productMaster == null) throw new Exception("Product cannot be found.");
 
             var weightUoms = _lookupServices.GetAllValidGlobalUoms(EnumUomType.Weight);
@@ -224,8 +226,25 @@ namespace WMS.Controllers
             }
 
             ViewBag.IsDeliverectIntegrated = _tenantsServices.GetTenantConfigById(CurrentTenantId)?.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect;
-
+            LoadProductAttributesToView(productMaster);
             return productMaster;
+        }
+
+   
+        private void LoadProductAttributesToView(ProductMaster product)
+        {
+            ViewBag.ProductAttributeLinks =
+                product.ProductAttributeValuesMap.Where(m=> m.IsDeleted!=true).Select(m => new ProductAttributeValuesMapModel()
+                {
+                    AttributeName = m.ProductAttributeValues.ProductAttributes.AttributeName,
+                    AttributeValueName = m.ProductAttributeValues.Value,
+                    AttributeSpecificPrice = m.AttributeSpecificPrice,
+                    AttributeId = m.ProductAttributeValues.AttributeId,
+                    AttributeMapId = m.Id,
+                    ProductId = m.ProductId,
+                    AttributeValueId = m.AttributeValueId 
+                });
+
         }
 
         private void FillViewBagForProductTags()
@@ -515,6 +534,35 @@ namespace WMS.Controllers
                 ViewBag.ProductAttributeValuesMapId = Id;
                 return PartialView(productAttributeValuesMap.ProductAttributeValues);
             }
+        }
+
+        public ActionResult _ProductAttributePriceCreateEdit(int? id, int productId)
+        {
+            ViewBag.Attributes = _productLookupService.GetAllValidProductAttributes();
+            ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues();
+            ViewBag.ProductAttributeValuesMapId = id;
+
+            if (id.HasValue)
+            {
+                var productAttributeValuesMap = _productLookupService.GetProductAttributeValuesMapById(id.Value);
+                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => a.AttributeId == productAttributeValuesMap.ProductAttributeValues.AttributeId);
+                return PartialView(productAttributeValuesMap);
+            }
+
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult SaveProductAttributePrice(ProductAttributeValuesMapModel model)
+        {
+            var map = _productLookupService.SaveProductAttributeValuesMap(model, CurrentUserId, CurrentTenantId);
+            return Json(map);
+        }
+        [HttpPost]
+        public ActionResult DeleteProductAttributePrice(ProductAttributeValuesMapModel model)
+        {
+            var result = _productLookupService.DeleteProductAttributeValuesMap(model, CurrentUserId);
+            return Json(result);
         }
 
         public ActionResult _AttributeCreate()
@@ -1602,6 +1650,15 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View(Id);
         }
+
+        public ActionResult _ProductAttributesSelection(int id)
+        {
+            ViewBag.routeValues = new { Controller = "Products", Action = "_ProductAttributesSelection", id };
+            var product = _productServices.GetProductMasterById(id);
+            LoadProductAttributesToView(product);
+            return PartialView("_ProductAttributesSelection", product);
+        }
+
         public ActionResult DeleteAttributeValue(int? Id)
         {
             return View(_productLookupService.GetProductAttributeValuesMapById(Id.Value).ProductAttributeValues);

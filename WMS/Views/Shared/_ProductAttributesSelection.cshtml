@@ -3,7 +3,7 @@
     @{
         var grid = Html.DevExpress().GridView(settings =>
         {
-            settings.Name = ViewBag.settingsName;
+            settings.Name = "ProductAttributeSelection";
             settings.CallbackRouteValues = ViewBag.routeValues;
             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
             settings.Settings.ShowHeaderFilterButton = true;
@@ -12,7 +12,7 @@
 
             settings.Settings.ShowFilterBar = GridViewStatusBarMode.Hidden;
             settings.SettingsPager.PageSize = 10;
-            settings.KeyFieldName = "LocationId";
+            settings.KeyFieldName = "ProductId";
             settings.SettingsPager.Visible = false;
             settings.Settings.ShowGroupPanel = false;
             settings.Settings.ShowFilterRow = false;
@@ -27,19 +27,26 @@
             settings.Columns.Add(c =>
             {
                 c.Caption = "Type";
-                c.FieldName = "ProductAttributeValuesMap.ProductAttributeValues.ProductAttributes.AttributeName";
+                c.FieldName = "AttributeName";
             });
             settings.Columns.Add(c =>
             {
                 c.Caption = "Name";
-                c.FieldName = "ProductAttributeValuesMap.ProductAttributeValues.Value";
+                c.FieldName = "AttributeValueName";
             });
             settings.Columns.Add(c =>
             {
-                c.FieldName = "ProductAttributeValuesMap.AttributeSpecificPrice";
+                c.FieldName = "AttributeSpecificPrice";
                 c.Caption = "Price";
                 c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
             });
+
+            settings.Columns.Add().SetDataItemTemplateContent(m =>
+            {
+                var mapId = DataBinder.Eval(m.DataItem, "AttributeMapId").ToString();
+                ViewContext.Writer.Write("<div style='cursor:pointer' data-mapId='" + mapId + "' onclick='javascript:DeleteProductAttributeMap(this);'><i class='fa fa-trash'></i></div>");
+            });
+
              
             settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
             settings.SettingsPager.PageSizeItemSettings.Visible = false;
@@ -62,4 +69,4 @@
 
         });
 }
-@grid.Bind(Model.ProductAttributeValuesMap).GetHtml()
+@grid.Bind(ViewBag.ProductAttributeLinks).GetHtml()

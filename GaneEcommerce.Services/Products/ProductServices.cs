@@ -116,7 +116,7 @@ namespace Ganedata.Core.Services
 
         public ProductMaster GetProductMasterById(int productId)
         {
-            var product = _currentDbContext.ProductMaster.FirstOrDefault(a => a.ProductId == productId && a.IsDeleted != true);
+            var product = _currentDbContext.ProductMaster.Include(m=> m.ProductAttributeValuesMap).FirstOrDefault(a => a.ProductId == productId && a.IsDeleted != true);
             if (product != null)
             {
                 product.ProductKitMap = _currentDbContext.ProductKitMaps.Where(m => m.ProductId == productId && m.IsDeleted != true).ToList();

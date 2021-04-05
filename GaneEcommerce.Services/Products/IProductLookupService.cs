@@ -3,6 +3,7 @@ using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ganedata.Core.Models.AdyenPayments;
 
 namespace Ganedata.Core.Services
 {
@@ -88,5 +89,7 @@ namespace Ganedata.Core.Services
 
         Dictionary<string, List<string>> ReadFiltersString(string filterString);
         ProductAttributes GetProductAttributeById(int productAttributeId);
+        ProductAttributeValuesMap SaveProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId, int tenantId);
+        bool DeleteProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId);
     }
 }

@@ -421,6 +421,7 @@ function showlocationpopup() {
 }
 
 function attributeValueSave() {
+    debugger;
     $("#vldAttributeValue").removeClass("validation-summary-errors");
     $("#vldAttributeValue").addClass("validation-summary-valid");
 
@@ -437,6 +438,14 @@ function attributeValueSave() {
     }
 }
 
+function ProductAttributeValueSave() {
+    $("#vldAttributeValue").removeClass("validation-summary-errors");
+    $("#vldAttributeValue").addClass("validation-summary-valid");
+
+    if (IsValidForm('#frmProductAttribute')) {
+        
+    }
+}
 function attributeSave() {
     $("#vldAttribute").removeClass("validation-summary-errors");
     $("#vldAttribute").addClass("validation-summary-valid");
@@ -476,8 +485,47 @@ function attributeSave() {
     }
 }
 
+function pcModalProductAttributesValues_BeginCallBack(s, e) {
+    var productId = $("#ProductId").val();
+    e.customArgs["productId"] = productId;
+}
+
 function pcModalAttributesValues_EndCallback(s, e) {
     GetAttributeValuesById($("#drpattribute option:selected").val());
+}
+
+function PostProductAttributeValue() {
+    var productId = $("#ProductId").val();
+    var model = {
+        ProductId: productId,
+        AttributeId: $("#drpattribute").val(),
+        AttributeValueId: $("#AttributeValueId").val(),
+        AttributeSpecificPrice: spnAttributeSpecificPrice.GetValue()
+    };
+    $.post("/Products/SaveProductAttributePrice", model, function (result) {
+        ProductAttributeSelection.PerformCallback();
+        pcModalProductAttributesValues.Hide();
+    });
+}
+function DeleteProductAttributeMap(btn) {
+    var productId = $("#ProductId").val();
+    var mapId = $(btn).data("mapid");
+    var model =
+    {
+        ProductId: productId,
+        AttributeMapId: mapId
+    };
+    if (confirm('Are you sure you want to delete this Attribute config?')) {
+        $.post("/Products/DeleteProductAttributePrice", model).done(function() {
+            ProductAttributeSelection.PerformCallback();
+        });
+    }
+};
+
+
+function CancelPostProductAttributeValue() {
+    spnAttributeSpecificPrice.Clear();
+    pcModalProductAttributesValues.Hide();
 }
 
 function GetAttributeValuesById(attributeId) {

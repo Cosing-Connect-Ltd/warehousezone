@@ -52,10 +52,9 @@ namespace Ganedata.Core.Services
         public static int FirstOrderHomeDeliveryDiscountPercent = (WebConfigurationManager.AppSettings["LoyaltyPoint1200RewardProductId"] ?? "25").AsInt();
         public static string FirstOrderHomeDeliveryDiscountVoucher= "FIRSTHOMEDELORDER";
          
-        public ShoppingVoucherService(IApplicationContext currentDbContext, IOrderService orderService)
+        public ShoppingVoucherService(IApplicationContext currentDbContext)
         {
             _currentDbContext = currentDbContext;
-            _orderService = orderService;
         }
 
         public ShoppingVoucherValidationResponseModel MapVoucherToModel(ShoppingVoucher voucher)
