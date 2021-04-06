@@ -164,36 +164,79 @@ namespace Ganedata.Core.Services
         {
             if(!_currentDbContext.TenantWarehouses.Any(m=> m.WarehouseId==warehouseId && m.IsActive)) return new WarehouseOpeningTimeViewModel();
 
-            var result = new WarehouseOpeningTimeViewModel()
+            //Newcastle 16, Middlesbrough 15, Chester 9
+            var set1 = new WarehouseOpeningTimeViewModel()
             {
                 WarehouseId = warehouseId,
-                SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
-                MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
-                TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
-                WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
-                ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
-                FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
-                SaturdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 59 },
+                MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                SaturdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() {  OpeningTimeHour  = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 12, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 }
+            };
+            if (new List<int>() {9, 15, 16}.Contains(warehouseId))
+            {
+                return set1;
+            }
+
+            //Leeds 12, Manchester 4, Huddersfield 11, Batley 6, Leeds Road 8, Great Horton road 7
+            var set2 = new WarehouseOpeningTimeViewModel()
+            {
+                WarehouseId = warehouseId,
+                MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 13, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 13, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 13, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 13, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 13, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                SaturdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 13, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 13, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 }
+            };
+            if (new List<int>() { 12, 4, 11, 6, 8, 7 }.Contains(warehouseId))
+            {
+                return set2;
+            }
+
+            //Liverpool 13
+            var set3 = new WarehouseOpeningTimeViewModel()
+            {
+                WarehouseId = warehouseId,
+                MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 14, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 14, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 14, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 14, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 14, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                SaturdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 14, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 },
+                SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 14, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 }
             };
 
-            if (warehouseId == 11 && (DateTime.Now.DayOfWeek == DayOfWeek.Monday || DateTime.Now.DayOfWeek == DayOfWeek.Tuesday))
-            {
-                result.MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()  { IsClosed = true};
-                result.TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
-            } 
-            if (warehouseId == 14 && (DateTime.Now.DayOfWeek == DayOfWeek.Wednesday || DateTime.Now.DayOfWeek == DayOfWeek.Thursday))
-            {
-                result.WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()  { IsClosed = true };
-                result.ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
-            }
-            if (warehouseId == 13 && (DateTime.Now.DayOfWeek == DayOfWeek.Friday || DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday))
-            {
-                result.FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
-                result.SaturdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
-                result.SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
-            }
+            //if (warehouseId == 11 && (DateTime.Now.DayOfWeek == DayOfWeek.Monday || DateTime.Now.DayOfWeek == DayOfWeek.Tuesday))
+            //{
+            //    result.MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()  { IsClosed = true};
+            //    result.TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
+            //}  
 
-            return result;
+            //if (warehouseId == 14 && (DateTime.Now.DayOfWeek == DayOfWeek.Wednesday || DateTime.Now.DayOfWeek == DayOfWeek.Thursday))
+            //{
+            //    result.WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()  { IsClosed = true };
+            //    result.ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
+            //}
+            //if (warehouseId == 13 && (DateTime.Now.DayOfWeek == DayOfWeek.Friday || DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday))
+            //{
+            //    result.FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
+            //    result.SaturdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
+            //    result.SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { IsClosed = true };
+            //}
+
+            if (warehouseId == 13 && (DateTime.Now.DayOfWeek == DayOfWeek.Tuesday || DateTime.Now.DayOfWeek == DayOfWeek.Wednesday))
+            {
+                set3.TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()
+                    { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
+                set3.WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()
+                    { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
+            }
+            return set3;
         }
     }
 }

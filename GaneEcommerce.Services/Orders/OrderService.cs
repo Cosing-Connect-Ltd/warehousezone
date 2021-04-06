@@ -1378,7 +1378,12 @@ namespace Ganedata.Core.Services
                 }).ToList();
 
                 order = CreateOrder(order, terminal.TenantId, warehouse.WarehouseId, order.CreatedBy, orderDetails);
-                if (item.AccountTransactionInfo.AccountPaymentModeId != AccountPaymentModeEnum.Card)
+                if (item.AccountTransactionInfo == null)
+                {
+                    UpdateLoyaltPointsForAccount(order.OrderID);
+                }
+
+                if (item.AccountTransactionInfo!=null && item.AccountTransactionInfo.AccountPaymentModeId != AccountPaymentModeEnum.Card)
                 {
                     UpdateLoyaltPointsForAccount(order.OrderID);
                 }

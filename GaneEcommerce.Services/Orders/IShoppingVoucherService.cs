@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Configuration;
+using System.Web.Mvc;
 using System.Web.WebPages;
 using DevExpress.Data.WcfLinq.Helpers;
 using Ganedata.Core.Data;
@@ -36,7 +37,6 @@ namespace Ganedata.Core.Services
     public class ShoppingVoucherService : IShoppingVoucherService
     {
         private readonly IApplicationContext _currentDbContext;
-        private readonly IOrderService _orderService;
 
         private static int ReferralFreeRewardProductId = (WebConfigurationManager.AppSettings["ReferralFreeRewardProductId"] ?? "309").AsInt();
         private static int LoyaltyPoint400RewardProductId = (WebConfigurationManager.AppSettings["LoyaltyPoint400RewardProductId"] ?? "309").AsInt();
@@ -498,7 +498,7 @@ namespace Ganedata.Core.Services
 
         public void WithdrawLoyaltyPointsOnRefund(int orderId, int refundUserId)
         {
-            var order = _orderService.GetOrderById(orderId);
+            var order = _currentDbContext.Order.Find(orderId);
             var accountPoint = _currentDbContext.AccountRewardPoints.FirstOrDefault(m => m.OrderID == orderId && m.PointsEarned > 0);
             if (order != null && accountPoint != null)
             {

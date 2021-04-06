@@ -272,6 +272,12 @@ namespace Ganedata.Core.Services
                 }
                 else
                 {
+                    if (order.StripeChargeInformation != null)
+                    {
+                        order.StripeChargeInformation.RefundId = "FAIL - " + refundResponse.Status+"-"+ refundResponse.FailureReason;
+                        _currentDbContext.Entry(order).State = EntityState.Modified;
+                        _currentDbContext.SaveChanges();
+                    }
                     return new StripePaymentRefundResponse { Success = false, OrderNumber = order.OrderNumber, ErrorMessages = new List<string> { refundResponse.FailureReason}  };
                 }
 
