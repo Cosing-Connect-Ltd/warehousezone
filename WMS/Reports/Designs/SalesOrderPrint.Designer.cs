@@ -108,6 +108,13 @@
             this.xrLabel47 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel25 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrPanel1 = new DevExpress.XtraReports.UI.XRPanel();
+            this.xrInvoiceBankHeaderAcNameValue = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrInvoiceBankHeaderAcName = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrInvoiceBankHeader = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrInvoiceBankHeaderAcSort = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrInvoiceBankHeaderAcSortValue = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrInvoiceBankHeaderAcNo = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrInvoiceBankHeaderAcNoValue = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel48 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel71 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel30 = new DevExpress.XtraReports.UI.XRLabel();
@@ -139,13 +146,6 @@
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
             this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             this.WarrAmt = new DevExpress.XtraReports.UI.CalculatedField();
-            this.xrLabel69 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel72 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel73 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel74 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel75 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel76 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel77 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -1251,13 +1251,13 @@
             // 
             this.xrPanel1.CanShrink = true;
             this.xrPanel1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLabel77,
-            this.xrLabel76,
-            this.xrLabel75,
-            this.xrLabel73,
-            this.xrLabel74,
-            this.xrLabel69,
-            this.xrLabel72,
+            this.xrInvoiceBankHeaderAcNameValue,
+            this.xrInvoiceBankHeaderAcName,
+            this.xrInvoiceBankHeader,
+            this.xrInvoiceBankHeaderAcSort,
+            this.xrInvoiceBankHeaderAcSortValue,
+            this.xrInvoiceBankHeaderAcNo,
+            this.xrInvoiceBankHeaderAcNoValue,
             this.xrLabel48,
             this.xrLabel71,
             this.xrLabel30,
@@ -1276,6 +1276,100 @@
             this.xrPanel1.LocationFloat = new DevExpress.Utils.PointFloat(427.5001F, 61.23256F);
             this.xrPanel1.Name = "xrPanel1";
             this.xrPanel1.SizeF = new System.Drawing.SizeF(325.9999F, 257.928F);
+            // 
+            // xrInvoiceBankHeaderAcNameValue
+            // 
+            this.xrInvoiceBankHeaderAcNameValue.Dpi = 96F;
+            this.xrInvoiceBankHeaderAcNameValue.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BankAccountName]")});
+            this.xrInvoiceBankHeaderAcNameValue.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrInvoiceBankHeaderAcNameValue.LocationFloat = new DevExpress.Utils.PointFloat(124.9998F, 197.0895F);
+            this.xrInvoiceBankHeaderAcNameValue.Name = "xrInvoiceBankHeaderAcNameValue";
+            this.xrInvoiceBankHeaderAcNameValue.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrInvoiceBankHeaderAcNameValue.SizeF = new System.Drawing.SizeF(192.0002F, 20F);
+            this.xrInvoiceBankHeaderAcNameValue.StylePriority.UseFont = false;
+            this.xrInvoiceBankHeaderAcNameValue.StylePriority.UseTextAlignment = false;
+            this.xrInvoiceBankHeaderAcNameValue.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrInvoiceBankHeaderAcName
+            // 
+            this.xrInvoiceBankHeaderAcName.Dpi = 96F;
+            this.xrInvoiceBankHeaderAcName.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrInvoiceBankHeaderAcName.LocationFloat = new DevExpress.Utils.PointFloat(10.49988F, 197.0895F);
+            this.xrInvoiceBankHeaderAcName.Name = "xrInvoiceBankHeaderAcName";
+            this.xrInvoiceBankHeaderAcName.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrInvoiceBankHeaderAcName.SizeF = new System.Drawing.SizeF(114.4999F, 20F);
+            this.xrInvoiceBankHeaderAcName.StylePriority.UseFont = false;
+            this.xrInvoiceBankHeaderAcName.StylePriority.UseTextAlignment = false;
+            this.xrInvoiceBankHeaderAcName.Text = "Account Name: ";
+            this.xrInvoiceBankHeaderAcName.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrInvoiceBankHeader
+            // 
+            this.xrInvoiceBankHeader.Dpi = 96F;
+            this.xrInvoiceBankHeader.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrInvoiceBankHeader.LocationFloat = new DevExpress.Utils.PointFloat(10F, 177.0895F);
+            this.xrInvoiceBankHeader.Name = "xrInvoiceBankHeader";
+            this.xrInvoiceBankHeader.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrInvoiceBankHeader.SizeF = new System.Drawing.SizeF(114.9998F, 20F);
+            this.xrInvoiceBankHeader.StylePriority.UseFont = false;
+            this.xrInvoiceBankHeader.StylePriority.UseTextAlignment = false;
+            this.xrInvoiceBankHeader.Text = "PAYABLE TO:";
+            this.xrInvoiceBankHeader.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrInvoiceBankHeaderAcSort
+            // 
+            this.xrInvoiceBankHeaderAcSort.Dpi = 96F;
+            this.xrInvoiceBankHeaderAcSort.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrInvoiceBankHeaderAcSort.LocationFloat = new DevExpress.Utils.PointFloat(8.999878F, 237.0895F);
+            this.xrInvoiceBankHeaderAcSort.Name = "xrInvoiceBankHeaderAcSort";
+            this.xrInvoiceBankHeaderAcSort.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrInvoiceBankHeaderAcSort.SizeF = new System.Drawing.SizeF(115.9999F, 20F);
+            this.xrInvoiceBankHeaderAcSort.StylePriority.UseFont = false;
+            this.xrInvoiceBankHeaderAcSort.StylePriority.UseTextAlignment = false;
+            this.xrInvoiceBankHeaderAcSort.Text = "Bank Sort Code:";
+            this.xrInvoiceBankHeaderAcSort.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrInvoiceBankHeaderAcSortValue
+            // 
+            this.xrInvoiceBankHeaderAcSortValue.Dpi = 96F;
+            this.xrInvoiceBankHeaderAcSortValue.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BankAccountSortCode]")});
+            this.xrInvoiceBankHeaderAcSortValue.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrInvoiceBankHeaderAcSortValue.LocationFloat = new DevExpress.Utils.PointFloat(124.9998F, 237.0895F);
+            this.xrInvoiceBankHeaderAcSortValue.Name = "xrInvoiceBankHeaderAcSortValue";
+            this.xrInvoiceBankHeaderAcSortValue.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrInvoiceBankHeaderAcSortValue.SizeF = new System.Drawing.SizeF(191.0001F, 20F);
+            this.xrInvoiceBankHeaderAcSortValue.StylePriority.UseFont = false;
+            this.xrInvoiceBankHeaderAcSortValue.StylePriority.UseTextAlignment = false;
+            this.xrInvoiceBankHeaderAcSortValue.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrInvoiceBankHeaderAcNo
+            // 
+            this.xrInvoiceBankHeaderAcNo.Dpi = 96F;
+            this.xrInvoiceBankHeaderAcNo.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrInvoiceBankHeaderAcNo.LocationFloat = new DevExpress.Utils.PointFloat(8.999817F, 217.0895F);
+            this.xrInvoiceBankHeaderAcNo.Name = "xrInvoiceBankHeaderAcNo";
+            this.xrInvoiceBankHeaderAcNo.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrInvoiceBankHeaderAcNo.SizeF = new System.Drawing.SizeF(116F, 20F);
+            this.xrInvoiceBankHeaderAcNo.StylePriority.UseFont = false;
+            this.xrInvoiceBankHeaderAcNo.StylePriority.UseTextAlignment = false;
+            this.xrInvoiceBankHeaderAcNo.Text = "Bank Account No:";
+            this.xrInvoiceBankHeaderAcNo.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrInvoiceBankHeaderAcNoValue
+            // 
+            this.xrInvoiceBankHeaderAcNoValue.Dpi = 96F;
+            this.xrInvoiceBankHeaderAcNoValue.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BankAccountNumber]")});
+            this.xrInvoiceBankHeaderAcNoValue.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrInvoiceBankHeaderAcNoValue.LocationFloat = new DevExpress.Utils.PointFloat(124.9998F, 217.0895F);
+            this.xrInvoiceBankHeaderAcNoValue.Name = "xrInvoiceBankHeaderAcNoValue";
+            this.xrInvoiceBankHeaderAcNoValue.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrInvoiceBankHeaderAcNoValue.SizeF = new System.Drawing.SizeF(191.0001F, 20F);
+            this.xrInvoiceBankHeaderAcNoValue.StylePriority.UseFont = false;
+            this.xrInvoiceBankHeaderAcNoValue.StylePriority.UseTextAlignment = false;
+            this.xrInvoiceBankHeaderAcNoValue.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel48
             // 
@@ -1696,100 +1790,6 @@
             this.WarrAmt.Expression = "Sum([WarrantyAmount])";
             this.WarrAmt.Name = "WarrAmt";
             // 
-            // xrLabel69
-            // 
-            this.xrLabel69.Dpi = 96F;
-            this.xrLabel69.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel69.LocationFloat = new DevExpress.Utils.PointFloat(8.999817F, 217.0895F);
-            this.xrLabel69.Name = "xrLabel69";
-            this.xrLabel69.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel69.SizeF = new System.Drawing.SizeF(116F, 20F);
-            this.xrLabel69.StylePriority.UseFont = false;
-            this.xrLabel69.StylePriority.UseTextAlignment = false;
-            this.xrLabel69.Text = "Bank Account No:";
-            this.xrLabel69.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrLabel72
-            // 
-            this.xrLabel72.Dpi = 96F;
-            this.xrLabel72.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BankAccountNumber]")});
-            this.xrLabel72.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel72.LocationFloat = new DevExpress.Utils.PointFloat(124.9998F, 217.0895F);
-            this.xrLabel72.Name = "xrLabel72";
-            this.xrLabel72.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel72.SizeF = new System.Drawing.SizeF(191.0001F, 20F);
-            this.xrLabel72.StylePriority.UseFont = false;
-            this.xrLabel72.StylePriority.UseTextAlignment = false;
-            this.xrLabel72.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrLabel73
-            // 
-            this.xrLabel73.Dpi = 96F;
-            this.xrLabel73.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel73.LocationFloat = new DevExpress.Utils.PointFloat(8.999878F, 237.0895F);
-            this.xrLabel73.Name = "xrLabel73";
-            this.xrLabel73.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel73.SizeF = new System.Drawing.SizeF(115.9999F, 20F);
-            this.xrLabel73.StylePriority.UseFont = false;
-            this.xrLabel73.StylePriority.UseTextAlignment = false;
-            this.xrLabel73.Text = "Bank Sort Code:";
-            this.xrLabel73.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrLabel74
-            // 
-            this.xrLabel74.Dpi = 96F;
-            this.xrLabel74.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BankAccountSortCode]")});
-            this.xrLabel74.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel74.LocationFloat = new DevExpress.Utils.PointFloat(124.9998F, 237.0895F);
-            this.xrLabel74.Name = "xrLabel74";
-            this.xrLabel74.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel74.SizeF = new System.Drawing.SizeF(191.0001F, 20F);
-            this.xrLabel74.StylePriority.UseFont = false;
-            this.xrLabel74.StylePriority.UseTextAlignment = false;
-            this.xrLabel74.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrLabel75
-            // 
-            this.xrLabel75.Dpi = 96F;
-            this.xrLabel75.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel75.LocationFloat = new DevExpress.Utils.PointFloat(10F, 177.0895F);
-            this.xrLabel75.Name = "xrLabel75";
-            this.xrLabel75.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel75.SizeF = new System.Drawing.SizeF(114.9998F, 20F);
-            this.xrLabel75.StylePriority.UseFont = false;
-            this.xrLabel75.StylePriority.UseTextAlignment = false;
-            this.xrLabel75.Text = "PAYABLE TO:";
-            this.xrLabel75.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrLabel76
-            // 
-            this.xrLabel76.Dpi = 96F;
-            this.xrLabel76.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel76.LocationFloat = new DevExpress.Utils.PointFloat(10.49988F, 197.0895F);
-            this.xrLabel76.Name = "xrLabel76";
-            this.xrLabel76.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel76.SizeF = new System.Drawing.SizeF(114.4999F, 20F);
-            this.xrLabel76.StylePriority.UseFont = false;
-            this.xrLabel76.StylePriority.UseTextAlignment = false;
-            this.xrLabel76.Text = "Account Name: ";
-            this.xrLabel76.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrLabel77
-            // 
-            this.xrLabel77.Dpi = 96F;
-            this.xrLabel77.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BankAccountName]")});
-            this.xrLabel77.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel77.LocationFloat = new DevExpress.Utils.PointFloat(124.9998F, 197.0895F);
-            this.xrLabel77.Name = "xrLabel77";
-            this.xrLabel77.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel77.SizeF = new System.Drawing.SizeF(192.0002F, 20F);
-            this.xrLabel77.StylePriority.UseFont = false;
-            this.xrLabel77.StylePriority.UseTextAlignment = false;
-            this.xrLabel77.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
             // SalesOrderPrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1929,14 +1929,14 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel68;
         public DevExpress.XtraReports.UI.XRLabel xrLabel70;
         //private DevExpress.XtraReports.UI.XRLabel xrLabel69;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel48;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel71;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel75;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel73;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel74;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel69;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel72;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel76;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel77;
+        public DevExpress.XtraReports.UI.XRLabel xrLabel48;
+        public DevExpress.XtraReports.UI.XRLabel xrLabel71;
+        public DevExpress.XtraReports.UI.XRLabel xrInvoiceBankHeader;
+        public DevExpress.XtraReports.UI.XRLabel xrInvoiceBankHeaderAcSort;
+        public DevExpress.XtraReports.UI.XRLabel xrInvoiceBankHeaderAcSortValue;
+        public DevExpress.XtraReports.UI.XRLabel xrInvoiceBankHeaderAcNo;
+        public DevExpress.XtraReports.UI.XRLabel xrInvoiceBankHeaderAcNoValue;
+        public DevExpress.XtraReports.UI.XRLabel xrInvoiceBankHeaderAcName;
+        public DevExpress.XtraReports.UI.XRLabel xrInvoiceBankHeaderAcNameValue;
     }
 }

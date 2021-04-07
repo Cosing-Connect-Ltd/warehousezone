@@ -80,11 +80,28 @@ namespace WMS.Controllers
             {
                 report.lblQuantity.TextFormatString = "{0:0.##}";
             }
+
+            report.xrInvoiceBankHeader.Visible = false;
+            report.xrInvoiceBankHeaderAcName.Visible = false;
+            report.xrInvoiceBankHeaderAcNo.Visible = false;
+            report.xrInvoiceBankHeaderAcSort.Visible = false;
+            report.xrInvoiceBankHeaderAcNameValue.Visible = false;
+            report.xrInvoiceBankHeaderAcNoValue.Visible = false;
+            report.xrInvoiceBankHeaderAcSortValue.Visible = false;
+
             if (directSales)
             {
                 report.lblheading.Text = "INVOICE";
                 report.lblheading.WidthF = 750;
                 report.xrLabel70.Visible = false;
+
+                report.xrInvoiceBankHeader.Visible = true;
+                report.xrInvoiceBankHeaderAcName.Visible = true;
+                report.xrInvoiceBankHeaderAcNo.Visible = true;
+                report.xrInvoiceBankHeaderAcSort.Visible = true;
+                report.xrInvoiceBankHeaderAcNameValue.Visible = true;
+                report.xrInvoiceBankHeaderAcNoValue.Visible = true;
+                report.xrInvoiceBankHeaderAcSortValue.Visible = true;
             }
             else if (returns)
             {
