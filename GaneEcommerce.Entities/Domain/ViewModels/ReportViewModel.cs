@@ -45,6 +45,7 @@ namespace Ganedata.Core.Models
         public decimal? TotalNetAmtB { get; set; }
         public decimal? TotalNetAmtS { get; set; }
         public decimal? TotalProfit { get; set; }
+        public decimal? TotalProfitPercent => ((TotalProfit ?? 0) / (TotalNetAmtB ?? 0)) * 100.0m;
     }
 
     public class InvoiceProfitReportProductsViewModel
@@ -57,6 +58,7 @@ namespace Ganedata.Core.Models
         public decimal TotalBuyPrice { get; set; }
         public decimal TotalSellPrice { get; set; }
         public decimal? Profit { get; set; }
+        public decimal? ProfitPercent => ((Profit ?? 0) / (TotalBuyPrice)) * 100.0m;
     }
 
     public class HolidayReportViewModel
