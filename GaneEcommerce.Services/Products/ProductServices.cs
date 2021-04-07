@@ -686,53 +686,53 @@ namespace Ganedata.Core.Services
                         _currentDbContext.Entry(Current).State = EntityState.Modified;
                     }
                 }
-                if (productAttributesIds == null)
-                {
-                    foreach (var entity in _currentDbContext.ProductAttributeValuesMap.Where(
-                        x => x.ProductId == productMaster.ProductId))
-                    {
-                        entity.IsDeleted = true;
-                        _currentDbContext.Entry(entity).State = EntityState.Modified;
-                    }
-                }
-                else
-                {
-                    var ToDelete = new List<int>();
-                    ToDelete = _currentDbContext.ProductAttributeValuesMap
-                        .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
-                        .Select(x => x.AttributeValueId)
-                        .ToList()
-                        .Except(productAttributesIds)
-                        .ToList();
-                    var ToAdd = new List<int>();
-                    ToAdd = productAttributesIds
-                        .Except(_currentDbContext.ProductAttributeValuesMap
-                            .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
-                            .Select(x => x.AttributeValueId)
-                            .ToList())
-                        .ToList();
+                //if (productAttributesIds == null)
+                //{
+                //    foreach (var entity in _currentDbContext.ProductAttributeValuesMap.Where(
+                //        x => x.ProductId == productMaster.ProductId))
+                //    {
+                //        entity.IsDeleted = true;
+                //        _currentDbContext.Entry(entity).State = EntityState.Modified;
+                //    }
+                //}
+                //else
+                //{
+                //    var ToDelete = new List<int>();
+                //    ToDelete = _currentDbContext.ProductAttributeValuesMap
+                //        .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
+                //        .Select(x => x.AttributeValueId)
+                //        .ToList()
+                //        .Except(productAttributesIds)
+                //        .ToList();
+                //    var ToAdd = new List<int>();
+                //    ToAdd = productAttributesIds
+                //        .Except(_currentDbContext.ProductAttributeValuesMap
+                //            .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
+                //            .Select(x => x.AttributeValueId)
+                //            .ToList())
+                //        .ToList();
 
-                    foreach (var item in ToDelete)
-                    {
-                        var Current = _currentDbContext.ProductAttributeValuesMap
-                            .FirstOrDefault(x => x.ProductId == productMaster.ProductId && x.AttributeValueId == item &&
-                                                 x.IsDeleted != true);
-                        Current.IsDeleted = true;
-                        _currentDbContext.Entry(Current).State = EntityState.Modified;
-                    }
-                    foreach (var item in ToAdd)
-                    {
-                        var newItem = new ProductAttributeValuesMap()
-                        {
-                            CreatedBy = userId,
-                            DateCreated = DateTime.UtcNow,
-                            AttributeValueId = item,
-                            TenantId = tenantId,
-                            ProductId = productMaster.ProductId,
-                        };
-                        _currentDbContext.ProductAttributeValuesMap.Add(newItem);
-                    }
-                }
+                //    foreach (var item in ToDelete)
+                //    {
+                //        var Current = _currentDbContext.ProductAttributeValuesMap
+                //            .FirstOrDefault(x => x.ProductId == productMaster.ProductId && x.AttributeValueId == item &&
+                //                                 x.IsDeleted != true);
+                //        Current.IsDeleted = true;
+                //        _currentDbContext.Entry(Current).State = EntityState.Modified;
+                //    }
+                //    foreach (var item in ToAdd)
+                //    {
+                //        var newItem = new ProductAttributeValuesMap()
+                //        {
+                //            CreatedBy = userId,
+                //            DateCreated = DateTime.UtcNow,
+                //            AttributeValueId = item,
+                //            TenantId = tenantId,
+                //            ProductId = productMaster.ProductId,
+                //        };
+                //        _currentDbContext.ProductAttributeValuesMap.Add(newItem);
+                //    }
+                //}
 
                 if (productLocationIds == null)
                 {

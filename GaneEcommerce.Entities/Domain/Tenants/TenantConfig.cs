@@ -89,5 +89,8 @@ namespace Ganedata.Core.Entities.Domain
         public decimal? StandardDeliveryCost { get; set; }
         public decimal? NextDayDeliveryCost { get; set; }
 
+        public string BankAccountName { get; set; }
+        public string BankAccountNumber { get; set; }
+        public string BankAccountSortCode { get; set; }
     }
 }

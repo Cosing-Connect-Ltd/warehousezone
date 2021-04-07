@@ -369,9 +369,9 @@ function endOrderDetailCallback() {
                 }
             }
         }
-        if (prices !== null && typeof Price !== 'undefined' && !result.AllowModifyPrice && (result.AllowZeroSale == null || !result.AllowZeroSale) && result.AllowModifyPrice != undefined) {
-            Price.GetInputElement().readOnly = true;
-        }
+        //if (prices !== null && typeof Price !== 'undefined' && !result.AllowModifyPrice && (result.AllowZeroSale == null || !result.AllowZeroSale) && result.AllowModifyPrice != undefined) {
+        //    Price.GetInputElement().readOnly = true;
+        //}
 
         $("#frmorddetails #ProductsPerCase").val(result.ProductsPerCase);
         if (result.ProductsPerCase > 0) {

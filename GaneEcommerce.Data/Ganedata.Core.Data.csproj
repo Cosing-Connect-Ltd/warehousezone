@@ -1323,6 +1323,10 @@
     <Compile Include="Migrations\202104041130344_MovedProductAttributeValueChanges.designer.cs">
       <DependentUpon>202104041130344_MovedProductAttributeValueChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104061603376_AddedBankAccountDetailsForTenant.cs" />
+    <Compile Include="Migrations\202104061603376_AddedBankAccountDetailsForTenant.designer.cs">
+      <DependentUpon>202104061603376_AddedBankAccountDetailsForTenant.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2636,6 +2640,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104041130344_MovedProductAttributeValueChanges.resx">
       <DependentUpon>202104041130344_MovedProductAttributeValueChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104061603376_AddedBankAccountDetailsForTenant.resx">
+      <DependentUpon>202104061603376_AddedBankAccountDetailsForTenant.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
