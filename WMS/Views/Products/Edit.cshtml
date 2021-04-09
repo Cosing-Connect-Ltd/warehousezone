@@ -810,7 +810,7 @@
                         @*<div class="col-11 p-0 mt-1 pull-left">
                             @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute"), new { @include_group_label_in_selected = "true", @class = "chosen-select", Multiple = "multiple", size = "5", data_placeholder = "Choose Attributes" })
                         </div>*@
-                      @Html.Action("_ProductAttributesSelection", new { id = Model.ProductId})
+                      @Html.Action("_ProductAttributesSelection", new { id = Model.ProductId, priceGroupId=1})
 
                     </div>
                 </div>
