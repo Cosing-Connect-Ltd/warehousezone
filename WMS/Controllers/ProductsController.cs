@@ -28,6 +28,7 @@ namespace WMS.Controllers
         private readonly IProductLookupService _productLookupService;
         private readonly ITenantWebsiteService _tenantWebsiteService;
         private readonly ITenantsServices _tenantsServices;
+        private readonly IProductPriceService _priceService;
 
         public ProductsController(ICoreOrderService orderService, 
                                   IPropertyService propertyService, 
@@ -36,7 +37,7 @@ namespace WMS.Controllers
                                   IProductServices productServices, 
                                   ITenantWebsiteService tenantWebsiteService, 
                                   IProductLookupService productLookupService,
-                                  ITenantsServices tenantsServices)
+                                  ITenantsServices tenantsServices, IProductPriceService priceService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _accountServices = accountServices;
@@ -45,6 +46,7 @@ namespace WMS.Controllers
             _productLookupService = productLookupService;
             _tenantWebsiteService = tenantWebsiteService;
             _tenantsServices = tenantsServices;
+            _priceService = priceService;
         }
         string UploadDirectory = "~/UploadedFiles/Products/";
         string UploadTempDirectory = "~/UploadedFiles/Products/TempFiles/";
@@ -536,18 +538,26 @@ namespace WMS.Controllers
             }
         }
 
-        public ActionResult _ProductAttributePriceCreateEdit(int? id, int productId)
+        public ActionResult _ProductAttributePriceCreateEdit()
         {
+            int productId = int.Parse(Request.Params["productId"]);
+            int priceGroupId = int.Parse(Request.Params["priceGroupId"]);
             ViewBag.Attributes = _productLookupService.GetAllValidProductAttributes();
             ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues();
-            ViewBag.ProductAttributeValuesMapId = id;
+            ViewBag.PriceGroupId = priceGroupId;
+            ViewBag.SelectedProductId = productId;
+            var priceGroup = _priceService.GetTenantPriceGroupById(priceGroupId);
+            ViewBag.PriceGroupName = priceGroup.Name;
 
-            if (id.HasValue)
-            {
-                var productAttributeValuesMap = _productLookupService.GetProductAttributeValuesMapById(id.Value);
-                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => a.AttributeId == productAttributeValuesMap.ProductAttributeValues.AttributeId);
-                return PartialView(productAttributeValuesMap);
-            }
+            var product = _productServices.GetProductMasterById(productId);
+            ViewBag.ProductName = product.Name;
+
+            //if (id.HasValue)
+            //{
+            //    var productAttributeValuesMap = _productLookupService.GetProductAttributeValuesMapById(id.Value);
+            //    ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => a.AttributeId == productAttributeValuesMap.ProductAttributeValues.AttributeId);
+            //    return PartialView(productAttributeValuesMap);
+            //}
 
             return PartialView();
         }
@@ -561,7 +571,7 @@ namespace WMS.Controllers
         [HttpPost]
         public ActionResult DeleteProductAttributePrice(ProductAttributeValuesMapModel model)
         {
-            var result = _productLookupService.DeleteProductAttributeValuesMap(model, CurrentUserId);
+            var result = _productLookupService.DeleteProductAttributeValuesMap(model.ProductSpecialAttributePriceId, CurrentUserId);
             return Json(result);
         }
 

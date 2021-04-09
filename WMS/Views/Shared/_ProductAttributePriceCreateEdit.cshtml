@@ -1,11 +1,24 @@
 ﻿@model Ganedata.Core.Entities.Domain.ProductAttributeValuesMap
 <hgroup>
-    <h2><span>@(Model == null || Model.ProductAttributeValues.AttributeId == 0 ? "Assign New " : "Edit ") Attribute Value</span></h2>
+    <h2><span>@(Model == null || Model.ProductAttributeValues.AttributeId == 0 ? "Assign New " : "Edit ") Attribute Price</span></h2>
     <h3><span>@Html.ValidationSummary("", new { @id = "vldAttributeValue" })</span></h3>
 </hgroup>
 @using (Html.BeginForm("SaveProductAttributeValueMap", "Products", FormMethod.Post, new { @id = "frmProductAttribute" }))
 {
-
+    if (ViewBag.PriceGroupId != null)
+    {
+        @Html.Hidden("PriceGroupID", ((int) ViewBag.PriceGroupId).ToString())
+    }
+    if (ViewBag.PriceGroupName != null)
+    {
+        <div class="alert alert-info text-center">
+            <div class="col">
+                Selected Price Group <h4> @ViewBag.PriceGroupName </h4>
+            </div>
+            <div class="col">  Selected Product <h4> @ViewBag.ProductName </h4></div>
+          
+        </div>
+    }
     <div class="col-md-12 pull-left">
         @if (Model == null || Model.ProductAttributeValues.AttributeId == 0)
         {

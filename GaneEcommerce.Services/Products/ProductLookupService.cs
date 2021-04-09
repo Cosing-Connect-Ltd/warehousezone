@@ -439,24 +439,26 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAttributes.Find(productAttributeId);
         }
 
-        public ProductAttributeValuesMap SaveProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId, int tenantId)
+        public ProductSpecialAttributePrice SaveProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId, int tenantId)
         {
-            var map = new ProductAttributeValuesMap()
+            var map = new ProductSpecialAttributePrice()
             {
                 AttributeSpecificPrice = model.AttributeSpecificPrice,
                 TenantId = tenantId,
                 ProductId = model.ProductId,
-                AttributeValueId = model.AttributeValueId,
+                ProductAttributeValueId = model.AttributeValueId,
+                ProductAttributeId = model.AttributeId,
+                PriceGroupDetailID = model.PriceGroupID,
                 CreatedBy = userId,
                 DateCreated = DateTime.Now
             };
-            _currentDbContext.ProductAttributeValuesMap.Add(map);
+            _currentDbContext.ProductSpecialAttributePrices.Add(map);
             _currentDbContext.SaveChanges();
             return map;
         }
-        public bool DeleteProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId)
+        public bool DeleteProductAttributeValuesMap(int id, int userId)
         {
-            var map = _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(m => m.Id == model.AttributeMapId);
+            var map = _currentDbContext.ProductSpecialAttributePrices.FirstOrDefault(m => m.ProductSpecialAttributePriceId == id);
             if (map == null) return false;
 
             map.IsDeleted = true;

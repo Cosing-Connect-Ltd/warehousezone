@@ -54,19 +54,19 @@ namespace WMS.Controllers.WebAPI
                 var filePath = p.ProductFiles.Where(a => imageFormats.Contains(new DirectoryInfo(a.FilePath).Extension, StringComparer.CurrentCultureIgnoreCase) && a.IsDeleted != true)
                     .OrderBy(a => a.SortOrder).FirstOrDefault()?.FilePath;
                 mappedProduct.MainImage = filePath == null ? "" : baseUrl + filePath;
-                mappedProduct.ProductAttributeVariations = p.ProductAttributeValuesMap!=null && p.ProductAttributeValuesMap.Any(m=> m.IsDeleted!=true) ? p.ProductAttributeValuesMap.Where(m => m.IsDeleted != true)
-                    .Select(m => (m, m.ProductAttributeValues))
-                    .Select(s => new ProductAttributeSync()
-                    {
-                        AttributeSpecificPrice = s.m.AttributeSpecificPrice,
-                        ProductAttributeId = s.ProductAttributeValues.AttributeId,
-                        ProductAttributeName = s.ProductAttributeValues.ProductAttributes.AttributeName,
-                        SortOrder = s.ProductAttributeValues.SortOrder,
-                        ProductAttributeValueId = s.ProductAttributeValues.AttributeValueId,
-                        ProductAttributeValueName = s.ProductAttributeValues.Value,
-                        ProductAttributeType = s.ProductAttributeValues.ProductAttributes.AttributeName.Equals("size", StringComparison.CurrentCultureIgnoreCase) 
-                            ? LoyaltyProductAttributeTypeEnumSync.Size: LoyaltyProductAttributeTypeEnumSync.Scoop
-                    }).ToList(): null;
+                //mappedProduct.ProductAttributeVariations = p.ProductAttributeValuesMap!=null && p.ProductAttributeValuesMap.Any(m=> m.IsDeleted!=true) ? p.ProductAttributeValuesMap.Where(m => m.IsDeleted != true)
+                //    .Select(m => (m, m.ProductAttributeValues))
+                //    .Select(s => new ProductAttributeSync()
+                //    {
+                //        AttributeSpecificPrice = s.m.AttributeSpecificPrice,
+                //        ProductAttributeId = s.ProductAttributeValues.AttributeId,
+                //        ProductAttributeName = s.ProductAttributeValues.ProductAttributes.AttributeName,
+                //        SortOrder = s.ProductAttributeValues.SortOrder,
+                //        ProductAttributeValueId = s.ProductAttributeValues.AttributeValueId,
+                //        ProductAttributeValueName = s.ProductAttributeValues.Value,
+                //        ProductAttributeType = s.ProductAttributeValues.ProductAttributes.AttributeName.Equals("size", StringComparison.CurrentCultureIgnoreCase) 
+                //            ? LoyaltyProductAttributeTypeEnumSync.Size: LoyaltyProductAttributeTypeEnumSync.Scoop
+                //    }).ToList(): null;
                 products.Add(mappedProduct);
             }
 

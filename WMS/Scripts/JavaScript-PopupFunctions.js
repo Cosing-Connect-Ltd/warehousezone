@@ -486,8 +486,14 @@ function attributeSave() {
 }
 
 function pcModalProductAttributesValues_BeginCallBack(s, e) {
-    var productId = $("#ProductId").val();
+    var productId = $("#SelectedProductID").val();
+    var productGroupId = $("#SelectedPriceGroupID").val();
     e.customArgs["productId"] = productId;
+    e.customArgs["priceGroupId"] = productGroupId;
+}
+
+function pcModalProductAttributesValues_EndCallback(s, e) {
+    AttributeChange();
 }
 
 function pcModalAttributesValues_EndCallback(s, e) {
@@ -496,14 +502,16 @@ function pcModalAttributesValues_EndCallback(s, e) {
 
 function PostProductAttributeValue() {
     var productId = $("#ProductId").val();
+    var priceGroupID = $("#PriceGroupID").val();
     var model = {
         ProductId: productId,
         AttributeId: $("#drpattribute").val(),
         AttributeValueId: $("#AttributeValueId").val(),
-        AttributeSpecificPrice: spnAttributeSpecificPrice.GetValue()
+        AttributeSpecificPrice: spnAttributeSpecificPrice.GetValue(),
+        PriceGroupID: priceGroupID
     };
     $.post("/Products/SaveProductAttributePrice", model, function (result) {
-        ProductAttributeSelection.PerformCallback();
+        PriceGroupsGridView.PerformCallback();
         pcModalProductAttributesValues.Hide();
     });
 }

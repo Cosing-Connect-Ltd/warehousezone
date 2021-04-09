@@ -2084,3 +2084,28 @@ input[type=text].serial {
 .field-validation-error {
     color: red;
 }
+
+
+#frmProductAttribute .chosen-drop {
+    z-index: 1000000 !important;
+}
+
+#frmProductAttribute .dxpc-contentWrapper {
+    overflow: visible !important;
+}
+
+#frmProductAttribute .dxpc-content {
+    overflow: visible !important;
+}
+
+.popup-with-overlays {
+    overflow: visible !important;
+}
+    .popup-with-overlays .dxpc-content {
+        overflow: visible !important;
+    }
+    .product-specialprice-form .bt-gvactions {
+        padding: 3px;
+        margin: 2px;
+        font-size: 20px;
+    }

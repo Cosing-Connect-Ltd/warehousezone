@@ -35,6 +35,7 @@
         settings.Columns.Add(column =>
         {
             column.FieldName = "ProductName";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
             column.EditFormSettings.Visible = DefaultBoolean.False;
 
         });
@@ -42,6 +43,7 @@
         settings.Columns.Add(column =>
         {
             column.FieldName = "SkuCode";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
             column.EditFormSettings.Visible = DefaultBoolean.False;
 
         });
@@ -96,6 +98,23 @@
                 ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
             });
         });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "PriceGroupID";
+            column.Caption = "Attribute Prices";
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+            column.SetDataItemTemplateContent(m =>
+            {
+                var id = (int?)DataBinder.Eval(m.DataItem, "PriceGroupID");
+                var productId = (int?)DataBinder.Eval(m.DataItem, "ProductID");
+                ViewContext.Writer.Write("<div class='text-center'>" +
+                                         "<a href=\"javascript:LoadPriceGroupAttributeEditForm('"+ id + "','" + productId + "')\"><i class='bt-gvactions fa fa-list-alt'></i></a>" +
+                                         "</div>");
+
+            });
+        });
+
 
         settings.CellEditorInitialize = (s, e) =>
         {
