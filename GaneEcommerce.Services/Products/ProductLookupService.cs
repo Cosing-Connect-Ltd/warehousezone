@@ -439,24 +439,56 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAttributes.Find(productAttributeId);
         }
 
-        public ProductAttributeValuesMap SaveProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId, int tenantId)
+        public ProductSpecialAttributePrice SaveProductAttributeValuesMap(ProductSpecialAttributePrice model, int userId, int tenantId)
         {
-            var map = new ProductAttributeValuesMap()
+            var priceGroupDetail = _currentDbContext.ProductSpecialPrices.FirstOrDefault(m=> m.ProductID==model.ProductId && m.PriceGroupID==model.PriceGroupID);
+            if (priceGroupDetail == null)
             {
-                AttributeSpecificPrice = model.AttributeSpecificPrice,
-                TenantId = tenantId,
-                ProductId = model.ProductId,
-                AttributeValueId = model.AttributeValueId,
-                CreatedBy = userId,
-                DateCreated = DateTime.Now
-            };
-            _currentDbContext.ProductAttributeValuesMap.Add(map);
+                priceGroupDetail = new TenantPriceGroupDetail()
+                {
+                    ProductID = model.ProductId,
+                    PriceGroupID = model.PriceGroupID,
+                    CreatedBy = userId,
+                    DateCreated = DateTime.Now,
+                    SpecialPrice = model.AttributeSpecificPrice??0,
+                    TenantId = tenantId
+                };
+                _currentDbContext.ProductSpecialPrices.Add(priceGroupDetail);
+                _currentDbContext.SaveChanges();
+            }
+
+            var specialPrice = _currentDbContext.ProductSpecialAttributePrices.FirstOrDefault(m => m.ProductId==model.ProductId && m.ProductAttributeValueId==model.ProductAttributeValueId && m.PriceGroupID==model.PriceGroupID && m.IsDeleted !=true);
+            if (specialPrice == null)
+            {
+                specialPrice = new ProductSpecialAttributePrice()
+                {
+                    AttributeSpecificPrice = model.AttributeSpecificPrice,
+                    TenantId = tenantId,
+                    ProductId = model.ProductId,
+                    PriceGroupID = model.PriceGroupID,
+                    ProductAttributeValueId = model.ProductAttributeValueId,
+                    ProductAttributeId = model.ProductAttributeId,
+                    PriceGroupDetailID = priceGroupDetail.PriceGroupDetailID,
+                    CreatedBy = userId,
+                    DateCreated = DateTime.Now
+                };
+
+                _currentDbContext.ProductSpecialAttributePrices.Add(specialPrice);
+            }
+            else
+            {
+                specialPrice.AttributeSpecificPrice = model.AttributeSpecificPrice;
+                specialPrice.UpdatedBy = userId;
+                specialPrice.DateUpdated = DateTime.Now;
+                _currentDbContext.Entry(specialPrice);
+            }
+
             _currentDbContext.SaveChanges();
-            return map;
+            return specialPrice;
         }
-        public bool DeleteProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId)
+        public bool DeleteProductAttributeValuesMap(int id, int userId)
         {
-            var map = _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(m => m.Id == model.AttributeMapId);
+            var map = _currentDbContext.ProductSpecialAttributePrices.FirstOrDefault(m => m.ProductSpecialAttributePriceId == id);
             if (map == null) return false;
 
             map.IsDeleted = true;
@@ -541,9 +573,7 @@ namespace Ganedata.Core.Services
             return value;
         }
 
-
-
-
+         
 
 
         public bool SaveProductAttributeValueMap(int attributeValueId, int userId, int tenantId, int productId, int? productAttributeValueMapId)

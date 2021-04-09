@@ -804,13 +804,13 @@
                 <div class="input-group h-100 justify-content-center align-items-center simpleDiv" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute?"":"display:none")>
                     @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-8" })
                     <div class="col-md-4 p-2 pull-left">
-                        <input type="button" onclick="javascript: pcModalProductAttributesValues.Show();" id="ProdAttributeValueAdd" class="btn btn-primary pull-right" value="+">
+                        <input type="button" onclick="javascript: location.href='@Url.Action("Index","ProductSpecialPrice")';" class="btn btn-primary pull-right" value="+">
                     </div>
                     <div class="col-md-12">
                         @*<div class="col-11 p-0 mt-1 pull-left">
                             @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute"), new { @include_group_label_in_selected = "true", @class = "chosen-select", Multiple = "multiple", size = "5", data_placeholder = "Choose Attributes" })
                         </div>*@
-                      @Html.Action("_ProductAttributesSelection", new { id = Model.ProductId})
+                      @Html.Action("_ProductAttributesSelection", new { id = Model.ProductId, priceGroupId=1})
 
                     </div>
                 </div>

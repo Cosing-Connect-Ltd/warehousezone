@@ -89,7 +89,7 @@ namespace Ganedata.Core.Services
 
         Dictionary<string, List<string>> ReadFiltersString(string filterString);
         ProductAttributes GetProductAttributeById(int productAttributeId);
-        ProductAttributeValuesMap SaveProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId, int tenantId);
-        bool DeleteProductAttributeValuesMap(ProductAttributeValuesMapModel model, int userId);
+        ProductSpecialAttributePrice SaveProductAttributeValuesMap(ProductSpecialAttributePrice model, int userId, int tenantId);
+        bool DeleteProductAttributeValuesMap(int id, int userId);
     }
 }

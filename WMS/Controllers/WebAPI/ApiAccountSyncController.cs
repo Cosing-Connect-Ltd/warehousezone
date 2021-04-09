@@ -239,6 +239,14 @@ namespace WMS.Controllers.WebAPI
             {
                 var detail = new TenantPriceGroupDetailSync();
                 _mapper.Map(p, detail);
+                detail.ProductAttributeVariations = p.ProductSpecialAttributePrices.Where(m=> m.IsDeleted!=true).Select(s=> new ProductSpecialAttributePriceSync()
+                {
+                    ProductAttributeName = s.ProductAttribute.AttributeName,
+                    ProductAttributeValueName = s.ProductAttributeValue.Value,
+                    AttributeSpecificPrice = s.AttributeSpecificPrice,
+                    ProductAttributeId = s.ProductAttributeId,
+                    ProductAttributeValueId = s.ProductAttributeValueId
+                }).ToList();
                 groupDetails.Add(detail);
             }
 

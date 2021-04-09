@@ -126,6 +126,7 @@ namespace Ganedata.Core.Models
         public bool? IsDeleted { get; set; }
         public bool ApplyDiscountOnTotal { get; set; }
         public bool ApplyDiscountOnSpecialPrice { get; set; }
+
     }
 
 
@@ -148,8 +149,28 @@ namespace Ganedata.Core.Models
         public DateTime DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
         public bool? IsDeleted { get; set; }
+        public List<ProductSpecialAttributePriceSync> ProductAttributeVariations { get; set; }
 
     }
 
+    public class ProductSpecialAttributePriceSync
+    {
+
+        //Size/Scoop that helps the UI to show its elements
+        public LoyaltyProductAttributeTypeEnumSync ProductAttributeType { get; set; }
+
+        //For Auditing purpose
+        public int ProductAttributeId { get; set; }
+        public string ProductAttributeName { get; set; }
+      
+        //This will uniquely identify the selected attribute per product
+        public int ProductAttributeValueId { get; set; }
+      
+        public string ProductAttributeValueName { get; set; }
+        
+        public decimal? AttributeSpecificPrice { get; set; }
+        public int SortOrder { get; set; }
+
+    }
 
 }

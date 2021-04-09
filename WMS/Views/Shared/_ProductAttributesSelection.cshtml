@@ -1,8 +1,8 @@
 ﻿@model Ganedata.Core.Entities.Domain.ProductMaster 
 
     @{
-        var grid = Html.DevExpress().GridView(settings =>
-        {
+            var grid = Html.DevExpress().GridView(settings =>
+            {
             settings.Name = "ProductAttributeSelection";
             settings.CallbackRouteValues = ViewBag.routeValues;
             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
@@ -40,15 +40,16 @@
                 c.Caption = "Price";
                 c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
             });
-
-            settings.Columns.Add().SetDataItemTemplateContent(m =>
-            {
-                var mapId = DataBinder.Eval(m.DataItem, "AttributeMapId").ToString();
-                ViewContext.Writer.Write("<div style='cursor:pointer' data-mapId='" + mapId + "' onclick='javascript:DeleteProductAttributeMap(this);'><i class='fa fa-trash'></i></div>");
-            });
-
-             
-            settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+                if (Request.Url.AbsoluteUri.Contains("_ProductAttributePriceCreateEdit")||Request.Url.AbsoluteUri.Contains("_ProductAttributesSelection"))
+                {
+                    settings.Columns.Add().SetDataItemTemplateContent(m =>
+                    {
+                        var mapId = DataBinder.Eval(m.DataItem, "ProductSpecialAttributePriceId").ToString();
+                        ViewContext.Writer.Write("<div style='cursor:pointer' data-mapId='" + mapId + "' onclick='javascript:DeleteProductAttributeMap(this);'><i class='fa fa-trash'></i></div>");
+                    });
+                }
+                
+                settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
             settings.SettingsPager.PageSizeItemSettings.Visible = false;
             //settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
             //settings.SettingsDetail.ShowDetailRow = true;

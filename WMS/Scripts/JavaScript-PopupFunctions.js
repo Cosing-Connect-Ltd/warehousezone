@@ -486,8 +486,14 @@ function attributeSave() {
 }
 
 function pcModalProductAttributesValues_BeginCallBack(s, e) {
-    var productId = $("#ProductId").val();
+    var productId = $("#SelectedProductID").val();
+    var priceGroupId = $("#SelectedPriceGroupID").val();
     e.customArgs["productId"] = productId;
+    e.customArgs["priceGroupId"] = priceGroupId;
+}
+
+function pcModalProductAttributesValues_EndCallback(s, e) {
+    AttributeChange();
 }
 
 function pcModalAttributesValues_EndCallback(s, e) {
@@ -495,25 +501,33 @@ function pcModalAttributesValues_EndCallback(s, e) {
 }
 
 function PostProductAttributeValue() {
-    var productId = $("#ProductId").val();
+    var productId = $("#SelectedProductID").val();
+    var priceGroupID = $("#SelectedPriceGroupID").val();
     var model = {
         ProductId: productId,
-        AttributeId: $("#drpattribute").val(),
-        AttributeValueId: $("#AttributeValueId").val(),
-        AttributeSpecificPrice: spnAttributeSpecificPrice.GetValue()
+        ProductAttributeId: $("#drpattribute").val(),
+        ProductAttributeValueId: $("#AttributeValueId").val(),
+        AttributeSpecificPrice: spnAttributeSpecificPrice.GetValue(),
+        PriceGroupID: priceGroupID  
     };
-    $.post("/Products/SaveProductAttributePrice", model, function (result) {
-        ProductAttributeSelection.PerformCallback();
-        pcModalProductAttributesValues.Hide();
-    });
+    $.post("/Products/SaveProductAttributePrice",
+        model,
+        function (result) {
+            $("#AttributePriceGroupMessage").fadeIn();
+            setTimeout(function() {
+                $("#AttributePriceGroupMessage").fadeOut();
+            }, 1000);
+
+            ProductAttributeSelection.PerformCallback();
+        });
 }
 function DeleteProductAttributeMap(btn) {
     var productId = $("#ProductId").val();
-    var mapId = $(btn).data("mapid");
+    var id = $(btn).data("mapid");
     var model =
     {
         ProductId: productId,
-        AttributeMapId: mapId
+        ProductSpecialAttributePriceId: id
     };
     if (confirm('Are you sure you want to delete this Attribute config?')) {
         $.post("/Products/DeleteProductAttributePrice", model).done(function() {

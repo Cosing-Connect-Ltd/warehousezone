@@ -1800,6 +1800,11 @@ function LoadPriceGroupEditForm(priceGroupId) {
     ModalEditPriceGroup.Show();
 }
 
+function LoadPriceGroupAttributeEditForm(productId) {
+    $("#SelectedProductID").val(productId);
+    pcModalProductAttributesValues.Show();
+}
+
 function SavePriceGroup(e) {
     var res = PopupFormValidationCheck(e);
     if (res === false) return;

@@ -2,7 +2,9 @@
 {
     public class ProductAttributeValuesMapModel
     {
+        public int ProductSpecialAttributePriceId { get; set; }
         public int ProductId { get; set; }
+        public int PriceGroupID { get; set; }
         public int AttributeId { get; set; }
         public int AttributeValueId { get; set; }
         public int AttributeMapId { get; set; }

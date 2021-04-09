@@ -1,4 +1,5 @@
 using System;
+using Ganedata.Core.Models;
 
 namespace Ganedata.Core.Entities.Domain
 {
@@ -15,4 +16,6 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime? DateCreated { get; set; }
         public string SkuCode { get; set; }
     }
+   
+
 }
