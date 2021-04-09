@@ -285,6 +285,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<WebsiteWishListItem> WebsiteWishListItems { get; set; }
         public virtual ICollection<ProductAttributeMap> ProductAttributeMaps { get; set; }
 
+        public virtual ICollection<ProductSpecialAttributePrice> ProductSpecialAttributePrices { get; set; } = new HashSet<ProductSpecialAttributePrice>();
         public string HoverImage
         {
             get

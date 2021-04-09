@@ -228,23 +228,23 @@ namespace WMS.Controllers
             }
 
             ViewBag.IsDeliverectIntegrated = _tenantsServices.GetTenantConfigById(CurrentTenantId)?.LoyaltyAppOrderProcessType == LoyaltyAppOrderProcessTypeEnum.Deliverect;
-            LoadProductAttributesToView(productMaster);
+            LoadProductAttributesToView(productMaster, 1);
             return productMaster;
         }
 
    
-        private void LoadProductAttributesToView(ProductMaster product)
+        private void LoadProductAttributesToView(ProductMaster product, int priceGroupId)
         {
             ViewBag.ProductAttributeLinks =
-                product.ProductAttributeValuesMap.Where(m=> m.IsDeleted!=true).Select(m => new ProductAttributeValuesMapModel()
+                product.ProductSpecialAttributePrices.Where(m=> m.IsDeleted!=true && m.PriceGroupID == priceGroupId).Select(m => new ProductAttributeValuesMapModel()
                 {
-                    AttributeName = m.ProductAttributeValues.ProductAttributes.AttributeName,
-                    AttributeValueName = m.ProductAttributeValues.Value,
+                    AttributeName = m.ProductAttribute.AttributeName,
+                    AttributeValueName = m.ProductAttributeValue.Value,
                     AttributeSpecificPrice = m.AttributeSpecificPrice,
-                    AttributeId = m.ProductAttributeValues.AttributeId,
-                    AttributeMapId = m.Id,
+                    AttributeId = m.ProductAttributeId,
                     ProductId = m.ProductId,
-                    AttributeValueId = m.AttributeValueId 
+                    AttributeValueId = m.ProductAttributeValueId,
+                    ProductSpecialAttributePriceId = m.ProductSpecialAttributePriceId
                 });
 
         }
@@ -551,6 +551,7 @@ namespace WMS.Controllers
 
             var product = _productServices.GetProductMasterById(productId);
             ViewBag.ProductName = product.Name;
+            ViewBag.ProductId = productId;
 
             //if (id.HasValue)
             //{
@@ -563,13 +564,13 @@ namespace WMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveProductAttributePrice(ProductAttributeValuesMapModel model)
+        public ActionResult SaveProductAttributePrice(ProductSpecialAttributePrice model)
         {
             var map = _productLookupService.SaveProductAttributeValuesMap(model, CurrentUserId, CurrentTenantId);
-            return Json(map);
+            return Json(map.ProductSpecialAttributePriceId);
         }
         [HttpPost]
-        public ActionResult DeleteProductAttributePrice(ProductAttributeValuesMapModel model)
+        public ActionResult DeleteProductAttributePrice(ProductSpecialAttributePrice model)
         {
             var result = _productLookupService.DeleteProductAttributeValuesMap(model.ProductSpecialAttributePriceId, CurrentUserId);
             return Json(result);
@@ -1661,11 +1662,11 @@ namespace WMS.Controllers
             return View(Id);
         }
 
-        public ActionResult _ProductAttributesSelection(int id)
+        public ActionResult _ProductAttributesSelection(int id, int priceGroupId)
         {
-            ViewBag.routeValues = new { Controller = "Products", Action = "_ProductAttributesSelection", id };
+            ViewBag.routeValues = new { Controller = "Products", Action = "_ProductAttributesSelection", id, priceGroupId };
             var product = _productServices.GetProductMasterById(id);
-            LoadProductAttributesToView(product);
+            LoadProductAttributesToView(product, priceGroupId);
             return PartialView("_ProductAttributesSelection", product);
         }
 

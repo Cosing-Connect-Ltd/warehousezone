@@ -1,6 +1,6 @@
 ﻿@model Ganedata.Core.Entities.Domain.ProductAttributeValuesMap
 <hgroup>
-    <h2><span>@(Model == null || Model.ProductAttributeValues.AttributeId == 0 ? "Assign New " : "Edit ") Attribute Price</span></h2>
+    @*<h2><span>@(Model == null || Model.ProductAttributeValues.AttributeId == 0 ? "Assign New " : "Edit ") Attribute Price</span></h2>*@
     <h3><span>@Html.ValidationSummary("", new { @id = "vldAttributeValue" })</span></h3>
 </hgroup>
 @using (Html.BeginForm("SaveProductAttributeValueMap", "Products", FormMethod.Post, new { @id = "frmProductAttribute" }))
@@ -16,10 +16,10 @@
                 Selected Price Group <h4> @ViewBag.PriceGroupName </h4>
             </div>
             <div class="col">  Selected Product <h4> @ViewBag.ProductName </h4></div>
-          
+            <div id="AttributePriceGroupMessage" style="display: none;position: absolute;right: 5px;top: 30%;background-color: #9a382b;color: white;padding: 5px 8px;">Information Saved</div>
         </div>
     }
-    <div class="col-md-12 pull-left">
+    <div class="col-md-12">
         @if (Model == null || Model.ProductAttributeValues.AttributeId == 0)
         {
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -54,8 +54,8 @@
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
             <label class="col-md-4">Attribute Specific Price<span style="color:red"> *</span></label>
-            <div class="col-md-8">
-                <div class="col-11 p-0 mt-1 pull-left">
+            <div class="col-md-4">
+                <div class="col-12 p-0 mt-1">
                     @Html.DevExpress().SpinEdit(m =>
                     {
                         m.Name = "spnAttributeSpecificPrice";
@@ -69,11 +69,19 @@
                   
                 </div>
             </div>
+            <div class="col-md-4 text-right">
+                <input type="button" onclick="PostProductAttributeValue()" value="Submit" class="btn btn-primary" />
+                <input type="button" onclick="CancelPostProductAttributeValue()" value="Cancel" class="btn btn-default" />
+            </div>
         </div>
     </div>
 
-    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
-        <input type="button" onclick="PostProductAttributeValue()" value="Save" class="btn btn-primary" />
-        <input type="button" onclick="CancelPostProductAttributeValue()" value="Cancel" class="btn btn-default" />
+ 
+    <div class="col-md-12">
+        @*<div class="col-11 p-0 mt-1 pull-left">
+                            @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute"), new { @include_group_label_in_selected = "true", @class = "chosen-select", Multiple = "multiple", size = "5", data_placeholder = "Choose Attributes" })
+                        </div>*@
+        @Html.Action("_ProductAttributesSelection", "Products", new { id = ViewBag.ProductId, priceGroupId = ViewBag.PriceGroupId })
+
     </div>
 }

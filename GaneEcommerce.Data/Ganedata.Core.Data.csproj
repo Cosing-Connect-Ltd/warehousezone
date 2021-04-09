@@ -1327,9 +1327,9 @@
     <Compile Include="Migrations\202104061603376_AddedBankAccountDetailsForTenant.designer.cs">
       <DependentUpon>202104061603376_AddedBankAccountDetailsForTenant.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202104081344496_AddedPriceGroupAttributePricing.cs" />
-    <Compile Include="Migrations\202104081344496_AddedPriceGroupAttributePricing.designer.cs">
-      <DependentUpon>202104081344496_AddedPriceGroupAttributePricing.cs</DependentUpon>
+    <Compile Include="Migrations\202104091546267_AddedTenantPriceGroupToSpecialPriceKeysUpdated.cs" />
+    <Compile Include="Migrations\202104091546267_AddedTenantPriceGroupToSpecialPriceKeysUpdated.designer.cs">
+      <DependentUpon>202104091546267_AddedTenantPriceGroupToSpecialPriceKeysUpdated.cs</DependentUpon>
     </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
@@ -2648,8 +2648,8 @@
     <EmbeddedResource Include="Migrations\202104061603376_AddedBankAccountDetailsForTenant.resx">
       <DependentUpon>202104061603376_AddedBankAccountDetailsForTenant.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202104081344496_AddedPriceGroupAttributePricing.resx">
-      <DependentUpon>202104081344496_AddedPriceGroupAttributePricing.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202104091546267_AddedTenantPriceGroupToSpecialPriceKeysUpdated.resx">
+      <DependentUpon>202104091546267_AddedTenantPriceGroupToSpecialPriceKeysUpdated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

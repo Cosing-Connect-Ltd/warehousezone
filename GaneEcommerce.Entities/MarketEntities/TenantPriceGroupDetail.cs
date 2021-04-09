@@ -57,7 +57,11 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("ProductId")]
         public virtual ProductMaster Product { get; set; }
 
+        public int PriceGroupID { get; set; }
 
+        [ForeignKey("PriceGroupID")]
+        public virtual TenantPriceGroups PriceGroup { get; set; }
+      
         public int PriceGroupDetailID { get; set; }
         [ForeignKey("PriceGroupDetailID")]
         public virtual TenantPriceGroupDetail PriceGroupDetail { get; set; }

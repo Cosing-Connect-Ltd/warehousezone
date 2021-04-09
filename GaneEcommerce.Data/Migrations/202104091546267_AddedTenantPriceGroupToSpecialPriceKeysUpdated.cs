@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddedPriceGroupAttributePricing : DbMigration
+    public partial class AddedTenantPriceGroupToSpecialPriceKeysUpdated : DbMigration
     {
         public override void Up()
         {
@@ -18,6 +18,7 @@
                         AttributeSpecificPrice = c.Decimal(precision: 18, scale: 2),
                         SortOrder = c.Int(nullable: false),
                         ProductId = c.Int(nullable: false),
+                        PriceGroupID = c.Int(nullable: false),
                         PriceGroupDetailID = c.Int(nullable: false),
                         TenantId = c.Int(nullable: false),
                         DateCreated = c.DateTime(nullable: false),
@@ -27,6 +28,7 @@
                         IsDeleted = c.Boolean(),
                     })
                 .PrimaryKey(t => t.ProductSpecialAttributePriceId)
+                .ForeignKey("dbo.TenantPriceGroups", t => t.PriceGroupID)
                 .ForeignKey("dbo.TenantPriceGroupDetails", t => t.PriceGroupDetailID)
                 .ForeignKey("dbo.ProductMaster", t => t.ProductId)
                 .ForeignKey("dbo.ProductAttributes", t => t.ProductAttributeId)
@@ -34,6 +36,7 @@
                 .Index(t => t.ProductAttributeId)
                 .Index(t => t.ProductAttributeValueId)
                 .Index(t => t.ProductId)
+                .Index(t => t.PriceGroupID)
                 .Index(t => t.PriceGroupDetailID);
             
         }
@@ -44,7 +47,9 @@
             DropForeignKey("dbo.ProductSpecialAttributePrices", "ProductAttributeId", "dbo.ProductAttributes");
             DropForeignKey("dbo.ProductSpecialAttributePrices", "ProductId", "dbo.ProductMaster");
             DropForeignKey("dbo.ProductSpecialAttributePrices", "PriceGroupDetailID", "dbo.TenantPriceGroupDetails");
+            DropForeignKey("dbo.ProductSpecialAttributePrices", "PriceGroupID", "dbo.TenantPriceGroups");
             DropIndex("dbo.ProductSpecialAttributePrices", new[] { "PriceGroupDetailID" });
+            DropIndex("dbo.ProductSpecialAttributePrices", new[] { "PriceGroupID" });
             DropIndex("dbo.ProductSpecialAttributePrices", new[] { "ProductId" });
             DropIndex("dbo.ProductSpecialAttributePrices", new[] { "ProductAttributeValueId" });
             DropIndex("dbo.ProductSpecialAttributePrices", new[] { "ProductAttributeId" });

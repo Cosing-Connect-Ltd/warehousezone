@@ -109,7 +109,7 @@
                 var id = (int?)DataBinder.Eval(m.DataItem, "PriceGroupID");
                 var productId = (int?)DataBinder.Eval(m.DataItem, "ProductID");
                 ViewContext.Writer.Write("<div class='text-center'>" +
-                                         "<a href=\"javascript:LoadPriceGroupAttributeEditForm('"+ id + "','" + productId + "')\"><i class='bt-gvactions fa fa-list-alt'></i></a>" +
+                                         "<a href=\"javascript:LoadPriceGroupAttributeEditForm('" + productId + "')\"><i class='bt-gvactions fa fa-list-alt'></i></a>" +
                                          "</div>");
 
             });

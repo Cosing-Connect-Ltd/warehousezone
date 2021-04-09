@@ -1800,8 +1800,7 @@ function LoadPriceGroupEditForm(priceGroupId) {
     ModalEditPriceGroup.Show();
 }
 
-function LoadPriceGroupAttributeEditForm(priceGroupId, productId) {
-    $("#SelectedPriceGroupID").val(priceGroupId);
+function LoadPriceGroupAttributeEditForm(productId) {
     $("#SelectedProductID").val(productId);
     pcModalProductAttributesValues.Show();
 }
