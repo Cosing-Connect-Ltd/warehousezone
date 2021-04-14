@@ -62,6 +62,10 @@ namespace WMS.Controllers.WebAPI
                 var mapped = _mapper.Map(p, order);
                 mapped.TransferWarehouseName = warehouses.FirstOrDefault(x => x.WarehouseId == mapped.TransferWarehouseId)?.WarehouseName;
 
+                for (var i = 0; i < p.OrderDetails.Count; i++)
+                {
+                    mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList()[i].ProductAttributeValue?.Value;
+                }
                 //if user is assocaited to the account
                 if (p.AccountID != null)
                 {
@@ -107,6 +111,12 @@ namespace WMS.Controllers.WebAPI
             {
                 var order = new OrdersSync();
                 var mapped = _mapper.Map(p, order);
+
+                for (var i=0;i< p.OrderDetails.Count;i++)
+                {
+                    mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList()[i].ProductAttributeValue?.Value;
+                }
+                
                 mapped.TransferWarehouseName = warehouses.FirstOrDefault(x => x.WarehouseId == mapped.TransferWarehouseId)?.WarehouseName;
 
                 //if user is assocaited to the account

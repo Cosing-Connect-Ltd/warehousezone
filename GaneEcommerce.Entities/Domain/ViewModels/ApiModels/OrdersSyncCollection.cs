@@ -130,6 +130,7 @@ namespace Ganedata.Core.Models
         public OrderStatusEnum? OrderDetailStatusId { get; set; }
         public int SortOrder { get; set; }
         public int? ProductAttributeValueId { get; set; }
+        public string ProductAttributeValueName { get; set; }
     }
 
     public class SerialProcessStatus
