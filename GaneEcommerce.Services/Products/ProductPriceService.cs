@@ -397,10 +397,8 @@ namespace Ganedata.Core.Services
 
         public List<InvoiceProductPriceModel> GetInvoiceDetailsProductPrices(List<InvoiceDetail> invoiceDetails, int tenantId)
         {
-            var invoiceProductsPrices = new List<InvoiceProductPriceModel>();
             var productIds = invoiceDetails.Select(i => i.ProductId).ToList();
             var productsRemainingQuantities = invoiceDetails.ToDictionary(a => a.ProductId, a => a.Quantity);
-            var products = _context.ProductMaster.Where(u => productIds.Contains(u.ProductId) && u.IsDeleted != true).Select(p => new { p.BuyPrice, p.LandedCost }).ToList();
             var tenantConfig = _context.TenantConfigs.AsNoTracking().FirstOrDefault(m => m.TenantId == tenantId);
 
             var targetOrderDetails = _context.OrderDetail.Where(u => productIds.Contains(u.ProductId) &&
@@ -470,10 +468,10 @@ namespace Ganedata.Core.Services
                                          {
                                              var quantity = i.Quantity <= productsRemainingQuantities[i.ProductId] ? i.Quantity : productsRemainingQuantities[i.ProductId];
                                              productsRemainingQuantities[i.ProductId] = productsRemainingQuantities[i.ProductId] - quantity;
-                                             var buyPrice = relatedPurchaseOrdersByPallet.First(p => p.PalletTrackingId == i.PalletTrackingId && p.ProductId == i.ProductId)
-                                                                                 .Order.OrderDetails
+                                             var buyPrice = relatedPurchaseOrdersByPallet.Where(p => (i.PalletTrackingId==null ||p.PalletTrackingId == i.PalletTrackingId) && p.ProductId == i.ProductId)
+                                                 .SelectMany(m=> m.Order.OrderDetails)
                                                                                  .Where(u => u.ProductId == i.ProductId && u.IsDeleted != true)
-                                                                                 .OrderByDescending(u => u.OrderDetailID)
+                                                                                 .OrderByDescending(u => u.DateCreated)
                                                                                  .FirstOrDefault().Price;
 
                                              if (productsPrices.Any(p => p.ProductId == i.ProductId))
