@@ -1432,7 +1432,8 @@ namespace WMS.Controllers
                         SellPrice = p.SellPrice,
                         TotalBuyPrice = p.TotalBuyPrice,
                         TotalSellPrice = p.TotalSellPrice,
-                        Profit = p.TotalSellPrice - p.TotalBuyPrice
+                        Profit = p.TotalSellPrice - p.TotalBuyPrice,
+                        ProfitPercent = p.TotalBuyPrice > 0 ? ((p.TotalSellPrice - p.TotalBuyPrice)/ (p.TotalBuyPrice)) * 100.0m : 0
                     }).ToList()
                 });
             }
@@ -1440,6 +1441,13 @@ namespace WMS.Controllers
             report.TotalNetAmtB.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.NetAmtB));
             report.TotalNetAmtS.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.NetAmtS));
             report.TotalProfit.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.Profit));
+            report.Profit.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.Profit));
+
+            var totalProfit = dataSource.Sum(u => u.Profit);
+            var totalNetBuy = dataSource.Sum(u => u.NetAmtB);
+
+            var profitPercent = totalNetBuy > 0 ? ((totalProfit ?? 0) / (totalNetBuy ?? 0)) * 100.0m : 0;
+            report.xrLabelProfitPercent.Text = string.Format("{0:0.00}", profitPercent);
 
             report.DataSource = dataSource;
         }
