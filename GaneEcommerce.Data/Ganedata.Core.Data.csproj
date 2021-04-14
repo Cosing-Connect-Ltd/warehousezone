@@ -1331,6 +1331,10 @@
     <Compile Include="Migrations\202104091546267_AddedTenantPriceGroupToSpecialPriceKeysUpdated.designer.cs">
       <DependentUpon>202104091546267_AddedTenantPriceGroupToSpecialPriceKeysUpdated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104120908373_AddedAttributeValueNamesToOrderDetails.cs" />
+    <Compile Include="Migrations\202104120908373_AddedAttributeValueNamesToOrderDetails.designer.cs">
+      <DependentUpon>202104120908373_AddedAttributeValueNamesToOrderDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2650,6 +2654,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104091546267_AddedTenantPriceGroupToSpecialPriceKeysUpdated.resx">
       <DependentUpon>202104091546267_AddedTenantPriceGroupToSpecialPriceKeysUpdated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104120908373_AddedAttributeValueNamesToOrderDetails.resx">
+      <DependentUpon>202104120908373_AddedAttributeValueNamesToOrderDetails.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -113,6 +113,7 @@ namespace Ganedata.Core.Models
         public string LocationCode { get; set; }
         public string Notes { get; set; }
         public int? ProductAttributeValueId { get; set; }
+        public string ProductAttributeValueName { get; set; }
     }
 
     public class AccountTransactionInfoSync

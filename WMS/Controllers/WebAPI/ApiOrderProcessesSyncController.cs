@@ -68,6 +68,7 @@ namespace WMS.Controllers.WebAPI
                 {
                     var order = new OrderProcessDetailSync();
                     var pd = _mapper.Map(p, order);
+                    pd.ProductAttributeValueName = p.ProductAttributeValue?.Value;
                     orderProcessDetails.Add(pd);
                 }
 
@@ -120,7 +121,8 @@ namespace WMS.Controllers.WebAPI
                     var orderProcesses = processGroup.OrderProcesses;
                     foreach (var item in orderProcesses)
                     {
-                        var order = OrderService.SaveOrderProcessSync(item, terminal); 
+                        var order = OrderService.SaveOrderProcessSync(item, terminal);
+                       
                         if (!string.IsNullOrEmpty(item.VoucherCode))
                         {
                             _shoppingVoucherService.ApplyVoucher(new ShoppingVoucherValidationRequestModel()

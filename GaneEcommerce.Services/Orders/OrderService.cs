@@ -766,13 +766,6 @@ namespace Ganedata.Core.Services
 
         public IQueryable<Order> GetAllOrders(int tenantId, int warehouseId = 0, bool excludeProforma = false, DateTime? reqDate = null, bool includeDeleted = false)
         {
-            var warehouse = _currentDbContext.TenantWarehouses.FirstOrDefault(x => x.WarehouseId == warehouseId);
-            var parentWarehouseId = 0;
-            if (warehouse != null && warehouse.IsMobile == true)
-            {
-                parentWarehouseId = warehouse.ParentWarehouseId ?? warehouseId;
-            }
-
             return _currentDbContext.Order.Where(m => m.TenentId == tenantId
             && m.WarehouseId == warehouseId && (!excludeProforma || m.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Proforma) && (m.IsDeleted != true || includeDeleted == true) && (!reqDate.HasValue || (m.DateUpdated ?? m.DateCreated) >= reqDate));
         }
@@ -1220,7 +1213,6 @@ namespace Ganedata.Core.Services
                 warehouse = _tenantLocationServices.GetActiveTenantLocationById(item.WarehouseId);
                 
             }
-            var tenantConfig = _currentDbContext.TenantConfigs.FirstOrDefault(m => m.TenantId == terminal.TenantId);
              
             if (item.FoodOrderType != null)
             {
@@ -1456,8 +1448,8 @@ namespace Ganedata.Core.Services
                                 ExpiryDate = op.ExpiryDate,
                                 OrderProcessId = process.OrderProcessID,
                                 TerminalId = terminal.TerminalId,
-                                Notes = op.Notes
-
+                                Notes = op.Notes,
+                                ProductAttributeValueId = op.ProductAttributeValueId>0? op.ProductAttributeValueId:null
                             };
 
                             _currentDbContext.OrderProcessDetail.Add(o);
@@ -1573,7 +1565,13 @@ namespace Ganedata.Core.Services
                 }
 
                 _currentDbContext.SaveChanges();
-                var result = _mapper.Map(order, new OrdersSync());
+
+                var orderSync = new OrdersSync();
+                var result = _mapper.Map(order, orderSync);
+                for (var i = 0; i < result.OrderDetails.Count; i++)
+                {
+                    orderSync.OrderDetails[i].ProductAttributeValueName = order.OrderDetails.ToList()[i].ProductAttributeValue?.Value;
+                }
                 result.DeliverectChannelLinkId = warehouse.DeliverectChannelLinkId;
                 result.DeliverectChannel = warehouse.DeliverectChannel;
                 result.RequestSuccess = true;

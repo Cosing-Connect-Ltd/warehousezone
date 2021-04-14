@@ -211,12 +211,14 @@ namespace Ganedata.Core.Services
                 SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 14, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 }
             };
 
-            if (warehouseId == 13 && (DateTime.Now.DayOfWeek == DayOfWeek.Tuesday || DateTime.Now.DayOfWeek == DayOfWeek.Wednesday))
+            if (warehouseId == 13)
             {
-                set3.TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()
-                    { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
-                set3.WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel()
-                    { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
+                set3.MondayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
+                set3.TuesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
+                set3.WednesdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
+                set3.ThursdayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
+                set3.FridayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
+                set3.SundayOpeningHoursViewModel = new WarehouseOpeningHoursViewModel() { OpeningTimeHour = 9, OpeningTimeMins = 0, ClosingTimeHour = 23, ClosingTimeMins = 40 };
             }
 
             //if (warehouseId == 11 && (DateTime.Now.DayOfWeek == DayOfWeek.Monday || DateTime.Now.DayOfWeek == DayOfWeek.Tuesday))

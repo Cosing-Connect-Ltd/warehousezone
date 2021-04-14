@@ -64,5 +64,9 @@ namespace Ganedata.Core.Entities.Domain
         public string ID { get; set; }
         public string FscPercent { get; set; }
         public string Notes { get; set; }
+
+        public int? ProductAttributeValueId { get; set; }
+        [ForeignKey("ProductAttributeValueId")]
+        public virtual ProductAttributeValues ProductAttributeValue { get; set; }
     }
 }
