@@ -13,7 +13,7 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
     private DevExpress.XtraReports.UI.TopMarginBand TopMargin;
     private DevExpress.XtraReports.UI.BottomMarginBand BottomMargin;
     private DetailReportBand DetailReport;
-    private DetailBand Detail1;
+    public DetailBand Detail1;
     private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
     public DevExpress.XtraReports.Parameters.Parameter invoiceMasterId;
     private XRPanel xrPanel4;

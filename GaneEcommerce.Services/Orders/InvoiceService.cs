@@ -516,13 +516,13 @@ namespace Ganedata.Core.Services
         {
             productIds = productIds ?? new int[] { };
 
-            var InvocieDetaildata = _currentDbContext.InvoiceDetails.Include(i => i.OrderDetail)
+            var invocieDetaildata = _currentDbContext.InvoiceDetails.Include(i => i.OrderDetail)
                                                                     .Where(u => u.InvoiceMasterId == InvoiceMasterId &&
                                                                                 u.IsDeleted != true &&
                                                                                 (productIds.Contains(u.ProductId) || productIds.Count() == 0))
                                                                     .ToList();
 
-            return _productPriceService.GetInvoiceDetailsProductPrices(InvocieDetaildata, tenantId);
+            return _productPriceService.GetInvoiceDetailsProductPrices(invocieDetaildata, tenantId);
         }
 
         public InvoiceViewModel GetInvoicePreviewModelByOrderProcessId(int orderProcessId, caTenant tenant)

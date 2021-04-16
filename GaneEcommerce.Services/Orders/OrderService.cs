@@ -1260,6 +1260,7 @@ namespace Ganedata.Core.Services
                 return new OrdersSync() { RequestSuccess = false, RequestStatus = "Sale has been made, but no products specified with this order." };
             }
 
+           
             if ((!item.OrderID.HasValue && (!item.OrderToken.HasValue || item.OrderToken == new Guid())) || !item.SaleMade)
             {
                 if (item.ProgressInfo != null)
@@ -1471,66 +1472,7 @@ namespace Ganedata.Core.Services
                     order.OrderStatusID = OrderStatusEnum.AwaitingAuthorisation;
                 }
 
-                if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn || item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut)
-                {
-                    order.OrderGroupToken = groupToken;
-                    order.WarehouseId = warehouse.WarehouseId;
-                    order.OrderStatusID = OrderStatusEnum.Active;
-                    order.TransferWarehouseId = terminal.TenantWarehous.ParentWarehouseId;
-                    if (order.DateCreated == null || order.DateCreated == DateTime.MinValue)
-                    {
-                        order.DateCreated = DateTime.UtcNow;
-                    }
-
-                    item.OrderID = order.OrderID;
-
-                    item.InventoryTransactionTypeId = (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn) ? InventoryTransactionTypeEnum.TransferOut : InventoryTransactionTypeEnum.TransferIn;
-
-                    var outOrder = new Order
-                    {
-                        OrderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum)item.InventoryTransactionTypeId, terminal.TenantId),
-                        AccountID = item.AccountID,
-                        Note = item.OrderNotes,
-                        InventoryTransactionTypeId = item.InventoryTransactionTypeId,
-                        DateCreated = DateTime.UtcNow,
-                        CreatedBy = item.CreatedBy,
-                        OrderStatusID = OrderStatusEnum.Active,
-                        IsCancel = false,
-                        IsActive = false,
-                        OrderTotal = item.OrderProcessDetails.Sum(m => m.Price),
-                        Posted = false,
-                        IsShippedToTenantMainLocation = false,
-                        TenentId = terminal.TenantId,
-                        WarehouseId = terminal.TenantWarehous.ParentWarehouseId,
-                        OrderGroupToken = groupToken,
-                        TransferWarehouseId = warehouse.WarehouseId
-                    };
-
-                    if (order.DateCreated == null || order.DateCreated == DateTime.MinValue)
-                    {
-                        order.DateCreated = DateTime.UtcNow;
-                    }
-
-                    var outOrderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
-                    {
-                        DateCreated = m.DateCreated ?? DateTime.UtcNow,
-                        IsDeleted = m.IsDeleted,
-                        OrderDetailStatusId = OrderStatusEnum.Active,
-                        Price = m.Price,
-                        ProductId = m.ProductId,
-                        Qty = m.QtyProcessed,
-                        TenentId = terminal.TenantId,
-                        TotalAmount = m.Price * m.QtyProcessed,
-                        WarrantyID = m.WarrantyID,
-                        WarrantyAmount = m.WarrantyAmount,
-                        TaxID = m.TaxID,
-                        TaxAmount = m.TaxAmount,
-                        CreatedBy = m.CreatedBy,
-                        Notes = m.Notes
-                    }).ToList();
-
-                    outOrder = CreateOrder(outOrder, terminal.TenantId, terminal.TenantWarehous.ParentWarehouseId ?? warehouse.WarehouseId, 0, outOrderDetails);
-                }
+                UpdateTransferOrderDetails(item, terminal, order, groupToken, warehouse);
 
                 if (item.ProgressInfo != null)
                 {
@@ -1831,6 +1773,76 @@ namespace Ganedata.Core.Services
             }
 
             return new OrdersSync() { RequestSuccess = true, RequestStatus = "Order processed successfully" };
+        }
+
+        private void UpdateTransferOrderDetails(OrderProcessesSync item, Terminals terminal, Order order, Guid groupToken,
+            TenantLocations warehouse)
+        {
+            if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn ||
+                item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut)
+            {
+                order.OrderGroupToken = groupToken;
+                order.WarehouseId = warehouse.WarehouseId;
+                order.OrderStatusID = OrderStatusEnum.Active;
+                order.TransferWarehouseId = terminal.TenantWarehous.ParentWarehouseId;
+                if (order.DateCreated == null || order.DateCreated == DateTime.MinValue)
+                {
+                    order.DateCreated = DateTime.UtcNow;
+                }
+
+                item.OrderID = order.OrderID;
+
+                item.InventoryTransactionTypeId = (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn)
+                    ? InventoryTransactionTypeEnum.TransferOut
+                    : InventoryTransactionTypeEnum.TransferIn;
+
+                var outOrder = new Order
+                {
+                    OrderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum) item.InventoryTransactionTypeId,
+                        terminal.TenantId),
+                    AccountID = item.AccountID,
+                    Note = item.OrderNotes,
+                    InventoryTransactionTypeId = item.InventoryTransactionTypeId,
+                    DateCreated = DateTime.UtcNow,
+                    CreatedBy = item.CreatedBy,
+                    OrderStatusID = OrderStatusEnum.Active,
+                    IsCancel = false,
+                    IsActive = false,
+                    OrderTotal = item.OrderProcessDetails.Sum(m => m.Price),
+                    Posted = false,
+                    IsShippedToTenantMainLocation = false,
+                    TenentId = terminal.TenantId,
+                    WarehouseId = terminal.TenantWarehous.ParentWarehouseId,
+                    OrderGroupToken = groupToken,
+                    TransferWarehouseId = warehouse.WarehouseId
+                };
+
+                if (order.DateCreated == null || order.DateCreated == DateTime.MinValue)
+                {
+                    order.DateCreated = DateTime.UtcNow;
+                }
+
+                var outOrderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
+                {
+                    DateCreated = m.DateCreated ?? DateTime.UtcNow,
+                    IsDeleted = m.IsDeleted,
+                    OrderDetailStatusId = OrderStatusEnum.Active,
+                    Price = m.Price,
+                    ProductId = m.ProductId,
+                    Qty = m.QtyProcessed,
+                    TenentId = terminal.TenantId,
+                    TotalAmount = m.Price * m.QtyProcessed,
+                    WarrantyID = m.WarrantyID,
+                    WarrantyAmount = m.WarrantyAmount,
+                    TaxID = m.TaxID,
+                    TaxAmount = m.TaxAmount,
+                    CreatedBy = m.CreatedBy,
+                    Notes = m.Notes
+                }).ToList();
+
+                outOrder = CreateOrder(outOrder, terminal.TenantId,
+                    terminal.TenantWarehous.ParentWarehouseId ?? warehouse.WarehouseId, 0, outOrderDetails);
+            }
         }
 
         public Order UpdateLoyaltPointsForAccount(int orderId)
