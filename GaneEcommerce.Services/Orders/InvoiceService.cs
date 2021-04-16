@@ -519,7 +519,7 @@ namespace Ganedata.Core.Services
             var invocieDetaildata = _currentDbContext.InvoiceDetails.Include(i => i.OrderDetail)
                                                                     .Where(u => u.InvoiceMasterId == InvoiceMasterId &&
                                                                                 u.IsDeleted != true &&
-                                                                                (productIds.Contains(u.ProductId) || productIds.Length == 0))
+                                                                                (productIds.Contains(u.ProductId) || productIds.Count() == 0))
                                                                     .ToList();
 
             return _productPriceService.GetInvoiceDetailsProductPrices(invocieDetaildata, tenantId);

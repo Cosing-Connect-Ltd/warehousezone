@@ -1054,6 +1054,7 @@ namespace WMS.Controllers
             DeliveryNotePrint report = CreateDeliveryNotePrint(id);
             report.RequestParameters = false;
             report.xrLabel16.Text = "Goods Book In Note";
+            
             //report.xrLabel26.Text = "";
             return View(report);
         }
