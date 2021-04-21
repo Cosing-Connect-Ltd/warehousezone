@@ -31,7 +31,15 @@
     @RenderSection("scripts", required: false)
 
     @{ bool loginStatus = LayoutHelpers.UserLoginStatus(); }
-    @{ bool isSuperUser = LayoutHelpers.IsSuperUser(); }
+    @{
+        bool isSuperUser = LayoutHelpers.IsSuperUser();
+        var logoName = Request.Url.Host.Split('.')[0].Split('-')[0];
+        if (string.IsNullOrWhiteSpace(logoName))
+        {
+            logoName = "logo";
+        }
+
+    }
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
@@ -54,7 +62,7 @@
         <div class="container p-0">
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">&#x2630;</button>
             <div class="application-logo">
-                <a href="@Url.Action("index","home")"><img src="@Url.Content("~/Content/images/logo.png")"></a>
+                <a href="@Url.Action("index","home")"><img src="@Url.Content("~/Content/images/"+ logoName +".png")"></a>
             </div>
             <div class="top-right">
                 <div class="navbar-collapse collapse">
