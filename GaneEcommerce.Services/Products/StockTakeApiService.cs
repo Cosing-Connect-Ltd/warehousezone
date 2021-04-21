@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Ganedata.Core.Services
@@ -959,10 +960,18 @@ namespace Ganedata.Core.Services
         }
         public StockTake ApplyStockTakeChanges(StockTakeApplyChangeRequest request, int userId)
         {
+            var productIds = request.RequestItems.Select(m => m.InventoryStockId).ToList();
+            var products = _context.ProductMaster.Where(m => productIds.Contains(m.ProductId)).ToList();
+
+            var stockTakeSerials = _context.StockTakeDetailsSerials
+                .Where(m => m.StockTakeDetail.StockTakeId == request.StockTakeId && m.IsDeleted != true).ToList();
+
+            var productSerialisations =
+                _context.ProductSerialization.Where(m => productIds.Contains(m.ProductId)).ToList();
             foreach (var item in request.RequestItems)
             {
 
-                var inventoryProduct = _context.ProductMaster.FirstOrDefault(m => m.ProductId == item.InventoryStockId);
+                var inventoryProduct = products.FirstOrDefault(m => m.ProductId == item.InventoryStockId);
 
 
                 if (inventoryProduct != null)
@@ -971,11 +980,10 @@ namespace Ganedata.Core.Services
 
                     if (inventoryProduct.Serialisable)
                     {
-                        var serialStocktakeDetail = _context.StockTakeDetailsSerials
-                            .Where(m => m.StockTakeDetail.StockTakeId == request.StockTakeId && m.ProductId == inventoryProduct.ProductId && m.IsDeleted != true).ToList();
+                        var serialStocktakeDetail = stockTakeSerials.Where(m =>  m.ProductId == inventoryProduct.ProductId).ToList();
 
 
-                        var productSerials = _context.ProductSerialization.Where(m => m.ProductId == inventoryProduct.ProductId).ToList();
+                        var productSerials = productSerialisations.Where(m => m.ProductId == inventoryProduct.ProductId).ToList();
 
                         foreach (var productSerial in productSerials)
                         {

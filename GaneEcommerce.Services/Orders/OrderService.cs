@@ -562,10 +562,10 @@ namespace Ganedata.Core.Services
                 ProductId = ord.ProductId,
                 ProductMaster = ord.ProductMaster,
                 OrderDetailID = ord.OrderDetailID,
-                Product = ord.ProductMaster.Name + ((ord.ProductAttributeValue != null && ord.ProductAttributeValue.Value!=null) ? $"({ord.ProductAttributeValue.Value})" : ""),
+                Product = ord.ProductMaster.Name + ((ord.ProductAttributeValue != null && ord.ProductAttributeValue.Value != null) ? $"({ord.ProductAttributeValue.Value})" : ""),
                 Qty = ord.Qty,
-                Price = (ord.ProductAttributeValue!=null && ord.ProductAttributeValueId>0) 
-                    ? (GetProductValueMapByAttribute(ord.ProductId, ord.ProductAttributeValueId.Value).AttributeSpecificPrice??0) : ord.Price,
+                Price = (ord.ProductAttributeValue != null && ord.ProductAttributeValueId > 0)
+                    ? (GetProductValueMapByAttribute(ord.ProductId, ord.ProductAttributeValueId.Value).AttributeSpecificPrice ?? 0) : ord.Price,
                 TotalWarrantyAmount = ord.WarrantyAmount * ord.Qty,
                 WarrantyAmount = ord.WarrantyAmount,
                 TaxName = ord.TaxName,
@@ -1197,8 +1197,46 @@ namespace Ganedata.Core.Services
             return receivepo;
         }
 
+        private List<OrderProcessLowStockItems> ValidateStockAvailability(OrderProcessesSync order)
+        {
+            var productIds = order.OrderProcessDetails.Select(m => m.ProductId).ToList();
+            var stockLevels = _currentDbContext.InventoryStocks.Where(m => m.IsDeleted != true).ToList()
+                .Where(m => productIds.Contains(m.ProductId)).ToList();
+
+            var result = new List<OrderProcessLowStockItems>();
+
+            foreach (var item in order.OrderProcessDetails)
+            {
+                var stockLevel = stockLevels.FirstOrDefault(m => m.ProductId == item.ProductId);
+                if (stockLevel != null && item.QtyProcessed > stockLevel.InStock && item.ProductId>0)
+                {
+                    var product = _currentDbContext.ProductMaster.Find(item.ProductId);
+                    result.Add(new OrderProcessLowStockItems()
+                    {
+                        ProductId = item.ProductId,
+                        ProductName = product.Name,
+                        SkuCode = product.SKUCode,
+                        StockLevel = stockLevel.InStock
+                    });
+                }
+            }
+
+            return result;
+        }
+
         public OrdersSync SaveOrderProcessSync(OrderProcessesSync item, Terminals terminal)
         {
+            var outOfStockItems = ValidateStockAvailability(item);
+            if (outOfStockItems.Any())
+            {
+                return new OrdersSync()
+                {
+                    RequestSuccess = false,
+                    RequestStatus = "There is no enough stock available from selected source to complete this transaction.",
+                    ProductsWithoutEnoughStock = outOfStockItems
+                };
+            }
+
             //TODO: Refectoring required for this method
             var groupToken = Guid.NewGuid();
             var serialProcessStatus = new SerialProcessStatus();

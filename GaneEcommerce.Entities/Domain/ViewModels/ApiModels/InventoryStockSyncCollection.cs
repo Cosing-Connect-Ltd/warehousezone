@@ -17,6 +17,7 @@ namespace Ganedata.Core.Models
         public int ProductId { get; set; }
         public int WarehouseId { get; set; }
 
+        public decimal MinStockQuantity { get; set; }
         public decimal InStock { get; set; }
         public decimal Allocated { get; set; }
         public decimal Available { get; set; }

@@ -83,7 +83,7 @@ namespace Ganedata.Core.Services
                 AdjustRecipeItemsInventory(transaction);
 
                 //calculate location stock
-                if (!dontMonitorStock)
+                if (!dontMonitorStock && locationId>0)
                 {
                     InventoryStockMoveExtensions.AdjustStockLocations(transaction.ProductId, 0, location, transaction.Quantity, transaction.WarehouseId, transaction.TenentId, transaction.CreatedBy, pallettrackingId, serialId, false);
                 }
@@ -245,7 +245,7 @@ namespace Ganedata.Core.Services
                         goodsReturnRequestSync.tenantId, user, transaction: tans);
 
                     //calculate location stock
-                    if (!dontMonitorStock)
+                    if (!dontMonitorStock && locationId > 0)
                     {
                         InventoryStockMoveExtensions.AdjustStockLocations(tans.ProductId, 0, location, tans.Quantity, tans.WarehouseId, tans.TenentId, tans.CreatedBy, null, tans.SerialID, false);
                     }
@@ -354,7 +354,7 @@ namespace Ganedata.Core.Services
                     goodsReturnRequestSync.tenantId, UserId, transaction: trans);
 
                 //calculate location stock
-                if (!dontMonitorStock)
+                if (!dontMonitorStock && location > 0)
                 {
                     InventoryStockMoveExtensions.AdjustStockLocations(trans.ProductId, 0, location, trans.Quantity, trans.WarehouseId, trans.TenentId, trans.CreatedBy, null, null, false);
                 }
@@ -373,9 +373,8 @@ namespace Ganedata.Core.Services
             int? cons_type, string delivery, int? Line_Id, List<CommonLocationViewModel> stockLocations = null,
             AccountShipmentInfo shipmentInfo = null)
         {
-            int location = GetLocation(model.TenentId, model.WarehouseId, model.CreatedBy, model.LocationId);
+            int location = model.LocationId>0 ? GetLocation(model.TenentId, model.WarehouseId, model.CreatedBy, model.LocationId): 0;
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
-            var orderservice = DependencyResolver.Current.GetService<IOrderService>();
             InventoryTransaction AutoTransferInventoryTransaction = new InventoryTransaction();
             bool reverseInventoryTransaction = false;
 
@@ -780,7 +779,7 @@ namespace Ganedata.Core.Services
                     StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy, transaction: model);
 
                     //calculate location stock
-                    if (!dontMonitorStock)
+                    if (!dontMonitorStock && location > 0)
                     {
                         InventoryStockMoveExtensions.AdjustStockLocations(model.ProductId, 0, location, item.Quantity, model.WarehouseId, model.TenentId, model.CreatedBy, model.PalletTrackingId, model.SerialID, false);
                     }
@@ -797,7 +796,7 @@ namespace Ganedata.Core.Services
                 StockRecalculate(model.ProductId, model.WarehouseId, model.TenentId, model.CreatedBy, transaction: model);
 
                 //calculate location stock
-                if (!dontMonitorStock)
+                if (!dontMonitorStock && location > 0)
                 {
                     InventoryStockMoveExtensions.AdjustStockLocations(model.ProductId, 0, location, model.Quantity, model.WarehouseId, model.TenentId, model.CreatedBy, model.PalletTrackingId, model.SerialID, false);
                 }
@@ -816,7 +815,7 @@ namespace Ganedata.Core.Services
                     AutoTransferInventoryTransaction.WarehouseId, model.TenentId, model.CreatedBy, transaction: model);
 
                 //calculate location stock
-                if (!dontMonitorStock)
+                if (!dontMonitorStock && location > 0)
                 {
                     InventoryStockMoveExtensions.AdjustStockLocations(AutoTransferInventoryTransaction.ProductId, 0, location, AutoTransferInventoryTransaction.Quantity, AutoTransferInventoryTransaction.WarehouseId,
                         AutoTransferInventoryTransaction.TenentId, AutoTransferInventoryTransaction.CreatedBy, AutoTransferInventoryTransaction.PalletTrackingId, AutoTransferInventoryTransaction.SerialID, false);
@@ -873,7 +872,7 @@ namespace Ganedata.Core.Services
                 AdjustRecipeItemsInventory(transaction);
 
                 //calculate location stock
-                if (!dontMonitorStock)
+                if (!dontMonitorStock && locationId > 0)
                 {
                     InventoryStockMoveExtensions.AdjustStockLocations(transaction.ProductId, 0, location, transaction.Quantity, transaction.WarehouseId, transaction.TenentId, transaction.CreatedBy, transaction.PalletTrackingId, transaction.SerialID, false);
                 }
@@ -933,7 +932,7 @@ namespace Ganedata.Core.Services
                     StockRecalculate(product, warehouseId, tenantId, userId, transaction: trans);
 
                     //calculate location stock
-                    if (!dontMonitorStock)
+                    if (!dontMonitorStock && locationId > 0)
                     {
                         InventoryStockMoveExtensions.AdjustStockLocations(trans.ProductId, 0, location, trans.Quantity, trans.WarehouseId, trans.TenentId, trans.CreatedBy, trans.PalletTrackingId, trans.SerialID, false);
                     }
