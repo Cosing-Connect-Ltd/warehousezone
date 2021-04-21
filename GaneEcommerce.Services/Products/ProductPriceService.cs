@@ -446,6 +446,7 @@ namespace Ganedata.Core.Services
                                                                                       p.IsDeleted != true)
                                                                           .ToList()?
                                                                           .Where(p => remainingInvoices.Any(i => i.ProductId == p.ProductId && p.OrderID == i?.OrderDetail?.OrderID))
+                                                                          .OrderBy(i => i.ProductId)
                                                                           .ToList();
 
                 tempProductIds = inventoryTransactions.Select(r => r.ProductId).Distinct().ToList();
@@ -575,7 +576,7 @@ namespace Ganedata.Core.Services
                                                                     .ToList();
             }
 
-            return invoiceDetails.Select(i =>
+            var results = invoiceDetails.Select(i =>
             {
                 var averageBuyPrice = productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId)?.AverageBuyPrice ?? 0;
                 var totalBuyPrice = productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId)?.Prices.Sum(a => a.BuyPrice * a.Quantity) ?? 0;
@@ -605,6 +606,14 @@ namespace Ganedata.Core.Services
 
                 };
             }).ToList();
+
+            foreach (var result in results.Where(m => m.BuyPrice == 0))
+            {
+                result.BuyPrice = GetPurchasePrice(result.ProductId, tenantId) ?? 0;
+                result.TotalBuyPrice = result.BuyPrice * result.Quantity;
+            }
+
+            return results;
         }
 
         private class InvoiceProductPrice

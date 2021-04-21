@@ -23,6 +23,7 @@ namespace Ganedata.Core.Models
         public OrdersSync()
         {
             OrderDetails = new List<OrderDetailSync>();
+            ProductsWithoutEnoughStock = new List<OrderProcessLowStockItems>();
         }
         public int OrderID { get; set; }
         public string OrderNumber { get; set; }
@@ -103,8 +104,20 @@ namespace Ganedata.Core.Models
         public bool OfflineSale { get; set; }
         public string VoucherCode { get; set; }
         public string PaypalBraintreeNonce { get; set; }
+
+        public List<OrderProcessLowStockItems> ProductsWithoutEnoughStock { get; set; }
     }
 
+    public class OrderProcessLowStockItems  {
+    
+        public int ProductId { get; set; }
+        public decimal StockLevel { get; set; }
+        public string ProductName { get; set; }
+        public string SkuCode { get; set; }
+
+    }
+
+    
     public class OrderDetailSync
     {
         public int OrderDetailID { get; set; }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using AutoMapper;
 using Ganedata.Core.Entities.Enums;
@@ -36,7 +37,9 @@ namespace WMS.Controllers.WebAPI
 
             var result = new InventoryStockSyncCollection();
 
-            var allInventoryStocks = ProductServices.GetAllInventoryStocks(terminal.TenantId, terminal.WarehouseId, reqDate);
+            var allInventoryStocks =
+                ProductServices.GetAllInventoryStocks(terminal.TenantId, terminal.WarehouseId, reqDate);
+            var stockLevels = TenantLocationServices.GetAllStockLevelsForTenant(terminal.TenantId).ToList();
 
             var inventoryStocks = new List<InventoryStockSync>();
 
@@ -44,11 +47,15 @@ namespace WMS.Controllers.WebAPI
             {
                 var inventory = new InventoryStockSync();
                 var mapped = _mapper.Map(p, inventory);
+
+                var stockLevel = stockLevels.FirstOrDefault(m => m.ProductID == p.ProductId);
+                mapped.MinStockQuantity = stockLevel?.MinStockQuantity??0;
                 inventoryStocks.Add(mapped);
             }
 
             result.Count = inventoryStocks.Count;
-            result.TerminalLogId = TerminalServices.CreateTerminalLog(reqDate, terminal.TenantId, inventoryStocks.Count, terminal.TerminalId, TerminalLogTypeEnum.InventoryStockSync).TerminalLogId;
+            result.TerminalLogId = TerminalServices.CreateTerminalLog(reqDate, terminal.TenantId, inventoryStocks.Count,
+                terminal.TerminalId, TerminalLogTypeEnum.InventoryStockSync).TerminalLogId;
             result.InventoryStocks = inventoryStocks;
             return Ok(result);
         }
