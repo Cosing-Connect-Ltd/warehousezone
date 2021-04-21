@@ -82,13 +82,20 @@ namespace Ganedata.Core.Services
 
                 if (account.AccountContacts == null) return string.Empty;
 
-                var billingContact = account.AccountContacts.FirstOrDefault(m => m.ConTypeInvoices);
+                var billingContact = account.AccountContacts.FirstOrDefault(m => m.ConTypeInvoices && m.IsDeleted != true);
 
                 if (billingContact != null)
                 {
                     return billingContact.ContactEmail;
                 }
-                var availableContact = account.AccountContacts.FirstOrDefault();
+                else
+                {
+                    billingContact = account.AccountContacts.FirstOrDefault(m => m.ConTypeStatment && m.IsDeleted != true);
+                    if(billingContact!=null)
+                        return billingContact.ContactEmail;
+                }
+
+                var availableContact = account.AccountContacts.FirstOrDefault(m=> m.IsDeleted != true);
                 if (availableContact != null)
                 {
                     return availableContact.ContactEmail;
