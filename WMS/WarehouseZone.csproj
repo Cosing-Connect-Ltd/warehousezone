@@ -1057,6 +1057,7 @@
     <Content Include="Content\images\largebox.png" />
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\loan-order-icon.png" />
+    <Content Include="Content\images\localhost.png" />
     <Content Include="Content\images\logo-becsco.png" />
     <Content Include="Content\images\logo-gs.png" />
     <Content Include="Content\images\logo-regals.png" />

@@ -1227,7 +1227,7 @@ namespace Ganedata.Core.Services
         public OrdersSync SaveOrderProcessSync(OrderProcessesSync item, Terminals terminal)
         {
             var outOfStockItems = ValidateStockAvailability(item);
-            if (outOfStockItems.Any())
+            if (item.FoodOrderType == null && outOfStockItems.Any())
             {
                 return new OrdersSync()
                 {

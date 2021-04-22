@@ -623,7 +623,7 @@ namespace Ganedata.Core.Services
                     if (altOrder != null && altOrder.Warehouse.AutoTransferOrders == true)
                     {
                         var AltOrderDetail = altOrder.OrderDetails.FirstOrDefault(m =>
-                            m.ProductId == model.ProductId && m.Qty >= m.ProcessedQty);
+                            m.ProductId == model.ProductId && m.Qty >= m.ProcessedQty && m.IsDeleted!=true);
                         var targetWarehouseProcess = context.OrderProcess
                             .Where(m => m.OrderID == model.OrderID && m.IsDeleted != true).ToList().FirstOrDefault(m =>
                                 consolidateOrderProcess == true ||
