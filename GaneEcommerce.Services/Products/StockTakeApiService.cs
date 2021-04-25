@@ -999,16 +999,15 @@ namespace Ganedata.Core.Services
                     }
                     else if (inventoryProduct.ProcessByPallet)
                     {
-                        var palletSerials = _context.PalletTracking.Where(m => m.ProductId == inventoryProduct.ProductId).ToList();
-
+                        var palletSerials = _context.PalletTracking.Where(m => m.ProductId == inventoryProduct.ProductId && m.Status== PalletTrackingStatusEnum.Active).ToList();
+                        var stocktakePallets = _context.StockTakeDetailsPallets.Where(x => x.StockTakeDetail.StockTakeId == request.StockTakeId);
                         foreach (var palletSerial in palletSerials)
                         {
                             decimal casesDifference = 0;
                             InventoryTransactionTypeEnum transType = 0;
                             int? locationId = null;
 
-                            var stocktakePallet = _context.StockTakeDetailsPallets.FirstOrDefault(x => x.ProductPalletId == palletSerial.PalletTrackingId
-                            && x.StockTakeDetail.StockTakeId == request.StockTakeId);
+                            var stocktakePallet = stocktakePallets.FirstOrDefault(x => x.ProductPalletId == palletSerial.PalletTrackingId);
 
                             if (stocktakePallet != null)
                             {

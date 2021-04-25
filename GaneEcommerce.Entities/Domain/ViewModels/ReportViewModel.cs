@@ -41,6 +41,7 @@ namespace Ganedata.Core.Models
         public decimal? NetAmtB { get; set; }
         public decimal? NetAmtS { get; set; }
         public decimal? Profit { get; set; }
+        public decimal? ProfitPercent { get; set; }
         public List<InvoiceProfitReportProductsViewModel> ProductsDetail { get; set; }
         public decimal? TotalNetAmtB { get; set; }
         public decimal? TotalNetAmtS { get; set; }

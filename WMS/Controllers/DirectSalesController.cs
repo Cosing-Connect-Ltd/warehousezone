@@ -181,6 +181,7 @@ namespace WMS.Controllers
             if (!refundResponse.Success)
             {
                 ViewBag.ErrorMessage = "Refund cannot be processed. Please contact technical support for more details.";
+                ViewBag.ErrorMessageDetails = refundResponse.ErrorMessages.FirstOrDefault();
                 ViewBag.RefundRestricted = true;
             }
             else if (order.OrderStatusID == OrderStatusEnum.FullyRefunded || order.OrderStatusID == OrderStatusEnum.PartiallyRefunded)

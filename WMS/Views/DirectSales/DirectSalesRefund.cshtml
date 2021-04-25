@@ -48,6 +48,12 @@
     <div class="col-sm-12">
         <div class="alert alert-danger">
             <h4>@ViewBag.ErrorMessage</h4>
+            @if (ViewBag.ErrorMessageDetails != null)
+            {
+                <small>
+                    <b> @ViewBag.ErrorMessageDetails</b>
+                </small>
+            }
         </div>
     </div>
 }

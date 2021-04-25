@@ -1424,6 +1424,8 @@ namespace WMS.Controllers
                     NetAmtB = invoiceProductsPrices.Sum(p => p.TotalBuyPrice),
                     NetAmtS = invoiceProductsPrices.Sum(p => p.TotalSellPrice),
                     Profit = sellingNetAmount - buyingNetAmount,
+                    ProfitPercent = sellingNetAmount>0? ((sellingNetAmount - buyingNetAmount)/sellingNetAmount)*100.0m:0,
+                    
                     ProductsDetail = invoiceProductsPrices.Select(p => new InvoiceProfitReportProductsViewModel
                     {
                         InvoiceId = p.InvoiceId,
@@ -1434,7 +1436,7 @@ namespace WMS.Controllers
                         TotalBuyPrice = p.TotalBuyPrice,
                         TotalSellPrice = p.TotalSellPrice,
                         Profit = p.TotalSellPrice - p.TotalBuyPrice,
-                        ProfitPercent = p.TotalBuyPrice > 0 ? ((p.TotalSellPrice - p.TotalBuyPrice)/ (p.TotalBuyPrice)) * 100.0m : 0
+                        ProfitPercent = p.TotalSellPrice > 0 ? ((p.TotalSellPrice - p.TotalBuyPrice)/ (p.TotalSellPrice)) * 100.0m : 0
                     }).ToList()
                 });
             }
@@ -1442,13 +1444,15 @@ namespace WMS.Controllers
             report.TotalNetAmtB.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.NetAmtB));
             report.TotalNetAmtS.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.NetAmtS));
             report.TotalProfit.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.Profit));
-            report.Profit.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.Profit));
+            //report.Profit.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.Profit));
 
             var totalProfit = dataSource.Sum(u => u.Profit);
-            var totalNetBuy = dataSource.Sum(u => u.NetAmtB);
+            var totalNetSale = dataSource.Sum(u => u.NetAmtS);
 
-            var profitPercent = totalNetBuy > 0 ? ((totalProfit ?? 0) / (totalNetBuy ?? 0)) * 100.0m : 0;
-            report.xrLabelProfitPercent.Text = string.Format("{0:0.00}", profitPercent);
+            var profitPercent = totalNetSale > 0 ? ((totalProfit ?? 0) / (totalNetSale ?? 0)) * 100.0m : 0;
+            //report.xrLabelProfitPercent.Text = string.Format("{0:0.00}", profitPercent);
+            report.TotalProfitPercent.Text = string.Format("{0:0.00}", profitPercent);
+
 
             report.DataSource = dataSource;
         }

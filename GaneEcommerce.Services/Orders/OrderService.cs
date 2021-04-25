@@ -565,7 +565,7 @@ namespace Ganedata.Core.Services
                 Product = ord.ProductMaster.Name + ((ord.ProductAttributeValue != null && ord.ProductAttributeValue.Value != null) ? $"({ord.ProductAttributeValue.Value})" : ""),
                 Qty = ord.Qty,
                 Price = (ord.ProductAttributeValue != null && ord.ProductAttributeValueId > 0)
-                    ? (GetProductValueMapByAttribute(ord.ProductId, ord.ProductAttributeValueId.Value).AttributeSpecificPrice ?? 0) : ord.Price,
+                    ? (GetProductValueMapByAttribute(ord.ProductId, ord.ProductAttributeValueId.Value)?.AttributeSpecificPrice ?? 0) : ord.Price,
                 TotalWarrantyAmount = ord.WarrantyAmount * ord.Qty,
                 WarrantyAmount = ord.WarrantyAmount,
                 TaxName = ord.TaxName,
@@ -1227,7 +1227,7 @@ namespace Ganedata.Core.Services
         public OrdersSync SaveOrderProcessSync(OrderProcessesSync item, Terminals terminal)
         {
             var outOfStockItems = ValidateStockAvailability(item);
-            if (outOfStockItems.Any())
+            if (item.FoodOrderType == null && outOfStockItems.Any())
             {
                 return new OrdersSync()
                 {
