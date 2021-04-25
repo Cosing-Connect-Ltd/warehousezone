@@ -63,7 +63,7 @@ namespace Ganedata.Core.Services
                 CreatedBy = user.UserId,
                 UpdatedBy = user.UserId,
                 IsActive = true,
-                LocationId = location,
+                LocationId = locationId>0? location: (int?)null,
                 InventoryTransactionRef = transactionRef,
                 SerialID = serialId,
                 DontMonitorStock = dontMonitorStock,
