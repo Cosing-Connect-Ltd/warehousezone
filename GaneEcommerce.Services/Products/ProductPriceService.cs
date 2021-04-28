@@ -473,7 +473,7 @@ namespace Ganedata.Core.Services
                                                  .SelectMany(m=> m.Order.OrderDetails)
                                                                                  .Where(u => u.ProductId == i.ProductId && u.IsDeleted != true)
                                                                                  .OrderByDescending(u => u.DateCreated)
-                                                                                 .FirstOrDefault().Price;
+                                                                                 .FirstOrDefault()?.Price;
 
                                              if (productsPrices.Any(p => p.ProductId == i.ProductId))
                                              {
