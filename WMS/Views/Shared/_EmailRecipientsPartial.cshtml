@@ -155,7 +155,7 @@ else
         <div class="card">
             <div class="card-body">
                 <h5 class="alert alert-info">Please add any custom recipient's email in the inputs seperated by semicolon (;)</h5>
-                @if (Request.UrlReferrer.AbsolutePath.ToLower().Contains("purchaseorders") || (Request.UrlReferrer.AbsolutePath.ToLower().Contains("salesorders")))
+                @if ((Request.UrlReferrer??Request.Url).AbsolutePath.ToLower().Contains("purchaseorders") || ((Request.UrlReferrer ?? Request.Url).AbsolutePath.ToLower().Contains("salesorders")))
                 {
                     <div class="input-group justify-content-center align-items-center">
                         <label class="control-label col-md-3">Account Email</label>

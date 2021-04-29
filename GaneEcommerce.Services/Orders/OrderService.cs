@@ -1226,16 +1226,16 @@ namespace Ganedata.Core.Services
 
         public OrdersSync SaveOrderProcessSync(OrderProcessesSync item, Terminals terminal)
         {
-            var outOfStockItems = ValidateStockAvailability(item);
-            if (item.FoodOrderType == null && outOfStockItems.Any())
-            {
-                return new OrdersSync()
-                {
-                    RequestSuccess = false,
-                    RequestStatus = "There is no enough stock available from selected source to complete this transaction.",
-                    ProductsWithoutEnoughStock = outOfStockItems
-                };
-            }
+            //var outOfStockItems = ValidateStockAvailability(item);
+            //if (item.FoodOrderType == null && outOfStockItems.Any())
+            //{
+            //    return new OrdersSync()
+            //    {
+            //        RequestSuccess = false,
+            //        RequestStatus = "There is no enough stock available from selected source to complete this transaction.",
+            //        ProductsWithoutEnoughStock = outOfStockItems
+            //    };
+            //}
 
             //TODO: Refectoring required for this method
             var groupToken = Guid.NewGuid();
