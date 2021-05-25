@@ -601,9 +601,8 @@ namespace Ganedata.Core.Services
                     Quantity = i.Quantity,
                     BuyPrice = averageBuyPrice,
                     SellPrice = i.Price,
-                    TotalBuyPrice = totalBuyPrice,
+                    TotalBuyPrice = averageBuyPrice * i.Quantity,
                     TotalSellPrice = i.Price * i.Quantity
-
                 };
             }).ToList();
 
