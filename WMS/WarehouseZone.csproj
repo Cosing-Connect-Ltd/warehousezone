@@ -1281,9 +1281,6 @@
     <Content Include="libman.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\WarehouseZone - Web Deploy.pubxml">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Scripts\ace.js" />
     <Content Include="Scripts\aspnet\dx.aspnet.data.js" />
     <Content Include="Scripts\aspnet\dx.aspnet.mvc.js" />
