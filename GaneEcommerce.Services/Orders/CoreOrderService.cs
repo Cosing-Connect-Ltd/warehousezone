@@ -165,6 +165,10 @@ namespace Ganedata.Core.Services
         {
             return OrderService.GetOrderProcessConsignmentsForWarehouse(warehouseId, tenantId);
         }
+        public List<OrderProcessLowStockItems> ValidateStockAvailability(int orderId)
+        {
+            return OrderService.ValidateStockAvailability(orderId);
+        }
 
         public List<OrderProcessDetail> GetOrderProcessesDetailsForOrderProduct(int orderId, int productId)
         {

@@ -2215,6 +2215,11 @@
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Shared\_ProductAttributesSelection.cshtml" />
     <Content Include="Views\Shared\_ProductAttributePriceCreateEdit.cshtml" />
+    <Content Include="Views\Shared\_StoreOpeningTimePicker.cshtml" />
+    <Content Include="Views\SalesOrders\_ProductStockDetail.cshtml" />
+    <Content Include="Views\SalesOrders\StockDetail.cshtml" />
+    <None Include="Web.Live.config" />
+    <None Include="Web.Staging.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

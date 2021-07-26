@@ -19,7 +19,7 @@ using WMS.Helpers;
 
 namespace WMS.Controllers
 {
-    
+
 
     public class OrderPaymentController : BaseController
     {
@@ -41,7 +41,7 @@ namespace WMS.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "Refund failed, " +  response.ErrorMessages[0];
+                TempData["ErrorMessage"] = "Refund failed, " + response.ErrorMessages[0];
                 return RedirectToAction("Index", "SalesOrders");
             }
         }
@@ -861,7 +861,7 @@ namespace WMS.Controllers
             ViewBag.orderid = Id;
             return PartialView("_SalesOrderDetails", OrderService.GetSalesOrderDetails(Id, CurrentTenantId));
         }
-        
+
         public ActionResult _DirectSalesOrderDetails(int Id)
         {
             //setname and routevalues are required to reuse order detail list.
@@ -1500,11 +1500,23 @@ namespace WMS.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<ActionResult> UpdateOrderStatus(int orderId, OrderStatusEnum statusId)
+        public async Task<ActionResult> UpdateOrderStatus(int orderId, OrderStatusEnum statusId, bool isSkip = false)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            if (!isSkip)
+            {
+                if (statusId == OrderStatusEnum.Active)
+                {
+                    var stockAvailablity = OrderService.ValidateStockAvailability(orderId);
+                    if (stockAvailablity.Any(u => u.StockLevel <= 0))
+                    {
+                        return Json(0, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
 
             var order = OrderService.UpdateOrderStatus(orderId, statusId, CurrentUserId);
+
 
             if (order != null && order.OrderStatusID == statusId)
             {
@@ -1618,5 +1630,7 @@ namespace WMS.Controllers
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+
     }
 }

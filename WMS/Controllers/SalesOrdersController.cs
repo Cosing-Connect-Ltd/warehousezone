@@ -1085,5 +1085,18 @@ namespace WMS.Controllers
             var status = OrderService.UpdateOrdersPicker(orderIds, PickerId, CurrentUserId);
             return Json(status, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult StockDetail(int orderId)
+            {
+            ViewBag.orderId = orderId;
+            return View();
+        }
+
+        public PartialViewResult _ProductStockDetail(int orderId)
+        {
+            ViewBag.orderId = orderId;
+            var stockAvailablity = OrderService.ValidateStockAvailability(orderId).ToList();
+            return PartialView(stockAvailablity);
+        }
     }
 }

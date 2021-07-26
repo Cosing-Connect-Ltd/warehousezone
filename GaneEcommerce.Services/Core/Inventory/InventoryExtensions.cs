@@ -56,7 +56,7 @@ namespace Ganedata.Core.Services
 
             totalIn = query.Where(e => e.Type == InventoryTransactionTypeEnum.PurchaseOrder).Select(I => I.Quantity)
                 .DefaultIfEmpty(0).Sum();
-            totalOut = query.Where(e => e.Type == InventoryTransactionTypeEnum.SalesOrder).Select(I => I.Quantity)
+            totalOut = query.Where(e => e.Type == InventoryTransactionTypeEnum.SalesOrder ).Select(I => I.Quantity)
                 .DefaultIfEmpty(0).Sum();
             totalReturns = query.Where(e => e.Type == InventoryTransactionTypeEnum.Returns).Select(I => I.Quantity)
                 .DefaultIfEmpty(0).Sum();

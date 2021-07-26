@@ -818,9 +818,20 @@ namespace Ganedata.Core.Services
                 var dataImportFactory = new DataImportFactory();
                 dataImportFactory.PrestaShopOrderStatusUpdate(orderId, PrestashopOrderStateEnum.PickAndPack, currentUser?.DisplayNameWithEmail);
             }
-
             var schOrder = _currentDbContext.Order.Find(orderId);
-            schOrder.OrderStatusID = statusId;
+            if (statusId == OrderStatusEnum.Active && order.OrderStatusID != OrderStatusEnum.Active)
+            {
+
+                Inventory.StockRecalculateByOrderId(order.OrderID, (order.WarehouseId ?? 0), order.TenentId, userId);
+                schOrder.OrderStatusID = statusId;
+
+            }
+            else
+            {
+                schOrder.OrderStatusID = statusId;
+
+            }
+
             schOrder.UpdatedBy = userId;
             schOrder.DateUpdated = DateTime.UtcNow;
 
@@ -1197,18 +1208,19 @@ namespace Ganedata.Core.Services
             return receivepo;
         }
 
-        private List<OrderProcessLowStockItems> ValidateStockAvailability(OrderProcessesSync order)
+        public List<OrderProcessLowStockItems> ValidateStockAvailability(int orderId)
         {
-            var productIds = order.OrderProcessDetails.Select(m => m.ProductId).ToList();
+            var order = _currentDbContext.Order.Find(orderId);
+            var productIds = order.OrderDetails.Select(m => m.ProductId).ToList();
             var stockLevels = _currentDbContext.InventoryStocks.Where(m => m.IsDeleted != true).ToList()
                 .Where(m => productIds.Contains(m.ProductId)).ToList();
 
             var result = new List<OrderProcessLowStockItems>();
 
-            foreach (var item in order.OrderProcessDetails)
+            foreach (var item in order.OrderDetails)
             {
                 var stockLevel = stockLevels.FirstOrDefault(m => m.ProductId == item.ProductId);
-                if (stockLevel != null && item.QtyProcessed > stockLevel.InStock && item.ProductId>0)
+                if (stockLevel != null && item.ProcessedQty > stockLevel.InStock && item.ProductId > 0)
                 {
                     var product = _currentDbContext.ProductMaster.Find(item.ProductId);
                     result.Add(new OrderProcessLowStockItems()
@@ -1836,7 +1848,7 @@ namespace Ganedata.Core.Services
 
                 var outOrder = new Order
                 {
-                    OrderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum) item.InventoryTransactionTypeId,
+                    OrderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum)item.InventoryTransactionTypeId,
                         terminal.TenantId),
                     AccountID = item.AccountID,
                     Note = item.OrderNotes,
@@ -2057,7 +2069,7 @@ namespace Ganedata.Core.Services
                     account.FinalBalance = transaction.FinalBalance;
                     account.DateUpdated = DateTime.UtcNow;
                     transaction.Notes = "Invoice: " + item.TerminalInvoiceNumber;
-                     
+
                 }
                 else if (type == AccountTransactionTypeEnum.PaidByAccount || type == AccountTransactionTypeEnum.Refund ||
                     type == AccountTransactionTypeEnum.Discount || type == AccountTransactionTypeEnum.CreditNote)
@@ -2071,7 +2083,7 @@ namespace Ganedata.Core.Services
                     }
                     account.FinalBalance = transaction.FinalBalance;
                     account.DateUpdated = DateTime.UtcNow;
-                 
+
                 }
             }
             else
@@ -3611,7 +3623,7 @@ namespace Ganedata.Core.Services
         public bool UpdatePickerId(int OrderId, int? pickerId, int userId)
         {
             var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == OrderId);
-            if (order != null && (order.OrderStatusID == OrderStatusEnum.Active || order.OrderStatusID == OrderStatusEnum.Hold || order.OrderStatusID == OrderStatusEnum.BeingPicked || order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation ))
+            if (order != null && (order.OrderStatusID == OrderStatusEnum.Active || order.OrderStatusID == OrderStatusEnum.Hold || order.OrderStatusID == OrderStatusEnum.BeingPicked || order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation))
             {
                 order.OrderStatusID = OrderStatusEnum.Active;
                 order.PickerId = pickerId;
@@ -3629,7 +3641,7 @@ namespace Ganedata.Core.Services
         {
             foreach (var orderId in orderIds)
             {
-                var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId && u.OrderStatusID!= OrderStatusEnum.OrderUpdating);
+                var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId && u.OrderStatusID != OrderStatusEnum.OrderUpdating);
                 if (order != null)
                 {
                     order.OrderStatusID = pickerId == null ? OrderStatusEnum.Hold : OrderStatusEnum.Active;
@@ -3643,7 +3655,7 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             return true;
         }
-        
+
         public bool UpdateOrderPaypalPaymentInfo(int orderId, string nonce, Braintree.Transaction transaction)
         {
             var order = _currentDbContext.Order.FirstOrDefault(m => m.OrderID == orderId);
@@ -3653,10 +3665,10 @@ namespace Ganedata.Core.Services
             order.PaypalTransactionFee = transaction.PayPalDetails.TransactionFeeAmount;
             order.PaypalPaymentId = transaction.PayPalDetails.PaymentId;
             order.PaypalPayerEmail = transaction.PayPalDetails.PayerEmail;
-            order.PaypalPayerFirstName= transaction.PayPalDetails.PayerFirstName;
-            order.PaypalPayerSurname= transaction.PayPalDetails.PayerLastName;
+            order.PaypalPayerFirstName = transaction.PayPalDetails.PayerFirstName;
+            order.PaypalPayerSurname = transaction.PayPalDetails.PayerLastName;
             order.PaypalAuthorizationId = transaction.PayPalDetails.AuthorizationId;
-         
+
             _currentDbContext.Entry(order).State = EntityState.Modified;
             _currentDbContext.SaveChanges();
             return true;

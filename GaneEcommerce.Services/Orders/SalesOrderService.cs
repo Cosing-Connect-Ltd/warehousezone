@@ -55,14 +55,15 @@ namespace Ganedata.Core.Services
                 }
             }
 
-            if (!caCurrent.CurrentWarehouse().AutoAllowProcess)
-            {
-                order.OrderStatusID = OrderStatusEnum.Hold;
-            }
-            else
-            {
-                order.OrderStatusID = OrderStatusEnum.Active;
-            }
+            //if (!caCurrent.CurrentWarehouse().AutoAllowProcess)
+            //{
+            //    order.OrderStatusID = OrderStatusEnum.Hold;
+            //}
+            //else
+            //{
+            //    order.OrderStatusID = OrderStatusEnum.Active;
+            //}
+            order.OrderStatusID = OrderStatusEnum.Hold;
 
             _currentDbContext.Order.Add(order);
 
@@ -175,7 +176,10 @@ namespace Ganedata.Core.Services
             #endregion SendEmailWithAttachment
 
             _currentDbContext.SaveChanges();
-            Inventory.StockRecalculateByOrderId(order.OrderID, warehouseId, tenantId, caCurrent.CurrentUser().UserId);
+            if (order.OrderStatusID == OrderStatusEnum.Active)
+            {
+                Inventory.StockRecalculateByOrderId(order.OrderID, warehouseId, tenantId, caCurrent.CurrentUser().UserId);
+            }
 
             return order;
         }

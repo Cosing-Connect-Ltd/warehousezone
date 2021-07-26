@@ -1,0 +1,30 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+
+    Layout = null;
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+
+@{
+    ViewBag.Title = "Stock Detail of Sales Order";
+}
+
+<h2><span>Stock Detail of Order (Some of the Product have no stock, still you want to make this order active, it may cause stock to become negative)</span></h2>
+@Html.Action("_ProductStockDetail", new { orderid = ViewBag.orderId })
+<div>
+
+    <a class="btn btn-primary" href="javascript:;" onclick="updateOrderStock(@ViewBag.orderId,1)">Confirm</a>
+    <a class="btn btn-default" href="javascript:;" onclick="javascript:ModalPopupStockDetail.Hide()">Cancel</a>
+
+</div>
+ @*class="col-md-offset-2 col-md-10 bottom-right*@

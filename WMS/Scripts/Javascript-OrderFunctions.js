@@ -1886,16 +1886,33 @@ $(document).ready(function () {
     });
 });
 
+var newOrderId
 function UpdateOrderStatus(orderId, statusId, type) {
+
     $.get("/Order/UpdateOrderStatus/" + orderId + "/" + statusId,
         function (data) {
-            UpdateOrderStatusSuccess(data, type);
+            if (data === 0) {
+                newOrderId = orderId;
+                ModalPopupStockDetail.Show();
 
-            if (data != false && data != true) {
-                alert(data);
             }
+            else {
+                UpdateOrderStatusSuccess(data, type); if (data != false && data != true) {
+                    ModalPopupStockDetail.Hide();
+                    alert(data);
+                }
+            }
+
+
         });
 }
+
+
+function OrderProductStockDetailBeginCallBack(s, e) {
+    e.customArgs["orderId"] = newOrderId;
+}
+
+
 
 function UpdateOrderStatusSuccess(data, type) {
     if (data != false) {
@@ -3013,4 +3030,22 @@ function suggestedPrice() {
 function setPrice() {
     var suggestedSellPrice = $("#suggestedSellPrice").val();
     SellPrice.SetValue(suggestedSellPrice);
+}
+var updateOrderStock = function (orderId, statusId) {
+    var data = {
+        orderId: orderId,
+        statusId: statusId,
+        isSkip: true
+    }
+    $.ajax({
+        type: "GET",
+        url: "/Order/UpdateOrderStatus/",
+        data: data,
+        dataType: 'json',
+        success: function (data) {
+            ModalPopupStockDetail.Hide();
+            _SalesOrderListGridView_Active.Refresh();
+            _SalesOrderListGridView_Completed.Refresh();
+        }
+    });
 }
