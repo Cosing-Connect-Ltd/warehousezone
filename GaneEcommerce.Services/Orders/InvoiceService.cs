@@ -160,7 +160,8 @@ namespace Ganedata.Core.Services
                 CurrencyId = account?.CurrencyID ?? tenant.CurrencyID,
             };
 
-            invoice.InvoiceNumber = invoice.InvoiceNumber = process?.Order?.InvoiceNo != null ? process.Order.InvoiceNo : GenerateNextInvoiceNumber(tenantId);
+            
+            invoice.InvoiceNumber = process?.InvoiceNo != null ? process.InvoiceNo : GenerateNextInvoiceNumber(tenantId);
 
             invoice.InvoiceDetails = invoiceData.AllInvoiceProducts.Select(m => new InvoiceDetail()
             {
