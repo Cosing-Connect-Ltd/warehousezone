@@ -82,6 +82,7 @@ namespace WMS
             config.Routes.MapHttpRoute("PostTerminalGeoLocation", "api/sync/post-geo-location", new { controller = "ApiTerminalUserSync", action = "PostTerminalGeoLocation" });
             config.Routes.MapHttpRoute("GetApiPallettrackingSync", "api/sync/get-pallet-tracking/{reqDate}/{serialNo}", new { controller = "ApiPallettrackingSync", action = "GetPallettracking", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("PostApiPallettrackingSync", "api/sync/post-pallet-tracking", new { controller = "ApiPallettrackingSync", action = "PostPallettracking" });
+            config.Routes.MapHttpRoute("VerifyPallettracking", "api/sync/verify-pallet-tracking", new { controller = "ApiPallettrackingSync", action = "VerifyPallettracking" });
             config.Routes.MapHttpRoute("TenantPriceGroupSync", "api/sync/tenant-price-groups/{reqDate}/{serialNo}", new { controller = "ApiAccountSync", action = "GetTenantPriceGroups", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("TenantPriceGroupDetailSync", "api/sync/tenant-price-groups-details/{reqDate}/{serialNo}", new { controller = "ApiAccountSync", action = "GetTenantPriceGroupDetails", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("GetOrderReceiveCountSync", "api/sync/get-order-receive-count/{reqDate}/{serialNo}", new { controller = "ApiOrderReceiveCountSync", action = "GetOrderReceiveCount", reqDate = string.Empty, serialNo = string.Empty });

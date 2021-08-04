@@ -121,8 +121,10 @@ namespace Ganedata.Core.Services
         bool UpdateOrdersPicker(int[] orderIds, int? pickerId, int userId);
         bool UpdateOrderPaypalPaymentInfo(int orderId, string nonce, Braintree.Transaction transaction);
         Order UpdateLoyaltPointsForAccount(int orderId);
-        void MapToOrderSync(Order source, OrdersSync target);
+       // void MapToOrderSync(Order source, OrdersSync target);
 
         List<OrderProcessLowStockItems> ValidateStockAvailability(int orderId);
+
+
     }
 }

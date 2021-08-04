@@ -35,6 +35,16 @@ namespace Ganedata.Core.Models
         public int Count { get; set; }
         public List<PalletTrackingSync> PalletTrackingSync { get; set; }
     }
+    public class VerifyPalletTrackingSync
+    {
+        public string SerialNo { get; set; }
+        public string PalletSerial { get; set; }
+        public int? OrderId { get; set; }
+        public int ProductId { get; set; }
+        public int InventoryTransactionType { get; set; }
+        public int TenantId { get; set; }
+        public int WarehouseId { get; set; }
+    }
 
     public class PalleTrackingProcess
     {

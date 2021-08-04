@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using AutoMapper;
+using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
@@ -93,8 +94,23 @@ namespace WMS.Controllers.WebAPI
             }
 
             TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, data.PalletTrackingSync.Count, terminal.TerminalId, TerminalLogTypeEnum.PostPalletTracking);
-          
+
             return Ok(results);
+        }
+
+        //GET http://localhost:8005/api/sync/verify-pallet-tracking
+        public IHttpActionResult VerifyPallettracking(VerifyPalletTrackingSync data)
+        {
+            var serialNo = data.SerialNo.Trim().ToLower();
+            var terminal = TerminalServices.GetTerminalBySerial(serialNo);
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+            var pallet = ProductServices.GetVerifedPalletAsync(data);
+            var result = _mapper.Map<PalletTracking, PalletTrackingSync>(pallet);
+            TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, (pallet == null ? 0 : 1), terminal.TerminalId, TerminalLogTypeEnum.PalletTrackingSync);
+            return Ok(result);
         }
 
     }

@@ -105,7 +105,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<PalletTracking> GetAllPalletTrackings(int tenantId, int warehouseId, DateTime? lastUpdated = null, bool includeArchived = true)
         {
-            return _currentDbContext.PalletTracking.AsNoTracking().Where(a => a.TenantId == tenantId && (includeArchived || a.Status != PalletTrackingStatusEnum.Archived) && a.WarehouseId == warehouseId
+            return _currentDbContext.PalletTracking.AsNoTracking().Where(a => a.TenantId == tenantId &&  (a.Status == PalletTrackingStatusEnum.Active || a.Status==PalletTrackingStatusEnum.Created) && a.WarehouseId == warehouseId
             && (!lastUpdated.HasValue || (a.DateUpdated ?? a.DateCreated) >= lastUpdated));
         }
 
@@ -2012,6 +2012,23 @@ namespace Ganedata.Core.Services
         {
             Random _random = new Random();
             return _random.Next(0, 9999).ToString("D4");
+        }
+
+        public PalletTracking GetVerifedPalletAsync(VerifyPalletTrackingSync verifyPalletTracking)
+        {
+
+            var palletTracking = new PalletTracking();
+
+            if (verifyPalletTracking.InventoryTransactionType == (int)InventoryTransactionTypeEnum.PurchaseOrder)
+            {
+                palletTracking = _currentDbContext.PalletTracking.AsNoTracking().FirstOrDefault(u => u.PalletSerial == verifyPalletTracking.PalletSerial && u.ProductId == verifyPalletTracking.ProductId && u.TenantId == verifyPalletTracking.TenantId && u.WarehouseId == verifyPalletTracking.WarehouseId && u.Status == PalletTrackingStatusEnum.Created);
+            }
+            else if (verifyPalletTracking.InventoryTransactionType == (int)InventoryTransactionTypeEnum.SalesOrder)
+            {
+                palletTracking = _currentDbContext.PalletTracking.AsNoTracking().FirstOrDefault(u => u.PalletSerial == verifyPalletTracking.PalletSerial && u.ProductId == verifyPalletTracking.ProductId && u.TenantId == verifyPalletTracking.TenantId && u.WarehouseId == verifyPalletTracking.WarehouseId && u.Status == PalletTrackingStatusEnum.Created);
+            }
+
+            return palletTracking;
         }
     }
 }
