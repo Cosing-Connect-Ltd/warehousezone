@@ -109,6 +109,11 @@ namespace WMS.Controllers.WebAPI
             }
             var pallet = ProductServices.GetVerifedPalletAsync(data);
             var result = _mapper.Map<PalletTracking, PalletTrackingSync>(pallet);
+            if (result == null)
+            {
+                result = new PalletTrackingSync();
+                result.Comments = "Pallet Not Found";
+            }
             TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, (pallet == null ? 0 : 1), terminal.TerminalId, TerminalLogTypeEnum.PalletTrackingSync);
             return Ok(result);
         }

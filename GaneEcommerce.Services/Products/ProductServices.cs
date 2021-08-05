@@ -42,7 +42,7 @@ namespace Ganedata.Core.Services
                    };
         }
 
-        public IQueryable<ProductMaster> GetAllValidProducts(int tenantId, string args =null, int OrderId=0, int departmentId = 0, int groupId = 0, int ProductId = 0)
+        public IQueryable<ProductMaster> GetAllValidProducts(int tenantId, string args = null, int OrderId = 0, int departmentId = 0, int groupId = 0, int ProductId = 0)
         {
             if (ProductId > 0)
             {
@@ -105,7 +105,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<PalletTracking> GetAllPalletTrackings(int tenantId, int warehouseId, DateTime? lastUpdated = null, bool includeArchived = true)
         {
-            return _currentDbContext.PalletTracking.AsNoTracking().Where(a => a.TenantId == tenantId &&  (a.Status == PalletTrackingStatusEnum.Active || a.Status==PalletTrackingStatusEnum.Created) && a.WarehouseId == warehouseId
+            return _currentDbContext.PalletTracking.AsNoTracking().Where(a => a.TenantId == tenantId && (a.Status == PalletTrackingStatusEnum.Active || a.Status == PalletTrackingStatusEnum.Created) && a.WarehouseId == warehouseId
             && (!lastUpdated.HasValue || (a.DateUpdated ?? a.DateCreated) >= lastUpdated));
         }
 
@@ -116,7 +116,7 @@ namespace Ganedata.Core.Services
 
         public ProductMaster GetProductMasterById(int productId)
         {
-            var product = _currentDbContext.ProductMaster.Include(m=> m.ProductAttributeValuesMap).FirstOrDefault(a => a.ProductId == productId && a.IsDeleted != true);
+            var product = _currentDbContext.ProductMaster.Include(m => m.ProductAttributeValuesMap).FirstOrDefault(a => a.ProductId == productId && a.IsDeleted != true);
             if (product != null)
             {
                 product.ProductKitMap = _currentDbContext.ProductKitMaps.Where(m => m.ProductId == productId && m.IsDeleted != true).ToList();
@@ -638,7 +638,7 @@ namespace Ganedata.Core.Services
             }
             if (productMaster.ProductId > 0)
             {
-              
+
 
                 productMaster.ProductCategoryId = productMaster.ProductCategoryId > 0 ? productMaster.ProductCategoryId : null;
                 productMaster.UpdateCreatedInfo(userId);
@@ -1814,7 +1814,7 @@ namespace Ganedata.Core.Services
                                                                                (m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
                     || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
                     || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Exchange || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut || m.Order.InventoryTransactionTypeId ==
-                    InventoryTransactionTypeEnum.Wastage) 
+                    InventoryTransactionTypeEnum.Wastage)
                                                                                && m.Order.WarehouseId == WarehouseId &&
                                 m.Order.OrderStatusID != OrderStatusEnum.Complete && m.Order.OrderStatusID != OrderStatusEnum.Cancelled && m.Order.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.Order.OrderStatusID != OrderStatusEnum.Invoiced
                                 && m.Order.IsDeleted != true).Select(u => u.Order).ToList();
@@ -2021,11 +2021,11 @@ namespace Ganedata.Core.Services
 
             if (verifyPalletTracking.InventoryTransactionType == (int)InventoryTransactionTypeEnum.PurchaseOrder)
             {
-                palletTracking = _currentDbContext.PalletTracking.AsNoTracking().FirstOrDefault(u => u.PalletSerial == verifyPalletTracking.PalletSerial && u.ProductId == verifyPalletTracking.ProductId && u.TenantId == verifyPalletTracking.TenantId && u.WarehouseId == verifyPalletTracking.WarehouseId && u.Status == PalletTrackingStatusEnum.Created);
+                palletTracking = _currentDbContext.PalletTracking.AsNoTracking().FirstOrDefault(u => u.PalletSerial == verifyPalletTracking.PalletSerial && (!verifyPalletTracking.ProductId.HasValue || u.ProductId == verifyPalletTracking.ProductId) && u.TenantId == verifyPalletTracking.TenantId && u.WarehouseId == verifyPalletTracking.WarehouseId && u.Status == PalletTrackingStatusEnum.Created);
             }
             else if (verifyPalletTracking.InventoryTransactionType == (int)InventoryTransactionTypeEnum.SalesOrder)
             {
-                palletTracking = _currentDbContext.PalletTracking.AsNoTracking().FirstOrDefault(u => u.PalletSerial == verifyPalletTracking.PalletSerial && u.ProductId == verifyPalletTracking.ProductId && u.TenantId == verifyPalletTracking.TenantId && u.WarehouseId == verifyPalletTracking.WarehouseId && u.Status == PalletTrackingStatusEnum.Created);
+                palletTracking = _currentDbContext.PalletTracking.AsNoTracking().FirstOrDefault(u => u.PalletSerial == verifyPalletTracking.PalletSerial && (!verifyPalletTracking.ProductId.HasValue || u.ProductId == verifyPalletTracking.ProductId) && u.TenantId == verifyPalletTracking.TenantId && u.WarehouseId == verifyPalletTracking.WarehouseId && u.Status == PalletTrackingStatusEnum.Active);
             }
 
             return palletTracking;

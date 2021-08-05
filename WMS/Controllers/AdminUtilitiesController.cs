@@ -412,7 +412,7 @@ namespace WMS.Controllers
             var archivablePallets = _currentDbContext.PalletTracking.Where(x => x.TenantId == CurrentTenantId &&
                                                                                 x.WarehouseId == CurrentWarehouseId &&
                                                                                 x.RemainingCases == 0 &&
-                                                                                (x.DateUpdated ?? x.DateCreated) < archiveDate).ToList();
+                                                                                (x.DateUpdated ?? x.DateCreated) < archiveDate && x.Status !=PalletTrackingStatusEnum.Archived).ToList();
 
             int counter = 0;
             int remaining = archivablePallets.Count();

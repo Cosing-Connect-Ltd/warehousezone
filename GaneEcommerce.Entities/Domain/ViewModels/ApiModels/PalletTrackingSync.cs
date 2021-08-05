@@ -40,7 +40,7 @@ namespace Ganedata.Core.Models
         public string SerialNo { get; set; }
         public string PalletSerial { get; set; }
         public int? OrderId { get; set; }
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
         public int InventoryTransactionType { get; set; }
         public int TenantId { get; set; }
         public int WarehouseId { get; set; }
