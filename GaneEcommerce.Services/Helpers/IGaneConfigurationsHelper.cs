@@ -38,6 +38,9 @@ namespace Ganedata.Core.Services
         bool GetDeviceCurrentStatus(string serial);
         bool SendMail(string subject, string body, int tenantId);
         string GetPropertyFirstline(int pPropertyId);
+
+        Task<bool> ConvertPalletStatus(int tenantId, int wareHouseId);
+
         string GetActionResultHtml(Controller controller, string partialViewName, object model);
         Task<string> SendStandardMailProductGroup(int tenantId, string subject, int accountId);
         Task<string> SendRegistrationEmail(int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType, string subject, string ConfirmatonLink, string recipients, int? accountId, bool salesRequiresAuthorisation = true, int userID = 0);

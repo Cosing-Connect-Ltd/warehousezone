@@ -62,5 +62,11 @@ namespace WMS.Controllers
             await _configurationsHelper.DispatchTenantEmailNotificationQueues(tenantId);
             return Ok(true);
         }
+        //WEB API URL : /api/sync/change-pallet-status
+        public async Task<IHttpActionResult> ConvertPalletTrackingStatus(int TenatId, int WarehouseId)
+        {
+            await _configurationsHelper.ConvertPalletStatus(TenatId, WarehouseId);
+            return Ok(true);
+        }
     }
 }

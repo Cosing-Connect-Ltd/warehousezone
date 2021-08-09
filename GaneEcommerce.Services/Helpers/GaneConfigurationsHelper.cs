@@ -22,6 +22,7 @@ namespace Ganedata.Core.Services
 {
     public class GaneConfigurationsHelper : IGaneConfigurationsHelper
     {
+        private readonly IApplicationContext _currentDbContext;
         private readonly IEmailServices _emailServices;
         private readonly IAccountServices _accountServices;
         private readonly IPropertyService _propertyService;
@@ -33,8 +34,9 @@ namespace Ganedata.Core.Services
         private readonly IAppointmentsService _appointmentServices;
         private readonly IMapper _mapper;
 
+
         public GaneConfigurationsHelper(IEmailServices emailServices, IAccountServices accountServices, IPropertyService propertyService, ITerminalServices terminalServices,
-            IEmployeeServices employeeServices, IOrderService orderService, IStockTakeApiService stockTakeService, ITenantsServices tenantServices, IAppointmentsService appointmentServices, IMapper mapper)
+            IEmployeeServices employeeServices, IOrderService orderService, IStockTakeApiService stockTakeService, ITenantsServices tenantServices, IAppointmentsService appointmentServices, IMapper mapper, IApplicationContext currentDbContext)
         {
             _emailServices = emailServices;
             _accountServices = accountServices;
@@ -45,6 +47,7 @@ namespace Ganedata.Core.Services
             _tenantServices = tenantServices;
             _terminalServices = terminalServices;
             _appointmentServices = appointmentServices;
+            _currentDbContext = currentDbContext;
             _mapper = mapper;
 
         }
@@ -91,11 +94,11 @@ namespace Ganedata.Core.Services
                 else
                 {
                     billingContact = account.AccountContacts.FirstOrDefault(m => m.ConTypeStatment && m.IsDeleted != true);
-                    if(billingContact!=null)
+                    if (billingContact != null)
                         return billingContact.ContactEmail;
                 }
 
-                var availableContact = account.AccountContacts.FirstOrDefault(m=> m.IsDeleted != true);
+                var availableContact = account.AccountContacts.FirstOrDefault(m => m.IsDeleted != true);
                 if (availableContact != null)
                 {
                     return availableContact.ContactEmail;
@@ -1388,6 +1391,73 @@ namespace Ganedata.Core.Services
                 return sw.ToString();
             }
         }
+
+        public Task<bool> ConvertPalletStatus(int tenantId, int CurrentWarehouseId)
+        {
+
+            var body = "";
+            var archivableItemsAgeDays = _currentDbContext.TenantConfigs.FirstOrDefault(x => x.TenantId == tenantId).ArchivableItemsAgeDays;
+
+            if (archivableItemsAgeDays <= 0)
+            {
+
+                body = "Operation was Not Successful! and  ArchivableItemsAgeDays is not configured in TenantConfigs table";
+                SendMail($"Archiving and Removing the old pallets are done", body, tenantId);
+                return Task.FromResult(true);
+
+            }
+
+            var archiveDate = DateTime.UtcNow.AddDays(-1 * (_currentDbContext.TenantConfigs.FirstOrDefault(x => x.TenantId == tenantId).ArchivableItemsAgeDays));
+            var archivablePallets = _currentDbContext.PalletTracking.Where(x => x.TenantId == tenantId &&
+                                                                                x.WarehouseId == CurrentWarehouseId &&
+                                                                                x.RemainingCases == 0 &&
+                                                                                (x.DateUpdated ?? x.DateCreated) < archiveDate && x.Status != PalletTrackingStatusEnum.Archived).ToList();
+
+            int counter = 0;
+            int remaining = archivablePallets.Count();
+
+            foreach (var pallet in archivablePallets)
+            {
+                counter++;
+                remaining--;
+                pallet.Status = PalletTrackingStatusEnum.Archived;
+                pallet.DateUpdated = DateTime.UtcNow;
+
+                if (counter == 50 || remaining < 50)
+                {
+                    _currentDbContext.SaveChanges();
+                    counter = 0;
+                }
+            }
+
+            var unusedPallets = _currentDbContext.PalletTracking.Where(x => x.TenantId == tenantId &&
+                                                                            !_currentDbContext.InventoryTransactions.Any(i => i.PalletTrackingId == x.PalletTrackingId) &&
+                                                                            !_currentDbContext.StockTakePalletsSnapshot.Any(i => i.PalletTrackingId == x.PalletTrackingId) &&
+                                                                            x.WarehouseId == CurrentWarehouseId &&
+                                                                            x.Status == PalletTrackingStatusEnum.Created &&
+                                                                            (x.DateUpdated ?? x.DateCreated) < archiveDate).ToList();
+            counter = 0;
+            remaining = unusedPallets.Count();
+
+            foreach (var pallet in unusedPallets)
+            {
+                counter++;
+                remaining--;
+                _currentDbContext.PalletTracking.Remove(pallet);
+
+                if (counter == 50 || remaining < 50)
+                {
+                    _currentDbContext.SaveChanges();
+                    counter = 0;
+                }
+            }
+
+            body = "Operation was Successful and Archiving { archivablePallets.Count()} and Removing { unusedPallets.Count()}old pallets operation was Completed Successfully";
+            SendMail($"Archiving and Removing the old pallets are done", body, tenantId);
+           return Task.FromResult(true); ;
+
+        }
+
     }
 
     public class HtmlEditorModel

@@ -23,6 +23,7 @@ namespace WMS.Controllers
         private readonly IMapper _mapper;
         private readonly IInvoiceService _invoiceServices;
         private readonly IDeliverectSyncService _deliverectSyncService;
+        private readonly IGaneConfigurationsHelper emailServices;
 
         public AdminUtilitiesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAdminServices adminServices,
             IProductServices productServices, IApplicationContext currentDbContext, IEmployeeShiftsServices employeeShiftsServices, IMapper mapper, IInvoiceService invoiceServices, IDeliverectSyncService deliverectSyncService)
@@ -397,7 +398,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var archivableItemsAgeDays = _currentDbContext.TenantConfigs.FirstOrDefault(x => x.TenantId == CurrentTenantId).ArchivableItemsAgeDays;
+            var archivableItemsAgeDays = _currentDbContext.TenantConfigs.FirstOrDefault(x => x.TenantId == (CurrentTenantId == 0 ? 1 : CurrentTenantId)).ArchivableItemsAgeDays;
 
             if (archivableItemsAgeDays <= 0)
             {
@@ -456,6 +457,8 @@ namespace WMS.Controllers
             ViewBag.Title = "Operation was Successful";
             ViewBag.Message = "Operation was Successful";
             ViewBag.Detail = $"Archiving {archivablePallets.Count()} and Removing {unusedPallets.Count()} old pallets operation was Completed Successfully; ";
+
+            
 
             return View("AdminUtilities");
 
