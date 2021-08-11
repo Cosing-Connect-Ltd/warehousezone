@@ -22,7 +22,7 @@ namespace WMS
             config.Routes.MapHttpRoute("StockTakeCreateProductApi", "api/product/create", new { controller = "ApiStockTakes", action = "CreateProductOnStockTake" });
             config.Routes.MapHttpRoute("ProductInfoBySerial", "api/product/serial-details", new { controller = "ApiOrdersSync", action = "VerifyProductInfoBySerial" });
             //Handheld Api's
-            config.Routes.MapHttpRoute("EmailSchedulerApi", "api/warehouse-emails/send-notifications", new { controller = "ApiWarehouseSync", action = "SendOutEmailNotificationsFromQueue" });
+            //config.Routes.MapHttpRoute("EmailSchedulerApi", "api/warehouse-emails/send-notifications", new { controller = "ApiWarehouseSync", action = "SendOutEmailNotificationsFromQueue" });
              //Handheld Api's
             config.Routes.MapHttpRoute("UsersSync", "api/sync/users/{reqDate}/{serialNo}", new { controller = "ApiTerminalUserSync", action = "GetUsers", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountsSync", "api/sync/accounts/{reqDate}/{serialNo}", new { controller = "ApiAccountSync", action = "GetAccounts", reqDate = string.Empty, serialNo = string.Empty });
@@ -91,8 +91,8 @@ namespace WMS
             config.Routes.MapHttpRoute("PostOrderReceiveCountSync", "api/sync/post-order-receive-count", new { controller = "ApiOrderReceiveCountSync", action = "PostOrderReceiveCount" });
             config.Routes.MapHttpRoute("PostAssetLog", "api/sync/post-asset-log", new { controller = "ApiAsset", action = "PostAssetLog" });
             config.Routes.MapHttpRoute("PostDispatchProgress", "api/sync/post-dispatch-progress", new { controller = "ApiPalletsSync", action = "PostDispatchProgress" });
-            config.Routes.MapHttpRoute("ImportPrestaShopOrders", "api/sync/Import-PrestaShop-Orders/{TenatId}/{WarehouseId}", new { controller = "ApiWarehouseSync", action = "ConvertPalletTrackingStatus", TenatId = string.Empty, WarehouseId = string.Empty });
-            config.Routes.MapHttpRoute("updatePalletStatusArchived", "api/sync/change-pallet-status/{TenatId}/{WarehouseId}", new { controller = "ApiPrestaShopSync", action = "ImportPrestaShopOrders", TenatId = string.Empty, WarehouseId = string.Empty });
+            config.Routes.MapHttpRoute("ImportPrestaShopOrders", "api/sync/Import-PrestaShop-Orders/{TenatId}/{WarehouseId}", new { controller = "ApiPrestaShopSync", action = "ImportPrestaShopOrders", TenatId = string.Empty, WarehouseId = string.Empty });
+            config.Routes.MapHttpRoute("updatePalletStatusArchived", "api/sync/change-pallet-status/{TenatId}/{WarehouseId}", new { controller = "ApiWarehouseSync", action = "ConvertPalletTrackingStatus", TenatId = string.Empty, WarehouseId = string.Empty });
             config.Routes.MapHttpRoute("PostStocktoPrestaShop", "api/sync/Post-PrestaShop-ProductStock/{TenatId}/{WarehouseId}", new { controller = "ApiPrestaShopSync", action = "PrestaShopStockSync", TenatId = string.Empty, WarehouseId = string.Empty });
             config.Routes.MapHttpRoute("ImportPrestaShopCountries", "api/sync/Get-PrestaShop-country/{TenatId}/{WarehouseId}", new { controller = "ApiPrestaShopSync", action = "GetPrestaShopCountry", TenatId = string.Empty, WarehouseId = string.Empty });
             config.Routes.MapHttpRoute("ApiCurrencyExRateRoute", "api/sync/currency-ex-rates/{TenantId}", new { controller = "ApiCurrencyExRate", action = "GetTenantCurrencyExRate", TenantId = string.Empty });
