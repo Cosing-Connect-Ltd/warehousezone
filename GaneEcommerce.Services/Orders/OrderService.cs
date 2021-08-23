@@ -1256,14 +1256,14 @@ namespace Ganedata.Core.Services
             int defaultTimeMinutes = 30;
             var warehouse = _tenantLocationServices.GetActiveTenantLocationById(terminal.WarehouseId);
 
-            var orderStatus  = (item.OrderStatusID.HasValue && item.OrderStatusID > 0) ? item.OrderStatusID.Value : OrderStatusEnum.Active;
+            var orderStatus = (item.OrderStatusID.HasValue && item.OrderStatusID > 0) ? item.OrderStatusID.Value : OrderStatusEnum.Active;
 
             if (terminal.IgnoreWarehouseForOrderPost)
             {
                 warehouse = _tenantLocationServices.GetActiveTenantLocationById(item.WarehouseId);
-                
+
             }
-             
+
             if (item.FoodOrderType != null)
             {
                 //TODO: This is a hack, had to set this to complete for StoreApp to sync properly until Paypal GoLive happens
@@ -1310,7 +1310,7 @@ namespace Ganedata.Core.Services
                 return new OrdersSync() { RequestSuccess = false, RequestStatus = "Sale has been made, but no products specified with this order." };
             }
 
-           
+
             if ((!item.OrderID.HasValue && (!item.OrderToken.HasValue || item.OrderToken == new Guid())) || !item.SaleMade)
             {
                 if (item.ProgressInfo != null)
@@ -1417,7 +1417,7 @@ namespace Ganedata.Core.Services
                     TaxID = m.TaxID,
                     TaxAmount = m.TaxAmount,
                     Notes = m.Notes,
-                    ProductAttributeValueId = (m.ProductAttributeValueId>0 ? m.ProductAttributeValueId : (int?)null)
+                    ProductAttributeValueId = (m.ProductAttributeValueId > 0 ? m.ProductAttributeValueId : (int?)null)
                 }).ToList();
 
                 order = CreateOrder(order, terminal.TenantId, warehouse.WarehouseId, order.CreatedBy, orderDetails);
@@ -1426,7 +1426,7 @@ namespace Ganedata.Core.Services
                     UpdateLoyaltPointsForAccount(order.OrderID);
                 }
 
-                if (item.AccountTransactionInfo!=null && item.AccountTransactionInfo.AccountPaymentModeId != AccountPaymentModeEnum.Card)
+                if (item.AccountTransactionInfo != null && item.AccountTransactionInfo.AccountPaymentModeId != AccountPaymentModeEnum.Card)
                 {
                     UpdateLoyaltPointsForAccount(order.OrderID);
                 }
@@ -1460,7 +1460,7 @@ namespace Ganedata.Core.Services
 
                     item.OrderID = order.OrderID;
 
-                    
+
                     if (item.AccountTransactionInfo != null)
                     {
                         order.AmountPaidByAccount = item.AccountTransactionInfo.PaidAmount;
@@ -1472,7 +1472,7 @@ namespace Ganedata.Core.Services
 
                     _currentDbContext.OrderProcess.Add(process);
                     _currentDbContext.SaveChanges();
-                     
+
 
                     foreach (var op in item.OrderProcessDetails)
                     {
@@ -1500,7 +1500,7 @@ namespace Ganedata.Core.Services
                                 OrderProcessId = process.OrderProcessID,
                                 TerminalId = terminal.TerminalId,
                                 Notes = op.Notes,
-                                ProductAttributeValueId = op.ProductAttributeValueId>0? op.ProductAttributeValueId:null
+                                ProductAttributeValueId = op.ProductAttributeValueId > 0 ? op.ProductAttributeValueId : null
                             };
 
                             _currentDbContext.OrderProcessDetail.Add(o);
@@ -1583,7 +1583,7 @@ namespace Ganedata.Core.Services
                     + Guid.NewGuid().ToString().Replace("-", "").ToUpper().Substring(0, 15) : item.DeliveryNo, item.CreatedBy, null, warehouse.WarehouseId);
                 foreach (var op in item.OrderProcessDetails)
                 {
-                    var locationid = (int?) null;
+                    var locationid = (int?)null;
                     if (!string.IsNullOrWhiteSpace(op.LocationCode))
                     {
                         var location = _currentDbContext.Locations.FirstOrDefault(m => m.LocationCode.Equals(op.LocationCode, StringComparison.CurrentCultureIgnoreCase) && m.IsActive);
@@ -1685,7 +1685,7 @@ namespace Ganedata.Core.Services
                         else
                         {
                             _currentDbContext.SaveChanges();
-                            
+
                             Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId, op.CreatedBy, locationid, null, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                         }
                     }
@@ -3400,6 +3400,22 @@ namespace Ganedata.Core.Services
 
             #endregion NormalProduct
 
+
+            #region UpdatePalletProductAndDispatches
+            var palletproducts = _currentDbContext.PalletProducts.FirstOrDefault(u => u.OrderID == inventorytranscation.OrderID && u.OrderProcessDetailID == OrderProcessDetailId && u.ProductID == inventorytranscation.ProductId);
+            if (palletproducts != null)
+            {
+                if (orderProcessDetails.QtyProcessed == palletproducts.Quantity)
+                {
+                    palletproducts.Quantity = Quantity;
+                }
+            }
+            _currentDbContext.Entry(palletproducts).State = EntityState.Modified;
+
+
+
+            #endregion
+
             #region orderProcessEdit
 
             if (orderProcessDetails != null)
@@ -3412,8 +3428,9 @@ namespace Ganedata.Core.Services
                 _currentDbContext.SaveChanges();
                 return "Order Process Updated";
             }
-
             #endregion orderProcessEdit
+
+
 
             return status;
         }
