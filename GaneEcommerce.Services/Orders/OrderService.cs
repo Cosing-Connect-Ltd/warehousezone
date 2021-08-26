@@ -819,7 +819,7 @@ namespace Ganedata.Core.Services
                 dataImportFactory.PrestaShopOrderStatusUpdate(orderId, PrestashopOrderStateEnum.PickAndPack, currentUser?.DisplayNameWithEmail);
             }
             var schOrder = _currentDbContext.Order.Find(orderId);
-            if (statusId == OrderStatusEnum.Active && order.OrderStatusID != OrderStatusEnum.Active)
+            if (statusId == OrderStatusEnum.Active && order.OrderStatusID == OrderStatusEnum.Hold)
             {
 
                 Inventory.StockRecalculateByOrderId(order.OrderID, (order.WarehouseId ?? 0), order.TenentId, userId);
