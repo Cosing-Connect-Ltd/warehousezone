@@ -510,15 +510,15 @@ namespace WMS.Controllers
                 switch (order.Account.AccountStatusID)
                 {
                     case AccountStatusEnum.InActive:
-                        ViewBag.Error = "The Account is inactive. This order cannot be processed";
+                        ViewBag.Error = string.IsNullOrEmpty(order.Account.Comments) ? "The Account is inactive. This order cannot be processed" : "The Account is inactive. This order cannot be processed because " + order.Account.Comments;
                         break;
 
                     case AccountStatusEnum.OnHold:
-                        ViewBag.Error = "The Account is on Hold. This order cannot be processed";
+                        ViewBag.Error = string.IsNullOrEmpty(order.Account.Comments) ? "The Account is on Hold. This order cannot be processed" : "The Account is on Hold. This order cannot be processed because " + order.Account.Comments;
                         break;
 
                     case AccountStatusEnum.OnStop:
-                        ViewBag.Error = "The Account is on Stop. This order cannot be processed";
+                        ViewBag.Error = string.IsNullOrEmpty(order.Account.Comments) ? "The Account is on Stop. This order cannot be processed": "The Account is on Stop. This order cannot be processed because "+order.Account.Comments;
                         break;
                 }
             }
@@ -1087,7 +1087,7 @@ namespace WMS.Controllers
         }
 
         public ActionResult StockDetail(int orderId)
-            {
+        {
             ViewBag.orderId = orderId;
             return View();
         }

@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Services;
 
+
 namespace WMS.Controllers
 {
     public class ActivityGroupController : BaseController
