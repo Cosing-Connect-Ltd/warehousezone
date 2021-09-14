@@ -105,8 +105,8 @@ namespace Ganedata.Core.Services
 
         public IQueryable<PalletTracking> GetAllPalletTrackings(int tenantId, int warehouseId, DateTime? lastUpdated = null, bool includeArchived = true)
         {
-            return _currentDbContext.PalletTracking.AsNoTracking().Where(a => a.TenantId == tenantId && (a.Status == PalletTrackingStatusEnum.Active || a.Status == PalletTrackingStatusEnum.Created) && a.WarehouseId == warehouseId
-            && (!lastUpdated.HasValue || (a.DateUpdated ?? a.DateCreated) >= lastUpdated));
+            return _currentDbContext.PalletTracking.AsNoTracking().Where(a => a.TenantId == tenantId && (includeArchived || a.Status != PalletTrackingStatusEnum.Archived) && a.WarehouseId == warehouseId
+         && (!lastUpdated.HasValue || (a.DateUpdated ?? a.DateCreated) >= lastUpdated));
         }
 
         public IQueryable<ProductSerialis> GetAllProductSerial(int tenantId, int warehouseId, DateTime? lastUpdated = null)
