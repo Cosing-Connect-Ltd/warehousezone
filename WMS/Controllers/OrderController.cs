@@ -1503,17 +1503,17 @@ namespace WMS.Controllers
         public async Task<ActionResult> UpdateOrderStatus(int orderId, OrderStatusEnum statusId, bool isSkip = false)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            if (!isSkip)
-            {
-                if (statusId == OrderStatusEnum.Active)
-                {
-                    var stockAvailablity = OrderService.ValidateStockAvailability(orderId);
-                    if (stockAvailablity.Any(u => u.StockLevel <= 0))
-                    {
-                        return Json(0, JsonRequestBehavior.AllowGet);
-                    }
-                }
-            }
+            //if (!isSkip)
+            //{
+            //    if (statusId == OrderStatusEnum.Active)
+            //    {
+            //        var stockAvailablity = OrderService.ValidateStockAvailability(orderId);
+            //        if (stockAvailablity.Any(u => u.StockLevel <= 0))
+            //        {
+            //            return Json(0, JsonRequestBehavior.AllowGet);
+            //        }
+            //    }
+            //}
 
             var order = OrderService.UpdateOrderStatus(orderId, statusId, CurrentUserId);
 

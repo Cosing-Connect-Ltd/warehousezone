@@ -55,15 +55,15 @@ namespace Ganedata.Core.Services
                 }
             }
 
-            //if (!caCurrent.CurrentWarehouse().AutoAllowProcess)
-            //{
-            //    order.OrderStatusID = OrderStatusEnum.Hold;
-            //}
-            //else
-            //{
-            //    order.OrderStatusID = OrderStatusEnum.Active;
-            //}
-            order.OrderStatusID = OrderStatusEnum.Hold;
+            if (!caCurrent.CurrentWarehouse().AutoAllowProcess)
+            {
+                order.OrderStatusID = OrderStatusEnum.Hold;
+            }
+            else
+            {
+                order.OrderStatusID = OrderStatusEnum.Active;
+            }
+            // order.OrderStatusID = OrderStatusEnum.Hold;
 
             _currentDbContext.Order.Add(order);
 

@@ -1891,17 +1891,25 @@ function UpdateOrderStatus(orderId, statusId, type) {
 
     $.get("/Order/UpdateOrderStatus/" + orderId + "/" + statusId,
         function (data) {
-            if (data === 0) {
-                newOrderId = orderId;
-                ModalPopupStockDetail.Show();
 
+            UpdateOrderStatusSuccess(data, type);
+
+            if (data != false && data != true) {
+                alert(data);
             }
-            else {
-                UpdateOrderStatusSuccess(data, type); if (data != false && data != true) {
-                    ModalPopupStockDetail.Hide();
-                    alert(data);
-                }
-            }
+
+            //if (data === 0) {
+            //    newOrderId = orderId;
+            //    ModalPopupStockDetail.Show();
+
+            //}
+            //else {
+            //    UpdateOrderStatusSuccess(data, type);
+            //    if (data !== false && data !==true) {
+            //        ModalPopupStockDetail.Hide();
+            //        alert(data);
+            //    }
+            //}
 
 
         });
