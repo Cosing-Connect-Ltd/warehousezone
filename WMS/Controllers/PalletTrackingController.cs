@@ -4,6 +4,7 @@ using Ganedata.Core.Services;
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using Ganedata.Core.Entities.Enums;
 using WMS.CustomBindings;
 
 namespace WMS.Controllers
@@ -25,6 +26,34 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View();
         }
+
+
+        public ActionResult _PalletTrackingListDetail(int pId)
+        {
+            var pallets = (from p in _productServices.GetAllPalletTrackings(CurrentTenantId, CurrentWarehouseId)
+                           where p.ProductId== pId && (p.Status==PalletTrackingStatusEnum.Active || p.Status==PalletTrackingStatusEnum.Hold)
+                           select new
+                {
+                    p.PalletTrackingId,
+                    p.ProductId,
+                    p.OrderId,
+                    p.ProductMaster.Name,
+                    p.ProductMaster.SKUCode,
+                    p.PalletSerial,
+                    p.ExpiryDate,
+                    p.RemainingCases,
+                    p.TotalCases,
+                    p.BatchNo,
+                    p.Comments,
+                    Status = p.Status.ToString(),
+                    p.DateCreated,
+                    p.DateUpdated,
+                    p.ProductMaster.ProductGroup.ProductGroup,
+                    p.ProductMaster.TenantDepartment.DepartmentName
+                }).ToList();
+            return PartialView(pallets);
+        }
+
 
         public ActionResult _PalletTrackingList()
         {
@@ -106,7 +135,7 @@ namespace WMS.Controllers
         }
         [HttpPost]
 
-        public JsonResult Create(int ProductId,string ExpiryDate,int TotalCase,string BatchNo,string Comments ,int NoOfPallets)
+        public JsonResult Create(int ProductId,string ExpiryDate,int TotalCase,string BatchNo,string Comments ,int NoOfPallets,string orderNumber)
         {
             if (ModelState.IsValid)
             {
@@ -118,6 +147,7 @@ namespace WMS.Controllers
                     palletTracking.ExpiryDate = expiryDate;
                 }
                 palletTracking.BatchNo = BatchNo;
+                palletTracking.OrderNumber = orderNumber;
                 palletTracking.TotalCases = TotalCase;
                 palletTracking.RemainingCases = TotalCase;
                 palletTracking.Comments = Comments;
@@ -170,6 +200,11 @@ namespace WMS.Controllers
         {
             return Json(_productServices.GetProductMasterById(ProductId).CasesPerPallet.HasValue? _productServices.GetProductMasterById(ProductId).CasesPerPallet:0, JsonRequestBehavior.AllowGet);
 
+        }
+
+        public ActionResult PalletSummary()
+        {
+            return View();
         }
 
     }

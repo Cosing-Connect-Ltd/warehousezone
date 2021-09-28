@@ -73,6 +73,37 @@ namespace WMS.CustomBindings
                 return DB.ProductMaster;
             } }
 
+        public static IEnumerable<object> GetOrderByFilter(ListEditItemsRequestedByFilterConditionEventArgs args)
+        {
+            var _productServices = DependencyResolver.Current.GetService<IOrderService>();
+            var skip = args.BeginIndex;
+            var take = args.EndIndex - args.BeginIndex + 1;
+            var query = _productServices.GetAllOrders(caCurrent.CurrentTenant().TenantId,caCurrent.CurrentWarehouse().WarehouseId).Where(u=>(u.Account.AccountCode.Contains(args.Filter) || u.Account.CompanyName.Contains(args.Filter)|| u.OrderNumber.Contains(args.Filter)) && u.InventoryTransactionTypeId==Ganedata.Core.Entities.Enums.InventoryTransactionTypeEnum.PurchaseOrder && u.OrderStatusID==Ganedata.Core.Entities.Enums.OrderStatusEnum.Active).OrderBy(u => u.OrderID).Skip(skip).Take(take)
+                .Select(u => new {
+                    OrderId = u.OrderID,
+                    OrderNumber = u.OrderNumber,
+                    Account = u.Account.CompanyName,
+                    AccountCode = u.Account.AccountCode
+                }).ToList();
+
+            return query.Count == 0 ? null : query.ToList();
+        }
+        public static object GetOrderByID(ListEditItemRequestedByValueEventArgs args)
+        {
+            var _productServices = DependencyResolver.Current.GetService<IOrderService>();
+            int id;
+            if (args.Value == null || !int.TryParse(args.Value.ToString(), out id))
+                return null;
+             return _productServices.GetAllOrders(caCurrent.CurrentTenant().TenantId, caCurrent.CurrentWarehouse().WarehouseId).Where(u=>u.OrderID==id)
+                .Select(u => new {
+                    OrderId = u.OrderID,
+                    OrderNumber = u.OrderNumber,
+                    Account = u.Account.CompanyName,
+                    AccountCode = u.Account.AccountCode
+                }).FirstOrDefault();
+        }
+
+
 
     }
 }

@@ -1335,6 +1335,10 @@
     <Compile Include="Migrations\202104120908373_AddedAttributeValueNamesToOrderDetails.designer.cs">
       <DependentUpon>202104120908373_AddedAttributeValueNamesToOrderDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109231254319_purcahseordernumber-added-in-pallettracking.cs" />
+    <Compile Include="Migrations\202109231254319_purcahseordernumber-added-in-pallettracking.designer.cs">
+      <DependentUpon>202109231254319_purcahseordernumber-added-in-pallettracking.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2657,6 +2661,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104120908373_AddedAttributeValueNamesToOrderDetails.resx">
       <DependentUpon>202104120908373_AddedAttributeValueNamesToOrderDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109231254319_purcahseordernumber-added-in-pallettracking.resx">
+      <DependentUpon>202109231254319_purcahseordernumber-added-in-pallettracking.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -462,6 +462,10 @@ namespace WMS.Controllers
 
             return PartialView("ProductLargeDataComboBoxPartial");
         }
+        public ActionResult OrderDataComboBoxPartial()
+        {
+            return PartialView("OrderDataComboBoxPartial");
+        }
 
         public JsonResult IsAllowZeroSale(int productid)
         {

@@ -1514,6 +1514,7 @@ function OnchangeDropdown(s, e) {
     var type = $("#InventoryTransactionTypeId").val();
     var blindshipment = $("#blindshipment").val();
     var prdId = prdid.GetValue();
+    var palletSummary = $("#palletSummary").val();
     if (s != null && s.GetSelectedIndex() < 0) {
         s.SetValue(null);
     }
@@ -1588,8 +1589,14 @@ function OnchangeDropdown(s, e) {
             }
         }
 
-        else if ($("#ProductAllowance").val() == "True") {
+        else if ($("#ProductAllowance").val() === "True") {
             $("#ProductId").val(prdid.GetValue());
+           
+        }
+        else if (palletSummary === "True") {
+            _PalletTrackingDataListGridView.Refresh();
+            $(".pallet-refresh").show();
+
         }
         else {
             prdId = prdid.GetValue();
@@ -1617,6 +1624,11 @@ function OnEndCallbackDS(s, e) {
     //        prdid.SetValue(GProductId);
     //    }
     //}
+}
+
+function OnBeginPalletTracking(s, e) {
+    var pid = prdid.GetValue();
+    e.customArgs["pId"] = pid;
 }
 
 //------------------------------------------------------------------------

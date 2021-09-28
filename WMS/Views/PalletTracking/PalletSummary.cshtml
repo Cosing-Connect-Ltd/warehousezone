@@ -1,0 +1,63 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@{
+    ViewBag.Title = "Pallet Stock Summary";
+}
+<style>
+    #_PalletTrackingDataListGridView_DXFooterRow {
+
+        background-color: red !important;
+        font-weight: bolder;
+        color: whitesmoke;
+    }
+      #_PalletTrackingDataListGridView_DXGroupRowExp0 {
+        background-color: red !important;
+        font-weight: bolder;
+        color: whitesmoke;
+    }
+</style>
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.ComboBox, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+
+        new Script { ExtensionType = ExtensionType.ComboBox },
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+@{
+    ViewBag.Title = "Pallet Stock Summary";
+}
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+<div class="col-md-12 p-0">
+
+    @Html.Hidden("palletSummary", true)
+    <div class="col-md-6 offset-2 p-0  mb-3">
+        <label class="col-md-4">
+
+        </label>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-8">
+                @Html.Partial("ProductLargeDataComboBoxPartial")
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="pallet-refresh" style="display: none;">
+        @Html.Action("_PalletTrackingListDetail",new {pId=0})
+    </div>
+
+
+</div>

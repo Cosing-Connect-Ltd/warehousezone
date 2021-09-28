@@ -17,7 +17,7 @@
     <AssemblyName>WarehouseZone</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -2224,6 +2224,9 @@
     <Content Include="Views\SalesOrders\_ProductStockDetail.cshtml" />
     <Content Include="Views\SalesOrders\StockDetail.cshtml" />
     <Content Include="WebConfigLive.config" />
+    <Content Include="Views\Shared\OrderDataComboBoxPartial.cshtml" />
+    <Content Include="Views\PalletTracking\PalletSummary.cshtml" />
+    <Content Include="Views\PalletTracking\_PalletTrackingListDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

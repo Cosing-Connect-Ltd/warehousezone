@@ -39,8 +39,21 @@
     @Html.AntiForgeryToken()
     <h2><span>@ViewBag.Title</span></h2>
     <div class="col-md-12 pull-left">
+       
+
         <div class="col-md-5 p-0 pull-left mb-2">
+
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Po Number</label>
+
+                <div class="col-md-8">
+
+                    @Html.Partial("OrderDataComboBoxPartial")
+
+
+                </div>
+            </div>
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "col-md-4 prdlbl" })
                 <div class="col-md-8">
@@ -81,8 +94,8 @@
                          settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
                          settings.ControlStyle.CssClass = "form-control";
                          settings.Properties.MinValue = 1;
-                        
-                         
+
+
                      }).GetHtml()
 
 
@@ -94,14 +107,14 @@
                 @Html.LabelFor(model => model.TotalCases, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
 
-                    @Html.DevExpress().SpinEditFor(m=>m.TotalCases,
+                    @Html.DevExpress().SpinEditFor(m => m.TotalCases,
                      settings =>
                      {
                          settings.Name = "TotalCases";
                          settings.Properties.MaxValue = 999999999;
                          settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
                          settings.ControlStyle.CssClass = "form-control";
-                         
+
                          settings.Properties.MinValue = 1;
                      }).GetHtml()
 
@@ -132,10 +145,10 @@
 
 
             <div class="bottom-right">
-                <input type="button" value="Generate Labels" class="btn btn-primary"  onclick="CreatePalletTracking();"/>
-                <input type="button" value="Print Labels" class="btn btn-primary print-label" style="display:none"  onclick="GenerateBulkLabelPrint();"/>
+                <input type="button" value="Generate Labels" class="btn btn-primary" onclick="CreatePalletTracking();" />
+                <input type="button" value="Print Labels" class="btn btn-primary print-label" style="display:none" onclick="GenerateBulkLabelPrint();" />
                 <div class="btn btn-default">
-                    @Html.ActionLink("Back to List", "Index", "PalletTracking", null, null,null, null, null)
+                    @Html.ActionLink("Back to List", "Index", "PalletTracking", null, null, null, null, null)
                 </div>
             </div>
 

@@ -286,12 +286,16 @@ function UpdateDeliveryAddress() {
 }
 
 function CreatePalletTracking() {
+    debugger;
     var ProductId = prdid.GetValue();
-
     var NoOfPallet = NoOfPallets.GetValue();
     var TotalCase = TotalCases.GetValue();
+    var orderNumber = ordId.GetText();
     if (ProductId == "" || ProductId == null || ProductId == undefined) {
         alert("Please select product");
+    }
+    if (orderNumber == "" || orderNumber == null || orderNumber == undefined) {
+        alert("Please Add Purchase Order Number");
     }
     else if (NoOfPallet == "" || NoOfPallet == null || NoOfPallet == undefined || NoOfPallet == 0) {
         alert("Number of pallets should be greater than 1");
@@ -305,7 +309,7 @@ function CreatePalletTracking() {
 
         var BatchNos = $("#BatchNo").val();
         var comment = $("#Comments").val();
-        var data = { ProductId: ProductId, ExpiryDate: ExpiryDates, TotalCase: TotalCase, BatchNo: BatchNos, Comments: comment, NoOfPallets: NoOfPallet };
+        var data = { ProductId: ProductId, ExpiryDate: ExpiryDates, TotalCase: TotalCase, BatchNo: BatchNos, Comments: comment, NoOfPallets: NoOfPallet, orderNumber: orderNumber };
         LoadingPanel.Show();
         $.post("/PalletTracking/Create", data,
             function (result) {

@@ -22,6 +22,8 @@ namespace Ganedata.Core.Entities.Domain
         public int ProductId { get; set; }
 
         public int? OrderId { get; set; }
+
+        public string OrderNumber { get; set; }
         public string PalletSerial { get; set; }
         [Display(Name = "Expiry Date")]
         public DateTime? ExpiryDate { get; set; }
