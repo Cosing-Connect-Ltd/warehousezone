@@ -3409,8 +3409,23 @@ namespace Ganedata.Core.Services
                 {
                     palletproducts.Quantity = Quantity;
                 }
+                _currentDbContext.Entry(palletproducts).State = EntityState.Modified;
+                _currentDbContext.SaveChanges();
+                var palletSum = _currentDbContext.PalletProducts.Where(u => u.PalletID == palletproducts.PalletID).Sum(u => u.Quantity);
+                if (palletSum <= 0)
+                {
+                    var pallet = _currentDbContext.Pallets.FirstOrDefault(u => u.PalletID == palletproducts.PalletID);
+                    if (pallet != null)
+                    {
+                        pallet.IsDeleted = true;
+                        _currentDbContext.Entry(pallet).State = EntityState.Modified;
+                        
+                    }
+                }
             }
-            _currentDbContext.Entry(palletproducts).State = EntityState.Modified;
+
+
+
 
 
 
