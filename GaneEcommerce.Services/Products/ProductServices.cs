@@ -1827,7 +1827,7 @@ namespace Ganedata.Core.Services
                     var itemsOnSalesOrders = item.OrderDetails.Where(p => p.ProductId == productId && p.IsDeleted != true).Select(x => x.Qty).DefaultIfEmpty(0).Sum();
 
                     var itemsDispatched = _currentDbContext.Order
-                .Where(m =>
+                .Where(m => m.OrderID==item.OrderID &&
                     (m.InventoryTransactionTypeId ==
                         InventoryTransactionTypeEnum.SalesOrder || m.InventoryTransactionTypeId ==
                                                                 InventoryTransactionTypeEnum.WorksOrder
