@@ -1,0 +1,33 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout-no-header-left.cshtml";
+    ViewBag.Title = "Sales Order Print";
+}
+<style type="text/css">
+    .Email {
+        background-image: url(../../Content/images/Email.png);
+        background-repeat: no-repeat;
+    }
+</style>
+
+<h2><span>@ViewBag.Title</span></h2>
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "SalesOrderPrintDocumentViewer";
+
+
+}).Bind(Model).GetHtml()

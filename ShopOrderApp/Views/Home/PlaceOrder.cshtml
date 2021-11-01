@@ -1,0 +1,177 @@
+﻿@model Ganedata.Core.Entities.Domain.Order
+@{
+    Layout = null;
+    decimal total = 0;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from warehouse-admin-dashboard.multipurposethemes.com/main/forms_advanced.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Sep 2021 12:45:15 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://warehouse-admin-dashboard.multipurposethemes.com/images/favicon.ico">
+
+    <title>@ViewBag.ShopName- Create Orders </title>
+
+    <!-- Vendors Style-->
+    <link rel="stylesheet" href="~/content/New/assets/css/vendors_css.css">
+
+    <!-- Style-->
+    <link rel="stylesheet" href="~/content/New/assets/css/style.css">
+    <link rel="stylesheet" href="~/content/New/assets/css/skin_color.css">
+
+</head>
+<body class="hold-transition light-skin sidebar-mini theme-primary fixed">
+    <div class="wrapper">
+        <header class="main-header">
+            <div class="d-flex align-items-center logo-box justify-content-start">
+                <!-- Logo -->
+                <a href="javascript:;" class="logo">
+                    <div class="logo-lg" style="color: white; font-size: xx-large;">
+                        <span class="light-logo">@ViewBag.ShopName</span>
+                    </div>
+                </a>
+            </div>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top">
+
+                <h3 class="box-title align-center">Your Order Details</h3>
+                <div class="pull-right">
+                    @*<button type="button" class="btn btn-warning me-1">
+                        <i class="ti-trash"></i> Cancel
+                    </button>*@
+                    <a href="/Home/NewDirectSalesOrder/@Model.OrderID" class="btn btn-warning me-1">Edit Order</a>
+
+                    <a href="/Home/SalesOrderPrint?id=@Model.OrderID" class="btn btn-dark me-1">Submit Order</a>
+
+                   @* <a href="/Home/SalesOrderPrint?id=@Model.OrderID" class="btn btn-primary" target="_blank">Print Invoice</a>*@
+
+                </div>
+
+            </nav>
+
+
+        </header>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="margin-left:0 !important">
+            <div class="container-full">
+                <section class="content">
+                    <div class="row">
+                        <div class="col-12 col-lg-7">
+                            <div class="box">
+                                <div class="box-header bg-primary">
+                                    <h4 class="box-title">Order @("Products: "+Model.OrderDetails.Count)</h4>
+                                </div>
+
+                                <div class="box-body">
+                                    <div class="table-responsive">
+                                        <table class="table product-overview">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product Department</th>
+                                                    <th>Product info</th>
+                                                    <th>Price</th>
+                                                    <th>Quantity</th>
+                                                    <th style="text-align:center">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.OrderDetails)
+                                                {
+                                                    var totalAmount = Math.Round((item.Qty * item.Price), 2);
+                                                    <tr>
+                                                        <td>
+                                                            <h4> @item.ProductMaster.TenantDepartment.DepartmentName</h4>
+</td>
+                                                        <td>
+                                                            <h5>@item.ProductMaster.Name</h5>
+                                                        </td>
+
+                                                        <td>@item.Price</td>
+                                                        <td width="70">
+                                                            @item.Qty
+                                                        </td>
+                                                        <td width="100" align="center" class="fw-900">@totalAmount</td>
+                                                        @{total += totalAmount;}
+                                                    </tr>
+
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-5">
+                            <div class="box">
+                                <div class="box-header bg-info">
+                                    <h4 class="box-title">Invoice Summary</h4>
+                                </div>
+
+                                <div class="box-body">
+                                    <div class="table-responsive">
+                                        <table class="table simple mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Order Total</td>
+                                                    <td class="text-end fw-700">@total</td>
+                                                </tr>
+                                                <tr>
+                                                    @*<td>Coupan Discount</td>
+                                                        <td class="text-end fw-700"><span class="text-danger me-15">50%</span>-$1620</td>*@
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                   
+                                    @*<button class="btn btn-primary pull-right">Confirm Order</button>*@
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- Page Content overlay -->
+    <!-- Vendor JS -->
+    <script src="~/content/New/assets/js/vendors.min.js"></script>
+    <script src="~/content/New/assets/js/pages/chat-popup.js"></script>
+    <script src="~/content/New/assets/icons/feather-icons/feather.min.js"></script>
+    <script src="~/content/New/assets/vendor_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+    <script src="~/content/New/assets/vendor_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
+    <script src="~/content/New/assets/vendor_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/content/New/assets/vendor_components/select2/dist/js/select2.full.js"></script>
+    <script src="~/content/New/assets/vendor_plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="~/content/New/assets/vendor_plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="~/content/New/assets/vendor_plugins/input-mask/jquery.inputmask.extensions.js"></script>
+    <script src="~/content/New/assets/vendor_components/moment/min/moment.min.js"></script>
+    <script src="~/content/New/assets/vendor_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/content/New/assets/vendor_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/content/New/assets/vendor_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/content/New/assets/vendor_plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/content/New/assets/vendor_plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Deposito Admin App -->
+    <script src="~/content/New/assets/js/template.js"></script>
+
+    <script src="~/content/New/assets/js/pages/advanced-form-element.js"></script>
+
+
+
+</body>
+</html>

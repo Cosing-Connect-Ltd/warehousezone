@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DPD Label Print", "DPD Labe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseDpdLabelPrint", "WarehouseDpdLabelPrint\WarehouseDpdLabelPrint.csproj", "{F767193C-0A06-445D-97F1-DDB1C0984155}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOrderApp", "ShopOrderApp\ShopOrderApp.csproj", "{AD9D6E53-2663-436F-B2C5-872E02527335}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +137,14 @@ Global
 		{F767193C-0A06-445D-97F1-DDB1C0984155}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F767193C-0A06-445D-97F1-DDB1C0984155}.Release|x86.ActiveCfg = Release|Any CPU
 		{F767193C-0A06-445D-97F1-DDB1C0984155}.Release|x86.Build.0 = Release|Any CPU
+		{AD9D6E53-2663-436F-B2C5-872E02527335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD9D6E53-2663-436F-B2C5-872E02527335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD9D6E53-2663-436F-B2C5-872E02527335}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AD9D6E53-2663-436F-B2C5-872E02527335}.Debug|x86.Build.0 = Debug|Any CPU
+		{AD9D6E53-2663-436F-B2C5-872E02527335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD9D6E53-2663-436F-B2C5-872E02527335}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD9D6E53-2663-436F-B2C5-872E02527335}.Release|x86.ActiveCfg = Release|Any CPU
+		{AD9D6E53-2663-436F-B2C5-872E02527335}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,54 +162,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {429F5B44-FFEA-4E1C-A95E-3915404064CD}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 12
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://shoaibramay.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = WMS\\WarehouseZone.csproj
-		SccProjectName1 = WMS
-		SccLocalPath1 = WMS
-		SccProjectUniqueName2 = Ganedata.Warehouse.PropertiesSync.Data\\Ganedata.Warehouse.PropertiesSync.Data.csproj
-		SccProjectTopLevelParentUniqueName2 = WarehouseZone.sln
-		SccProjectName2 = Ganedata.Warehouse.PropertiesSync.Data
-		SccLocalPath2 = Ganedata.Warehouse.PropertiesSync.Data
-		SccProjectUniqueName3 = Ganedata.Warehouse.PropertiesSync.SyncData\\Ganedata.Warehouse.PropertiesSync.SyncData.csproj
-		SccProjectTopLevelParentUniqueName3 = WarehouseZone.sln
-		SccProjectName3 = Ganedata.Warehouse.PropertiesSync.SyncData
-		SccLocalPath3 = Ganedata.Warehouse.PropertiesSync.SyncData
-		SccProjectUniqueName4 = Ganedata.Warehouse.PropertiesSync.Services\\Ganedata.Warehouse.PropertiesSync.Services.csproj
-		SccProjectTopLevelParentUniqueName4 = WarehouseZone.sln
-		SccProjectName4 = Ganedata.Warehouse.PropertiesSync.Services
-		SccLocalPath4 = Ganedata.Warehouse.PropertiesSync.Services
-		SccProjectUniqueName5 = Ganedata.Warehouse.PropertiesSync.SyncLibrary\\Ganedata.Warehouse.PropertiesSync.SyncLibrary.csproj
-		SccProjectTopLevelParentUniqueName5 = WarehouseZone.sln
-		SccProjectName5 = Ganedata.Warehouse.PropertiesSync.SyncLibrary
-		SccLocalPath5 = Ganedata.Warehouse.PropertiesSync.SyncLibrary
-		SccProjectUniqueName6 = Ganedata.Warehouse.PropertiesSyncServiceTester\\Ganedata.Warehouse.PropertiesSyncServiceTester.csproj
-		SccProjectTopLevelParentUniqueName6 = WarehouseZone.sln
-		SccProjectName6 = Ganedata.Warehouse.PropertiesSyncServiceTester
-		SccLocalPath6 = Ganedata.Warehouse.PropertiesSyncServiceTester
-		SccProjectUniqueName7 = GaneEcommerce.Data\\Ganedata.Core.Data.csproj
-		SccProjectTopLevelParentUniqueName7 = WarehouseZone.sln
-		SccProjectName7 = GaneEcommerce.Data
-		SccLocalPath7 = GaneEcommerce.Data
-		SccProjectUniqueName8 = GaneEcommerce.Entities\\Ganedata.Core.Entities.csproj
-		SccProjectTopLevelParentUniqueName8 = WarehouseZone.sln
-		SccProjectName8 = GaneEcommerce.Entities
-		SccLocalPath8 = GaneEcommerce.Entities
-		SccProjectUniqueName9 = GaneEcommerce.Services\\Ganedata.Core.Services.csproj
-		SccProjectTopLevelParentUniqueName9 = WarehouseZone.sln
-		SccProjectName9 = GaneEcommerce.Services
-		SccLocalPath9 = GaneEcommerce.Services
-		SccProjectUniqueName10 = WarehouseEcommerce\\WarehouseEcommerce.csproj
-		SccProjectName10 = WarehouseEcommerce
-		SccLocalPath10 = WarehouseEcommerce
-		SccProjectUniqueName11 = WarehouseDpdLabelPrint\\WarehouseDpdLabelPrint.csproj
-		SccProjectTopLevelParentUniqueName11 = WarehouseZone.sln
-		SccProjectName11 = WarehouseDpdLabelPrint
-		SccLocalPath11 = WarehouseDpdLabelPrint
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

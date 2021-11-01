@@ -1,0 +1,7 @@
+﻿:root {
+    --sidebar-background-color: #005ca0;
+}
+
+.main-right {
+    background-color: var(--sidebar-background-color);
+}

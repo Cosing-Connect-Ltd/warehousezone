@@ -1,0 +1,33 @@
+﻿
+<header class="main-header">
+    <div class="d-flex align-items-center logo-box justify-content-start">
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+            <!-- logo-->
+            @*<div class="logo-mini w-50">
+                    <span class="light-logo"><img src="https://demo.warehouse.zone/Content/images/logo.png" alt="logo"></span>
+                    <span class="dark-logo"><img src="https://demo.warehouse.zone/Content/images/logo.png" alt="logo"></span>
+                </div>*@
+            <div class="logo-lg" style="color: white; font-size: xx-large;">
+                <span class="light-logo">@ViewBag.ShopName</span>
+            </div>
+        </a>
+    </div>
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top">
+
+        <h3 class="box-title align-center">Create Sales Order</h3>
+        <div class="pull-right">
+            <button type="button" class="btn btn-warning me-1">
+                <i class="ti-trash"></i> Cancel
+            </button>
+            <button onclick="GetDataQuantity();" class="btn btn-primary">
+                <i class="ti-save-alt"></i> Save
+            </button>
+        </div>
+
+    </nav>
+
+   
+</header>
+
