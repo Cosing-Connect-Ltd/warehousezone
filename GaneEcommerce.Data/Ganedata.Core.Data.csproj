@@ -1339,6 +1339,10 @@
     <Compile Include="Migrations\202109231254319_purcahseordernumber-added-in-pallettracking.designer.cs">
       <DependentUpon>202109231254319_purcahseordernumber-added-in-pallettracking.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202111011656194_warehouseId-added-inAuthUsers.cs" />
+    <Compile Include="Migrations\202111011656194_warehouseId-added-inAuthUsers.designer.cs">
+      <DependentUpon>202111011656194_warehouseId-added-inAuthUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2664,6 +2668,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109231254319_purcahseordernumber-added-in-pallettracking.resx">
       <DependentUpon>202109231254319_purcahseordernumber-added-in-pallettracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111011656194_warehouseId-added-inAuthUsers.resx">
+      <DependentUpon>202111011656194_warehouseId-added-inAuthUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
