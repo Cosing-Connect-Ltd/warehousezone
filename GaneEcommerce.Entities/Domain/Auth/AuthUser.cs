@@ -76,7 +76,6 @@ namespace Ganedata.Core.Entities.Domain
         public bool ReferralConfirmed { get; set; }
         public string PaypalCustomerId { get; set; }
 
-        public int? WarehouseId { get; set; }
 
     }
 }

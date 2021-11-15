@@ -299,7 +299,7 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("StripeChargeConfirmationId")]
         public virtual StripeChargeInformation StripeChargeInformation { get; set; }
     }
-
+    [Serializable]
     public class StripeChargeInformation
     {
         [Key]
