@@ -71,6 +71,9 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLine6 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.ProductName = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
@@ -90,9 +93,6 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLine4 = new DevExpress.XtraReports.UI.XRLine();
             this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.PalletSerial = new DevExpress.XtraReports.UI.XRBarCode();
-            this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLine6 = new DevExpress.XtraReports.UI.XRLine();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -133,6 +133,41 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.Detail.HeightF = 596.5277F;
             this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
+            // 
+            // xrLine6
+            // 
+            this.xrLine6.LineWidth = 3F;
+            this.xrLine6.LocationFloat = new DevExpress.Utils.PointFloat(0F, 36.45836F);
+            this.xrLine6.Name = "xrLine6";
+            this.xrLine6.SizeF = new System.Drawing.SizeF(400F, 3.208313F);
+            // 
+            // xrLabel8
+            // 
+            this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[OrderNumber]")});
+            this.xrLabel8.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(167.5694F, 3.000005F);
+            this.xrLabel8.Multiline = true;
+            this.xrLabel8.Name = "xrLabel8";
+            this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel8.SizeF = new System.Drawing.SizeF(221.4305F, 33.45836F);
+            this.xrLabel8.StylePriority.UseFont = false;
+            this.xrLabel8.StylePriority.UseTextAlignment = false;
+            this.xrLabel8.Text = "PO-00123456";
+            this.xrLabel8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // xrLabel7
+            // 
+            this.xrLabel7.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(17.45123F, 3.000005F);
+            this.xrLabel7.Multiline = true;
+            this.xrLabel7.Name = "xrLabel7";
+            this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel7.SizeF = new System.Drawing.SizeF(119.6527F, 33.45836F);
+            this.xrLabel7.StylePriority.UseFont = false;
+            this.xrLabel7.StylePriority.UseTextAlignment = false;
+            this.xrLabel7.Text = "PO Number:";
+            this.xrLabel7.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel6
             // 
@@ -371,39 +406,6 @@ public class PalletLabelPrint : DevExpress.XtraReports.UI.XtraReport
             this.PalletSerial.StylePriority.UseTextAlignment = false;
             this.PalletSerial.Symbology = code128Generator2;
             this.PalletSerial.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
-            // 
-            // xrLabel7
-            // 
-            this.xrLabel7.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
-            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(17.45123F, 3.000005F);
-            this.xrLabel7.Multiline = true;
-            this.xrLabel7.Name = "xrLabel7";
-            this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel7.SizeF = new System.Drawing.SizeF(119.6527F, 33.45836F);
-            this.xrLabel7.StylePriority.UseFont = false;
-            this.xrLabel7.StylePriority.UseTextAlignment = false;
-            this.xrLabel7.Text = "PO Number:";
-            this.xrLabel7.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrLabel8
-            // 
-            this.xrLabel8.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
-            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(167.5694F, 3.000005F);
-            this.xrLabel8.Multiline = true;
-            this.xrLabel8.Name = "xrLabel8";
-            this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel8.SizeF = new System.Drawing.SizeF(221.4305F, 33.45836F);
-            this.xrLabel8.StylePriority.UseFont = false;
-            this.xrLabel8.StylePriority.UseTextAlignment = false;
-            this.xrLabel8.Text = "PO-00123456";
-            this.xrLabel8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
-            // xrLine6
-            // 
-            this.xrLine6.LineWidth = 3F;
-            this.xrLine6.LocationFloat = new DevExpress.Utils.PointFloat(0F, 36.45836F);
-            this.xrLine6.Name = "xrLine6";
-            this.xrLine6.SizeF = new System.Drawing.SizeF(400F, 3.208313F);
             // 
             // PalletLabelPrint
             // 

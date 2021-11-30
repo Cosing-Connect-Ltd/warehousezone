@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://109.246.48.61/ApplicationFormApi_UAT/Diagnostics/Api2.asmx?wsdl" docRef="http://109.246.48.61/ApplicationFormApi_UAT/Diagnostics/Api2.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://109.246.48.61/ApplicationFormApi_UAT/Diagnostics/Api2.asmx" xmlns:q1="http://TCASOnline.com/" binding="q1:Api2Soap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://109.246.48.61/ApplicationFormApi_UAT/Diagnostics/Api2.asmx" xmlns:q2="http://TCASOnline.com/" binding="q2:Api2Soap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

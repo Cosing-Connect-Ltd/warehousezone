@@ -1,0 +1,4069 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://TCASOnline.com/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://TCASOnline.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Click &lt;a href='../Help/Index.html'&gt;here&lt;/a&gt; for all documentation.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://TCASOnline.com/">
+      <s:element name="AddApplicantToWaitingList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddApplicantToWaitingListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddApplicantToWaitingListResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionFate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Action" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Info" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:EnumStatus" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionId" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="EnumStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Successful" />
+          <s:enumeration value="DatabaseLevelFailure" />
+          <s:enumeration value="AuthenticationFailed" />
+          <s:enumeration value="NonExistent" />
+          <s:enumeration value="ReservationDoesNotExist" />
+          <s:enumeration value="ApplicantReservationAlreadyExists" />
+          <s:enumeration value="ApplicantBookingAlreadyExists" />
+          <s:enumeration value="ApplicantisNotReservedInRoom" />
+          <s:enumeration value="GroupNameAlreadyExists" />
+          <s:enumeration value="EmailAddressNotValid" />
+          <s:enumeration value="RentalTypeIdHasNoValue" />
+          <s:enumeration value="BookingPeriodIdHasNoValue" />
+          <s:enumeration value="RoomTypeIdHasNoValue" />
+          <s:enumeration value="ApartmentTypeIdHasNoValue" />
+          <s:enumeration value="ComplexIdHasNoValue" />
+          <s:enumeration value="ConfigYearIdHasNoValue" />
+          <s:enumeration value="ConfigYearIdDoesNotExist" />
+          <s:enumeration value="RoomHasAlreadyBeenFullyReserved" />
+          <s:enumeration value="ApplicantAlreadyBookedInRoom" />
+          <s:enumeration value="ApplicantAlreadyReservedInRoom" />
+          <s:enumeration value="DatabaseValidationFailure" />
+          <s:enumeration value="TooManyGroupMembers" />
+          <s:enumeration value="LeadApplicantIdHasNoValue" />
+          <s:enumeration value="GroupNameHasNoValue" />
+          <s:enumeration value="GroupPasswordHasNoValue" />
+          <s:enumeration value="GenderIdHasNoValue" />
+          <s:enumeration value="YearOfStudyIdHasNoValue" />
+          <s:enumeration value="MaxFoundMustBeGreaterThan0" />
+          <s:enumeration value="NotSupportedForYourSystem" />
+          <s:enumeration value="RealexPmtExpDateNotValid" />
+          <s:enumeration value="LeadApplicantInOtherGroup" />
+          <s:enumeration value="PaymentNotMade" />
+          <s:enumeration value="NotListedAsGroupMember" />
+          <s:enumeration value="MaxGroupMembersMustBeAtLeastTwo" />
+          <s:enumeration value="LeadApplicantEmailAddressIsNotListedInDeclaredGroupMembers" />
+          <s:enumeration value="LeadApplicantDoesNotExist" />
+          <s:enumeration value="ComplexIdsDoNotmatch" />
+          <s:enumeration value="ApartmentIdsDoNotmatch" />
+          <s:enumeration value="RoomTypeIdsDoNotmatch" />
+          <s:enumeration value="BookingPeriodIdsDoNotmatch" />
+          <s:enumeration value="RentalTypeIdsDoNotmatch" />
+          <s:enumeration value="NoMatchingRoomsFound" />
+          <s:enumeration value="TitleIdHasNoValue" />
+          <s:enumeration value="FirstNameHasNoValue" />
+          <s:enumeration value="LastNameHasNoValue" />
+          <s:enumeration value="IncorrectPassword" />
+          <s:enumeration value="ApplicantIdHasNoValue" />
+          <s:enumeration value="RoomIdHasNoValue" />
+          <s:enumeration value="ApplicantProfileLocked" />
+          <s:enumeration value="NominationDoesNotExist" />
+          <s:enumeration value="DateOfBirthHasNoValue" />
+          <s:enumeration value="ApplicantAlreadySavedPermanent" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ApplicantChangePassword">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="oldPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="newPassword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ApplicantChangePasswordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApplicantChangePasswordResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ApplicantExists">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="applicantEmailAddress" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ApplicantExistsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApplicantExistsResult" type="tns:TransactionOfBoolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfBoolean">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Item" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ApplicantForgotPassword">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="applicantEmailAddress" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwordUrl" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ApplicantForgotPasswordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApplicantForgotPasswordResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckApplicantAndRoom">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckApplicantAndRoomResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CheckApplicantAndRoomResult" type="tns:TransactionOfCheckRoom" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfCheckRoom">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:CheckRoom" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CheckRoom">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApartmentTypeIdsMatch" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicantBookings" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicantId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicantIsBookedInRoom" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicantIsReservedInRoom" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicantReservations" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="BookingPeriodIdsMatch" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ComplexIdsMatch" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="RemainingSpaces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RentalTypeIdsMatch" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomBookings" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomReservations" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomSpaces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomTypeIdsMatch" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetApartment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="apartmentId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetApartmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetApartmentResult" type="tns:TransactionOfApartment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfApartment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Apartment" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Apartment">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApartmentId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApartmentImage" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApartmentName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApartmentTypeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AvailableRooms" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExactMatch" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomList" type="tns:ArrayOfRoom" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRoom">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Room" nillable="true" type="tns:Room" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Room">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApartmentId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ComplexId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ConfigYearId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GroupId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaxOccupancy" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="NominationCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Occupiers" type="tns:ArrayOfOccupant" />
+          <s:element minOccurs="1" maxOccurs="1" name="RemainingSpaces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomBookings" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomReservations" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomTypeId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfOccupant">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Occupant" nillable="true" type="tns:Occupant" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Occupant">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Person">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ApplicantId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="GenderPreference" type="tns:EnumGenderPreference" />
+              <s:element minOccurs="1" maxOccurs="1" name="YearOfStudyId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="YearOfStudyPreference" type="tns:EnumYearOfStudyPreference" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Person">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="tns:Address" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateOfBirth" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmailAddress" type="tns:EmailAddress" />
+          <s:element minOccurs="1" maxOccurs="1" name="GenderId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="HomeNumber" type="tns:PhoneNumber" />
+          <s:element minOccurs="0" maxOccurs="1" name="MobileNumber" type="tns:PhoneNumber" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="tns:Name" />
+          <s:element minOccurs="1" maxOccurs="1" name="NationalityId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Address">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CountryId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CountyProvince" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PostCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StreetAddress" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmailAddress">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PhoneNumber">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Number" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Prefix" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Name">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MiddleName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TitleId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="EnumGenderPreference">
+        <s:restriction base="s:string">
+          <s:enumeration value="Same" />
+          <s:enumeration value="Mixed" />
+          <s:enumeration value="DoesntMatter" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="EnumYearOfStudyPreference">
+        <s:restriction base="s:string">
+          <s:enumeration value="Similar" />
+          <s:enumeration value="DoesntMatter" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetApartmentType">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="apartmentTypeId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetApartmentTypeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetApartmentTypeResult" type="tns:TransactionOfApartmentType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfApartmentType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ApartmentType" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ApartmentType">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApartmentTypeId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApartmentTypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumberOfRooms" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetApartmentTypeArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="complexId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetApartmentTypeArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetApartmentTypeArrayResult" type="tns:TransactionOfListOfApartmentType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfApartmentType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfApartmentType" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfApartmentType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ApartmentType" nillable="true" type="tns:ApartmentType" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetApplicant">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetApplicantResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetApplicantResult" type="tns:TransactionOfApplicant" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfApplicant">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Applicant" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Applicant">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Person">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="AccommodationPreference" type="tns:AccommodationPreference" />
+              <s:element minOccurs="1" maxOccurs="1" name="ApplicantId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="ConfigYearId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="ContactAddress" type="tns:Address" />
+              <s:element minOccurs="0" maxOccurs="1" name="ContactPhoneNumber" type="tns:PhoneNumber" />
+              <s:element minOccurs="0" maxOccurs="1" name="Course" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="DisabilityRegistered" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="FacultyId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="GenderPreference" type="tns:EnumGenderPreference" />
+              <s:element minOccurs="1" maxOccurs="1" name="GroupId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Guarantor" type="tns:Guarantor" />
+              <s:element minOccurs="0" maxOccurs="1" name="HeardAboutDetails" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="HeardAboutId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsDual" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="MedicalCondition" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="NextOfKin" type="tns:NextOfKin" />
+              <s:element minOccurs="0" maxOccurs="1" name="NominationCode" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="OtherPreferences" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="StudentUcasNumber" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TcasId" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="UniversityId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="YearOfStudyId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="YearOfStudyPreference" type="tns:EnumYearOfStudyPreference" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="AccommodationPreference">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApartmentTypeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="BookingPeriodId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ComplexId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RentalTypeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomTypeId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Guarantor">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Person">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="NationalInsuranceNo" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Relationship" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="NextOfKin">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Person">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Relationship" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="CheckRoomTypeAvailable">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="complexId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="apartmenTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="dateFrom" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="dateTo" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="nominationCodeId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckRoomTypeAvailableResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CheckRoomTypeAvailableResult" type="tns:TransactionOfAvailabilityByRoomType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfAvailabilityByRoomType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:AvailabilityByRoomType" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AvailabilityByRoomType">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApartmentTypeId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApartmentTypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ComplexId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ConfigYearId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomsAvailable" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomTypeId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomTypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomTypeAvailableForBooking" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetBooking">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBookingResult" type="tns:TransactionOfBooking" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfBooking">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Booking" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Booking">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicantId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="BookingEndDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="BookingId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="BookingPeriodId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="BookingStartDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChargeArray" type="tns:ArrayOfCharge" />
+          <s:element minOccurs="1" maxOccurs="1" name="ConfigYearId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomTypeName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCharge">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Charge" nillable="true" type="tns:Charge" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Charge">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ChargeAmount" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChargeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DueDate" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetBookingPeriod">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bookingPeriodId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookingPeriodResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBookingPeriodResult" type="tns:TransactionOfBookingPeriod" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfBookingPeriod">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:BookingPeriod" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BookingPeriod">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="BookingPeriodId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="BookingPeriodName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsNomination" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumberOfWeeks" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RentalTypeArray" type="tns:ArrayOfRentalType" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRentalType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RentalType" nillable="true" type="tns:RentalType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RentalType">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RentalTypeId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RentalTypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="WeeklyRate" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsFullPayment" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetBookingPeriodArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="isNomination" type="tns:EnumIsNomination" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="EnumIsNomination">
+        <s:restriction base="s:string">
+          <s:enumeration value="DoesntMatter" />
+          <s:enumeration value="No" />
+          <s:enumeration value="Yes" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetBookingPeriodArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBookingPeriodArrayResult" type="tns:TransactionOfListOfBookingPeriod" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfBookingPeriod">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfBookingPeriod" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBookingPeriod">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BookingPeriod" nillable="true" type="tns:BookingPeriod" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetBookingPeriodDetail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bookingPeriodId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookingPeriodDetailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBookingPeriodDetailResult" type="tns:TransactionOfBookingPeriod" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookingPeriodDetailArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="isNomination" type="tns:EnumIsNomination" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookingPeriodDetailArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBookingPeriodDetailArrayResult" type="tns:TransactionOfListOfBookingPeriod" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChargeArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="accommodationPreference" type="tns:AccommodationPreference" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChargeArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetChargeArrayResult" type="tns:TransactionOfListOfCharge" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfCharge">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfCharge" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCity">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cityId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCityResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCityResult" type="tns:TransactionOfCity" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfCity">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:City" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="City">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CityId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CityName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCityArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCityArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCityArrayResult" type="tns:TransactionOfListOfCity" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfCity">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfCity" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCity">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="City" nillable="true" type="tns:City" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetComplex">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="complexId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetComplexResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetComplexResult" type="tns:TransactionOfComplex" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfComplex">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Complex" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Complex">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CityId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CmsId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ComplexId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ComplexName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ConfigYearId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmailAddress" type="tns:EmailAddress" />
+          <s:element minOccurs="0" maxOccurs="1" name="Telephone" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetComplexArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cityId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetComplexArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetComplexArrayResult" type="tns:TransactionOfListOfComplex" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfComplex">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfComplex" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfComplex">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Complex" nillable="true" type="tns:Complex" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetComplexByCmsId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmsId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetComplexByCmsIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetComplexByCmsIdResult" type="tns:TransactionOfComplex" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetConfigYear">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetConfigYearResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetConfigYearResult" type="tns:TransactionOfConfigYear" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfConfigYear">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ConfigYear" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ConfigYear">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ConfigYearId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ConfigYearName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsCurrentYear" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetConfigYearArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetConfigYearArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetConfigYearArrayResult" type="tns:TransactionOfListOfConfigYear" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfConfigYear">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfConfigYear" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfConfigYear">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ConfigYear" nillable="true" type="tns:ConfigYear" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCountry">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="countryId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCountryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCountryResult" type="tns:TransactionOfCountry" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfCountry">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Country" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Country">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CountryId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CountryName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IsoCode" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCountryArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCountryArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCountryArrayResult" type="tns:TransactionOfListOfCountry" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfCountry">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfCountry" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCountry">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Country" nillable="true" type="tns:Country" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetDeposit">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDepositResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDepositResult" type="tns:TransactionOfDeposit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfDeposit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Deposit" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Deposit">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApartmentTypeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="BookingPeriodId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ComplexId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ConfigYearId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RentalTypeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomTypeId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetDepositArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="complexId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="apartmentTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="bookingPeriodId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="rentalTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDepositArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDepositArrayResult" type="tns:TransactionOfListOfDeposit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfDeposit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfDeposit" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDeposit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Deposit" nillable="true" type="tns:Deposit" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetFaculty">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="facultyId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFacultyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFacultyResult" type="tns:TransactionOfFaculty" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfFaculty">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Faculty" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Faculty">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="FacultyId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FacultyName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetFacultyArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFacultyArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFacultyArrayResult" type="tns:TransactionOfListOfFaculty" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfFaculty">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfFaculty" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFaculty">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Faculty" nillable="true" type="tns:Faculty" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetGender">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="genderId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGenderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGenderResult" type="tns:TransactionOfGender" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfGender">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Gender" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Gender">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="GenderId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="GenderName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetGenderArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGenderArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGenderArrayResult" type="tns:TransactionOfListOfGender" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfGender">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfGender" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfGender">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Gender" nillable="true" type="tns:Gender" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetGenderPreferenceArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGenderPreferenceArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGenderPreferenceArrayResult" type="tns:TransactionOfListOfEnumGenderPreference" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfEnumGenderPreference">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfEnumGenderPreference" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfEnumGenderPreference">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EnumGenderPreference" type="tns:EnumGenderPreference" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetGroup">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="groupId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGroupResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGroupResult" type="tns:TransactionOfGroup" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfGroup">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Group" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Group">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AssignedGroupMembers" type="tns:ArrayOfInt" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeclaredGroupMembers" type="tns:ArrayOfGroupMember" />
+          <s:element minOccurs="1" maxOccurs="1" name="GroupCreationDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="GroupId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="GroupLeaderApplicantId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="GroupName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GroupPassword" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaxGroupMembers" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfGroupMember">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GroupMember" nillable="true" type="tns:GroupMember" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GroupMember">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="EmailAddress" type="tns:EmailAddress" />
+          <s:element minOccurs="1" maxOccurs="1" name="GroupMemberId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetHeardAbout">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="heardAboutId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetHeardAboutResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetHeardAboutResult" type="tns:TransactionOfHeardAbout" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfHeardAbout">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:HeardAbout" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="HeardAbout">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DirectLet" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="HeardAboutId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="HeardAboutName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProLet" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetHeardAboutArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="includeDirectLets" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="includeProLets" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetHeardAboutArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetHeardAboutArrayResult" type="tns:TransactionOfListOfHeardAbout" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfHeardAbout">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfHeardAbout" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfHeardAbout">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="HeardAbout" nillable="true" type="tns:HeardAbout" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPaymentMade">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPaymentMadeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPaymentMadeResult" type="tns:TransactionOfDecimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfDecimal">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Item" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetRentalTypeArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bookingPeriodId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRentalTypeArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRentalTypeArrayResult" type="tns:TransactionOfListOfRentalType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfRentalType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfRentalType" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReservationResult" type="tns:TransactionOfReservation" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfReservation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Reservation" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Reservation">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicantId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetRoom">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRoomResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRoomResult" type="tns:TransactionOfRoom" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfRoom">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Room" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetRoomInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRoomInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRoomInfoResult" type="tns:TransactionOfListOfRoomInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfRoomInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfRoomInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRoomInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RoomInfo" nillable="true" type="tns:RoomInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RoomInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ComplexName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FloorNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApartmentNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApartmentType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Bookingstatus" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="CheckIn" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="CheckInDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="CheckOut" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="CheckOutDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="TCASID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResidentName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="applicantEmail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApplicantHomeTelephoneNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BookingType" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetRoomType">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="isNomination" type="tns:EnumIsNomination" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRoomTypeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRoomTypeResult" type="tns:TransactionOfRoomType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfRoomType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:RoomType" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RoomType">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AvailableForGroup" type="tns:EnumAvailableForGroup" />
+          <s:element minOccurs="1" maxOccurs="1" name="LowestDeposit" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="LowestWeeklyRate" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomsAvailable" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RoomTypeId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoomTypeName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="EnumAvailableForGroup">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="False" />
+          <s:enumeration value="True" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetRoomTypeArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="apartmentTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="isNomination" type="tns:EnumIsNomination" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRoomTypeArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRoomTypeArrayResult" type="tns:TransactionOfListOfRoomType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfRoomType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfRoomType" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRoomType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RoomType" nillable="true" type="tns:RoomType" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTitle">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="titleId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTitleResult" type="tns:TransactionOfTitle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfTitle">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Title" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Title">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TitleId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TitleName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTitleArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTitleArrayResult" type="tns:TransactionOfListOfTitle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfTitle">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfTitle" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTitle">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Title" nillable="true" type="tns:Title" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUniversity">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="universityId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUniversityResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUniversityResult" type="tns:TransactionOfUniversity" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfUniversity">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:University" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="University">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="UniversityId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="UniversityName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUniversityArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="complexId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUniversityArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUniversityArrayResult" type="tns:TransactionOfListOfUniversity" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfUniversity">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfUniversity" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfUniversity">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="University" nillable="true" type="tns:University" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetYearOfStudy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="yearOfStudyId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetYearOfStudyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetYearOfStudyResult" type="tns:TransactionOfYearOfStudy" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfYearOfStudy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:YearOfStudy" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="YearOfStudy">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="YearOfStudyId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="YearOfStudyName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetYearOfStudyArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetYearOfStudyArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetYearOfStudyArrayResult" type="tns:TransactionOfListOfYearOfStudy" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfYearOfStudy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfYearOfStudy" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfYearOfStudy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="YearOfStudy" nillable="true" type="tns:YearOfStudy" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetYearOfStudyPreferenceArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetYearOfStudyPreferenceArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetYearOfStudyPreferenceArrayResult" type="tns:TransactionOfListOfEnumYearOfStudyPreference" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfEnumYearOfStudyPreference">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfEnumYearOfStudyPreference" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfEnumYearOfStudyPreference">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EnumYearOfStudyPreference" type="tns:EnumYearOfStudyPreference" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LoadGroupIdByApplicantId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadGroupIdByApplicantIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoadGroupIdByApplicantIdResult" type="tns:TransactionOfInt32" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfInt32">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Item" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SaveApplicantDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="applicant" type="tns:Applicant" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveApplicantDetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveApplicantDetailsResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveApplicantAsPermanent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveApplicantAsPermanentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveApplicantAsPermanentResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveApplicantToGroup">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="groupId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveApplicantToGroupResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveApplicantToGroupResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveBooking">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="reservation" type="tns:Reservation" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveBookingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveBookingResult" type="tns:TransactionOfBooking" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveGroup">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="group" type="tns:Group" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveGroupResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveGroupResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SavePaymentLog">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paymentLog" type="tns:PaymentLog" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PaymentLog">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicantId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CcSurchargeAmount" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealexPayerRef" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealexPmtExpDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealexPmtRef" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SageRelatedSecurityKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SageRelatedTxAuthNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SageRelatedVendorTxCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SageRelatedVpsTxId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalAmount" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SavePaymentLogResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SavePaymentLogResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveReservationResult" type="tns:TransactionOfReservation" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchRooms">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bookingPeriodId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="roomTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="complexId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="cityId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="genderId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="genderPreference" type="tns:EnumGenderPreference" />
+            <s:element minOccurs="1" maxOccurs="1" name="yearOfStudyId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="yearOfStudyPreference" type="tns:EnumYearOfStudyPreference" />
+            <s:element minOccurs="1" maxOccurs="1" name="groupId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="maxFound" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchRoomsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchRoomsResult" type="tns:TransactionOfListOfApartment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfListOfApartment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ArrayOfApartment" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfApartment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Apartment" nillable="true" type="tns:Apartment" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SearchRoomsByNominationId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="nominationId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="maxReturned" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchRoomsByNominationIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchRoomsByNominationIdResult" type="tns:TransactionOfListOfApartment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchRoomsWithApplicantId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="maxFound" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchRoomsWithApplicantIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchRoomsWithApplicantIdResult" type="tns:TransactionOfListOfApartment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendApplicantEmail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemEmail" type="tns:EnumApplicantEmail" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="EnumApplicantEmail">
+        <s:restriction base="s:string">
+          <s:enumeration value="BookingCompleted" />
+          <s:enumeration value="GroupBookingConfirmation" />
+          <s:enumeration value="ForgotPassword" />
+          <s:enumeration value="Under18" />
+          <s:enumeration value="WaitingList" />
+          <s:enumeration value="YourApplicationHasBeenSaved" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="SendApplicantEmailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendApplicantEmailResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendComplexEmail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemEmail" type="tns:EnumComplexEmail" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="EnumComplexEmail">
+        <s:restriction base="s:string">
+          <s:enumeration value="NotifyUnder18OrDisabled" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="SendComplexEmailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendComplexEmailResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendGroupMemberEmail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="groupId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemEmail" type="tns:EnumGroupMemberEmail" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="EnumGroupMemberEmail">
+        <s:restriction base="s:string">
+          <s:enumeration value="GroupBookingInfoForMembers" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="SendGroupMemberEmailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendGroupMemberEmailResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendGuarantorEmail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemEmail" type="tns:EnumGuarantorEmail" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="EnumGuarantorEmail">
+        <s:restriction base="s:string">
+          <s:enumeration value="GuarantorVerification" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="SendGuarantorEmailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendGuarantorEmailResult" type="tns:TransactionFate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateApplicant">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="applicantEmailAddress" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateApplicantResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateApplicantResult" type="tns:TransactionOfValidateApplicant" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfValidateApplicant">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ValidateApplicant" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ValidateApplicant">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicantId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:EnumApplicantStatus" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="EnumApplicantStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Incomplete" />
+          <s:enumeration value="Complete" />
+          <s:enumeration value="New" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ValidateGroupCredentials">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateGroupCredentialsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateGroupCredentialsResult" type="tns:TransactionOfValidateGroup" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfValidateGroup">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:ValidateGroup" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ValidateGroup">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CredentialStatus" type="tns:EnumGroupCredentialStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="GroupId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="EnumGroupCredentialStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="NoMatch" />
+          <s:enumeration value="IsMatch" />
+          <s:enumeration value="IsMatchButNoBooking" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ValidateGroupName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateGroupNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateGroupNameResult" type="tns:TransactionOfBoolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateNominationCode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nominationCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="configYearId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateNominationCodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateNominationCodeResult" type="tns:TransactionOfNomination" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfNomination">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Item" type="tns:Nomination" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Nomination">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="BookingPeriodId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ComplexId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ConfigYearId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="NominationCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NominationId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NoOfUsers" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RemainingPlaces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:EnumNominationStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="YearOfStudyId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="EnumNominationStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="NoMatch" />
+          <s:enumeration value="IsMatch" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ValidateVoucher">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="applicantId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="voucherNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateVoucherResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateVoucherResult" type="tns:TransactionOfEnumVoucher" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TransactionOfEnumVoucher">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Item" type="tns:EnumVoucher" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionFate" type="tns:TransactionFate" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="EnumVoucher">
+        <s:restriction base="s:string">
+          <s:enumeration value="NoReservation" />
+          <s:enumeration value="Invalid" />
+          <s:enumeration value="Applied" />
+          <s:enumeration value="AlreadyUsed" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AddApplicantToWaitingListSoapIn">
+    <wsdl:part name="parameters" element="tns:AddApplicantToWaitingList" />
+  </wsdl:message>
+  <wsdl:message name="AddApplicantToWaitingListSoapOut">
+    <wsdl:part name="parameters" element="tns:AddApplicantToWaitingListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ApplicantChangePasswordSoapIn">
+    <wsdl:part name="parameters" element="tns:ApplicantChangePassword" />
+  </wsdl:message>
+  <wsdl:message name="ApplicantChangePasswordSoapOut">
+    <wsdl:part name="parameters" element="tns:ApplicantChangePasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="ApplicantExistsSoapIn">
+    <wsdl:part name="parameters" element="tns:ApplicantExists" />
+  </wsdl:message>
+  <wsdl:message name="ApplicantExistsSoapOut">
+    <wsdl:part name="parameters" element="tns:ApplicantExistsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ApplicantForgotPasswordSoapIn">
+    <wsdl:part name="parameters" element="tns:ApplicantForgotPassword" />
+  </wsdl:message>
+  <wsdl:message name="ApplicantForgotPasswordSoapOut">
+    <wsdl:part name="parameters" element="tns:ApplicantForgotPasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckApplicantAndRoomSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckApplicantAndRoom" />
+  </wsdl:message>
+  <wsdl:message name="CheckApplicantAndRoomSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckApplicantAndRoomResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetApartmentSoapIn">
+    <wsdl:part name="parameters" element="tns:GetApartment" />
+  </wsdl:message>
+  <wsdl:message name="GetApartmentSoapOut">
+    <wsdl:part name="parameters" element="tns:GetApartmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetApartmentTypeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetApartmentType" />
+  </wsdl:message>
+  <wsdl:message name="GetApartmentTypeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetApartmentTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetApartmentTypeArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetApartmentTypeArray" />
+  </wsdl:message>
+  <wsdl:message name="GetApartmentTypeArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetApartmentTypeArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetApplicantSoapIn">
+    <wsdl:part name="parameters" element="tns:GetApplicant" />
+  </wsdl:message>
+  <wsdl:message name="GetApplicantSoapOut">
+    <wsdl:part name="parameters" element="tns:GetApplicantResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckRoomTypeAvailableSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckRoomTypeAvailable" />
+  </wsdl:message>
+  <wsdl:message name="CheckRoomTypeAvailableSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckRoomTypeAvailableResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBooking" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookingResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingPeriodSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBookingPeriod" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingPeriodSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookingPeriodResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingPeriodArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetBookingPeriodArray" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingPeriodArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookingPeriodArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingPeriodDetailSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBookingPeriodDetail" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingPeriodDetailSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookingPeriodDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingPeriodDetailArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetBookingPeriodDetailArray" />
+  </wsdl:message>
+  <wsdl:message name="GetBookingPeriodDetailArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookingPeriodDetailArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetChargeArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetChargeArray" />
+  </wsdl:message>
+  <wsdl:message name="GetChargeArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetChargeArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCitySoapIn">
+    <wsdl:part name="parameters" element="tns:GetCity" />
+  </wsdl:message>
+  <wsdl:message name="GetCitySoapOut">
+    <wsdl:part name="parameters" element="tns:GetCityResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCityArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetCityArray" />
+  </wsdl:message>
+  <wsdl:message name="GetCityArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetCityArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetComplexSoapIn">
+    <wsdl:part name="parameters" element="tns:GetComplex" />
+  </wsdl:message>
+  <wsdl:message name="GetComplexSoapOut">
+    <wsdl:part name="parameters" element="tns:GetComplexResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetComplexArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetComplexArray" />
+  </wsdl:message>
+  <wsdl:message name="GetComplexArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetComplexArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetComplexByCmsIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetComplexByCmsId" />
+  </wsdl:message>
+  <wsdl:message name="GetComplexByCmsIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetComplexByCmsIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigYearSoapIn">
+    <wsdl:part name="parameters" element="tns:GetConfigYear" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigYearSoapOut">
+    <wsdl:part name="parameters" element="tns:GetConfigYearResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigYearArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetConfigYearArray" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigYearArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetConfigYearArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCountrySoapIn">
+    <wsdl:part name="parameters" element="tns:GetCountry" />
+  </wsdl:message>
+  <wsdl:message name="GetCountrySoapOut">
+    <wsdl:part name="parameters" element="tns:GetCountryResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCountryArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetCountryArray" />
+  </wsdl:message>
+  <wsdl:message name="GetCountryArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetCountryArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDepositSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDeposit" />
+  </wsdl:message>
+  <wsdl:message name="GetDepositSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDepositResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDepositArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetDepositArray" />
+  </wsdl:message>
+  <wsdl:message name="GetDepositArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetDepositArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFacultySoapIn">
+    <wsdl:part name="parameters" element="tns:GetFaculty" />
+  </wsdl:message>
+  <wsdl:message name="GetFacultySoapOut">
+    <wsdl:part name="parameters" element="tns:GetFacultyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFacultyArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetFacultyArray" />
+  </wsdl:message>
+  <wsdl:message name="GetFacultyArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetFacultyArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGenderSoapIn">
+    <wsdl:part name="parameters" element="tns:GetGender" />
+  </wsdl:message>
+  <wsdl:message name="GetGenderSoapOut">
+    <wsdl:part name="parameters" element="tns:GetGenderResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGenderArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetGenderArray" />
+  </wsdl:message>
+  <wsdl:message name="GetGenderArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetGenderArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGenderPreferenceArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetGenderPreferenceArray" />
+  </wsdl:message>
+  <wsdl:message name="GetGenderPreferenceArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetGenderPreferenceArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGroupSoapIn">
+    <wsdl:part name="parameters" element="tns:GetGroup" />
+  </wsdl:message>
+  <wsdl:message name="GetGroupSoapOut">
+    <wsdl:part name="parameters" element="tns:GetGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetHeardAboutSoapIn">
+    <wsdl:part name="parameters" element="tns:GetHeardAbout" />
+  </wsdl:message>
+  <wsdl:message name="GetHeardAboutSoapOut">
+    <wsdl:part name="parameters" element="tns:GetHeardAboutResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetHeardAboutArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetHeardAboutArray" />
+  </wsdl:message>
+  <wsdl:message name="GetHeardAboutArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetHeardAboutArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPaymentMadeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPaymentMade" />
+  </wsdl:message>
+  <wsdl:message name="GetPaymentMadeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPaymentMadeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRentalTypeArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetRentalTypeArray" />
+  </wsdl:message>
+  <wsdl:message name="GetRentalTypeArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetRentalTypeArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReservation" />
+  </wsdl:message>
+  <wsdl:message name="GetReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRoom" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRoomResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRoomInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRoomInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomTypeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRoomType" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomTypeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRoomTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomTypeArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetRoomTypeArray" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomTypeArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetRoomTypeArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTitle" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTitleResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetTitleArray" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetTitleArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUniversitySoapIn">
+    <wsdl:part name="parameters" element="tns:GetUniversity" />
+  </wsdl:message>
+  <wsdl:message name="GetUniversitySoapOut">
+    <wsdl:part name="parameters" element="tns:GetUniversityResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUniversityArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetUniversityArray" />
+  </wsdl:message>
+  <wsdl:message name="GetUniversityArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetUniversityArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetYearOfStudySoapIn">
+    <wsdl:part name="parameters" element="tns:GetYearOfStudy" />
+  </wsdl:message>
+  <wsdl:message name="GetYearOfStudySoapOut">
+    <wsdl:part name="parameters" element="tns:GetYearOfStudyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetYearOfStudyArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetYearOfStudyArray" />
+  </wsdl:message>
+  <wsdl:message name="GetYearOfStudyArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetYearOfStudyArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetYearOfStudyPreferenceArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetYearOfStudyPreferenceArray" />
+  </wsdl:message>
+  <wsdl:message name="GetYearOfStudyPreferenceArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetYearOfStudyPreferenceArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadGroupIdByApplicantIdSoapIn">
+    <wsdl:part name="parameters" element="tns:LoadGroupIdByApplicantId" />
+  </wsdl:message>
+  <wsdl:message name="LoadGroupIdByApplicantIdSoapOut">
+    <wsdl:part name="parameters" element="tns:LoadGroupIdByApplicantIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveApplicantDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveApplicantDetails" />
+  </wsdl:message>
+  <wsdl:message name="SaveApplicantDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveApplicantDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveApplicantAsPermanentSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveApplicantAsPermanent" />
+  </wsdl:message>
+  <wsdl:message name="SaveApplicantAsPermanentSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveApplicantAsPermanentResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveApplicantToGroupSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveApplicantToGroup" />
+  </wsdl:message>
+  <wsdl:message name="SaveApplicantToGroupSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveApplicantToGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveBookingSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveBooking" />
+  </wsdl:message>
+  <wsdl:message name="SaveBookingSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveBookingResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveGroupSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveGroup" />
+  </wsdl:message>
+  <wsdl:message name="SaveGroupSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="SavePaymentLogSoapIn">
+    <wsdl:part name="parameters" element="tns:SavePaymentLog" />
+  </wsdl:message>
+  <wsdl:message name="SavePaymentLogSoapOut">
+    <wsdl:part name="parameters" element="tns:SavePaymentLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveReservation" />
+  </wsdl:message>
+  <wsdl:message name="SaveReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchRoomsSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchRooms" />
+  </wsdl:message>
+  <wsdl:message name="SearchRoomsSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchRoomsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchRoomsByNominationIdSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchRoomsByNominationId" />
+  </wsdl:message>
+  <wsdl:message name="SearchRoomsByNominationIdSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchRoomsByNominationIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchRoomsWithApplicantIdSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchRoomsWithApplicantId" />
+  </wsdl:message>
+  <wsdl:message name="SearchRoomsWithApplicantIdSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchRoomsWithApplicantIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendApplicantEmailSoapIn">
+    <wsdl:part name="parameters" element="tns:SendApplicantEmail" />
+  </wsdl:message>
+  <wsdl:message name="SendApplicantEmailSoapOut">
+    <wsdl:part name="parameters" element="tns:SendApplicantEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendComplexEmailSoapIn">
+    <wsdl:part name="parameters" element="tns:SendComplexEmail" />
+  </wsdl:message>
+  <wsdl:message name="SendComplexEmailSoapOut">
+    <wsdl:part name="parameters" element="tns:SendComplexEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendGroupMemberEmailSoapIn">
+    <wsdl:part name="parameters" element="tns:SendGroupMemberEmail" />
+  </wsdl:message>
+  <wsdl:message name="SendGroupMemberEmailSoapOut">
+    <wsdl:part name="parameters" element="tns:SendGroupMemberEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendGuarantorEmailSoapIn">
+    <wsdl:part name="parameters" element="tns:SendGuarantorEmail" />
+  </wsdl:message>
+  <wsdl:message name="SendGuarantorEmailSoapOut">
+    <wsdl:part name="parameters" element="tns:SendGuarantorEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateApplicantSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateApplicant" />
+  </wsdl:message>
+  <wsdl:message name="ValidateApplicantSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateApplicantResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateGroupCredentialsSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateGroupCredentials" />
+  </wsdl:message>
+  <wsdl:message name="ValidateGroupCredentialsSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateGroupCredentialsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateGroupNameSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateGroupName" />
+  </wsdl:message>
+  <wsdl:message name="ValidateGroupNameSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateGroupNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateNominationCodeSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateNominationCode" />
+  </wsdl:message>
+  <wsdl:message name="ValidateNominationCodeSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateNominationCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateVoucherSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateVoucher" />
+  </wsdl:message>
+  <wsdl:message name="ValidateVoucherSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateVoucherResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Api2Soap">
+    <wsdl:operation name="AddApplicantToWaitingList">
+      <wsdl:input message="tns:AddApplicantToWaitingListSoapIn" />
+      <wsdl:output message="tns:AddApplicantToWaitingListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ApplicantChangePassword">
+      <wsdl:input message="tns:ApplicantChangePasswordSoapIn" />
+      <wsdl:output message="tns:ApplicantChangePasswordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ApplicantExists">
+      <wsdl:input message="tns:ApplicantExistsSoapIn" />
+      <wsdl:output message="tns:ApplicantExistsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ApplicantForgotPassword">
+      <wsdl:input message="tns:ApplicantForgotPasswordSoapIn" />
+      <wsdl:output message="tns:ApplicantForgotPasswordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckApplicantAndRoom">
+      <wsdl:input message="tns:CheckApplicantAndRoomSoapIn" />
+      <wsdl:output message="tns:CheckApplicantAndRoomSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetApartment">
+      <wsdl:input message="tns:GetApartmentSoapIn" />
+      <wsdl:output message="tns:GetApartmentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetApartmentType">
+      <wsdl:input message="tns:GetApartmentTypeSoapIn" />
+      <wsdl:output message="tns:GetApartmentTypeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetApartmentTypeArray">
+      <wsdl:input message="tns:GetApartmentTypeArraySoapIn" />
+      <wsdl:output message="tns:GetApartmentTypeArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicant">
+      <wsdl:input message="tns:GetApplicantSoapIn" />
+      <wsdl:output message="tns:GetApplicantSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckRoomTypeAvailable">
+      <wsdl:input message="tns:CheckRoomTypeAvailableSoapIn" />
+      <wsdl:output message="tns:CheckRoomTypeAvailableSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBooking">
+      <wsdl:input message="tns:GetBookingSoapIn" />
+      <wsdl:output message="tns:GetBookingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriod">
+      <wsdl:input message="tns:GetBookingPeriodSoapIn" />
+      <wsdl:output message="tns:GetBookingPeriodSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriodArray">
+      <wsdl:input message="tns:GetBookingPeriodArraySoapIn" />
+      <wsdl:output message="tns:GetBookingPeriodArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriodDetail">
+      <wsdl:input message="tns:GetBookingPeriodDetailSoapIn" />
+      <wsdl:output message="tns:GetBookingPeriodDetailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriodDetailArray">
+      <wsdl:input message="tns:GetBookingPeriodDetailArraySoapIn" />
+      <wsdl:output message="tns:GetBookingPeriodDetailArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetChargeArray">
+      <wsdl:input message="tns:GetChargeArraySoapIn" />
+      <wsdl:output message="tns:GetChargeArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCity">
+      <wsdl:input message="tns:GetCitySoapIn" />
+      <wsdl:output message="tns:GetCitySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCityArray">
+      <wsdl:input message="tns:GetCityArraySoapIn" />
+      <wsdl:output message="tns:GetCityArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetComplex">
+      <wsdl:input message="tns:GetComplexSoapIn" />
+      <wsdl:output message="tns:GetComplexSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetComplexArray">
+      <wsdl:input message="tns:GetComplexArraySoapIn" />
+      <wsdl:output message="tns:GetComplexArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetComplexByCmsId">
+      <wsdl:input message="tns:GetComplexByCmsIdSoapIn" />
+      <wsdl:output message="tns:GetComplexByCmsIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigYear">
+      <wsdl:input message="tns:GetConfigYearSoapIn" />
+      <wsdl:output message="tns:GetConfigYearSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigYearArray">
+      <wsdl:input message="tns:GetConfigYearArraySoapIn" />
+      <wsdl:output message="tns:GetConfigYearArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCountry">
+      <wsdl:input message="tns:GetCountrySoapIn" />
+      <wsdl:output message="tns:GetCountrySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCountryArray">
+      <wsdl:input message="tns:GetCountryArraySoapIn" />
+      <wsdl:output message="tns:GetCountryArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDeposit">
+      <wsdl:input message="tns:GetDepositSoapIn" />
+      <wsdl:output message="tns:GetDepositSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDepositArray">
+      <wsdl:input message="tns:GetDepositArraySoapIn" />
+      <wsdl:output message="tns:GetDepositArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFaculty">
+      <wsdl:input message="tns:GetFacultySoapIn" />
+      <wsdl:output message="tns:GetFacultySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFacultyArray">
+      <wsdl:input message="tns:GetFacultyArraySoapIn" />
+      <wsdl:output message="tns:GetFacultyArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGender">
+      <wsdl:input message="tns:GetGenderSoapIn" />
+      <wsdl:output message="tns:GetGenderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGenderArray">
+      <wsdl:input message="tns:GetGenderArraySoapIn" />
+      <wsdl:output message="tns:GetGenderArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGenderPreferenceArray">
+      <wsdl:input message="tns:GetGenderPreferenceArraySoapIn" />
+      <wsdl:output message="tns:GetGenderPreferenceArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <wsdl:input message="tns:GetGroupSoapIn" />
+      <wsdl:output message="tns:GetGroupSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHeardAbout">
+      <wsdl:input message="tns:GetHeardAboutSoapIn" />
+      <wsdl:output message="tns:GetHeardAboutSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHeardAboutArray">
+      <wsdl:input message="tns:GetHeardAboutArraySoapIn" />
+      <wsdl:output message="tns:GetHeardAboutArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPaymentMade">
+      <wsdl:input message="tns:GetPaymentMadeSoapIn" />
+      <wsdl:output message="tns:GetPaymentMadeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRentalTypeArray">
+      <wsdl:input message="tns:GetRentalTypeArraySoapIn" />
+      <wsdl:output message="tns:GetRentalTypeArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReservation">
+      <wsdl:input message="tns:GetReservationSoapIn" />
+      <wsdl:output message="tns:GetReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRoom">
+      <wsdl:input message="tns:GetRoomSoapIn" />
+      <wsdl:output message="tns:GetRoomSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomInfo">
+      <wsdl:input message="tns:GetRoomInfoSoapIn" />
+      <wsdl:output message="tns:GetRoomInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomType">
+      <wsdl:input message="tns:GetRoomTypeSoapIn" />
+      <wsdl:output message="tns:GetRoomTypeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomTypeArray">
+      <wsdl:input message="tns:GetRoomTypeArraySoapIn" />
+      <wsdl:output message="tns:GetRoomTypeArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTitle">
+      <wsdl:input message="tns:GetTitleSoapIn" />
+      <wsdl:output message="tns:GetTitleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleArray">
+      <wsdl:input message="tns:GetTitleArraySoapIn" />
+      <wsdl:output message="tns:GetTitleArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUniversity">
+      <wsdl:input message="tns:GetUniversitySoapIn" />
+      <wsdl:output message="tns:GetUniversitySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUniversityArray">
+      <wsdl:input message="tns:GetUniversityArraySoapIn" />
+      <wsdl:output message="tns:GetUniversityArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetYearOfStudy">
+      <wsdl:input message="tns:GetYearOfStudySoapIn" />
+      <wsdl:output message="tns:GetYearOfStudySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetYearOfStudyArray">
+      <wsdl:input message="tns:GetYearOfStudyArraySoapIn" />
+      <wsdl:output message="tns:GetYearOfStudyArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetYearOfStudyPreferenceArray">
+      <wsdl:input message="tns:GetYearOfStudyPreferenceArraySoapIn" />
+      <wsdl:output message="tns:GetYearOfStudyPreferenceArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadGroupIdByApplicantId">
+      <wsdl:input message="tns:LoadGroupIdByApplicantIdSoapIn" />
+      <wsdl:output message="tns:LoadGroupIdByApplicantIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveApplicantDetails">
+      <wsdl:input message="tns:SaveApplicantDetailsSoapIn" />
+      <wsdl:output message="tns:SaveApplicantDetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveApplicantAsPermanent">
+      <wsdl:input message="tns:SaveApplicantAsPermanentSoapIn" />
+      <wsdl:output message="tns:SaveApplicantAsPermanentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveApplicantToGroup">
+      <wsdl:input message="tns:SaveApplicantToGroupSoapIn" />
+      <wsdl:output message="tns:SaveApplicantToGroupSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveBooking">
+      <wsdl:input message="tns:SaveBookingSoapIn" />
+      <wsdl:output message="tns:SaveBookingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveGroup">
+      <wsdl:input message="tns:SaveGroupSoapIn" />
+      <wsdl:output message="tns:SaveGroupSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SavePaymentLog">
+      <wsdl:input message="tns:SavePaymentLogSoapIn" />
+      <wsdl:output message="tns:SavePaymentLogSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveReservation">
+      <wsdl:input message="tns:SaveReservationSoapIn" />
+      <wsdl:output message="tns:SaveReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchRooms">
+      <wsdl:input message="tns:SearchRoomsSoapIn" />
+      <wsdl:output message="tns:SearchRoomsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchRoomsByNominationId">
+      <wsdl:input message="tns:SearchRoomsByNominationIdSoapIn" />
+      <wsdl:output message="tns:SearchRoomsByNominationIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchRoomsWithApplicantId">
+      <wsdl:input message="tns:SearchRoomsWithApplicantIdSoapIn" />
+      <wsdl:output message="tns:SearchRoomsWithApplicantIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendApplicantEmail">
+      <wsdl:input message="tns:SendApplicantEmailSoapIn" />
+      <wsdl:output message="tns:SendApplicantEmailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendComplexEmail">
+      <wsdl:input message="tns:SendComplexEmailSoapIn" />
+      <wsdl:output message="tns:SendComplexEmailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendGroupMemberEmail">
+      <wsdl:input message="tns:SendGroupMemberEmailSoapIn" />
+      <wsdl:output message="tns:SendGroupMemberEmailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendGuarantorEmail">
+      <wsdl:input message="tns:SendGuarantorEmailSoapIn" />
+      <wsdl:output message="tns:SendGuarantorEmailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateApplicant">
+      <wsdl:input message="tns:ValidateApplicantSoapIn" />
+      <wsdl:output message="tns:ValidateApplicantSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateGroupCredentials">
+      <wsdl:input message="tns:ValidateGroupCredentialsSoapIn" />
+      <wsdl:output message="tns:ValidateGroupCredentialsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateGroupName">
+      <wsdl:input message="tns:ValidateGroupNameSoapIn" />
+      <wsdl:output message="tns:ValidateGroupNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateNominationCode">
+      <wsdl:input message="tns:ValidateNominationCodeSoapIn" />
+      <wsdl:output message="tns:ValidateNominationCodeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateVoucher">
+      <wsdl:input message="tns:ValidateVoucherSoapIn" />
+      <wsdl:output message="tns:ValidateVoucherSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Api2Soap" type="tns:Api2Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddApplicantToWaitingList">
+      <soap:operation soapAction="http://TCASOnline.com/AddApplicantToWaitingList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApplicantChangePassword">
+      <soap:operation soapAction="http://TCASOnline.com/ApplicantChangePassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApplicantExists">
+      <soap:operation soapAction="http://TCASOnline.com/ApplicantExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApplicantForgotPassword">
+      <soap:operation soapAction="http://TCASOnline.com/ApplicantForgotPassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckApplicantAndRoom">
+      <soap:operation soapAction="http://TCASOnline.com/CheckApplicantAndRoom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApartment">
+      <soap:operation soapAction="http://TCASOnline.com/GetApartment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApartmentType">
+      <soap:operation soapAction="http://TCASOnline.com/GetApartmentType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApartmentTypeArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetApartmentTypeArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicant">
+      <soap:operation soapAction="http://TCASOnline.com/GetApplicant" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckRoomTypeAvailable">
+      <soap:operation soapAction="http://TCASOnline.com/CheckRoomTypeAvailable" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBooking">
+      <soap:operation soapAction="http://TCASOnline.com/GetBooking" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriod">
+      <soap:operation soapAction="http://TCASOnline.com/GetBookingPeriod" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriodArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetBookingPeriodArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriodDetail">
+      <soap:operation soapAction="http://TCASOnline.com/GetBookingPeriodDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriodDetailArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetBookingPeriodDetailArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChargeArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetChargeArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCity">
+      <soap:operation soapAction="http://TCASOnline.com/GetCity" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCityArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetCityArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplex">
+      <soap:operation soapAction="http://TCASOnline.com/GetComplex" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplexArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetComplexArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplexByCmsId">
+      <soap:operation soapAction="http://TCASOnline.com/GetComplexByCmsId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigYear">
+      <soap:operation soapAction="http://TCASOnline.com/GetConfigYear" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigYearArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetConfigYearArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCountry">
+      <soap:operation soapAction="http://TCASOnline.com/GetCountry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCountryArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetCountryArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDeposit">
+      <soap:operation soapAction="http://TCASOnline.com/GetDeposit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDepositArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetDepositArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFaculty">
+      <soap:operation soapAction="http://TCASOnline.com/GetFaculty" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacultyArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetFacultyArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGender">
+      <soap:operation soapAction="http://TCASOnline.com/GetGender" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGenderArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetGenderArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGenderPreferenceArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetGenderPreferenceArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <soap:operation soapAction="http://TCASOnline.com/GetGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHeardAbout">
+      <soap:operation soapAction="http://TCASOnline.com/GetHeardAbout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHeardAboutArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetHeardAboutArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPaymentMade">
+      <soap:operation soapAction="http://TCASOnline.com/GetPaymentMade" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRentalTypeArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetRentalTypeArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReservation">
+      <soap:operation soapAction="http://TCASOnline.com/GetReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoom">
+      <soap:operation soapAction="http://TCASOnline.com/GetRoom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomInfo">
+      <soap:operation soapAction="http://TCASOnline.com/GetRoomInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomType">
+      <soap:operation soapAction="http://TCASOnline.com/GetRoomType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomTypeArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetRoomTypeArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitle">
+      <soap:operation soapAction="http://TCASOnline.com/GetTitle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetTitleArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUniversity">
+      <soap:operation soapAction="http://TCASOnline.com/GetUniversity" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUniversityArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetUniversityArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetYearOfStudy">
+      <soap:operation soapAction="http://TCASOnline.com/GetYearOfStudy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetYearOfStudyArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetYearOfStudyArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetYearOfStudyPreferenceArray">
+      <soap:operation soapAction="http://TCASOnline.com/GetYearOfStudyPreferenceArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadGroupIdByApplicantId">
+      <soap:operation soapAction="http://TCASOnline.com/LoadGroupIdByApplicantId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveApplicantDetails">
+      <soap:operation soapAction="http://TCASOnline.com/SaveApplicantDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveApplicantAsPermanent">
+      <soap:operation soapAction="http://TCASOnline.com/SaveApplicantAsPermanent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveApplicantToGroup">
+      <soap:operation soapAction="http://TCASOnline.com/SaveApplicantToGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveBooking">
+      <soap:operation soapAction="http://TCASOnline.com/SaveBooking" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveGroup">
+      <soap:operation soapAction="http://TCASOnline.com/SaveGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SavePaymentLog">
+      <soap:operation soapAction="http://TCASOnline.com/SavePaymentLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveReservation">
+      <soap:operation soapAction="http://TCASOnline.com/SaveReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRooms">
+      <soap:operation soapAction="http://TCASOnline.com/SearchRooms" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRoomsByNominationId">
+      <soap:operation soapAction="http://TCASOnline.com/SearchRoomsByNominationId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRoomsWithApplicantId">
+      <soap:operation soapAction="http://TCASOnline.com/SearchRoomsWithApplicantId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendApplicantEmail">
+      <soap:operation soapAction="http://TCASOnline.com/SendApplicantEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendComplexEmail">
+      <soap:operation soapAction="http://TCASOnline.com/SendComplexEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendGroupMemberEmail">
+      <soap:operation soapAction="http://TCASOnline.com/SendGroupMemberEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendGuarantorEmail">
+      <soap:operation soapAction="http://TCASOnline.com/SendGuarantorEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateApplicant">
+      <soap:operation soapAction="http://TCASOnline.com/ValidateApplicant" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateGroupCredentials">
+      <soap:operation soapAction="http://TCASOnline.com/ValidateGroupCredentials" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateGroupName">
+      <soap:operation soapAction="http://TCASOnline.com/ValidateGroupName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateNominationCode">
+      <soap:operation soapAction="http://TCASOnline.com/ValidateNominationCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateVoucher">
+      <soap:operation soapAction="http://TCASOnline.com/ValidateVoucher" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Api2Soap12" type="tns:Api2Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddApplicantToWaitingList">
+      <soap12:operation soapAction="http://TCASOnline.com/AddApplicantToWaitingList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApplicantChangePassword">
+      <soap12:operation soapAction="http://TCASOnline.com/ApplicantChangePassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApplicantExists">
+      <soap12:operation soapAction="http://TCASOnline.com/ApplicantExists" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApplicantForgotPassword">
+      <soap12:operation soapAction="http://TCASOnline.com/ApplicantForgotPassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckApplicantAndRoom">
+      <soap12:operation soapAction="http://TCASOnline.com/CheckApplicantAndRoom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApartment">
+      <soap12:operation soapAction="http://TCASOnline.com/GetApartment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApartmentType">
+      <soap12:operation soapAction="http://TCASOnline.com/GetApartmentType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApartmentTypeArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetApartmentTypeArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicant">
+      <soap12:operation soapAction="http://TCASOnline.com/GetApplicant" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckRoomTypeAvailable">
+      <soap12:operation soapAction="http://TCASOnline.com/CheckRoomTypeAvailable" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBooking">
+      <soap12:operation soapAction="http://TCASOnline.com/GetBooking" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriod">
+      <soap12:operation soapAction="http://TCASOnline.com/GetBookingPeriod" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriodArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetBookingPeriodArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriodDetail">
+      <soap12:operation soapAction="http://TCASOnline.com/GetBookingPeriodDetail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookingPeriodDetailArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetBookingPeriodDetailArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChargeArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetChargeArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCity">
+      <soap12:operation soapAction="http://TCASOnline.com/GetCity" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCityArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetCityArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplex">
+      <soap12:operation soapAction="http://TCASOnline.com/GetComplex" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplexArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetComplexArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplexByCmsId">
+      <soap12:operation soapAction="http://TCASOnline.com/GetComplexByCmsId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigYear">
+      <soap12:operation soapAction="http://TCASOnline.com/GetConfigYear" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigYearArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetConfigYearArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCountry">
+      <soap12:operation soapAction="http://TCASOnline.com/GetCountry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCountryArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetCountryArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDeposit">
+      <soap12:operation soapAction="http://TCASOnline.com/GetDeposit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDepositArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetDepositArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFaculty">
+      <soap12:operation soapAction="http://TCASOnline.com/GetFaculty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacultyArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetFacultyArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGender">
+      <soap12:operation soapAction="http://TCASOnline.com/GetGender" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGenderArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetGenderArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGenderPreferenceArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetGenderPreferenceArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <soap12:operation soapAction="http://TCASOnline.com/GetGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHeardAbout">
+      <soap12:operation soapAction="http://TCASOnline.com/GetHeardAbout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHeardAboutArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetHeardAboutArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPaymentMade">
+      <soap12:operation soapAction="http://TCASOnline.com/GetPaymentMade" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRentalTypeArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetRentalTypeArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReservation">
+      <soap12:operation soapAction="http://TCASOnline.com/GetReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoom">
+      <soap12:operation soapAction="http://TCASOnline.com/GetRoom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomInfo">
+      <soap12:operation soapAction="http://TCASOnline.com/GetRoomInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomType">
+      <soap12:operation soapAction="http://TCASOnline.com/GetRoomType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomTypeArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetRoomTypeArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitle">
+      <soap12:operation soapAction="http://TCASOnline.com/GetTitle" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetTitleArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUniversity">
+      <soap12:operation soapAction="http://TCASOnline.com/GetUniversity" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUniversityArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetUniversityArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetYearOfStudy">
+      <soap12:operation soapAction="http://TCASOnline.com/GetYearOfStudy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetYearOfStudyArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetYearOfStudyArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetYearOfStudyPreferenceArray">
+      <soap12:operation soapAction="http://TCASOnline.com/GetYearOfStudyPreferenceArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadGroupIdByApplicantId">
+      <soap12:operation soapAction="http://TCASOnline.com/LoadGroupIdByApplicantId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveApplicantDetails">
+      <soap12:operation soapAction="http://TCASOnline.com/SaveApplicantDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveApplicantAsPermanent">
+      <soap12:operation soapAction="http://TCASOnline.com/SaveApplicantAsPermanent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveApplicantToGroup">
+      <soap12:operation soapAction="http://TCASOnline.com/SaveApplicantToGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveBooking">
+      <soap12:operation soapAction="http://TCASOnline.com/SaveBooking" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveGroup">
+      <soap12:operation soapAction="http://TCASOnline.com/SaveGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SavePaymentLog">
+      <soap12:operation soapAction="http://TCASOnline.com/SavePaymentLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveReservation">
+      <soap12:operation soapAction="http://TCASOnline.com/SaveReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRooms">
+      <soap12:operation soapAction="http://TCASOnline.com/SearchRooms" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRoomsByNominationId">
+      <soap12:operation soapAction="http://TCASOnline.com/SearchRoomsByNominationId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRoomsWithApplicantId">
+      <soap12:operation soapAction="http://TCASOnline.com/SearchRoomsWithApplicantId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendApplicantEmail">
+      <soap12:operation soapAction="http://TCASOnline.com/SendApplicantEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendComplexEmail">
+      <soap12:operation soapAction="http://TCASOnline.com/SendComplexEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendGroupMemberEmail">
+      <soap12:operation soapAction="http://TCASOnline.com/SendGroupMemberEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendGuarantorEmail">
+      <soap12:operation soapAction="http://TCASOnline.com/SendGuarantorEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateApplicant">
+      <soap12:operation soapAction="http://TCASOnline.com/ValidateApplicant" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateGroupCredentials">
+      <soap12:operation soapAction="http://TCASOnline.com/ValidateGroupCredentials" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateGroupName">
+      <soap12:operation soapAction="http://TCASOnline.com/ValidateGroupName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateNominationCode">
+      <soap12:operation soapAction="http://TCASOnline.com/ValidateNominationCode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateVoucher">
+      <soap12:operation soapAction="http://TCASOnline.com/ValidateVoucher" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Api2">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Click &lt;a href='../Help/Index.html'&gt;here&lt;/a&gt; for all documentation.</wsdl:documentation>
+    <wsdl:port name="Api2Soap" binding="tns:Api2Soap">
+      <soap:address location="http://109.246.48.61/ApplicationFormApi_UAT/Diagnostics/Api2.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Api2Soap12" binding="tns:Api2Soap12">
+      <soap12:address location="http://109.246.48.61/ApplicationFormApi_UAT/Diagnostics/Api2.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

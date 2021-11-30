@@ -147,7 +147,7 @@ namespace WMS.Controllers
                     palletTracking.ExpiryDate = expiryDate;
                 }
                 palletTracking.BatchNo = BatchNo;
-                palletTracking.OrderNumber = orderNumber;
+                //palletTracking.OrderNumber = orderNumber;
                 palletTracking.TotalCases = TotalCase;
                 palletTracking.RemainingCases = TotalCase;
                 palletTracking.Comments = Comments;
