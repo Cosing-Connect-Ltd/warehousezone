@@ -1984,7 +1984,10 @@ namespace Ganedata.Core.Services
                 TenantId = tenantId,
                 WarehouseId = warehouseId
             };
-
+            if (requestData.RequiresExpiryDate.HasValue && requestData.RequiresExpiryDate==true)
+            {
+                palletTrackingData.ExpiryDate = requestData.LabelDate;
+            }
             var palletSerials = new List<string>();
             var palletSerial = string.Empty;
 

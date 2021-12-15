@@ -1222,7 +1222,7 @@ namespace Ganedata.Core.Services
                         {
                             newpallet.Status = PalletTrackingStatusEnum.Completed;
                         }
-                        else { newpallet.Status = PalletTrackingStatusEnum.Active; }
+                        else { newpallet.Status = PalletTrackingStatusEnum.Hold; }
                         newpallet.DateUpdated = DateTime.UtcNow;
                         _currentDbContext.PalletTracking.Add(newpallet);
                         _currentDbContext.Entry(newpallet).State = EntityState.Modified;

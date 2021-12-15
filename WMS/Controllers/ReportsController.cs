@@ -147,7 +147,7 @@ namespace WMS.Controllers
 
             report.DataSource = inventoryStocks.Select(i =>
             {
-                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, CurrentTenantId, i.DateCreated);
+                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, CurrentTenantId, (i.DateCreated > i.DateUpdated ? i.DateCreated : i.DateUpdated));
                 return new
                 {
                     ProductSkuCode = i.ProductMaster.SKUCode,
@@ -1054,7 +1054,7 @@ namespace WMS.Controllers
             DeliveryNotePrint report = CreateDeliveryNotePrint(id);
             report.RequestParameters = false;
             report.xrLabel16.Text = "Goods Book In Note";
-            
+
             //report.xrLabel26.Text = "";
             return View(report);
         }
@@ -1424,8 +1424,8 @@ namespace WMS.Controllers
                     NetAmtB = invoiceProductsPrices.Sum(p => p.TotalBuyPrice),
                     NetAmtS = invoiceProductsPrices.Sum(p => p.TotalSellPrice),
                     Profit = sellingNetAmount - buyingNetAmount,
-                    ProfitPercent = sellingNetAmount>0? ((sellingNetAmount - buyingNetAmount)/sellingNetAmount)*100.0m:0,
-                    
+                    ProfitPercent = sellingNetAmount > 0 ? ((sellingNetAmount - buyingNetAmount) / sellingNetAmount) * 100.0m : 0,
+
                     ProductsDetail = invoiceProductsPrices.Select(p => new InvoiceProfitReportProductsViewModel
                     {
                         InvoiceId = p.InvoiceId,
@@ -1436,7 +1436,7 @@ namespace WMS.Controllers
                         TotalBuyPrice = p.TotalBuyPrice,
                         TotalSellPrice = p.TotalSellPrice,
                         Profit = p.TotalSellPrice - p.TotalBuyPrice,
-                        ProfitPercent = p.TotalSellPrice > 0 ? ((p.TotalSellPrice - p.TotalBuyPrice)/ (p.TotalSellPrice)) * 100.0m : 0
+                        ProfitPercent = p.TotalSellPrice > 0 ? ((p.TotalSellPrice - p.TotalBuyPrice) / (p.TotalSellPrice)) * 100.0m : 0
                     }).ToList()
                 });
             }
