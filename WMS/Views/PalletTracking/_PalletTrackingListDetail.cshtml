@@ -15,7 +15,7 @@
         };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
-       
+
         settings.Settings.ShowHeaderFilterButton = true;
         settings.SettingsPopup.HeaderFilter.Height = 200;
 
@@ -44,7 +44,7 @@
             c.Caption = "Id";
             c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
-           
+
         });
 
         settings.Columns.Add(c =>
@@ -53,7 +53,7 @@
             c.Caption = "Product";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
             c.GroupIndex = 0;
-            
+
         });
 
         settings.Columns.Add(c =>
@@ -164,7 +164,7 @@
             });
 
         });
-        
+
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
         settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
@@ -172,10 +172,10 @@
         settings.Settings.ShowFooter = true;
         settings.SettingsBehavior.AutoExpandAllGroups = true;
         settings.GroupSummary.Add(DevExpress.Data.SummaryItemType.Count, "Name").DisplayFormat="Total Pallets {0}";
-        settings.GroupSummary.Add(DevExpress.Data.SummaryItemType.Sum, "RemainingCases").DisplayFormat="Total Remaining Cases {0}";
+        settings.GroupSummary.Add(DevExpress.Data.SummaryItemType.Sum, "RemainingCases").DisplayFormat= "In Stock (Cases) {0}";
         settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Count, "Name").DisplayFormat="Total Pallets {0}";
-        settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "RemainingCases").DisplayFormat="Total Remaining Cases {0}";
-      
+        settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "RemainingCases").DisplayFormat= "In Stock (Cases) {0}";
+
 
 
     });

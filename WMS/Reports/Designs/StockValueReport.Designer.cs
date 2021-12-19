@@ -100,6 +100,7 @@
             this.xrLabel14.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel14.SizeF = new System.Drawing.SizeF(119.6699F, 18.83334F);
             this.xrLabel14.StylePriority.UseFont = false;
+            this.xrLabel14.TextFormatString = "{0:}";
             // 
             // xrLabel15
             // 
@@ -111,7 +112,7 @@
             this.xrLabel15.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel15.SizeF = new System.Drawing.SizeF(150.5417F, 18.83334F);
             this.xrLabel15.StylePriority.UseFont = false;
-            this.xrLabel15.TextFormatString = "{0:#.00}";
+            this.xrLabel15.TextFormatString = "{0:£ #,#.00}";
             // 
             // xrLabel6
             // 
@@ -289,7 +290,7 @@
             this.xrLabel3.Summary = xrSummary1;
             this.xrLabel3.Text = "xrLabel3";
             this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            this.xrLabel3.TextFormatString = "{0:#.00}";
+            this.xrLabel3.TextFormatString = "{0:£ #,#.00}";
             // 
             // xrLine1
             // 

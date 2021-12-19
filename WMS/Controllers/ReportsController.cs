@@ -141,20 +141,24 @@ namespace WMS.Controllers
 
             var products = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(p => productIds.Contains(p.ProductId)).ToList();
 
-            var inventoryStocks = products.SelectMany(p => p.InventoryStocks.Where(i => i.WarehouseId == warehouseId &&
-                                                                     i.TenantId == tenantId &&
-                                                                     i.InStock > 0).ToList());
+            var inventoryStocks = _productServices.GetAllPalletTrackings(tenantId ?? 0, warehouseId ?? 0).Where(u => (u.Status == PalletTrackingStatusEnum.Active || u.Status==PalletTrackingStatusEnum.Hold) && productIds.Contains(u.ProductId)).GroupBy(u => u.ProductId).Select(c => new
+            {
+                ProductId = c.Key,
+                inStock = c.Sum(u => u.RemainingCases),
+                ProductMaster = c.Select(u => u.ProductMaster).FirstOrDefault()
+
+            }).ToList();
 
             report.DataSource = inventoryStocks.Select(i =>
             {
-                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, CurrentTenantId, (i.DateCreated > i.DateUpdated ? i.DateCreated : i.DateUpdated));
+                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, CurrentTenantId);
                 return new
                 {
                     ProductSkuCode = i.ProductMaster.SKUCode,
                     ProductName = i.ProductMaster.NameWithCode,
-                    i.InStock,
+                    InStock = i.inStock,
                     BuyPrice = buyPrice,
-                    TotalPrice = (buyPrice ?? 0) * i.InStock
+                    TotalPrice = (buyPrice ?? 0) * i.inStock
                 };
             });
         }

@@ -31,7 +31,7 @@ namespace WMS.Controllers
         public ActionResult _PalletTrackingListDetail(int pId)
         {
             var pallets = (from p in _productServices.GetAllPalletTrackings(CurrentTenantId, CurrentWarehouseId)
-                           where p.ProductId== pId && (p.Status==PalletTrackingStatusEnum.Active || p.Status==PalletTrackingStatusEnum.Hold)
+                           where p.ProductId== pId && p.RemainingCases>0 && (p.Status==PalletTrackingStatusEnum.Active || p.Status==PalletTrackingStatusEnum.Hold)
                            select new
                 {
                     p.PalletTrackingId,
