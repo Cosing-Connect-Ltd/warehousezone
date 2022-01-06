@@ -151,7 +151,7 @@ namespace WMS.Controllers
 
             report.DataSource = inventoryStocks.Select(i =>
             {
-                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, CurrentTenantId);
+                var buyPrice = _productPriceService.GetAveragePurchasePrice(i.ProductId, CurrentTenantId);
                 return new
                 {
                     ProductSkuCode = i.ProductMaster.SKUCode,

@@ -394,6 +394,12 @@ namespace Ganedata.Core.Services
 
             return buyPrice;
         }
+        public decimal? GetAveragePurchasePrice(int productId, int tenantId)
+        {
+
+            return _context.OrderDetail.Where(u => u.ProductId == productId && u.TenentId == tenantId).Average(u=>u.Price);
+
+        }
 
         public List<InvoiceProductPriceModel> GetInvoiceDetailsProductPrices(List<InvoiceDetail> invoiceDetails, int tenantId)
         {

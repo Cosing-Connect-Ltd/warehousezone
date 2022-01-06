@@ -100,7 +100,7 @@
             this.xrLabel14.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel14.SizeF = new System.Drawing.SizeF(119.6699F, 18.83334F);
             this.xrLabel14.StylePriority.UseFont = false;
-            this.xrLabel14.TextFormatString = "{0:}";
+            this.xrLabel14.TextFormatString = "{0:#.00}";
             // 
             // xrLabel15
             // 
@@ -218,7 +218,7 @@
             this.xrLabel9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel9.SizeF = new System.Drawing.SizeF(119.6699F, 18.83334F);
             this.xrLabel9.StylePriority.UseFont = false;
-            this.xrLabel9.Text = "Buy Price ";
+            this.xrLabel9.Text = "Avg Buy Price ";
             // 
             // xrLabel10
             // 

@@ -38,5 +38,6 @@ namespace Ganedata.Core.Services
 
         decimal? GetPurchasePrice(int productId, int tenantId, DateTime? date = null, int? orderId = null);
         List<InvoiceProductPriceModel> GetInvoiceDetailsProductPrices(List<InvoiceDetail> invoiceDetails, int tenantId);
+        decimal? GetAveragePurchasePrice(int productId, int tenantId);
     }
 }
