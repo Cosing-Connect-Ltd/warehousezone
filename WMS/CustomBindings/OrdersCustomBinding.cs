@@ -354,7 +354,7 @@ namespace WMS.CustomBindings
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             var sodata = transactions.ToList();
-            sodata.ForEach(u => u.Qty = context.OrderDetail.Where(o => o.OrderID == u.OrderID).Select(q => (decimal?)q.Qty).Sum() ?? 0);
+            sodata.ForEach(u => u.Qty = context.OrderDetail.Where(o => o.OrderID == u.OrderID && o.IsDeleted !=true).Select(q => (decimal?)q.Qty).Sum() ?? 0);
 
             sodata.ForEach(u =>
                u.ProcessedQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Returns && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Wastage
