@@ -397,7 +397,7 @@ namespace Ganedata.Core.Services
         public decimal? GetAveragePurchasePrice(int productId, int tenantId)
         {
             var filterDate = Convert.ToDateTime("01/01/2021");
-            return _context.OrderDetail.Where(u => u.ProductId == productId && u.TenentId == tenantId && u.DateCreated >= filterDate).Average(u => u.Price);
+            return _context.OrderDetail.Where(u => u.ProductId == productId && u.TenentId == tenantId && u.DateCreated >= filterDate && u.Order.InventoryTransactionTypeId==InventoryTransactionTypeEnum.PurchaseOrder).Average(u => u.Price);
 
         }
 
