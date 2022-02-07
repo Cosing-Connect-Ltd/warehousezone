@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Mvc;
-
+using WMS.CustomBindings;
 
 namespace WMS.Controllers
 {
@@ -57,14 +57,14 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.AccountId = new SelectList(_accountServices.GetAllValidAccounts(CurrentTenantId).ToList(), "AccountID", "CompanyName");
-            ViewBag.UserGroupId= new SelectList(_userService.GetAllAuthUserGroups(CurrentTenantId).ToList(), "GroupId", "Name");
+            ViewBag.UserGroupId = new SelectList(_userService.GetAllAuthUserGroups(CurrentTenantId).ToList(), "GroupId", "Name");
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( AuthUser authuser)
+        public ActionResult Create(AuthUser authuser)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -78,8 +78,8 @@ namespace WMS.Controllers
 
                 return RedirectToAction("Index");
             }
-            ViewBag.AccountId = new SelectList(_accountServices.GetAllValidAccounts(CurrentTenantId).ToList(), "AccountID", "CompanyName",authuser.AccountId);
-            ViewBag.UserGroupId = new SelectList(_userService.GetAllAuthUserGroups(CurrentTenantId).ToList(), "GroupId", "Name",authuser.UserGroupId);
+            ViewBag.AccountId = new SelectList(_accountServices.GetAllValidAccounts(CurrentTenantId).ToList(), "AccountID", "CompanyName", authuser.AccountId);
+            ViewBag.UserGroupId = new SelectList(_userService.GetAllAuthUserGroups(CurrentTenantId).ToList(), "GroupId", "Name", authuser.UserGroupId);
             return View(authuser);
         }
 
@@ -164,6 +164,7 @@ namespace WMS.Controllers
         //[RequireHttps]
         public ActionResult Login()
         {
+
             if (caSession.AuthoriseSession())
             {
                 return Redirect("~/home");
@@ -298,7 +299,7 @@ namespace WMS.Controllers
                     stringBuilder.Append(string.Format("<label for=\"group-{0}-{1}\">{2}</label>", vh.WarehouseId, Grp.ActivityGroupId, Grp.ActivityGroupName));
                     stringBuilder.Append("<ul class=\"group-ul\">");
 
-                    var nav = _activityServices.GetAuthActivitiesForPermByGroup(Grp, userModules,CurrentTenantId);
+                    var nav = _activityServices.GetAuthActivitiesForPermByGroup(Grp, userModules, CurrentTenantId);
 
                     foreach (var perm in nav)
                     {

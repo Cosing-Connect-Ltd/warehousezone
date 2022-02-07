@@ -644,6 +644,7 @@
     <Compile Include="Controllers\WebsiteVouchersController.cs" />
     <Compile Include="Controllers\WebsiteShippingRulesController.cs" />
     <Compile Include="Controllers\WebsiteSlidersController.cs" />
+    <Compile Include="CustomBindings\CCPECustomBindings.cs" />
     <Compile Include="CustomBindings\ShiftsSchedulerSettings.cs" />
     <Compile Include="CustomBindings\ConsignmentCustomBinding.cs" />
     <Compile Include="CustomBindings\CurrencyExRateCustomBinding.cs" />
@@ -2227,6 +2228,8 @@
     <Content Include="Views\Shared\OrderDataComboBoxPartial.cshtml" />
     <Content Include="Views\PalletTracking\PalletSummary.cshtml" />
     <Content Include="Views\PalletTracking\_PalletTrackingListDetail.cshtml" />
+    <Content Include="Views\PickList\CcpeReport.cshtml" />
+    <Content Include="Views\PickList\_CcpeReportListPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
