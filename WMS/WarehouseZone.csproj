@@ -591,6 +591,7 @@
     <Compile Include="Controllers\MarketsVehicleController.cs" />
     <Compile Include="Controllers\AccountSectorsController.cs" />
     <Compile Include="Controllers\ProductAttributeValuesController.cs" />
+    <Compile Include="Controllers\TrucksController.cs" />
     <Compile Include="Controllers\ShoppingVoucherController.cs" />
     <Compile Include="Controllers\WebAPI\ApiAdyenPaymentsController.cs" />
     <Compile Include="Controllers\WebAPI\ApiFeedbackController.cs" />
@@ -2230,6 +2231,12 @@
     <Content Include="Views\PalletTracking\_PalletTrackingListDetail.cshtml" />
     <Content Include="Views\PickList\CcpeReport.cshtml" />
     <Content Include="Views\PickList\_CcpeReportListPartial.cshtml" />
+    <Content Include="Views\Trucks\_TruckList.cshtml" />
+    <Content Include="Views\Trucks\Create.cshtml" />
+    <Content Include="Views\Trucks\Delete.cshtml" />
+    <Content Include="Views\Trucks\Details.cshtml" />
+    <Content Include="Views\Trucks\Edit.cshtml" />
+    <Content Include="Views\Trucks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

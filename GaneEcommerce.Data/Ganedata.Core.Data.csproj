@@ -1343,6 +1343,10 @@
     <Compile Include="Migrations\202111011656194_warehouseId-added-inAuthUsers.designer.cs">
       <DependentUpon>202111011656194_warehouseId-added-inAuthUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202202071328015_trucks-table-added.cs" />
+    <Compile Include="Migrations\202202071328015_trucks-table-added.designer.cs">
+      <DependentUpon>202202071328015_trucks-table-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2671,6 +2675,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111011656194_warehouseId-added-inAuthUsers.resx">
       <DependentUpon>202111011656194_warehouseId-added-inAuthUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202071328015_trucks-table-added.resx">
+      <DependentUpon>202202071328015_trucks-table-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

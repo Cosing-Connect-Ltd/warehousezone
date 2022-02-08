@@ -91,5 +91,14 @@ namespace Ganedata.Core.Services
         ProductAttributes GetProductAttributeById(int productAttributeId);
         ProductSpecialAttributePrice SaveProductAttributeValuesMap(ProductSpecialAttributePrice model, int userId, int tenantId);
         bool DeleteProductAttributeValuesMap(int id, int userId);
+
+
+
+        IQueryable<Truck> GetAllTrucks(int TenantId);
+      
+        Truck CreateOrUpdateTruck(Truck truck, int UserId, int TenantId);
+
+        Truck RemoveTruck(int Id, int UserId);
+
     }
 }

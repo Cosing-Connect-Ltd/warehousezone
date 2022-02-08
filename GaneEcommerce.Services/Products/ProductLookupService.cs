@@ -978,12 +978,58 @@ namespace Ganedata.Core.Services
             entry.Property(e => e.UpdatedBy).IsModified = true;
             _currentDbContext.SaveChanges();
         }
+        public IQueryable<Truck> GetAllTrucks(int TenantId)
+        {
+            return _currentDbContext.Trucks.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
+        }
+        public Truck CreateOrUpdateTruck(Truck truck, int UserId, int TenantId)
+        {
+            if (truck.Id <= 0)
+            {
+                truck.TenantId = TenantId;
+                truck.DateCreated = DateTime.Now;
+                truck.CreatedBy = UserId;
+                _currentDbContext.Trucks.Add(truck);
+                _currentDbContext.SaveChanges();
+            }
+            else
+            {
+                var trucks = _currentDbContext.Trucks.AsNoTracking().FirstOrDefault(u => u.Id == truck.Id);
+                if (truck != null)
+                {
+                    truck.CreatedBy = truck.CreatedBy;
+                    truck.DateCreated = truck.DateCreated;
+                    truck.TenantId = TenantId;
+                    truck.DateUpdated = DateTime.Now;
+                    truck.UpdatedBy = truck.UpdatedBy;
+                    _currentDbContext.Entry(truck).State = System.Data.Entity.EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                }
+
+            }
+            return truck;
+        }
+
+        public Truck RemoveTruck(int Id, int UserId)
+        {
+            var productTags = _currentDbContext.Trucks.FirstOrDefault(u => u.Id == Id);
+            if (productTags != null)
+            {
+                productTags.IsDeleted = true;
+                productTags.DateUpdated = DateTime.Now;
+                productTags.UpdatedBy = productTags.UpdatedBy;
+                _currentDbContext.Entry(productTags).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+            return productTags;
+        }
 
         //ProductTags
         public IEnumerable<ProductTag> GetAllValidProductTag(int TenantId)
         {
             return _currentDbContext.ProductTags.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
         }
+       
         public ProductTag CreateOrUpdateProductTag(ProductTag productTag, int UserId, int TenantId)
         {
             if (productTag.Id <= 0)

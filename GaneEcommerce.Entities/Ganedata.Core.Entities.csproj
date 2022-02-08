@@ -208,6 +208,7 @@
     <Compile Include="Domain\ImportModels\DeliverectModels.cs" />
     <Compile Include="Domain\Models\AdyenOrderPaylink.cs" />
     <Compile Include="Domain\Models\ProductLocationStocks.cs" />
+    <Compile Include="Domain\Models\Truck.cs" />
     <Compile Include="Domain\Models\ShoppingVoucher.cs" />
     <Compile Include="Domain\Shifts\ShiftSchedule.cs" />
     <Compile Include="Domain\ImportModels\ParentChildProductsAssociationsImportModel.cs" />
