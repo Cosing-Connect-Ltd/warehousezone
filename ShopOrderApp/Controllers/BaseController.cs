@@ -321,10 +321,10 @@ namespace ShopOrderApp.Controllers
                 ViewBag.Fragment = queryString;
             }
             var Tenant = caCurrent.CurrentTenant();
-            if (Tenant != null && Tenant.TenantLocations != null)
-            {
-                ViewBag.ShopName = Tenant?.TenantLocations.FirstOrDefault(u => u.WarehouseId == CurrentUser.WarehouseId)?.WarehouseName ?? "";
-            }
+            //if (Tenant != null && Tenant.TenantLocations != null)
+            //{
+            //    ViewBag.ShopName = Tenant?.TenantLocations.FirstOrDefault(u => u.WarehouseId == CurrentUser.WarehouseId)?.WarehouseName ?? "";
+            //}
 
             base.OnActionExecuting(filterContext);
         }

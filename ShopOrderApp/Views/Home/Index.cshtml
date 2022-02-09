@@ -1,249 +1,236 @@
-﻿@model List<Ganedata.Core.Entities.Domain.NewSalesDepartmentList>
+﻿
 @{
-    ViewBag.Title = "NewDirectSalesOrder";
-    Layout = null;
+    ViewBag.Title = "Load Order In Truck";
+
 }
 
-<!DOCTYPE html>
-<html lang="en">
 
-<!-- Mirrored from warehouse-admin-dashboard.multipurposethemes.com/main/forms_advanced.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Sep 2021 12:45:15 GMT -->
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="https://warehouse-admin-dashboard.multipurposethemes.com/images/favicon.ico">
+<section class="content">
 
-    <title>Deposito Admin - Dashboard  Advanced form elements </title>
-
-    <!-- Vendors Style-->
-    <link rel="stylesheet" href="~/content/New/assets/css/vendors_css.css">
-
-    <!-- Style-->
-    <link rel="stylesheet" href="~/content/New/assets/css/style.css">
-    <link rel="stylesheet" href="~/content/New/assets/css/skin_color.css">
-
-</head>
-<body class="hold-transition light-skin sidebar-mini theme-primary fixed">
-
-    <div class="wrapper">
-        <!-- Content Wrapper. Contains page content -->
-        <div class="">
-            <div class="container-full">
-                *<section class="content">
-
-                    <div class="row">
-                        <div class="box">
-                            <div class="box-header with-border">
-                                <h4 class="box-title">Create Sales Order</h4>
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-warning me-1">
-                                        <i class="ti-trash"></i> Cancel
-                                    </button>
-                                    <button onclick="GetDataQuantity();" class="btn btn-primary">
-                                        <i class="ti-save-alt"></i> Save
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        @foreach (var item in Model)
-                        {
-                            if (item.ProductList.Count > 0)
-                            {
-                                <div class="col-12 col-xl-4">
-                                    <div class="box">
-                                        <div class="box-header with-border">
-                                            <h4 class="box-title">@item.DepartmentName</h4>
-                                        </div>
-                                        <div class="box-body">
-                                            @foreach (var product in item.ProductList)
-                                            {
-                                                <div class="m-1">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            @product.Name
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <form>
-                                                                <div class="form-group">
-                                                                    <input id="@product.ProductId" class="product-quantity form-control" type="text" value="" name="demo3" data-bts-button-down-class="btn btn-secondary" data-bts-button-up-class="btn btn-secondary">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            }
-
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
-
-                    </div>
-
-
-                </section>
-
-                <script>
-
-                    function GetDataQuantity() {
-                        var data = [];
-                        $(".product-quantity").each(function () {
-                            var quantity = $(this).val();
-                            var productid = $(this).attr("id");
-                            if (quantity != undefined && quantity !== "") {
-                                data.push({ "ProductId": productid, "Quantity": quantity });
-                            }
-
-                        });
-                        $.ajax({
-                            type: "POST",
-                            url: "/SalesOrders/NewDirectSalesOrder/",
-                            data: { newSalesProducts: data },
-                            success: function (data) {
-                                if (data != "") {
-                                    location.href = "/SalesOrders/PlaceOrder/" + data;
-                                }
-
-                            },
-                            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                alert('Error' + textStatus + "/" + errorThrown);
-                            }
-                        });
-
-                    }
-
-
-
-                </script>
-            </div>
-        </div>
-
-        <!-- Page Content overlay -->
-        <!-- Vendor JS -->
-        <script src="~/content/New/assets/js/vendors.min.js"></script>
-        <script src="~/content/New/assets/js/pages/chat-popup.js"></script>
-        <script src="~/content/New/assets/icons/feather-icons/feather.min.js"></script>
-        <script src="~/content/New/assets/vendor_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-        <script src="~/content/New/assets/vendor_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
-        <script src="~/content/New/assets/vendor_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
-        <script src="~/content/New/assets/vendor_components/select2/dist/js/select2.full.js"></script>
-        <script src="~/content/New/assets/vendor_plugins/input-mask/jquery.inputmask.js"></script>
-        <script src="~/content/New/assets/vendor_plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-        <script src="~/content/New/assets/vendor_plugins/input-mask/jquery.inputmask.extensions.js"></script>
-        <script src="~/content/New/assets/vendor_components/moment/min/moment.min.js"></script>
-        <script src="~/content/New/assets/vendor_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-        <script src="~/content/New/assets/vendor_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-        <script src="~/content/New/assets/vendor_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
-        <script src="~/content/New/assets/vendor_plugins/timepicker/bootstrap-timepicker.min.js"></script>
-        <script src="~/content/New/assets/vendor_plugins/iCheck/icheck.min.js"></script>
-
-        <!-- Deposito Admin App -->
-        <script src="~/content/New/assets/js/template.js"></script>
-
-        <script src="~/content/New/assets/js/pages/advanced-form-element.js"></script>
-
-
-
-</body>
-
-<!-- Mirrored from warehouse-admin-dashboard.multipurposethemes.com/main/forms_advanced.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Sep 2021 12:45:20 GMT -->
-</html>
-
-@*<section class="content">
-
-        <div class="row">
+    <div class="row">
+        <div class="col-12 col-xl-4">
             <div class="box">
                 <div class="box-header with-border">
                     <h4 class="box-title">Create Sales Order</h4>
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-warning me-1">
-                            <i class="ti-trash"></i> Cancel
-                        </button>
-                        <button onclick="GetDataQuantity();" class="btn btn-primary">
-                            <i class="ti-save-alt"></i> Save
-                        </button>
-                        <form>
-                            <div class="form-group">
-                                <input type="text" value="" name="demo3" data-bts-button-down-class="btn btn-secondary" data-bts-button-up-class="btn btn-secondary">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h4 class="box-title">Todo</h4>
+                            <ul class="box-controls pull-right d-md-flex d-none">
+                                <li class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle px-10 " data-bs-toggle="dropdown" href="#">Create</button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
+                                        <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
+                                        <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="box-body">
+                            <div class="d-flex align-items-center mb-25">
+                                <span class="bullet bullet-bar bg-success align-self-stretch"></span>
+                                <div class="h-20 mx-20 flex-shrink-0">
+                                    <input type="checkbox" id="md_checkbox_21" class="filled-in chk-col-success">
+                                    <label for="md_checkbox_21" class="h-20 p-10 mb-0"></label>
+                                </div>
+
+                                <div class="d-flex flex-column flex-grow-1">
+                                    <a href="#" class="text-dark hover-success fw-500 fs-16">
+                                        Create FireStone Logo
+                                    </a>
+                                    <span class="text-fade fw-500">
+                                        Due in 2 Days
+                                    </span>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-end" style="">
+                                        <h6 class="dropdown-header">Choose Label:</h6>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span class="badge badge-primary-light">Customer</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-danger-light">Partner</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-success-light">Suplier</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-info-light">Member</span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span>Add New</span>
+                                            <span class="badge badge-pill badge-default">+</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                            <div class="d-flex align-items-center mb-25">
+                                <span class="bullet bullet-bar bg-primary align-self-stretch"></span>
+                                <div class="h-20 mx-20 flex-shrink-0">
+                                    <input type="checkbox" id="md_checkbox_22" class="filled-in chk-col-primary">
+                                    <label for="md_checkbox_22" class="h-20 p-10 mb-0"></label>
+                                </div>
+
+                                <div class="d-flex flex-column flex-grow-1">
+                                    <a href="#" class="text-dark hover-primary fw-500 fs-16">
+                                        Lorem ipsum dolor sit amet
+                                    </a>
+                                    <span class="text-fade fw-500">
+                                        Due in 2 Days
+                                    </span>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown"><i class="ti-more-alt"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <h6 class="dropdown-header">Choose Label:</h6>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span class="badge badge-primary-light">Customer</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-danger-light">Partner</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-success-light">Suplier</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-info-light">Member</span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span>Add New</span>
+                                            <span class="badge badge-pill badge-default">+</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-25">
+                                <span class="bullet bullet-bar bg-danger align-self-stretch"></span>
+                                <div class="h-20 mx-20 flex-shrink-0">
+                                    <input type="checkbox" id="md_checkbox_23" class="filled-in chk-col-danger">
+                                    <label for="md_checkbox_23" class="h-20 p-10 mb-0"></label>
+                                </div>
+
+                                <div class="d-flex flex-column flex-grow-1">
+                                    <a href="#" class="text-dark hover-danger fw-500 fs-16">
+                                        Vivamus consectetur urna
+                                    </a>
+                                    <span class="text-fade fw-500">
+                                        Due in 2 Days
+                                    </span>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-end" style="">
+                                        <h6 class="dropdown-header">Choose Label:</h6>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span class="badge badge-primary-light">Customer</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-danger-light">Partner</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-success-light">Suplier</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-info-light">Member</span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span>Add New</span>
+                                            <span class="badge badge-pill badge-default">+</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-25">
+                                <span class="bullet bullet-bar bg-info align-self-stretch"></span>
+                                <div class="h-20 mx-20 flex-shrink-0">
+                                    <input type="checkbox" id="md_checkbox_24" class="filled-in chk-col-info">
+                                    <label for="md_checkbox_24" class="h-20 p-10 mb-0"></label>
+                                </div>
+
+                                <div class="d-flex flex-column flex-grow-1">
+                                    <a href="#" class="text-dark hover-info fw-500 fs-16">
+                                        Sed quis augue sed augue
+                                    </a>
+                                    <span class="text-fade fw-500">
+                                        Due in 2 Days
+                                    </span>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown"><i class="ti-more-alt"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <h6 class="dropdown-header">Choose Label:</h6>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span class="badge badge-primary-light">Customer</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-danger-light">Partner</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-success-light">Suplier</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-info-light">Member</span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span>Add New</span>
+                                            <span class="badge badge-pill badge-default">+</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-25">
+                                <span class="bullet bullet-bar bg-warning align-self-stretch"></span>
+                                <div class="h-20 mx-20 flex-shrink-0">
+                                    <input type="checkbox" id="md_checkbox_25" class="filled-in chk-col-warning">
+                                    <label for="md_checkbox_25" class="h-20 p-10 mb-0"></label>
+                                </div>
+
+                                <div class="d-flex flex-column flex-grow-1">
+                                    <a href="#" class="text-dark hover-warning fw-500 fs-16">
+                                        Aliquam in magna
+                                    </a>
+                                    <span class="text-fade fw-500">
+                                        Due in 2 Days
+                                    </span>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown"><i class="ti-more-alt"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <h6 class="dropdown-header">Choose Label:</h6>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span class="badge badge-primary-light">Customer</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-danger-light">Partner</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-success-light">Suplier</span>
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="badge badge-info-light">Member</span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item flexbox" href="#">
+                                            <span>Add New</span>
+                                            <span class="badge badge-pill badge-default">+</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-            @foreach (var item in Model)
-            {
-                if (item.ProductList.Count > 0)
-                {
-                    <div class="col-12 col-xl-4">
-                        <div class="box">
-                            <div class="box-header with-border">
-                                <h4 class="box-title">@item.DepartmentName</h4>
-                            </div>
-                            <div class="box-body">
-                                @foreach (var product in item.ProductList)
-                                {
-                                    <div class="m-1">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                @product.Name
-                                            </div>
-                                            <div class="col-md-4">
-                                                <form>
-                                                    <div class="form-group">
-                                                        <input id="@product.ProductId" type="text" value="" name="demo3" data-bts-button-down-class="btn btn-secondary" data-bts-button-up-class="btn btn-secondary">
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                }
-
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
 
         </div>
+    </div>
 
-
-    </section>*@
-
-<script>
-
-    function GetDataQuantity() {
-        var data = [];
-        $(".product-quantity").each(function () {
-            var quantity = $(this).val();
-            var productid = $(this).attr("id");
-            if (quantity != undefined && quantity !== "") {
-                data.push({ "ProductId": productid, "Quantity": quantity });
-            }
-
-        });
-        $.ajax({
-            type: "POST",
-            url: "/SalesOrders/NewDirectSalesOrder/",
-            data: { newSalesProducts: data },
-            success: function (data) {
-                if (data != "") {
-                    location.href = "/SalesOrders/PlaceOrder/" + data;
-                }
-
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert('Error' + textStatus + "/" + errorThrown);
-            }
-        });
-
-    }
-
-
-
-</script>
+    </section>

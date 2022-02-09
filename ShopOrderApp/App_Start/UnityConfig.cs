@@ -1,6 +1,7 @@
 using AutoMapper;
 using Ganedata.Core.Data;
 using Ganedata.Core.Services;
+using Ganedata.Core.Services.Feedbacks;
 using LazyCache;
 using System;
 
@@ -45,16 +46,36 @@ namespace ShopOrderApp
 
             container.RegisterType<IAccountServices, AccountServices>();
             container.RegisterType<ILookupServices, LookupServices>();
+            container.RegisterType<IPropertyService, PropertyService>();
             container.RegisterType<IProductServices, ProductServices>();
             container.RegisterType<IProductLookupService, ProductLookupService>();
-            container.RegisterType<ITenantLocationServices, TenantLocationServices>();
             container.RegisterType<ITenantsServices, TenantsServices>();
+            container.RegisterType<IEmployeeShiftsServices, EmployeeShiftsServices>();
+            container.RegisterType<IEmployeeServices, EmployeeServices>();
+            container.RegisterType<ITenantLocationServices, TenantLocationServices>();
+            container.RegisterType<IAddressServices, AddressServices>();
+            container.RegisterType<IContactNumbersServices, ContactNumbersServices>();
+            container.RegisterType<IEmployeeShiftsStoresServices, EmployeeShiftsStoresServices>();
+            container.RegisterType<IAttLogsServices, AttLogsServices>();
+            container.RegisterType<ITenantsServices, TenantsServices>();
+            container.RegisterType<IShiftScheduleService, ShiftScheduleService>();
+            container.RegisterType<IRolesServices, RolesServices>();
+            container.RegisterType<IGroupsServices, GroupsServices>();
+            container.RegisterType<IEmployeeRolesServices, EmployeeRolesServices>();
+            container.RegisterType<IEmployeeGroupsServices, EmployeeGroupsServices>();
+            container.RegisterType<IAttLogsStampsServices, AttLogsStampsServices>();
+            container.RegisterType<IOperLogsServices, OperLogsServices>();
             container.RegisterType<IStockTakeApiService, StockTakeApiService>();
+            container.RegisterType<IWarehouseSyncService, WarehouseSyncService>();
             container.RegisterType<IOrderService, OrderService>();
+            container.RegisterType<IAppointmentsService, AppointmentsService>();
             container.RegisterType<IPurchaseOrderService, PurchaseOrderService>();
+            container.RegisterType<IWorksOrderService, WorksOrderService>();
             container.RegisterType<ITransferOrderService, TransferOrderService>();
             container.RegisterType<ICoreOrderService, CoreOrderService>();
+            container.RegisterType<IMarketServices, MarketServices>();
             container.RegisterType<IUserService, UserService>();
+            container.RegisterType<IEmailNotificationService, EmailNotificationService>();
             container.RegisterType<IActivityServices, ActivityServices>();
             container.RegisterType<ITenantEmailConfigServices, TenantEmailConfigServices>();
             container.RegisterType<IAdminServices, AdminServices>();
@@ -62,15 +83,22 @@ namespace ShopOrderApp
             container.RegisterType<ISalesOrderService, SalesOrderService>();
             container.RegisterType<ITerminalServices, TerminalServices>();
             container.RegisterType<IEmailServices, EmailServices>();
+            container.RegisterType<IEmailNotificationService, EmailNotificationService>();
             container.RegisterType<IGaneConfigurationsHelper, GaneConfigurationsHelper>();
             container.RegisterType<IProductPriceService, ProductPriceService>();
             container.RegisterType<IPalletingService, PalletingService>();
+            container.RegisterType<IMarketRouteScheduleService, MarketRouteScheduleService>();
+            container.RegisterType<IVehicleInspectionService, VehicleInspectionService>();
             container.RegisterType<IInvoiceService, InvoiceService>();
+            container.RegisterType<IResourceHolidayServices, ResourceHolidayServices>();
+            container.RegisterType<IVanSalesService, VanSalesService>();
+            container.RegisterType<IAssetServices, AssetServices>();
             container.RegisterType<ITenantsCurrencyRateServices, TenantsCurrencyRateServices>();
-            container.RegisterType<ITooltipServices, TooltipServices>();
-            container.RegisterType<IApiCredentialServices, ApiCredentialServices>();
-            container.RegisterType<IAccountSectorService, AccountSectorService>();
-            container.RegisterType<IPaypalPaymentServices, PaypalPaymentServices>();
+            container.RegisterType<ITenantWebsiteService, TenantWebsiteService>();
+            container.RegisterType<IUISettingServices, UISettingServices>();
+            container.RegisterType<IAdyenPaymentService, AdyenPaymentService>();
+            container.RegisterType<IFeedbackService, FeedbackService>();
+            container.RegisterType<IShoppingVoucherService, ShoppingVoucherService>();
 
             container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());
 
@@ -80,7 +108,6 @@ namespace ShopOrderApp
             var mapper = mapperConfig.CreateMapper();
             container.RegisterType<IMapper, Mapper>(new InjectionConstructor(mapperConfig));
             container.RegisterInstance(mapper);
-
         }
     }
 }

@@ -39,7 +39,9 @@ namespace ShopOrderApp.Controllers
         }
         public ActionResult Index()
         {
-            return RedirectToAction("Login", "User");
+
+            return View();
+            //return RedirectToAction("Login", "User");
         }
 
         public ActionResult About()
@@ -56,77 +58,5 @@ namespace ShopOrderApp.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult NewDirectSalesOrder(int? id)
-        {
-            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            var model = _productServices.GetProductForDepartment();
-            ViewBag.orderId = id;
-            if (id.HasValue)
-            {
-                ViewBag.Quantities = OrderService.GetAllValidOrderDetailsByOrderId(id ?? 0).ToList();
-            }
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult NewDirectSalesOrder(List<NewSalesProductMap> newSalesProducts, int? orderId)
-        {
-            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            var model = _commonDbServices.CreateNewSaleOrders(newSalesProducts);
-            model.OrderNumber = GenerateNextOrderNumber(InventoryTransactionTypeEnum.SalesOrder);
-            if (!orderId.HasValue)
-            {
-                var order = OrderService.CreateNewDirectSalesOrder(model, CurrentTenantId, CurrentUserId, CurrentWarehouseId);
-                return Json(order.OrderID, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                var order = OrderService.EditNewDirectSalesOrder(model, orderId ?? 0, CurrentTenantId, CurrentUserId, CurrentWarehouseId);
-                return Json(order.OrderID, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult PlaceOrder(int id)
-        {
-            var model = OrderService.GetAllOrderById(id);
-            return View(model);
-        }
-
-        #region SalesOrder
-
-        public ActionResult SalesOrderPrint(int id)
-        {
-            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrderService.UpdateOrders(id, CurrentUserId);
-            var report = CreateSalesOrderPrint(id);
-
-            return View(report);
-        }
-        public SalesOrderPrint CreateSalesOrderPrint(int id)
-        {
-            TenantConfig config = _tenantServices.GetTenantConfigById(CurrentTenantId);
-
-            var report = new SalesOrderPrint();
-            report.paramOrderId.Value = id;
-            if (!config.ShowDecimalPoint)
-            {
-                report.lblQuantity.TextFormatString = "{0:0.##}";
-            }
-
-
-            report.RequestParameters = false;
-            report.FooterMsg1.Text = config.SoReportFooterMsg1;
-            report.FooterMsg2.Text = config.SoReportFooterMsg2;
-            return report;
-        }
-
-        #endregion SalesOrder
     }
 }
