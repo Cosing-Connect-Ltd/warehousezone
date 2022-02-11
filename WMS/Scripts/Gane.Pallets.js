@@ -372,3 +372,5 @@ function DeletePalletProduct(PalletProductId) {
     }
 
 }
+
+

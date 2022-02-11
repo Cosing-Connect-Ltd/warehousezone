@@ -1,13 +1,22 @@
 ﻿@using Ganedata.Core.Entities.Domain
 @using Ganedata.Core.Entities.Enums
 @using PagedList.Mvc
-@model PagedList.IPagedList<OrderProcess>
+@model PagedList.IPagedList<PalletsDispatch>
 
 
 @{
     ViewBag.Title = "Load Order In Truck";
 
 }
+<style>
+    .card-body {
+        padding: 0.1rem !important
+    }
+
+    .table > tbody > tr > td {
+        padding: 0.5rem !important;
+    }
+</style>
 
 
 <section class="content">
@@ -15,22 +24,17 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-md-4 col-xx-12">
+            <div class="col-md-3 col-xx-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">@item.Order.OrderNumber</h4>
+                        <h4 class="card-title">@item.OrderProcess.Order.OrderNumber</h4>
                         <ul class="box-controls pull-right d-md-flex">
                             <li class="dropdown">
-                                <button class="btn btn-danger dropdown-toggle px-10" data-bs-toggle="dropdown" href="#" aria-expanded="true">@item.OrderProcessStatusId</button>
-                                <div class="dropdown-menu dropdown-menu-end" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 473px, 0px);" data-popper-placement="bottom-end" data-popper-reference-hidden="" data-popper-escaped="">
-                                    <a class="dropdown-item" href="#"><i class="ti-import"></i>@OrderProcessStatusEnum.Loaded</a>
-                                    <a class="dropdown-item" href="#"><i class="ti-export"></i>@OrderProcessStatusEnum.Dispatched</a>
-                                </div>
+                                <button class="btn btn-danger px-10" href="#" aria-expanded="true" onclick="AssignOrderToTruck(@item.PalletsDispatchID)">Load On Truck</button>
+
                             </li>
                         </ul>
-                        @*<div class="header-elements">
-                                <span class="badge bg-danger badge-pill">@item.OrderProcessStatusId</span>
-                            </div>*@
+
                     </div>
 
                     <div class="card-body">
@@ -38,35 +42,40 @@
                             <table class="table table-hover">
                                 <tbody>
                                     <tr>
+                                        <td>Dipatch Refrence Number</td>
+                                        <td>@item.DispatchReference</td>
+
+                                    </tr>
+                                    <tr>
                                         <td>Delivery Number</td>
-                                        <td>@item.DeliveryNO</td>
+                                        <td>@item.OrderProcess.DeliveryNO</td>
 
                                     </tr>
                                     <tr>
                                         <td>Company Name</td>
-                                        <td style="word-wrap:anywhere">@item.Order.Account.CompanyName</td>
+                                        <td style="word-wrap:anywhere">@item.OrderProcess.Order.Account.CompanyName</td>
 
                                     </tr>
                                     <tr>
                                         <td>Account Code</td>
-                                        <td>@item.Order.Account.AccountCode</td>
+                                        <td>@item.OrderProcess.Order.Account.AccountCode</td>
 
                                     </tr>
                                     <tr>
                                         <td>Date Created</td>
-                                        <td>@item.DateCreated</td>
+                                        <td>@item.DateCreated.ToString("MM/dd/yyyy")</td>
 
                                     </tr>
-</table>
+                            </table>
                         </div>
                     </div>
 
-                    <div class="card-footer">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Add comment...">
-                            <button class="btn bg-info btn-sm" type="button"><i class="fa fa-send-o"></i></button>
-                        </div>
-                    </div>
+                    @*<div class="card-footer">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Add comment...">
+                                <button class="btn bg-info btn-sm" type="button"><i class="fa fa-send-o"></i></button>
+                            </div>
+                        </div>*@
                 </div>
 
 
@@ -80,9 +89,22 @@
 
     </div>
     <div class="pull-right">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page, pagesize = ViewBag.pageSize }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new {  page = page, pagesize = ViewBag.pageSize }),
+                                                          options: new PagedListRenderOptions
+                                                          {
+                                                              MaximumPageNumbersToDisplay = 15,
+                                                              DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+                                                              LinkToNextPageFormat = "... <i class=\"fa fa-angle-right\" aria-hidden=\"true\"></i>",
+                                                              LinkToPreviousPageFormat = "<i class=\"fa fa-angle-left\" aria-hidden=\"true\"></i> ...",
+                                                              LinkToFirstPageFormat = "{0}",
+                                                              LinkToLastPageFormat = "{0}",
+                                                              DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded
+                                                          })
 
-        @* <ul class="pagination"><li class="paginate_button page-item previous disabled" id="productorder_previous"><a href="#" aria-controls="productorder" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="productorder" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="productorder" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item next" id="productorder_next"><a href="#" aria-controls="productorder" data-dt-idx="3" tabindex="0" class="page-link">Next</a></li></ul>*@
+
+        @* <ul class="pagination">
+        <li class="paginate_button page-item previous disabled" id="productorder_previous">
+        <a href="#" aria-controls="productorder" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="productorder" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="productorder" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item next" id="productorder_next"><a href="#" aria-controls="productorder" data-dt-idx="3" tabindex="0" class="page-link">Next</a></li></ul>*@
     </div>
 
 </section>

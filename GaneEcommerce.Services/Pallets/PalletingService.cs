@@ -274,8 +274,8 @@ namespace Ganedata.Core.Services
 
                 // update Order Status in presta shop
                 var process = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == dispatch.OrderProcessId);
-             
-                if (process != null && process.OrderID.HasValue && process.Order!=null && process.Order.PrestaShopOrderId.HasValue)
+
+                if (process != null && process.OrderID.HasValue && process.Order != null && process.Order.PrestaShopOrderId.HasValue)
                 {
                     var dispatchDetails = _currentDbContext.PalletsDispatches.FirstOrDefault(m => m.PalletsDispatchID == dispatch.PalletDispatchId);
                     await _dataImportFactory.PrestaShopOrderStatusUpdate(process.OrderID.Value, PrestashopOrderStateEnum.Shipped, null, dispatchDetails);
@@ -354,6 +354,14 @@ namespace Ganedata.Core.Services
         public IEnumerable<PalletsDispatch> GetAllPalletsDispatch()
         {
             return _currentDbContext.PalletsDispatches.Where(u => u.DispatchStatus == PalletDispatchStatusEnum.Created).OrderByDescending(u => u.PalletsDispatchID);
+        }
+        public IQueryable<PalletsDispatch> GetAllPalletsDispatchs()
+        {
+            return _currentDbContext.PalletsDispatches.Where(u => u.DispatchStatus == PalletDispatchStatusEnum.Created).OrderByDescending(u => u.PalletsDispatchID);
+        }
+        public IQueryable<Pallet> GetAllPalletByDispatchId(int id)
+        {
+            return _currentDbContext.Pallets.Where(u => u.PalletsDispatchID == id).OrderByDescending(u => u.PalletID);
         }
 
         public IQueryable<PalletViewModel> GetAllPallets(int? lastXdays = null, PalletStatusEnum? palletStatusEnum = null, int? orderProcessId = null, DateTime? reqDate = null, int? filterByPalletDetail = null, int? dispatchId = null)
@@ -678,7 +686,7 @@ namespace Ganedata.Core.Services
                 contactDetails2.telephone = palletDispatch.OrderProcess?.Order?.Account?.AccountContacts.FirstOrDefault()?.TenantContactPhone;
                 deliveryDetails.contactDetails = contactDetails2;
                 Address2 address2 = new Address2();
-                address2.countryCode = palletDispatch.OrderProcess?.ShipmentCountry!=null? palletDispatch.OrderProcess.ShipmentCountry?.CountryCode:"GB";
+                address2.countryCode = palletDispatch.OrderProcess?.ShipmentCountry != null ? palletDispatch.OrderProcess.ShipmentCountry?.CountryCode : "GB";
                 address2.postcode = palletDispatch.OrderProcess?.ShipmentAddressPostcode;
                 address2.street = palletDispatch.OrderProcess?.ShipmentAddressLine1 + " " + palletDispatch.OrderProcess?.ShipmentAddressLine2;
                 address2.locality = palletDispatch.OrderProcess?.ShipmentAddressLine3;
@@ -740,6 +748,34 @@ namespace Ganedata.Core.Services
             if (palletDispatch != null)
             {
                 palletDispatch.LabelPrintStatus = true;
+            }
+
+            _currentDbContext.SaveChanges();
+
+            return true;
+        }
+
+        public bool LoadPalletOnTruck(string palletIds,int truckId,int palletDispatchId)
+        {
+
+            var liststring= palletIds.Split(',').Select(Int32.Parse).ToList();
+            foreach (var item in liststring)
+            {
+                var pallet = _currentDbContext.Pallets.FirstOrDefault(u => u.PalletID == item);
+                if (pallet != null)
+                {
+                    pallet.ScannedOnDelivered = true;
+                    pallet.DeliveredScanTime = DateTime.UtcNow;
+                    _currentDbContext.Entry(pallet).State=EntityState.Modified;
+                }
+
+            }
+            var palletDispatch = _currentDbContext.PalletsDispatches.Where(u => u.PalletsDispatchID == palletDispatchId).FirstOrDefault();
+
+            if (palletDispatch != null)
+            {
+                palletDispatch.MarketVehicleID = truckId;
+                _currentDbContext.Entry(palletDispatch).State = EntityState.Modified;
             }
 
             _currentDbContext.SaveChanges();

@@ -256,7 +256,6 @@ namespace WMS.Controllers.WebAPI
             return Ok(result);
         }
 
-        public IHttpActionResult LoginUsers()
 
 
 

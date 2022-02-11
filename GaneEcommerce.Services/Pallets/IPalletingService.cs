@@ -58,10 +58,15 @@ namespace Ganedata.Core.Services
 
         IEnumerable<PalletsDispatch> GetAllPalletsDispatch();
 
+        IQueryable<PalletsDispatch> GetAllPalletsDispatchs();
+
+        IQueryable<Pallet> GetAllPalletByDispatchId(int id);
         bool UpdatePalletsDispatchStatus(int dispatchId, int? resourceId, int userID, bool Status = false);
 
         PalletDispatchLabelPrintViewModel PalletDispatchForLabels(int tenantId, int userId);
 
         bool UpdateDispatchForLabelsStatus(string shipmentId);
+
+        bool LoadPalletOnTruck(string palletIds, int truckId, int palletDispatchId);
     }
 }

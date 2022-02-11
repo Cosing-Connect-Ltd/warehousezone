@@ -94,11 +94,11 @@ namespace Ganedata.Core.Services
 
 
 
-        IQueryable<Truck> GetAllTrucks(int TenantId);
-      
-        Truck CreateOrUpdateTruck(Truck truck, int UserId, int TenantId);
+        IQueryable<MarketVehicle> GetAllTrucks(int TenantId);
 
-        Truck RemoveTruck(int Id, int UserId);
+        MarketVehicle CreateOrUpdateTruck(MarketVehicle truck, int UserId, int TenantId);
+
+        MarketVehicle RemoveTruck(int Id, int UserId);
 
     }
 }

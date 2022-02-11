@@ -101,124 +101,124 @@
     <Reference Include="CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.15.0.6\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Charts.v21.1.Core">
+    <Reference Include="DevExpress.Charts.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.CodeParser.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.CodeParser.v21.1">
+    <Reference Include="DevExpress.CodeParser.v21.2, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.CodeParser.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Dashboard.v21.1.Core">
+    <Reference Include="DevExpress.Dashboard.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.Dashboard.v21.1.Web">
+    <Reference Include="DevExpress.Dashboard.v21.2.Web">
     </Reference>
-    <Reference Include="DevExpress.Dashboard.v21.1.Web.Mvc5">
+    <Reference Include="DevExpress.Dashboard.v21.2.Web.Mvc5">
     </Reference>
-    <Reference Include="DevExpress.Data.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Data.v21.2, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="DevExpress.DataAccess.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.DataAccess.v21.1">
+    <Reference Include="DevExpress.DataAccess.v21.2, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.DataAccess.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Map.v21.1.Core">
+    <Reference Include="DevExpress.Map.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.Office.v21.1.Core, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Office.v21.1.Core">
+    <Reference Include="DevExpress.Office.v21.2.Core, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Office.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.Pdf.v21.1.Core">
+    <Reference Include="DevExpress.Pdf.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.PivotGrid.v21.1.Core">
+    <Reference Include="DevExpress.PivotGrid.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.Printing.v21.1.Core, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Printing.v21.2.Core, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="DevExpress.RichEdit.v21.1.Core, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.RichEdit.v21.2.Core, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="DevExpress.RichEdit.v21.1.Export, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.RichEdit.v21.2.Export, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="DevExpress.Sparkline.v21.1.Core">
+    <Reference Include="DevExpress.Sparkline.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.SpellChecker.v21.1.Core">
+    <Reference Include="DevExpress.SpellChecker.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.Spreadsheet.v21.1.Core">
+    <Reference Include="DevExpress.Spreadsheet.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.TreeMap.v21.1.Core">
+    <Reference Include="DevExpress.TreeMap.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.Data.Desktop.v21.1">
+    <Reference Include="DevExpress.Data.Desktop.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Utils.v21.1">
+    <Reference Include="DevExpress.Utils.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxGauges.v21.1">
+    <Reference Include="DevExpress.Web.ASPxGauges.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxHtmlEditor.v21.1">
+    <Reference Include="DevExpress.Web.ASPxHtmlEditor.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxPivotGrid.v21.1">
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxRichEdit.v21.1">
+    <Reference Include="DevExpress.Web.ASPxRichEdit.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxScheduler.v21.1">
+    <Reference Include="DevExpress.Web.ASPxScheduler.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxSpellChecker.v21.1">
+    <Reference Include="DevExpress.Web.ASPxSpellChecker.v21.2">
     </Reference>
-    <Reference Include="DevExpress.DataVisualization.v21.1.Core">
+    <Reference Include="DevExpress.DataVisualization.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxSpreadsheet.v21.1">
+    <Reference Include="DevExpress.Web.ASPxSpreadsheet.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxThemes.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Web.ASPxThemes.v21.2, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxGantt.v21.1">
+    <Reference Include="DevExpress.Web.ASPxGantt.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxTreeList.v21.1">
+    <Reference Include="DevExpress.Web.ASPxTreeList.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.Mvc5.v21.1">
+    <Reference Include="DevExpress.Web.Mvc5.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.Resources.v21.1">
+    <Reference Include="DevExpress.Web.Resources.v21.2">
     </Reference>
-    <Reference Include="DevExpress.Web.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Web.v21.2, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="DevExpress.Xpo.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Xpo.v21.1">
+    <Reference Include="DevExpress.Xpo.v21.2, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Xpo.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v21.1">
+    <Reference Include="DevExpress.XtraBars.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraCharts.v21.1">
+    <Reference Include="DevExpress.XtraCharts.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraCharts.v21.1.Web">
+    <Reference Include="DevExpress.XtraCharts.v21.2.Web">
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v21.1">
+    <Reference Include="DevExpress.XtraEditors.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraGauges.v21.1.Core">
+    <Reference Include="DevExpress.XtraGauges.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.XtraGauges.v21.1.Presets">
+    <Reference Include="DevExpress.XtraGauges.v21.2.Presets">
     </Reference>
-    <Reference Include="DevExpress.XtraGauges.v21.1.Win">
+    <Reference Include="DevExpress.XtraGauges.v21.2.Win">
     </Reference>
-    <Reference Include="DevExpress.XtraLayout.v21.1">
+    <Reference Include="DevExpress.XtraLayout.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraMap.v21.1">
+    <Reference Include="DevExpress.XtraMap.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraPivotGrid.v21.1">
+    <Reference Include="DevExpress.XtraPivotGrid.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v21.1">
+    <Reference Include="DevExpress.XtraPrinting.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraReports.v21.1">
+    <Reference Include="DevExpress.XtraReports.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraReports.v21.1.Web">
+    <Reference Include="DevExpress.XtraReports.v21.2.Web">
     </Reference>
-    <Reference Include="DevExpress.XtraReports.v21.1.Web.WebForms, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraReports.v21.2.Web.WebForms, Version=21.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="DevExpress.XtraScheduler.v21.1.Core.Desktop">
+    <Reference Include="DevExpress.XtraScheduler.v21.2.Core.Desktop">
     </Reference>
-    <Reference Include="DevExpress.XtraScheduler.v21.1.Core">
+    <Reference Include="DevExpress.XtraScheduler.v21.2.Core">
     </Reference>
-    <Reference Include="DevExpress.XtraTreeList.v21.1">
+    <Reference Include="DevExpress.XtraTreeList.v21.2">
     </Reference>
-    <Reference Include="DevExpress.XtraTreeMap.v21.1.UI">
+    <Reference Include="DevExpress.XtraTreeMap.v21.2.UI">
     </Reference>
-    <Reference Include="DevExpress.XtraTreeMap.v21.1">
+    <Reference Include="DevExpress.XtraTreeMap.v21.2">
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.11.3.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.11.3\lib\net46\DocumentFormat.OpenXml.dll</HintPath>

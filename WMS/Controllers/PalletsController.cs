@@ -22,12 +22,16 @@ namespace WMS.Controllers
         private readonly IGaneConfigurationsHelper _helper;
         private readonly ITenantsServices _tenantServices;
         private readonly ICoreOrderService _orderService;
+        private readonly IProductLookupService _productLookupService;
         private string _uploadDirectory = "~/UploadedFiles/Pallets/";
         private string UploadProductManufacturerDirectory = "~/UploadedFiles/ProductManufacturers/";
         private string UploadTenantDepartmentDirectory = "~/UploadedFiles/TenantDepartment/";
         private string UploadProductGroupsDirectory = "~/UploadedFiles/ProductGroups/";
 
-        public PalletsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsServices tenantsServices, IPalletingService palletingService, IMarketServices marketServices, IEmployeeServices employeeServices, IGaneConfigurationsHelper helper) : base(orderService, propertyService, accountServices, lookupServices)
+        public PalletsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices,
+            ILookupServices lookupServices, ITenantsServices tenantsServices, IPalletingService palletingService,
+            IMarketServices marketServices, IEmployeeServices employeeServices,
+            IGaneConfigurationsHelper helper, IProductLookupService productLookupService) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _palletingService = palletingService;
             _marketServices = marketServices;
@@ -35,6 +39,7 @@ namespace WMS.Controllers
             _helper = helper;
             _tenantServices = tenantsServices;
             _orderService = orderService;
+            _productLookupService = productLookupService;
         }
 
         public ActionResult Index()
@@ -586,5 +591,7 @@ namespace WMS.Controllers
                 return Json(new { files = cfiles.Count == 0 ? null : cfiles });
             }
         }
+
+        
     }
 }

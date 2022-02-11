@@ -978,29 +978,29 @@ namespace Ganedata.Core.Services
             entry.Property(e => e.UpdatedBy).IsModified = true;
             _currentDbContext.SaveChanges();
         }
-        public IQueryable<Truck> GetAllTrucks(int TenantId)
+        public IQueryable<MarketVehicle> GetAllTrucks(int TenantId)
         {
-            return _currentDbContext.Trucks.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
+            return _currentDbContext.MarketVehicles.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
         }
-        public Truck CreateOrUpdateTruck(Truck truck, int UserId, int TenantId)
+        public MarketVehicle CreateOrUpdateTruck(MarketVehicle truck, int UserId, int TenantId)
         {
             if (truck.Id <= 0)
             {
                 truck.TenantId = TenantId;
-                truck.DateCreated = DateTime.Now;
+                truck.DateCreated = DateTime.UtcNow;
                 truck.CreatedBy = UserId;
-                _currentDbContext.Trucks.Add(truck);
+                _currentDbContext.MarketVehicles.Add(truck);
                 _currentDbContext.SaveChanges();
             }
             else
             {
-                var trucks = _currentDbContext.Trucks.AsNoTracking().FirstOrDefault(u => u.Id == truck.Id);
+                var trucks = _currentDbContext.MarketVehicles.AsNoTracking().FirstOrDefault(u => u.Id == truck.Id);
                 if (truck != null)
                 {
-                    truck.CreatedBy = truck.CreatedBy;
-                    truck.DateCreated = truck.DateCreated;
+                    truck.CreatedBy = trucks.CreatedBy;
+                    truck.DateCreated = trucks.DateCreated;
                     truck.TenantId = TenantId;
-                    truck.DateUpdated = DateTime.Now;
+                    truck.DateUpdated = DateTime.UtcNow;
                     truck.UpdatedBy = truck.UpdatedBy;
                     _currentDbContext.Entry(truck).State = System.Data.Entity.EntityState.Modified;
                     _currentDbContext.SaveChanges();
@@ -1010,9 +1010,9 @@ namespace Ganedata.Core.Services
             return truck;
         }
 
-        public Truck RemoveTruck(int Id, int UserId)
+        public MarketVehicle RemoveTruck(int Id, int UserId)
         {
-            var productTags = _currentDbContext.Trucks.FirstOrDefault(u => u.Id == Id);
+            var productTags = _currentDbContext.MarketVehicles.FirstOrDefault(u => u.Id == Id);
             if (productTags != null)
             {
                 productTags.IsDeleted = true;

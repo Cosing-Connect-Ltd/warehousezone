@@ -54,7 +54,7 @@
     </system.web>
   </location>
   <connectionStrings>
-    <add name="ApplicationContext" providerName="System.Data.SqlClient" connectionString="Data Source=DESKTOP-HOQIKAU;Initial Catalog=Becsco-Staging;Integrated Security=False;User ID=sa;Password=developer;MultipleActiveResultSets=True;Max Pool Size=200;Connection Timeout=30" />
+    <add name="ApplicationContext" providerName="System.Data.SqlClient" connectionString="Data Source=GANE-SQL;Initial Catalog=Becsco-Release;Integrated Security=False;User Id=sa;Password=Gan3d4ta!#;MultipleActiveResultSets=True;Max Pool Size=200;Connection Timeout=30" />
   </connectionStrings>
   <appSettings>
     <add key="webpages:Version" value="3.0.0.0" />
@@ -66,7 +66,7 @@
     <add key="VideoFormats" value=".avi,.mp4" />
     <add key="ImageFormats" value=".jpeg,.png,.gif,.bmp,.jpg" />
     <add key="DocumentFormats" value=".pdf,.docx,.xlxs,.txt" />
-    <add key="WarehouseStoreBaseUri" value="http://192.168.1.17:8005/" />
+    <add key="WarehouseStoreBaseUri" value="https://becsco.warehouse.zone" />
     <add key="WarehouseSyncSiteID" value="1" />
     <add key="WarehouseSyncIntervalSeconds" value="60" />
     <add key="WarehouseScheduleMarginHours" value="2" />
@@ -77,7 +77,7 @@
     <add key="MiniProfilerEnabled" value="false" />
     <add key="GS128LotNumberLength" value="6" />
     <add key="GS128SerialNumberLength" value="20" />
-    <add key="WarmUpUrl" value="https://hive.warehouse.zone" />
+    <add key="WarmUpUrl" value="https://becsco.warehouse.zone" />
     <add key="ProductImportManufacturerNames" value="Zebra,Honeywell,ELO,EPSON" />
     <add key="elmah.mvc.disableHandler" value="false" />
     <add key="elmah.mvc.disableHandleErrorFilter" value="false" />
@@ -95,7 +95,6 @@
     <add key="MerakiSecretKey" value="1d9399b50f91cf1672d709744e3d70b93083eb04" />
     <add key="SMSBroadcastUser" value="Ganedata01" />
     <add key="SMSBroadcastPassword" value="92DqXS3tfh" />
-    <add key="StripeIsLive" value="true" />
   </appSettings>
   <!--
     For a description of web.config changes see http://go.microsoft.com/fwlink/?LinkId=235367.
@@ -103,7 +102,7 @@
   <system.web>
     <!--This meduim trust level is added here because devexpress reports were not printing and saving properly without specifying that-->
     <trust level="Full" />
-    <sessionState mode="SQLServer" sqlConnectionString="Data Source=DESKTOP-HOQIKAU;Integrated Security=False;User ID=sa;Password=developer;MultipleActiveResultSets=True;Max Pool Size=200;Connection Timeout=30" timeout="300" />
+    <sessionState mode="SQLServer" sqlConnectionString="Data Source=GANE-SQL;Integrated Security=False;User Id=sa;Password=Gan3d4ta!#;MultipleActiveResultSets=True;Max Pool Size=200;Connection Timeout=30" timeout="240" />
     <globalization culture="en-GB" uiCulture="en-GB" />
     <compilation debug="true" targetFramework="4.7.2">
       <assemblies>
@@ -261,7 +260,7 @@
     <!--End click Jacking-->
     <!--Start HTTP to HTTPS redirect using URL Rewrite-->
     <!--URL rewrite module should to be installed on IIS-->
-    <!--<rewrite>
+    <rewrite>
       <rules>
         <rule name="No redirect on warmup request (request from localhost with warmup user agent)" stopProcessing="true">
           <match url=".*" />
@@ -271,7 +270,7 @@
           </conditions>
           <action type="Rewrite" url="{URL}" />
         </rule>
-        --><!--<rule name="HTTP to HTTPS redirect" stopProcessing="true">
+        <rule name="HTTP to HTTPS redirect" stopProcessing="true">
           <match url="(.*)" />
           <conditions logicalGrouping="MatchAll">
             <add input="{REQUEST_URI}" pattern="iisstart" negate="true" />
@@ -279,11 +278,10 @@
             <add input="{HTTPS}" pattern="off" />
           </conditions>
           <action type="Redirect" url="https://{HTTP_HOST}/{R:1}" redirectType="Permanent" />
-        </rule>--><!--
+        </rule>
       </rules>
-    </rewrite>-->
+    </rewrite>
     <!--END HTTP to HTTPS redirect using URL Rewrite-->
-
     <validation validateIntegratedModeConfiguration="false" />
   </system.webServer>
   <entityFramework>
@@ -303,10 +301,9 @@
   <devExpress>
     <themes enableThemesAssembly="true" styleSheetTheme="" theme="Default" customThemeAssemblies="" />
     <compression enableHtmlCompression="true" enableCallbackCompression="true" enableResourceCompression="true" enableResourceMerging="true" />
-    <settings doctypeMode="Xhtml" rightToLeft="false" embedRequiredClientLibraries="true" checkReferencesToExternalScripts="true" accessibilityCompliant="false" />
+    <settings doctypeMode="Xhtml" rightToLeft="false" embedRequiredClientLibraries="false" checkReferencesToExternalScripts="true" accessibilityCompliant="false" />
     <errors callbackErrorRedirectUrl="~/error" />
     <resources>
-      <!--<add type="ThirdParty" />-->
       <add type="DevExtreme" />
     </resources>
   </devExpress>
@@ -488,14 +485,7 @@
         <assemblyIdentity name="MoreLinq" publicKeyToken="384d532d7e88985d" culture="neutral" />
         <bindingRedirect oldVersion="0.0.0.0-3.3.2.0" newVersion="3.3.2.0" />
       </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.ComponentModel.Annotations" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.2.1.0" newVersion="4.2.1.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="WebMatrix.Data" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.0.0.0" newVersion="1.0.0.0" />
-      </dependentAssembly>
     </assemblyBinding>
   </runtime>
 </configuration>
+<!--ProjectGuid: 581C39BE-03B4-4F4F-9F12-F1A44B288551-->

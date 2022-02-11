@@ -53,7 +53,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Truck productTag)
+        public ActionResult Create(MarketVehicle productTag)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)
@@ -74,7 +74,7 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Truck productTag = _productLookupService.GetAllTrucks(CurrentTenantId).FirstOrDefault(u => u.Id == id);
+            MarketVehicle productTag = _productLookupService.GetAllTrucks(CurrentTenantId).FirstOrDefault(u => u.Id == id);
             if (productTag == null)
             {
                 return HttpNotFound();
@@ -89,7 +89,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Truck productTag)
+        public ActionResult Edit(MarketVehicle productTag)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)

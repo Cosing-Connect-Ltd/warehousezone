@@ -198,4 +198,24 @@ namespace Ganedata.Core.Entities.Domain
 
         public string DateCreated { get; set; }
     }
+    public class AssigningDispatchToDelivery
+    {
+        public List<TruckDetail> TruckDetails { get; set; }
+        public List<Palletdetails> Palletdetails { get; set; }
+       
+    }
+    public class TruckDetail
+    {
+        public int Id { get; set; }
+
+        public string TruckName { get; set; }
+
+    }
+    public class Palletdetails
+    {
+        public int Id { get; set; }
+
+        public string PalletNumber { get; set; }
+
+    }
 }
