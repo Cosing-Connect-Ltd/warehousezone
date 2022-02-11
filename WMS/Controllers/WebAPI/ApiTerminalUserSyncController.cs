@@ -235,6 +235,7 @@ namespace WMS.Controllers.WebAPI
         public IHttpActionResult GetUserLoginStatus(UserLoginStatusViewModel loginStatus)
         {
             string serialNo = loginStatus?.SerialNo?.Trim().ToLower();
+            loginStatus.Md5Pass = GaneStaticAppExtensions.GetMd5(loginStatus.Md5Pass);
 
             Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
 

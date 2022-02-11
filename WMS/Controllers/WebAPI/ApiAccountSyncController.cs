@@ -255,6 +255,11 @@ namespace WMS.Controllers.WebAPI
             result.TenantPriceGroupDetailSync = groupDetails;
             return Ok(result);
         }
+
+        public IHttpActionResult LoginUsers()
+
+
+
         [HttpPost]
         public IHttpActionResult AccountResetPassword(AccountPasswordResetSync model)
         {

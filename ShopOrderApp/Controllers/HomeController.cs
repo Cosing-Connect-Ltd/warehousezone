@@ -9,7 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WMS.Reports;
-
+using PagedList;
 namespace ShopOrderApp.Controllers
 {
     public class HomeController : BaseController
@@ -37,10 +37,14 @@ namespace ShopOrderApp.Controllers
             _commonDbServices = commonDbServices;
             _tenantServices = tenantsServices;
         }
-        public ActionResult Index()
+        public ActionResult Index(int pageSize = 10, int pageNo = 1)
         {
-
-            return View();
+            var orderprocess = OrderService.GetAllOrderProcesses(null, orderProcessStatusId: OrderProcessStatusEnum.Complete).Where(u=>u.InventoryTransactionTypeId==InventoryTransactionTypeEnum.SalesOrder);
+            var orderComplete=orderprocess.OrderByDescending(U=>U.DateCreated).Take(pageSize);
+            ViewBag.pageSize=pageSize;
+            ViewBag.pageNo=pageNo;
+            var orders=orderComplete.ToPagedList(pageNo,pageSize);
+            return View(orders);
             //return RedirectToAction("Login", "User");
         }
 

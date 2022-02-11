@@ -39,7 +39,7 @@ $( document ).ready(function() {
 		  left: 0
 		}
 	  },
-	  colors: ['#ffffff'],
+	  colors: ['#CD3648'],
 	  tooltip: {
 		x: {
 		  show: false
@@ -89,7 +89,7 @@ $( document ).ready(function() {
 		  left: 0
 		}
 	  },
-	  colors: ['#ffffff'],
+	  colors: ['#3260d6'],
 	  tooltip: {
 		x: {
 		  show: false
@@ -139,7 +139,7 @@ $( document ).ready(function() {
 		  left: 0
 		}
 	  },
-	  colors: ['#ffffff'],
+	  colors: ['#14908a'],
 	  tooltip: {
 		x: {
 		  show: false

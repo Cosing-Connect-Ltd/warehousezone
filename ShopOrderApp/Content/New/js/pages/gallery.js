@@ -7,7 +7,7 @@ $(function () {
 
 		
 	  // delegate calls to data-toggle="lightbox"
-        $(document).delegate('*[data-bs-toggle="lightbox"]:not([data-bs-gallery="navigateTo"])', 'click', function(event) {
+        $(document).delegate('*[data-toggle="lightbox"]:not([data-gallery="navigateTo"])', 'click', function(event) {
             event.preventDefault();
             return $(this).ekkoLightbox({
                 onShown: function() {
@@ -32,7 +32,7 @@ $(function () {
             $(this).ekkoLightbox();
         });
         // navigateTo
-        $(document).delegate('*[data-bs-gallery="navigateTo"]', 'click', function(event) {
+        $(document).delegate('*[data-gallery="navigateTo"]', 'click', function(event) {
             event.preventDefault();
             var lb;
             return $(this).ekkoLightbox({

@@ -28,7 +28,7 @@ File: scss
   color: #3b6dc1; }
 .light-skin .main-sidebar {
   border-right: 0px solid rgba(72, 94, 144, 0.16);
-  background-color: #2f3478; }
+  background-color: #ffffff; }
 .light-skin .user-panel > .info {
   color: #ffffff; }
   .light-skin .user-panel > .info > a {
@@ -37,8 +37,7 @@ File: scss
   color: #172b4c; }
 .light-skin .sidebar-menu > li.active > a {
   background-color: #172b4c;
-  color: #ffffff;
-  box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.05); }
+  color: #ffffff; }
   .light-skin .sidebar-menu > li.active > a > i {
     color: #ffffff; }
   .light-skin .sidebar-menu > li.active > a:after {
@@ -53,27 +52,25 @@ File: scss
     border-width: 22px 10px 22px 0;
     border-color: transparent #fafafa transparent transparent !important; }
 .light-skin .sidebar-menu > li.menu-open > a {
-  color: #172b4c;
-  box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.05);
-  background-color: #ffffff; }
+  color: #172b4c; }
   .light-skin .sidebar-menu > li.menu-open > a svg {
     color: #172b4c; }
 .light-skin .sidebar-menu > li > .treeview-menu {
   margin: 0 0px; }
 .light-skin.sidebar-collapse .sidebar-menu > li > .treeview-menu {
-  background-color: #2f3478;
+  background-color: #ffffff;
   box-shadow: 5px 8px 10px 0px rgba(0, 0, 0, 0.1); }
   .light-skin.sidebar-collapse .sidebar-menu > li > .treeview-menu > .treeview .treeview-menu {
-    background-color: #2f3478;
+    background-color: #ffffff;
     box-shadow: 5px 8px 10px 0px rgba(0, 0, 0, 0.1); }
 .light-skin.sidebar-mini.sidebar-collapse .sidebar-menu > li > a > span {
-  background-color: #2f3478 !important;
+  background-color: #ffffff !important;
   box-shadow: 5px 8px 10px 0px rgba(0, 0, 0, 0.1); }
 .light-skin.sidebar-mini.sidebar-collapse .sidebar-menu > li.active > a > span {
-  background: #2f3478 !important;
+  background: #ffffff !important;
   color: #ffffff; }
 .light-skin .sidebar a {
-  color: #ffffff; }
+  color: #5C607B; }
   .light-skin .sidebar a:hover {
     text-decoration: none; }
 .light-skin .sidebar-form {
@@ -740,12 +737,12 @@ body.dark-skin {
   .dark-skin .main-header .logo-box > a.push-btn {
     background-color: #1c2e4c; }
 .dark-skin .main-header .app-menu .search-bx input[type="search"] {
-  background-color: #0c1a32;
+  background-color: #1c2e4c;
   color: #b5b5c3; }
 .dark-skin .main-header .app-menu .search-bx ::placeholder {
   color: #b5b5c3; }
 .dark-skin .main-header .app-menu .search-bx .btn {
-  background-color: #0c1a32;
+  background-color: #1c2e4c;
   color: #b5b5c3 !important; }
 .dark-skin .main-header li.user-header {
   background-color: #ffffff; }
@@ -764,7 +761,9 @@ body.dark-skin {
 .dark-skin .main-header .navbar .nav > .active > a {
   background-color: rgba(12, 26, 50, 0.05); }
 .dark-skin .main-footer {
-  color: #b5b5c3; }
+  background: #1c2e4c;
+  color: #b5b5c3;
+  border-color: rgba(255, 255, 255, 0.12); }
 .dark-skin .main-sidebar {
   background-color: #0c1a32; }
 .dark-skin .left-side {
@@ -775,7 +774,7 @@ body.dark-skin {
   .dark-skin .user-panel > .info > a {
     color: #ffffff; }
 .dark-skin .sidebar-menu > li {
-  border-left: 0px solid #0c1a32; }
+  border-left: 3px solid #0c1a32; }
 .dark-skin .main-sidebar .sidebar-footer {
   background-color: #0c1a32; }
 .dark-skin .sidebar-menu > li.treeview.menu-open > a {
@@ -826,6 +825,16 @@ body.dark-skin {
   background-color: #0c1a32 !important;
   color: #ffffff; }
 
+.dark-skin.layout-top-nav .main-header .inside-header {
+  background: #0c1a32; }
+.dark-skin.layout-top-nav .main-menu-btn-icon {
+  background: #ffffff; }
+  .dark-skin.layout-top-nav .main-menu-btn-icon:before, .dark-skin.layout-top-nav .main-menu-btn-icon:after {
+    background: #ffffff; }
+
+.dark-skin.layout-top-nav.fixed .main-header {
+  background: #0c1a32; }
+
 @media (max-width: 767px) {
   .dark-skin.sidebar-mini.sidebar-collapse .sidebar-menu > li > a > span {
     background-color: rgba(42, 90, 173, 0) !important; }
@@ -837,9 +846,6 @@ body.dark-skin {
   color: #b5b5c3; }
   .dark-skin .sidebar a:hover {
     text-decoration: none; }
-  .dark-skin .sidebar a > svg {
-    color: #b5b5c3;
-    fill: rgba(27, 46, 75, 0.3); }
 .dark-skin .sidebar-form {
   border: 1px solid #8cade4; }
   .dark-skin .sidebar-form input[type="text"] {
@@ -954,6 +960,9 @@ body.dark-skin {
 .dark-skin .wizard-content .wizard > .steps > ul > li.disabled a {
   color: #ffffff; }
 
+@media (min-width: 768px) {
+  .dark-skin .sm-blue {
+    background-color: #1c2e4c; } }
 .chart g [fill="#6794dc"] {
   fill: #fbc66c !important; }
 .chart g [stroke="#6794dc"] {

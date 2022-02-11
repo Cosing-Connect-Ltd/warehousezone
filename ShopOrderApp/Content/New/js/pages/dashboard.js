@@ -8,7 +8,8 @@ $(function () {
 
   'use strict';
 	
-		var options = {
+		
+	var options = {
           series: [{
           data: [48, 31, 22, 17, 12]
         }],
@@ -402,6 +403,7 @@ $(function () {
 
         var chart = new ApexCharts(document.querySelector("#overview_trend"), options);
         chart.render();
+	
 	
 	
 }); // End of use strict
