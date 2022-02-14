@@ -17,6 +17,7 @@ namespace Ganedata.Core.Services
             string ControllerName = "";
             string ActionName = "";
             int CurrentWarehouseId = 0;
+
             HttpContext.Current.Session["ErrorUrl"] = "~/error";
 
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
@@ -186,6 +187,21 @@ namespace Ganedata.Core.Services
             }
 
             return Status;
+        }
+
+        public static bool AuthorizeVechile(string id)
+        {
+            caTenant ca = new caTenant();
+            var VechileId = ca.AuthorizeVechile(id);
+            if (VechileId > 0)
+            {
+                HttpContext.Current.Session["VechileId"] = VechileId;
+                return true;
+            }
+            return false;
+
+
+
         }
     }
 }

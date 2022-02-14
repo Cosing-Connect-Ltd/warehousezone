@@ -1,20 +1,18 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from warehouse-admin-dashboard.multipurposethemes.com/main-horizontal/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Feb 2022 12:51:06 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="https://warehouse-admin-dashboard.multipurposethemes.com/images/favicon.ico">
+    <link rel="icon" href="~/Content/images/favicon.ico">
 
-    <title>Deposito Admin - Dashboard</title>
+    <title>Becsco Truck Load - Dashboard</title>
 
     <!-- Vendors Style-->
     <link rel="stylesheet" href="~/Content/New/css/vendors_css.css">
-
     <!-- Style-->
     <link rel="stylesheet" href="~/Content/New/css/horizontal-menu.css">
     <link rel="stylesheet" href="~/Content/New/css/style.css">
@@ -31,14 +29,25 @@
             <div class="inside-header">
                 <div class="d-flex align-items-center logo-box justify-content-start">
                     <!-- Logo -->
-                    <a href="index.html" class="logo">
+                    <a href="/" class="logo">
                         <!-- logo-->
                         <div class="logo-lg">
                             <h2 class="light-logo" style="color:white">Truck Loading</h2>
-                            <h2 class="dark-logo" style="color:white">Truck Loading</h2>
                         </div>
                     </a>
                 </div>
+                <!-- Header Navbar -->
+                <nav class="navbar navbar-static-top">
+                    <!-- Sidebar toggle button-->
+                    <div class="app-menu">
+                        <ul class="header-megamenu nav">
+                        </ul>
+                    </div>
+
+                    <div class="navbar-custom-menu r-side">
+                       
+                    </div>
+                </nav>
             </div>
         </header>
 
@@ -53,11 +62,14 @@
             <!-- Sample menu definition -->
             <ul id="main-menu" class="sm sm-blue">
                 <li>
-                    <a href="#"><i data-feather="monitor"></i>Load Order To Truck</a>
+                    <a href="/"><i data-feather="monitor"></i>Load Truck</a>
 
                 </li>
                 <li>
-                    <a href="#"><i data-feather="truck"></i>Un Load From Truck</a>
+                    <a href="/Home/UnloadTruck/"><i data-feather="truck"></i>Unload Truck</a>
+                </li>
+                <li class="pull-right">
+                    <a href="/user/logout/"><i data-feather="user"></i>Logout</a>
                 </li>
             </ul>
         </nav>
@@ -71,34 +83,19 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <div class="pull-right d-none d-sm-inline-block">
-                @*<ul class="nav nav-primary nav-dotted nav-dot-separated justify-content-center justify-content-md-end">
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0)">FAQ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Purchase Now</a>
-                        </li>
-                    </ul>*@
             </div>
-            &copy;
-            @*<script>document.write(new Date().getFullYear())</script> <a href="https://www.multipurposethemes.com/">Multipurpose Themes</a>. All Rights Reserved.*@
         </footer>
 
 
 
     </div>
-    <!-- Page Content overlay -->
-    <!-- Vendor JS -->
     <script src="~/Content/new/js/vendors.min.js"></script>
     <script src="~/Content/new/js/pages/chat-popup.js"></script>
     <script src="~/Content/new/assets/icons/feather-icons/feather.min.js"></script>
-
+    <script src="~/Content/new/assets/vendor_components/jquery-toast-plugin-master/src/jquery.toast.js"></script>
     <script src="~/Content/new/assets/vendor_components/progressbar.js-master/dist/progressbar.js"></script>
-    <script>
-        document.getElementById('e').value = new Date().toISOString().substring(0, 10);
-    </script>
-
-    <!-- Deposito Admin App -->
+   
+ 
     <script src="~/Content/new/js/jquery.smartmenus.js"></script>
     <script src="~/Content/new/js/menus.js"></script>
     <script src="~/Content/new/js/template.js"></script>
@@ -107,54 +104,9 @@
 
 </body>
 
-<!-- Mirrored from warehouse-admin-dashboard.multipurposethemes.com/main-horizontal/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Feb 2022 12:52:03 GMT -->
 </html>
 
-<div class="modal center-modal fade" id="modal-center" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-12 col-12">
-                        <!-- Basic Forms -->
-                        <!-- /.box-header -->
-                        @using (Html.BeginForm("SubmitTruckLoad", "Home", FormMethod.Post, new { @class = "truckLoadSubmit" }))
-                        {
-                            <input type="hidden" id="palletDispatchId" />
-                            <div class="form-group">
-                                <label class="form-label">Select Vehicle :</label>
-                                <select class="form-select vechile-map">
-                                </select>
 
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Scan Pallet Number:</label>
-                                <input type="text" id="scan" class="form-control" placeholder="Scan Pallet" onkeydown="ScanPalletData(event);">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Pallets :</label>
-                                <div class="c-inputs-stacked pallets-scan">
-
-                                </div>
-                            </div>
-
-                        }
-
-                        <!-- /.box -->
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer modal-footer-uniform">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success pull-right" onclick="SubmitLoading();">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
 
     $(document).ready(function () {
@@ -165,80 +117,7 @@
             }
         });
     });
-    function AssignOrderToTruck(dispatchId) {
-        $('#modal-center').modal("show");
-        $('.pallets-scan').html("");
-        $("#scannedIds").val("");
-        $("#truckId").val("");
-        $("#palletDispatchId").val(dispatchId);
-        $('.vechile-map').html("");
-        $.get({
-            url: "/Home/AssigningDispatchToDelivery",
-            data: { "id": dispatchId },
-            success: function (data) {
-                if (data.TruckDetails.length > 0) {
-                    $.each(data.TruckDetails, function (i, item) {
-                        $('.vechile-map').append($('<option></option>').val(item.Id).html(item.TruckName));
-                    });
-                }
-                var htmldata = "";
-
-                if (data.Palletdetails.length > 0) {
-                    $.each(data.Palletdetails, function (i, item) {
-
-                        htmldata += '<input class="filled-in chk-col-success checkBoxClass" type="checkbox" id="checkbox_' + item.Id + '" value=' + item.Id + ' disabled><label for="labelcheckbox_' + item.Id + '" id="checkbox_' + item.Id + '"" class="me-20">' + item.PalletNumber + '</label>'
-
-                    });
-                    $('.pallets-scan').html("").html(htmldata);
-                }
-
-            },
-        });
-
-
-    }
-    function SubmitLoading() {
-        var str = $('.checkBoxClass:checked').map(function () {
-            return this.value;
-        }).get().join();
-        $("#scannedIds").val(str);
-        var truckId = $(".vechile-map :selected").val();
-        var dispatchId = $("#palletDispatchId").val();
-        $("#truckId").val(parseInt(truckId));
-        $.post({
-            url: "/Home/SubmitTruckLoad",
-            data: { "scannedIds": str, truckId: truckId, dispatchId: dispatchId },
-            success: function (data) {
-                $.toast({
-                    heading: 'Information',
-                    text: 'Order Loadded Sucessfully',
-                    position: 'bottom-left',
-                    loaderBg: '#ff6849',
-                    icon: 'success',
-                    hideAfter: 2400,
-                    stack: 6
-                });
-
-            },
-        });
-    }
-    function ScanPalletData(e) {
-        if (e.keyCode == 13) {
-            var status = false;
-            var scannedText = e.currentTarget.value;
-            $('label[id^="checkbox_"]').each(function (d) {
-                var labelText = this.outerText;
-                if (scannedText == labelText) {
-                    $("#" + this.id).prop('checked', true);
-                    status = true;
-                }
-            });
-            if (status == false) {
-                alert("Pallet Not Found");
-                $("#scan").val("");
-            }
-        }
-    }
+   
 
 
 </script>

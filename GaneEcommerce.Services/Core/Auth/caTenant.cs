@@ -67,6 +67,24 @@ namespace Ganedata.Core.Services
             return AuthStatus;
         }
 
+        public int AuthorizeVechile(string vechileId)
+        {
+            IApplicationContext context = DependencyResolver.Current.GetService<IApplicationContext>();
+            if (context == null)
+            {
+                return 0;
+            }
+            var result = context.MarketVehicles.Where(u => u.VehicleIdentifier == vechileId && u.IsDeleted != true).FirstOrDefault();
+            VechilesBase vechilesBase = new VechilesBase();
+            if (result == null)
+            {
+                return 0;
+            }
+            vechilesBase.vechileId = result.Id;
+            return result.Id;
+
+
+        }
 
         private string FilterSubDomain(Uri url)
         {

@@ -2,7 +2,7 @@
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
-        settings.Name = "producttagGrdview";
+        settings.Name = "truckGrdview";
         settings.CallbackRouteValues = new { Controller = "ProductTags", Action = "_ProductTagList" };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.Settings.ShowHeaderFilterButton = false;
@@ -20,11 +20,19 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
-        settings.Columns.Add("TruckName");
+        settings.Columns.Add("Name");
         settings.Columns.Add(c =>
         {
-            c.FieldName = "SortOrder";
-            c.Caption = "Sort Order";
+            c.FieldName = "VehicleIdentifier";
+            c.Caption = "Vehicle Identifier";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Description";
+            c.Caption = "Description";
             c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 

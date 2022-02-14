@@ -38,26 +38,43 @@ namespace ShopOrderApp.Controllers
             _tenantServices = tenantsServices;
             _productLookupService = productLookupService;
         }
-        public ActionResult Index(int pageSize = 10, int pageNo = 1)
+        public ActionResult Index()
         {
-            var orderprocess = _palletingService.GetAllPalletsDispatchs().Where(c=>c.DispatchStatus==PalletDispatchStatusEnum.Created);
-            var check = orderprocess.Count();
-            var orderComplete=orderprocess.OrderByDescending(U=>U.DateCreated);
-            ViewBag.pageSize=pageSize;
-            ViewBag.pageNo=pageNo;
-            var orders=orderComplete.ToPagedList(pageNo,pageSize);
-            return View(orders);
+
+            return View();
             //return RedirectToAction("Login", "User");
+        }
+
+        public ActionResult _DeliveriesResult(string searchText, PalletDispatchStatusEnum palletDispatchStatus, int? page, int pageSize = 10)
+        {
+            var orderprocess = _palletingService.GetAllPalletsDispatchs().Where(c => c.DispatchStatus == palletDispatchStatus
+            && (string.IsNullOrEmpty(searchText) || c.OrderProcess.Order.OrderNumber.Contains(searchText)) && (palletDispatchStatus == PalletDispatchStatusEnum.Created || c.MarketVehicleID == VechileId));
+            var check = orderprocess.Count();
+            ViewBag.searchText = searchText;
+            ViewBag.status = palletDispatchStatus;
+            var orderComplete = orderprocess.OrderByDescending(U => U.DateCreated);
+            ViewBag.pageSize = pageSize;
+            var orders = orderComplete.ToPagedList((page ?? 1), pageSize);
+            return PartialView(orders);
+        }
+
+        public ActionResult UnloadTruck()
+        {
+            return View();
         }
         public JsonResult AssigningDispatchToDelivery(int id)
         {
             AssigningDispatchToDelivery assigningDispatchToDelivery = new AssigningDispatchToDelivery();
-            assigningDispatchToDelivery.Palletdetails = _palletingService.GetAllPalletByDispatchId(id).Select(u => new Palletdetails
+            var pallets = _palletingService.GetAllPalletByDispatchId(id);
+            assigningDispatchToDelivery.VechileId = pallets.FirstOrDefault().PalletsDispatch?.MarketVehicleID;
+            assigningDispatchToDelivery.Palletdetails = pallets.Select(u => new Palletdetails
             {
                 Id = u.PalletID,
-                PalletNumber = u.PalletNumber
+                PalletNumber = u.PalletNumber,
+                ScannedOnLoad = u.ScannedOnLoading,
             }).ToList();
-            assigningDispatchToDelivery.TruckDetails = _productLookupService.GetAllTrucks(CurrentTenantId==0?1:CurrentTenantId).Select(u => new TruckDetail
+
+            assigningDispatchToDelivery.TruckDetails = _productLookupService.GetAllTrucks(CurrentTenantId == 0 ? 1 : CurrentTenantId).Select(u => new TruckDetail
             {
                 Id = u.Id,
                 TruckName = u.Name
@@ -80,10 +97,10 @@ namespace ShopOrderApp.Controllers
         }
 
         [HttpPost]
-        public JsonResult SubmitTruckLoad(string scannedIds, int truckId, int dispatchId)
+        public JsonResult SubmitTruckLoad(string scannedIds, int truckId, int dispatchId, PalletDispatchStatusEnum palletDispatchStatus)
         {
 
-            return Json(_palletingService.LoadPalletOnTruck(scannedIds,truckId, dispatchId),JsonRequestBehavior.AllowGet);
+            return Json(_palletingService.LoadPalletOnTruck(scannedIds, truckId, dispatchId, palletDispatchStatus), JsonRequestBehavior.AllowGet);
         }
 
     }

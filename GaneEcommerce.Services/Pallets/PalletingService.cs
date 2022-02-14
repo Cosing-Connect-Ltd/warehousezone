@@ -357,7 +357,7 @@ namespace Ganedata.Core.Services
         }
         public IQueryable<PalletsDispatch> GetAllPalletsDispatchs()
         {
-            return _currentDbContext.PalletsDispatches.Where(u => u.DispatchStatus == PalletDispatchStatusEnum.Created).OrderByDescending(u => u.PalletsDispatchID);
+            return _currentDbContext.PalletsDispatches;
         }
         public IQueryable<Pallet> GetAllPalletByDispatchId(int id)
         {
@@ -755,18 +755,27 @@ namespace Ganedata.Core.Services
             return true;
         }
 
-        public bool LoadPalletOnTruck(string palletIds,int truckId,int palletDispatchId)
+        public bool LoadPalletOnTruck(string palletIds, int truckId, int palletDispatchId, PalletDispatchStatusEnum palletDispatchStatus)
         {
 
-            var liststring= palletIds.Split(',').Select(Int32.Parse).ToList();
+            var liststring = palletIds.Split(',').Select(Int32.Parse).ToList();
             foreach (var item in liststring)
             {
                 var pallet = _currentDbContext.Pallets.FirstOrDefault(u => u.PalletID == item);
                 if (pallet != null)
                 {
-                    pallet.ScannedOnDelivered = true;
-                    pallet.DeliveredScanTime = DateTime.UtcNow;
-                    _currentDbContext.Entry(pallet).State=EntityState.Modified;
+                    if (palletDispatchStatus == PalletDispatchStatusEnum.Loaded)
+                    {
+                        
+                        pallet.ScannedOnLoading = true;
+                        pallet.DeliveredScanTime = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        pallet.ScannedOnDelivered = true;
+                        pallet.DeliveredScanTime = DateTime.UtcNow;
+                    }
+                    _currentDbContext.Entry(pallet).State = EntityState.Modified;
                 }
 
             }
@@ -775,6 +784,7 @@ namespace Ganedata.Core.Services
             if (palletDispatch != null)
             {
                 palletDispatch.MarketVehicleID = truckId;
+                palletDispatch.DispatchStatus = palletDispatchStatus;
                 _currentDbContext.Entry(palletDispatch).State = EntityState.Modified;
             }
 

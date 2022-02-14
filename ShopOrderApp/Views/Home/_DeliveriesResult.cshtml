@@ -1,0 +1,95 @@
+﻿@using Ganedata.Core.Entities.Domain
+@using Ganedata.Core.Entities.Enums
+@using PagedList.Mvc
+@model PagedList.IPagedList<PalletsDispatch>
+
+
+<input type="hidden" value="@ViewBag.status" id="palletDispatchStatus" />
+@foreach (var item in Model)
+{
+    <div class="col-md-3 col-xx-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">@item.OrderProcess.Order.OrderNumber</h4>
+                <ul class="box-controls pull-right d-md-flex">
+                    <li class="dropdown">
+
+                        <button class="btn btn-danger px-10" href="#" aria-expanded="true" onclick="AssignOrderToTruck(@item.PalletsDispatchID)">@(item.DispatchStatus == PalletDispatchStatusEnum.Created ? "Load On Truck" : "Un Load Truck")</button>
+
+
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Dipatch Refrence Number</td>
+                                <td>@item.DispatchReference</td>
+
+                            </tr>
+                            <tr>
+                                <td>Delivery Number</td>
+                                <td>@item.OrderProcess.DeliveryNO</td>
+
+                            </tr>
+                            <tr>
+                                <td>Company Name</td>
+                                <td style="word-wrap:anywhere">@item.OrderProcess.Order.Account.CompanyName</td>
+
+                            </tr>
+                            <tr>
+                                <td>Account Code</td>
+                                <td>@item.OrderProcess.Order.Account.AccountCode</td>
+
+                            </tr>
+                            <tr>
+                                <td>Date Created</td>
+                                <td>@item.DateCreated.ToString("MM/dd/yyyy")</td>
+
+                            </tr>
+                    </table>
+                </div>
+            </div>
+
+            @*<div class="card-footer">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Add comment...">
+                        <button class="btn bg-info btn-sm" type="button"><i class="fa fa-send-o"></i></button>
+                    </div>
+                </div>*@
+        </div>
+
+
+
+
+
+
+    </div>
+
+}
+
+
+<div class="pull-right" style="overflow:auto;">
+    @Html.PagedListPager(Model, page => Url.Action("_DeliveriesResult", new
+    {
+        page = page,
+        pagesize = ViewBag.pageSize,
+        searchText = ViewBag.searchText,
+        palletDispatchStatus = ViewBag.status,
+}),
+ PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+{
+    HttpMethod = "POST",
+         UpdateTargetId = "deliveries-list",
+
+ }))
+
+    @* <ul class="pagination">
+        <li class="paginate_button page-item previous disabled" id="productorder_previous">
+        <a href="#" aria-controls="productorder" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="productorder" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="productorder" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item next" id="productorder_next"><a href="#" aria-controls="productorder" data-dt-idx="3" tabindex="0" class="page-link">Next</a></li></ul>*@
+</div>
+

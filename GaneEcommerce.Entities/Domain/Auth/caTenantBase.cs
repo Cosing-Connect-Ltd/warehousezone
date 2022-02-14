@@ -41,4 +41,10 @@ namespace Ganedata.Core.Entities.Domain
         public ICollection<TenantLocations> TenantLocations { get; set; }
         public virtual ICollection<TenantModules> TenantModules { get; set; }
     }
+
+    [Serializable]
+    public class VechilesBase
+    {
+        public int vechileId { get; set; }
+    }
 }

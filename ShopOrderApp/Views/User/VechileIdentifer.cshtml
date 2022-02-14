@@ -12,13 +12,13 @@
     <meta name="author" content="">
     <link rel="icon" href="https://warehouse-admin-dashboard.multipurposethemes.com/images/favicon.ico">
 
-    <title>Shop Order - Log in </title>
+    <title>Truck Loading - Identify </title>
 
     <!-- Vendors Style-->
-    <link rel="stylesheet" href="~/Content/New/assets/css/vendors_css.css">
+    <link rel="stylesheet" href="~/Content/New/css/vendors_css.css">
     <!-- Style-->
-    <link rel="stylesheet" href="~/Content/New/assets/css/style.css">
-    <link rel="stylesheet" href="~/Content/New/assets/css/skin_color.css">
+    <link rel="stylesheet" href="~/Content/New/css/style.css">
+    <link rel="stylesheet" href="~/Content/New/css/skin_color.css">
 
 </head>
 
@@ -32,8 +32,12 @@
                     <div class="col-lg-5 col-md-5 col-12">
                         <div class="bg-white rounded10 shadow-lg">
                             <div class="content-top-agile p-20 pb-0">
-                                <h2 class="text-primary">Sign in Shop Orders</h2>
-                                @*<p class="mb-0">Sign in Shop Orders</p>*@
+                                <h2 class="text-primary">Sign in Truck Loading</h2>
+                                @if (ViewBag.LoginError != null)
+                                {
+                                    <p class="mb-0 alert-danger text-uppercase">@ViewBag.LoginError</p>
+                                }
+
                             </div>
                             <div class="p-40">
                                 @using (Html.BeginForm())
@@ -42,18 +46,12 @@
                                     <div class="form-group">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text bg-transparent"><i class="ti-user"></i></span>
-                                            <input type="text" id="UserName" name="UserName" class="form-control ps-15 bg-transparent" placeholder="Username">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text  bg-transparent"><i class="ti-lock"></i></span>
-                                            <input type="password" id="UserPassword" name="UserPassword" class="form-control ps-15 bg-transparent" placeholder="Password">
+                                            <input type="text" id="vechileId" name="vechileId" class="form-control ps-15 bg-transparent" placeholder="Enter Vechile Id">
                                         </div>
                                     </div>
 
                                     <div class="col-12 text-center">
-                                        <button type="submit" class="btn btn-danger mt-10">SIGN IN</button>
+                                        <button type="submit" class="btn btn-danger mt-10">LOG IN</button>
                                     </div>
 
                                 }

@@ -3826,20 +3826,6 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="Tenant" Relationship="Self.Tooltip_Tenant" FromRole="Tooltip_Tenant_Source" ToRole="Tooltip_Tenant_Target" />
         </EntityType>
-        <EntityType Name="Truck" customannotation:ClrType="Ganedata.Core.Entities.Domain.Truck, Ganedata.Core.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TruckName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SortOrder" Type="Int16" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
-          <Property Name="DateUpdated" Type="DateTime" />
-          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
-          <Property Name="UpdatedBy" Type="Int32" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="TenantId" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="UISettingItem" customannotation:ClrType="Ganedata.Core.Entities.Domain.UISettingItem, Ganedata.Core.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <Key>
             <PropertyRef Name="Id" />
@@ -8794,7 +8780,6 @@
           <EntitySet Name="TenantProfile" EntityType="Self.TenantProfile" />
           <EntitySet Name="TextTranslations" EntityType="Self.TextTranslations" />
           <EntitySet Name="Tooltips" EntityType="Self.Tooltip" />
-          <EntitySet Name="Trucks" EntityType="Self.Truck" />
           <EntitySet Name="UISettingItems" EntityType="Self.UISettingItem" />
           <EntitySet Name="UISettings" EntityType="Self.UISetting" />
           <EntitySet Name="VehicleInspectionCheckLists" EntityType="Self.VehicleInspectionCheckList" />
@@ -13778,21 +13763,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Trucks">
-            <EntityTypeMapping TypeName="Ganedata.Core.Data.Truck">
-              <MappingFragment StoreEntitySet="Truck">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="TruckName" ColumnName="TruckName" />
-                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="TenantId" ColumnName="TenantId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UISettingItems">
             <EntityTypeMapping TypeName="Ganedata.Core.Data.UISettingItem">
               <MappingFragment StoreEntitySet="UISettingItem">
@@ -17384,20 +17354,6 @@
           <Property Name="CreatedBy" Type="int" Nullable="true" />
           <Property Name="UpdatedBy" Type="int" Nullable="true" />
           <Property Name="IsDeleted" Type="bit" Nullable="true" />
-        </EntityType>
-        <EntityType Name="Truck">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TruckName" Type="nvarchar(max)" Nullable="true" />
-          <Property Name="SortOrder" Type="smallint" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Nullable="false" />
-          <Property Name="DateUpdated" Type="datetime" Nullable="true" />
-          <Property Name="CreatedBy" Type="int" Nullable="false" />
-          <Property Name="UpdatedBy" Type="int" Nullable="true" />
-          <Property Name="IsDeleted" Type="bit" Nullable="true" />
-          <Property Name="TenantId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UISettingItem">
           <Key>
@@ -22099,7 +22055,6 @@
           <EntitySet Name="TenantProfile" EntityType="Self.TenantProfile" Schema="dbo" Table="TenantProfiles" />
           <EntitySet Name="TextTranslations" EntityType="Self.TextTranslations" Schema="dbo" Table="TextTranslations" />
           <EntitySet Name="Tooltip" EntityType="Self.Tooltip" Schema="dbo" Table="Tooltips" />
-          <EntitySet Name="Truck" EntityType="Self.Truck" Schema="dbo" Table="Trucks" />
           <EntitySet Name="UISettingItem" EntityType="Self.UISettingItem" Schema="dbo" Table="UISettingItems" />
           <EntitySet Name="UISetting" EntityType="Self.UISetting" Schema="dbo" Table="UISettings" />
           <EntitySet Name="VehicleInspectionCheckList" EntityType="Self.VehicleInspectionCheckList" Schema="dbo" Table="VehicleInspectionCheckList" />

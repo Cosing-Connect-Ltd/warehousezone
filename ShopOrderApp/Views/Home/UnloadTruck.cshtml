@@ -27,17 +27,17 @@
     <div class="row">
         <form>
             <div class="form-group">
-                @*<label class="form-label">Order Numbers</label>*@
+                @*<label class="form-label">Order Numbers :</label>*@
                 <input type="text" class="form-control search-order" placeholder="Scan or Enter Order No" onkeydown="ReplaceHtmlWithNewOne(event)">
             </div>
         </form>
     </div>
     <div class="row" id="deliveries-list">
 
-        @Html.Action("_DeliveriesResult", new { palletDispatchStatus = PalletDispatchStatusEnum.Created })
+        @Html.Action("_DeliveriesResult", new { palletDispatchStatus = PalletDispatchStatusEnum.Loaded })
 
     </div>
 
 
 </section>
-@Html.Partial("~/Views/Home/_LoadTruck.cshtml")
+@Html.Partial("~/Views/Home/_UnLoadTruck.cshtml")

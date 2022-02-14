@@ -52,10 +52,23 @@ namespace ShopOrderApp.Controllers
             }
             set { _CurrentTenant = value; }
         }
+        protected int VechileId
+        {
+            get
+            {
+                if (_VechileId > 0)
+                    return _VechileId;
+                _VechileId = caCurrent.CurrentVechileId();
+                return _VechileId;
+            }
+            set { _VechileId = VechileId; }
+        }
 
         private caTenant _CurrentTenant { get; set; }
 
         private caUser _CurrentUser { get; set; }
+
+        private int _VechileId { get; set; }
 
         protected caUser CurrentUser
         {

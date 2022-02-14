@@ -1,0 +1,138 @@
+﻿<div class="modal center-modal fade" id="modal-center" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Becsco Truck Loading</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-12">
+                        <!-- Basic Forms -->
+                        <!-- /.box-header -->
+                        @using (Html.BeginForm("SubmitTruckLoad", "Home", FormMethod.Post, new { @class = "truckLoadSubmit" }))
+                        {
+                            <input type="hidden" id="palletDispatchId" />
+                            <div class="form-group">
+                                <label class="form-label">Select Vehicle :</label>
+                                <select class="form-select vechile-map">
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Scan Pallet Number:</label>
+                                <input type="text" id="scan" class="form-control" placeholder="Scan Pallet" onkeydown="ScanPalletData(event);">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Pallets :</label>
+                                <div class="c-inputs-stacked pallets-scan">
+
+                                </div>
+                            </div>
+
+                        }
+
+                        <!-- /.box -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-uniform">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success pull-right" onclick="SubmitLoading();">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function AssignOrderToTruck(dispatchId) {
+        $('#modal-center').modal("show");
+        $('.pallets-scan').html("");
+        $("#scannedIds").val("");
+        $("#truckId").val("");
+        $("#palletDispatchId").val(dispatchId);
+        $('.vechile-map').html("");
+        $.get({
+            url: "/Home/AssigningDispatchToDelivery",
+            data: { "id": dispatchId },
+            success: function (data) {
+                if (data.TruckDetails.length > 0) {
+                    $.each(data.TruckDetails, function (i, item) {
+                        $('.vechile-map').append($('<option></option>').val(item.Id).html(item.TruckName));
+                    });
+                }
+                var htmldata = "";
+
+                if (data.Palletdetails.length > 0) {
+                    $.each(data.Palletdetails, function (i, item) {
+
+                        htmldata += '<input class="filled-in chk-col-success checkBoxClass" type="checkbox" id="checkbox_' + item.Id + '" value=' + item.Id + ' disabled><label for="labelcheckbox_' + item.Id + '" id="checkbox_' + item.Id + '"" class="me-20">' + item.PalletNumber + '</label>'
+
+                    });
+                    $('.pallets-scan').html("").html(htmldata);
+                }
+
+            },
+        });
+
+
+    }
+    function SubmitLoading() {
+        var str = $('.checkBoxClass:checked').map(function () {
+            return this.value;
+        }).get().join();
+        $("#scannedIds").val(str);
+        var truckId = $(".vechile-map :selected").val();
+        var dispatchId = $("#palletDispatchId").val();
+        $("#truckId").val(parseInt(truckId));
+        $.post({
+            url: "/Home/SubmitTruckLoad",
+            data: { "scannedIds": str, truckId: truckId, dispatchId: dispatchId, palletDispatchStatus:2 },
+            success: function (data) {
+                $.toast({
+                    heading: 'Information',
+                    text: 'Order Loadded Sucessfully',
+                    position: 'bottom-left',
+                    loaderBg: '#ff6849',
+                    icon: 'success',
+                    hideAfter: 3000,
+                    stack: 6
+                });
+                window.location.reload();
+            },
+
+        });
+    }
+    function ScanPalletData(e) {
+        if (e.keyCode == 13) {
+            var status = false;
+            var scannedText = e.currentTarget.value;
+            $('label[id^="checkbox_"]').each(function (d) {
+                var labelText = this.outerText;
+                if (scannedText == labelText) {
+                    $("#" + this.id).prop('checked', true);
+                    status = true;
+                }
+            });
+            if (status == false) {
+                alert("Pallet Not Found");
+                $("#scan").val("");
+            }
+        }
+    }
+    function ReplaceHtmlWithNewOne(e) {
+        if (e.keyCode == 13) {
+            var text = e.currentTarget.value;
+            $.get({
+                url: "/Home/_DeliveriesResult",
+                type: "Html",
+                data: { "searchText": text, palletDispatchStatus: $("#palletDispatchStatus").val() },
+                success: function (data) {
+                    $("#deliveries-list").html("").html(data);
+                },
+
+            });
+
+        }
+
+    }
+</script>

@@ -202,7 +202,8 @@ namespace Ganedata.Core.Entities.Domain
     {
         public List<TruckDetail> TruckDetails { get; set; }
         public List<Palletdetails> Palletdetails { get; set; }
-       
+        public int? VechileId { get; set; }
+
     }
     public class TruckDetail
     {
@@ -216,6 +217,8 @@ namespace Ganedata.Core.Entities.Domain
         public int Id { get; set; }
 
         public string PalletNumber { get; set; }
+
+        public bool ScannedOnLoad { get; set; }
 
     }
 }

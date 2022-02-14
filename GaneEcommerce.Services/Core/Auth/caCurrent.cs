@@ -31,6 +31,18 @@ namespace Ganedata.Core.Services
 
             return User;
         }
+        public static int CurrentVechileId()
+        {
+            VechilesBase vechile = new VechilesBase();
+
+            if (HttpContext.Current.Session["VechileId"] != null)
+            {
+                // get properties of tenant
+                vechile.vechileId = (int)HttpContext.Current.Session["VechileId"];
+            }
+
+            return vechile.vechileId;
+        }
 
         public static TenantLocations CurrentWarehouse()
         {
