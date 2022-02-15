@@ -97,10 +97,10 @@ namespace ShopOrderApp.Controllers
         }
 
         [HttpPost]
-        public JsonResult SubmitTruckLoad(string scannedIds, int truckId, int dispatchId, PalletDispatchStatusEnum palletDispatchStatus)
+        public JsonResult SubmitTruckLoad(string scannedIds, int? truckId, int dispatchId, PalletDispatchStatusEnum palletDispatchStatus)
         {
-
-            return Json(_palletingService.LoadPalletOnTruck(scannedIds, truckId, dispatchId, palletDispatchStatus), JsonRequestBehavior.AllowGet);
+            truckId = truckId == null ? VechileId : 0;
+            return Json(_palletingService.LoadPalletOnTruck(scannedIds, truckId.Value, dispatchId, palletDispatchStatus), JsonRequestBehavior.AllowGet);
         }
 
     }
