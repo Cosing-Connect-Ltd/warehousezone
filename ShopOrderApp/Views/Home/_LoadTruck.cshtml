@@ -111,12 +111,14 @@
                 if (scannedText == labelText) {
                     $("#" + this.id).prop('checked', true);
                     status = true;
+                    $("#scan").val("");
                 }
             });
             if (status == false) {
                 alert("Pallet Not Found");
                 $("#scan").val("");
             }
+
         }
     }
     function ReplaceHtmlWithNewOne(e) {
