@@ -181,6 +181,26 @@
                 });
         }
     }
+    function RemoveInvoice() {
+        var id = $("#invoiceId").val();
+        if (confirm("Are you sure to delete this invoice?")) {
+            $.ajax({
+                url: '/Invoice/DeleteInvoice',
+                type: "GET",
+                data: { id: parseInt(id) },
+                success: function (data) {
+                    gridMasterInvoices.Refresh();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
+                }
+            })
+        }
+    }
+    function OnGridFocusedRowChanged(s, e) {
+        $('#invoiceId').val(s.GetRowKey(s.GetFocusedRowIndex()));
+
+    }
 </script>
 <div id="tabs" style="visibility: hidden">
     <ul>
@@ -204,11 +224,13 @@
         </div>
     </div>
     <div id="TP">
+        @Html.Hidden("invoiceId")
         @Html.Action("InvoicesListPartial", new { type = "Completed" })
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <a type="button" class="btn btn-primary" href="javascript:PostToInvoice()"><b class="fa fa-print"></b>Post to Accounts</a>
             <a type="button" class="btn btn-primary" href="javascript:GenerateBulkInvoicesPrint()"><b class="fa fa-file"></b>Print Invoices</a>
             <a type="button" class="btn btn-primary" href="javascript:EmailInvoice()"><b class="fa fa-envelope"></b>Email Invoice</a>
+            <a type="button" class="btn btn-primary" href="javascript:RemoveInvoice()"><b class="fa fa-trash"></b>Delete Invoice</a>
         </div>
     </div>
     <div id="VI">

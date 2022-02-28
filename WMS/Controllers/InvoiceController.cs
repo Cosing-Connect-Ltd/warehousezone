@@ -759,5 +759,10 @@ namespace WMS.Controllers
             return ProcessedOrdersPartial("PO");
         }
 
+        public JsonResult DeleteInvoice(int id)
+        {
+            return Json(_invoiceService.RemoveInvoice(id,CurrentUserId,CurrentTenantId),JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

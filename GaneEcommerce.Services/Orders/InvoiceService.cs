@@ -540,5 +540,18 @@ namespace Ganedata.Core.Services
             model.TenantName = tenant.TenantName;
             return model;
         }
+        public bool RemoveInvoice(int id, int userId, int tenantId)
+        {
+            var invoice = _currentDbContext.InvoiceMasters.FirstOrDefault(u => u.InvoiceMasterId == id);
+            if (invoice != null)
+            {
+                invoice.TenantId = tenantId;
+                invoice.IsDeleted = true;
+                invoice.UpdateUpdatedInfo(userId);
+                _currentDbContext.Entry(invoice);
+                _currentDbContext.SaveChanges();
+            }
+            return true;
+        }
     }
 }

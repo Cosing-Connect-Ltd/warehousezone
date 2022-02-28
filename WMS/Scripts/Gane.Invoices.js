@@ -394,6 +394,8 @@ var updateRowActions = function ($row) {
     });
 }
 
+
+
 function AddedPaymentDirectSales() {
     var balance = $("#frmDirectCreate #InvoiceTotal").val();
     var paid = PaymentToday.GetValue();

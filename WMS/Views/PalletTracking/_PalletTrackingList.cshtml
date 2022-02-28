@@ -62,7 +62,7 @@
             c.Caption = "Product";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
-
+        settings.Columns.Add("ProductId").Visible = false;
         settings.Columns.Add(c =>
         {
             c.FieldName = "SKUCode";
