@@ -2237,6 +2237,8 @@
     <Content Include="Views\Trucks\Details.cshtml" />
     <Content Include="Views\Trucks\Edit.cshtml" />
     <Content Include="Views\Trucks\Index.cshtml" />
+    <Content Include="Views\PalletTracking\_PalletLabelPrint.cshtml" />
+    <Content Include="Views\PalletTracking\PalletLabelPrintViewer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web.Mvc;
 using Ganedata.Core.Entities.Enums;
 using WMS.CustomBindings;
+using Ganedata.Core.Entities.Helpers;
+using System.Collections.Generic;
 
 namespace WMS.Controllers
 {
@@ -31,26 +33,26 @@ namespace WMS.Controllers
         public ActionResult _PalletTrackingListDetail(int pId)
         {
             var pallets = (from p in _productServices.GetAllPalletTrackings(CurrentTenantId, CurrentWarehouseId)
-                           where p.ProductId== pId && p.RemainingCases>0 && (p.Status==PalletTrackingStatusEnum.Active || p.Status==PalletTrackingStatusEnum.Hold)
+                           where p.ProductId == pId && p.RemainingCases > 0 && (p.Status == PalletTrackingStatusEnum.Active || p.Status == PalletTrackingStatusEnum.Hold)
                            select new
-                {
-                    p.PalletTrackingId,
-                    p.ProductId,
-                    p.OrderId,
-                    p.ProductMaster.Name,
-                    p.ProductMaster.SKUCode,
-                    p.PalletSerial,
-                    p.ExpiryDate,
-                    p.RemainingCases,
-                    p.TotalCases,
-                    p.BatchNo,
-                    p.Comments,
-                    Status = p.Status.ToString(),
-                    p.DateCreated,
-                    p.DateUpdated,
-                    p.ProductMaster.ProductGroup.ProductGroup,
-                    p.ProductMaster.TenantDepartment.DepartmentName
-                }).ToList();
+                           {
+                               p.PalletTrackingId,
+                               p.ProductId,
+                               p.OrderId,
+                               p.ProductMaster.Name,
+                               p.ProductMaster.SKUCode,
+                               p.PalletSerial,
+                               p.ExpiryDate,
+                               p.RemainingCases,
+                               p.TotalCases,
+                               p.BatchNo,
+                               p.Comments,
+                               Status = p.Status.ToString(),
+                               p.DateCreated,
+                               p.DateUpdated,
+                               p.ProductMaster.ProductGroup.ProductGroup,
+                               p.ProductMaster.TenantDepartment.DepartmentName
+                           }).ToList();
             return PartialView(pallets);
         }
 
@@ -135,7 +137,7 @@ namespace WMS.Controllers
         }
         [HttpPost]
 
-        public JsonResult Create(int ProductId,string ExpiryDate,int TotalCase,string BatchNo,string Comments ,int NoOfPallets,string orderNumber)
+        public JsonResult Create(int ProductId, string ExpiryDate, int TotalCase, string BatchNo, string Comments, int NoOfPallets, string orderNumber)
         {
             if (ModelState.IsValid)
             {
@@ -156,12 +158,12 @@ namespace WMS.Controllers
                 palletTracking.DateUpdated = DateTime.UtcNow;
                 palletTracking.TenantId = CurrentTenantId;
                 palletTracking.WarehouseId = CurrentWarehouseId;
-                string palletTrackingIds =_productServices.CreatePalletTracking(palletTracking,NoOfPallets);
-                return Json(palletTrackingIds,JsonRequestBehavior.AllowGet);
+                string palletTrackingIds = _productServices.CreatePalletTracking(palletTracking, NoOfPallets);
+                return Json(palletTrackingIds, JsonRequestBehavior.AllowGet);
             }
 
-           
-            return Json(false,JsonRequestBehavior.AllowGet);
+
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -183,9 +185,9 @@ namespace WMS.Controllers
             return Json(status, JsonRequestBehavior.AllowGet);
 
         }
-        public JsonResult AddOrderId(int? OrderId, int palletTrackingId,int? type)
+        public JsonResult AddOrderId(int? OrderId, int palletTrackingId, int? type)
         {
-            bool status = _productServices.AddOrderId(OrderId, palletTrackingId,type);
+            bool status = _productServices.AddOrderId(OrderId, palletTrackingId, type);
             return Json(status, JsonRequestBehavior.AllowGet);
 
         }
@@ -198,13 +200,61 @@ namespace WMS.Controllers
 
         public JsonResult GetProductCasePerPallet(int ProductId)
         {
-            return Json(_productServices.GetProductMasterById(ProductId).CasesPerPallet.HasValue? _productServices.GetProductMasterById(ProductId).CasesPerPallet:0, JsonRequestBehavior.AllowGet);
+            return Json(_productServices.GetProductMasterById(ProductId).CasesPerPallet.HasValue ? _productServices.GetProductMasterById(ProductId).CasesPerPallet : 0, JsonRequestBehavior.AllowGet);
 
         }
 
         public ActionResult PalletSummary()
         {
             return View();
+        }
+
+        public ActionResult GetProductIdByPalletId(int palletId)
+        {
+            var product = _productServices.GetPalletbyPalletId(palletId);
+            var model = new LabelPrintViewModel
+            {
+                ProductId = product.ProductId,
+                LabelDate =product.ExpiryDate??DateTime.Today,
+                OrderDetailId = 0,
+                BatchNumber=product.BatchNo,
+                ProductName = product.ProductMaster.NameWithCode,
+                ProductSkuCode = product.ProductMaster.SKUCode,
+                ProductBarcode = !string.IsNullOrEmpty(product.ProductMaster.BarCode?.Trim()) ? product?.ProductMaster.BarCode?.Trim() : product?.ProductMaster.BarCode2?.Trim(),
+                RequiresExpiryDate = true,
+                RequiresBatchNumber = true
+            };
+
+            if (product.ProductMaster.ProcessByPallet && CurrentWarehouse.EnableGlobalProcessByPallet)
+            {
+                model.PalletsCount = 1;
+                model.Cases = (int)product.RemainingCases;
+            }
+            var labels=PrintProductLabelPreview(model, product.PalletSerial);
+            var labelPrint = new PalletLabelPrint();
+            labelPrint.DataSource = labels;
+
+            labelPrint.CreateDocument();
+
+            return View("PalletLabelPrintViewer", labelPrint);
+
+        }
+        public IEnumerable<LabelPrintViewModel> PrintProductLabelPreview(LabelPrintViewModel requestData, string palletSerail)
+        {
+            var palletSerials = new List<string> { palletSerail };
+
+            var labels = palletSerials.Select(palletSerial =>
+            {
+                var reportData = requestData.DeepClone();
+                reportData.Cases = requestData.Cases;
+                reportData.PalletSerial = palletSerial;
+
+                return reportData;
+            });
+            return labels;
+            
+
+
         }
 
     }

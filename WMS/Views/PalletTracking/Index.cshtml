@@ -19,22 +19,22 @@
 <script type="text/javascript">
     function OnGridFocusedRowChanged(s, e) {
         $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
-        s.GetRowValues(s.GetFocusedRowIndex(), 'ProductId', OnGetRowValues);
-        
+    }
+    function DuplicateLabel() {
+        var palletId = $(".selkey").val();
+        alert(palletId);
+        window.open("/PalletTracking/GetProductIdByPalletId?palletId=" + palletId);
 
     }
-    
-    function OnGetRowValues(values) {
-        $("#productValues").val(values);
-    }
+
 
 </script>
-
+@Html.Hidden("selkey", null, new { @class = "selkey" })
 <div class="col-md-12 p-0 View">
-    @Html.Hidden("productValues")
+
     @Html.Action("_PalletTrackingList")
     <div class="bottom-right">
-        <a href="javascript:void(0)" class="btn btn-primary" onclick="showPrintProductLabelPopup($('#productValues').val(), 0)">Print Duplicate Label</a>
+        <a href="javascript:void(0)" class="btn btn-primary" onclick="DuplicateLabel();">Print Duplicate Label</a>
         <a href="@Url.Action("Create","PalletTracking")" class="btn btn-primary">Create</a>
 
     </div>
