@@ -22,7 +22,7 @@ namespace WMS.CustomBindings
                 "from [OrderDetails] a with(nolock) left outer join [ProductMaster] b with(nolock) " +
                 "on a.ProductId = b.ProductId left outer join [Orders] c with(nolock) on a.OrderID = c.OrderID left outer join [Account] d with(nolock) " +
                 "on c.[AccountId] = d.AccountID and a.[IsDeleted] is null inner join [ProductCategories] e with(nolock) on b.ProductCategoryId = e.[ProductCategoryId] where a.[IsDeleted] is null and " +
-                "left([OrderNumber],2) = 'SO' and[AccountSectorId] = 6  and a.DateCreated >= '" + startDate.ToString("MM/dd/yyyy") + "' and a.DateCreated<='" + endDate.ToString("MM/dd/yyyy") + "'";
+                "left([OrderNumber],2) = 'SO' and[AccountSectorId] = 6 and c.InvoiceNo is not null and a.DateCreated >= '" + startDate.ToString("MM/dd/yyyy") + "' and a.DateCreated<='" + endDate.ToString("MM/dd/yyyy") + "'";
             var CCepData = db.Database.SqlQuery<CCEPDataModel>(query).ToList();
             return CCepData;
 
