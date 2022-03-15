@@ -68,5 +68,13 @@ namespace Ganedata.Core.Services
         bool UpdateDispatchForLabelsStatus(string shipmentId);
 
         bool LoadPalletOnTruck(string palletIds, int truckId, int palletDispatchId, PalletDispatchStatusEnum palletDispatchStatus);
+
+        object SearchAndGetTruckTruckLoad(string searchText, PalletDispatchStatusEnum palletDispatchStatus);
+
+        AssigningDispatchToDelivery PalletLoadingFromDataBase(int dispatchId);
+        int GetVechileVerification(string vechileId);
+
+
+
     }
 }

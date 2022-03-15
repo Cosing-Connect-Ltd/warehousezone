@@ -792,5 +792,49 @@ namespace Ganedata.Core.Services
 
             return true;
         }
+
+
+        public object SearchAndGetTruckTruckLoad(string searchText, PalletDispatchStatusEnum palletDispatchStatus)
+        {
+            var orderprocess = GetAllPalletsDispatchs().Where(c => c.DispatchStatus == palletDispatchStatus
+           && (string.IsNullOrEmpty(searchText) || c.OrderProcess.Order.OrderNumber.Contains(searchText)) && (palletDispatchStatus == PalletDispatchStatusEnum.Created || c.MarketVehicleID == VechileId));
+            var check = orderprocess.Count();
+            
+            var orderComplete = orderprocess.OrderByDescending(U => U.DateCreated);
+           return orderComplete.Select(u => new {
+                u.OrderID,
+                u.OrderProcess.Order.OrderNumber,
+                u.DispatchReference,
+                u.OrderProcess.DeliveryNO,
+                u.OrderProcess.Order.Account.CompanyName,
+                u.OrderProcess.Order.Account.AccountCode,
+                u.DateCreated
+            }).ToList();
+        }
+
+        public AssigningDispatchToDelivery PalletLoadingFromDataBase(int dispatchId)
+        {
+            AssigningDispatchToDelivery assigningDispatchToDelivery = new AssigningDispatchToDelivery();
+            var pallets = GetAllPalletByDispatchId(dispatchId);
+            assigningDispatchToDelivery.VechileId = pallets.FirstOrDefault().PalletsDispatch?.MarketVehicleID;
+            assigningDispatchToDelivery.Palletdetails = pallets.Select(u => new Palletdetails
+            {
+                Id = u.PalletID,
+                PalletNumber = u.PalletNumber,
+                ScannedOnLoad = u.ScannedOnLoading,
+            }).ToList();
+            return assigningDispatchToDelivery;
+        }
+
+        public int GetVechileVerification(string vechileId)
+        {
+            var result = _currentDbContext.MarketVehicles.Where(u => u.VehicleIdentifier == vechileId && u.IsDeleted != true).FirstOrDefault();
+            if (result == null)
+            {
+                return result.Id;
+            }
+            return 0;
+
+        }
     }
 }
