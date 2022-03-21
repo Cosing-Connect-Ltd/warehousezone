@@ -1453,7 +1453,7 @@ namespace WMS.Controllers
             var totalProfit = dataSource.Sum(u => u.Profit);
             var totalNetSale = dataSource.Sum(u => u.NetAmtS);
 
-            var profitPercent = totalNetSale > 0 ? ((totalProfit ?? 0) / (totalNetSale ?? 0)) * 100.0m : 0;
+            var profitPercent = totalNetSale > 0 ? ((totalProfit ?? 0) / (totalNetSale ?? 1)) * 100.0m : 0;
             //report.xrLabelProfitPercent.Text = string.Format("{0:0.00}", profitPercent);
             report.TotalProfitPercent.Text = string.Format("{0:0.00}", profitPercent);
 

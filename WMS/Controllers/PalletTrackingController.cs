@@ -8,6 +8,7 @@ using Ganedata.Core.Entities.Enums;
 using WMS.CustomBindings;
 using Ganedata.Core.Entities.Helpers;
 using System.Collections.Generic;
+using WMS.Helpers;
 
 namespace WMS.Controllers
 {
@@ -59,13 +60,15 @@ namespace WMS.Controllers
 
         public ActionResult _PalletTrackingList()
         {
+            ViewBag.tenantId = CurrentTenantId;
+            ViewBag.warehouseId = CurrentWarehouseId;
 
-            var viewModel = GridViewExtension.GetViewModel("_PalletTrackingListGridView");
+            //var viewModel = GridViewExtension.GetViewModel("_PalletTrackingListGridView");
 
-            if (viewModel == null)
-                viewModel = PalletTrackingListCustomBinding.CreateGetPalletTrackingGridViewModel();
-
-            return PalletTrackingGridActionCore(viewModel);
+            //if (viewModel == null)
+            //    viewModel = PalletTrackingListCustomBinding.CreateGetPalletTrackingGridViewModel();
+            return PartialView("_PalletTrackingList");
+            //return PalletTrackingGridActionCore(viewModel);
         }
 
 
@@ -172,6 +175,21 @@ namespace WMS.Controllers
         {
             ViewBag.OrderAuth = true;
             return View();
+        }
+        public ActionResult SelectPalletStatus()
+        {
+           
+            return View();
+        }
+        public JsonResult ChangePalletStatus(string palletTrackingIds, int status)
+        {
+            bool result = true;
+            var palletIds=palletTrackingIds.Split(',');
+            foreach (var item in palletIds)
+            {
+                result = _productServices.AddOrderId(null, item.AsInt(), status);
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         public ActionResult OrderAuthzComboBoxPartial()
         {

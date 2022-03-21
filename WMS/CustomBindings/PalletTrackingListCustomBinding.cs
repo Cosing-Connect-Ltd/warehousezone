@@ -1,6 +1,7 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.Data.Linq.Helpers;
 using DevExpress.Web.Mvc;
+using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Services;
 using System.Data.Entity;
 using System.Linq;
@@ -12,30 +13,30 @@ namespace WMS.CustomBindings
     public class PalletTrackingListCustomBinding
     {
 
-        private static IQueryable<object> GetPalletTrackingDataset(int tenantId, int warehouseId)
+        public  static IQueryable<PalletTracking> GetPalletTrackingDataset(int tenantId, int warehouseId)
         {
             var productServices = DependencyResolver.Current.GetService<IProductServices>();
-
-            var pallets = from p in productServices.GetAllPalletTrackings(tenantId, warehouseId)
-                          select new
-                          {
-                              p.PalletTrackingId,
-                              p.ProductId,
-                              p.OrderId,
-                              p.ProductMaster.Name,
-                              p.ProductMaster.SKUCode,
-                              p.PalletSerial,
-                              p.ExpiryDate,
-                              p.RemainingCases,
-                              p.TotalCases,
-                              p.BatchNo,
-                              p.Comments,
-                              Status = p.Status.ToString(),
-                              p.DateCreated,
-                              p.DateUpdated,
-                              p.ProductMaster.ProductGroup.ProductGroup,
-                              p.ProductMaster.TenantDepartment.DepartmentName
-                          };
+            var pallets = productServices.GetAllPalletTrackings(tenantId, warehouseId,includeArchived:true);
+            //var pallets = from p in productServices.GetAllPalletTrackings(tenantId, warehouseId)
+            //              select new
+            //              {
+            //                  p.PalletTrackingId,
+            //                  p.ProductId,
+            //                  p.OrderId,
+            //                  p.ProductMaster.Name,
+            //                  p.ProductMaster.SKUCode,
+            //                  p.PalletSerial,
+            //                  p.ExpiryDate,
+            //                  p.RemainingCases,
+            //                  p.TotalCases,
+            //                  p.BatchNo,
+            //                  p.Comments,
+            //                  Status = p.Status.ToString(),
+            //                  p.DateCreated,
+            //                  p.DateUpdated,
+            //                  p.ProductMaster.ProductGroup.ProductGroup,
+            //                  p.ProductMaster.TenantDepartment.DepartmentName
+            //              };
 
             return pallets;
         }

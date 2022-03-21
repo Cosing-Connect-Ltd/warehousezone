@@ -397,7 +397,7 @@ namespace Ganedata.Core.Services
         public decimal? GetAveragePurchasePrice(int productId, int tenantId)
         {
             var filterDate = Convert.ToDateTime("01/01/2021");
-            return _context.OrderDetail.Where(u => u.ProductId == productId && u.TenentId == tenantId && u.DateCreated >= filterDate && u.Order.InventoryTransactionTypeId==InventoryTransactionTypeEnum.PurchaseOrder).Average(u => u.Price);
+            return _context.OrderDetail.Where(u => u.ProductId == productId && u.TenentId == tenantId && u.DateCreated >= filterDate && u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder).Average(u => u.Price);
 
         }
 
@@ -630,7 +630,7 @@ namespace Ganedata.Core.Services
             public int? OrderId { get; set; }
             public List<InvoiceProductPriceDetail> Prices { get; set; }
             public decimal TotalQuantity => Prices.Sum(p => p.Quantity);
-            public decimal AverageBuyPrice => Prices.Sum(p => p.Quantity * p.BuyPrice ?? 0) / TotalQuantity;
+            public decimal AverageBuyPrice => Prices.Sum(p => p.Quantity * p.BuyPrice ?? 0) / (TotalQuantity == 0 ? 1 : TotalQuantity);
         }
 
         private class InvoiceProductPriceDetail

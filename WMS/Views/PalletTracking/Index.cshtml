@@ -17,8 +17,20 @@
 <h2><span>@ViewBag.Title</span></h2>
 
 <script type="text/javascript">
+   
     function OnGridFocusedRowChanged(s, e) {
+       
         $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+    var postcommand = "";
+    function EndCallBackPallets(s, e) {
+        if (postcommand == "REFRESH") {
+            s.UnselectRows();
+        }
+    }
+    function OnProcessedDetailPalletCallback(s, e) {
+        postcommand = e.command;
     }
     function DuplicateLabel() {
         var palletId = $(".selkey").val();
@@ -26,14 +38,45 @@
         window.open("/PalletTracking/GetProductIdByPalletId?palletId=" + palletId);
 
     }
+    function SelectionChangeds(s, e) {
+        s.GetSelectedFieldValues("PalletTrackingId", GetSelectedFieldValuesCallback);
+    }
 
+    function GetSelectedFieldValuesCallback(values) {
+        $("#SelectedpalletTrackings").val(values.join());
+    }
+    function ChangePalletsStatus() {
+        var selectedIds = $("#SelectedpalletTrackings").val();
+        if (selectedIds.length <= 0) { alert("Please select pallet first?"); return; }
+        var type = $('input[name=Status]:checked').val()
+        if (type == undefined || type==null) { alert("Please select pallet first?"); return; }
+        LoadingPanel.Show();
+
+
+        var obj = { palletTrackingIds: selectedIds,status:type };
+        var successCallback = function (data) {
+            $("#SelectedpalletTrackings").val("");
+            _PalletTrackingListGridView.Refresh();
+            ChangeWholeStatus.Hide();
+
+            LoadingPanel.Hide();
+        }
+
+        var errorCallback = function () {
+            alert("Issue on updating");
+            LoadingPanel.Hide();
+        }
+        Gane.Helpers.AjaxPost('/PalletTracking/ChangePalletStatus/', obj, null, successCallback, true, "Invoices Generated Successfully.", errorCallback);
+    }
 
 </script>
 @Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.Hidden("SelectedpalletTrackings")
 <div class="col-md-12 p-0 View">
 
     @Html.Action("_PalletTrackingList")
     <div class="bottom-right">
+        <a href="javascript:void(0)" class="btn btn-primary" onclick="ChangeWholeStatus.Show();">Change Status</a>
         <a href="javascript:void(0)" class="btn btn-primary" onclick="DuplicateLabel();">Print Duplicate Label</a>
         <a href="@Url.Action("Create","PalletTracking")" class="btn btn-primary">Create</a>
 

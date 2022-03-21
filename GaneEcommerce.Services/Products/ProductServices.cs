@@ -81,9 +81,13 @@ namespace Ganedata.Core.Services
                     {
                         palletProduct.Status = PalletTrackingStatusEnum.Hold;
                     }
-                    else
+                    else if(type == 2)
                     {
                         palletProduct.Status = PalletTrackingStatusEnum.Active;
+                    }
+                    else if (type == 3)
+                    {
+                        palletProduct.Status = PalletTrackingStatusEnum.Archived;
                     }
                 }
                 else

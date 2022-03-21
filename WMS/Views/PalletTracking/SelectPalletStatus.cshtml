@@ -1,0 +1,69 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+                new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+
+                 new StyleSheet { ExtensionType = ExtensionType.ComboBox, Theme = GaneStaticAppExtensions.DevexTheme }
+                )
+
+    @Html.DevExpress().GetScripts(
+                new Script { ExtensionType = ExtensionType.PopupControl },
+
+                new Script { ExtensionType = ExtensionType.ComboBox }
+                )
+}
+
+@{
+    ViewBag.Title = "Pallet Status";
+    Layout = null;
+}
+
+<h2><span> @ViewBag.Title</span> </h2>
+<div class="col-md-12 pull-left order-detail">
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+
+        <div class="col-md-6">
+            <div class="col-md-4 p-0 pull-left">
+                <label class="">Hold Pallet</label>
+            </div>
+            <div class="col-md-8 pull-left">
+                @Html.RadioButton("Status", "1", htmlAttributes: new { @class = "d-inline mt-1"})
+            </div>
+
+        </div>
+        <div class="col-md-6 hold-pallet">
+            <div class="col-md-4 p-0 pull-left">
+                <label class="">Active Pallet</label>
+            </div>
+            <div class="col-md-8 pull-left">
+                @Html.RadioButton("Status", "2", htmlAttributes: new { @class = "d-inline mt-1" })
+            </div>
+
+        </div>
+        <div class="col-md-6 hold-pallet">
+            <div class="col-md-6 p-0 pull-left">
+                <label class="">Archived Pallet</label>
+            </div>
+            <div class="col-md-6 pull-left">
+                @Html.RadioButton("Status", "3", htmlAttributes: new { @class = "d-inline mt-1" })
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right-popup">
+    <input type="button" value="Save" onclick="ChangePalletsStatus()" class="btn btn-primary" />
+    <input type="button" value="Cancel" onclick="javascript: ChangeWholeStatus.Hide();" class="btn btn-default" />
+
+</div>

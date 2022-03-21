@@ -214,7 +214,7 @@ var PopupTypes = { Success: 1, Warning: 2, Danger: 3 };
                     }
 
                     if (showSuccess) {
-                        Gane.Helpers.ShowPopupMessage('Updated Successfully', successMessage !== null && successMessage !== undefined ? successMessage : "Update Successful", 2000);
+                        Gane.Helpers.ShowPopupMessage('Updated Successfully', successMessage !== null && successMessage !== undefined ? successMessage : "Update Successful", 200);
                     }
 
                     if (messageDiv != null) {

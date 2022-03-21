@@ -51,8 +51,33 @@
 
         //settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
     }).GetHtml()
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "ChangeWholeStatus";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.CallbackRouteValues = new { Controller = "PalletTracking", Action = "SelectPalletStatus" };
+        settings.Width = 600;
+        settings.Height = 300;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+        settings.ShowHeader = false;
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        settings.EnableClientSideAPI = true;
+        //settings.ClientSideEvents.EndCallback = "EndOrderAuthCallBack";
 
-@Html.DevExpress().PopupControl(settings => {
+
+        //settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
+    }).GetHtml()
+
+@Html.DevExpress().PopupControl(settings =>
+{
     settings.Name = "popupImage";
     settings.Height = 400;
     settings.Width = 400;
@@ -104,7 +129,8 @@
     }).GetHtml()
 
 
-@Html.DevExpress().PopupControl(settings => {
+@Html.DevExpress().PopupControl(settings =>
+{
     settings.Name = "ShowAttachment";
     settings.Height = 750;
     settings.Width = 800;
@@ -122,7 +148,7 @@
     settings.SetContent(() =>
     {
         ViewContext.Writer.Write("<embed src='' type='application/pdf' height='650' width='800'  id='DynamicPdf' />");
-            
+
     });
 }).GetHtml()
 
@@ -149,5 +175,5 @@
         settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
         settings.EnableClientSideAPI = true;
         settings.ClientSideEvents.BeginCallback = "BeginEditDeliveryCallBack";
-        
+
     }).GetHtml()

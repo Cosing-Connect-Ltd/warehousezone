@@ -267,7 +267,7 @@ function EndOrderAuthCallBack() {
 }
 
 function togglecomboxBox(e) {
-    if (e.target.value === "1" || e.target.value === "3") {
+    if (e.target.value === "1" || e.target.value === "2") {
         type = parseInt(e.target.value);
         $(".search-box").hide();
     }

@@ -796,20 +796,24 @@ namespace Ganedata.Core.Services
 
         public object SearchAndGetTruckTruckLoad(string searchText, PalletDispatchStatusEnum palletDispatchStatus)
         {
-            var orderprocess = GetAllPalletsDispatchs().Where(c => c.DispatchStatus == palletDispatchStatus
-           && (string.IsNullOrEmpty(searchText) || c.OrderProcess.Order.OrderNumber.Contains(searchText)) && (palletDispatchStatus == PalletDispatchStatusEnum.Created || c.MarketVehicleID == VechileId));
-            var check = orderprocess.Count();
+
+
+            return default;
+           // && (palletDispatchStatus == PalletDispatchStatusEnum.Created || c.MarketVehicleID == VechileId)
+           // var orderprocess = GetAllPalletsDispatchs().Where(c => c.DispatchStatus == palletDispatchStatus
+           //&& (string.IsNullOrEmpty(searchText) || c.OrderProcess.Order.OrderNumber.Contains(searchText));
+           // var check = orderprocess.Count();
             
-            var orderComplete = orderprocess.OrderByDescending(U => U.DateCreated);
-           return orderComplete.Select(u => new {
-                u.OrderID,
-                u.OrderProcess.Order.OrderNumber,
-                u.DispatchReference,
-                u.OrderProcess.DeliveryNO,
-                u.OrderProcess.Order.Account.CompanyName,
-                u.OrderProcess.Order.Account.AccountCode,
-                u.DateCreated
-            }).ToList();
+           // var orderComplete = orderprocess.OrderByDescending(U => U.DateCreated);
+           //return orderComplete.Select(u => new {
+           //     u.OrderID,
+           //     u.OrderProcess.Order.OrderNumber,
+           //     u.DispatchReference,
+           //     u.OrderProcess.DeliveryNO,
+           //     u.OrderProcess.Order.Account.CompanyName,
+           //     u.OrderProcess.Order.Account.AccountCode,
+           //     u.DateCreated
+           // }).ToList();
         }
 
         public AssigningDispatchToDelivery PalletLoadingFromDataBase(int dispatchId)
