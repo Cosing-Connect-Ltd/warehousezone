@@ -257,6 +257,25 @@ namespace WMS.Controllers.WebAPI
         }
 
         [HttpPost]
+        public IHttpActionResult GetUserLoginStatusNew(UserLoginStatusViewModel loginStatus)
+        {
+
+            loginStatus.Md5Pass = GaneStaticAppExtensions.GetMd5(loginStatus.Md5Pass);
+            UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
+            resp = _userService.GetUserLoginStatus(loginStatus);
+
+            if (resp.Success == true)
+            {
+                return Ok(resp);
+            }
+            else
+            {
+                resp.ErrorMessage = "User Name or Password is Incorrect";
+                return Ok(resp);
+            }
+        }
+
+        [HttpPost]
         public IHttpActionResult GetWebUserLoginStatus(UserLoginStatusViewModel loginStatus)
         {
             string serialNo = loginStatus?.SerialNo?.Trim().ToLower();
