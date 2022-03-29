@@ -142,5 +142,60 @@ namespace Ganedata.Core.Models
         public int? CreatedBy { get; set; }
         public decimal NoOfCases { get; set; }
     }
+    public class OrderProcessPallets
+    {
+        public OrderProcessPallets()
+        {
+            OrderProcessDetailList = new List<OrderProcessDetailList>();
+            PalletList = new List<PalletList>();
+        }
+        public int OrderProcessId { get; set; }
+        public int OrderId { get; set; }
+        public List<OrderProcessDetailList> OrderProcessDetailList { get; set; }
+        public List<PalletList> PalletList { get; set; }
+    }
+
+    public class OrderProcessDetailList
+    {
+
+        public int OrderProcessDetailId { get; set; }
+        public int ProductId { get; set; }
+
+        public decimal Quantity { get; set; }
+
+        public string ProductName { get; set; }
+
+        public decimal PalletedQuantity { get; set; }
+
+        public string SkuCode { get; set; }
+
+
+
+    }
+    public class PalletList
+    {
+        public PalletList()
+        {
+            PalletProducts = new List<PalletProductList>();
+        }
+        public int PalletID { get; set; }
+
+        public string PalletNumber { get; set; }
+
+        public List<PalletProductList> PalletProducts { get; set; }
+
+
+
+    }
+    public class PalletProductList
+    {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string SkuCode { get; set; }
+
+        public decimal Quantity { get; set; }
+
+    }
+
 
 }

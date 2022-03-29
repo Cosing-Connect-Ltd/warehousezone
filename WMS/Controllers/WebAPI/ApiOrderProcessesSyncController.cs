@@ -20,11 +20,11 @@ namespace WMS.Controllers.WebAPI
         private readonly IGaneConfigurationsHelper _configHelper;
         private readonly IMapper _mapper;
         private readonly IShoppingVoucherService _shoppingVoucherService;
-
+        private readonly IPalletingService _palletingService;
         public ApiOrderProcessesSyncController(ITerminalServices terminalServices, IDeliverectSyncService deliverectSyncService,
             ITenantLocationServices tenantLocationServices, IOrderService orderService, ITenantsServices tenantsServices,
             IProductServices productServices, IUserService userService, IAccountServices accountServices,
-            IGaneConfigurationsHelper configHelper, IMapper mapper, IShoppingVoucherService shoppingVoucherService) :
+            IGaneConfigurationsHelper configHelper, IMapper mapper, IShoppingVoucherService shoppingVoucherService,IPalletingService palletingService) :
             base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _accountServices = accountServices;
@@ -33,6 +33,7 @@ namespace WMS.Controllers.WebAPI
             _configHelper = configHelper;
             _mapper = mapper;
             _shoppingVoucherService = shoppingVoucherService;
+            _palletingService = palletingService;
         }
 
         // GET http://ganetest.qsrtime.net/api/sync/order-processes/{reqDate}/{serialNo}
@@ -169,6 +170,45 @@ namespace WMS.Controllers.WebAPI
 
             return Ok(results);
         }
+        public IHttpActionResult GetOrderProcessesByOrderNumber(int shopId, string orderNumber)
+        {
+
+            var allorderProcess = OrderService.GetAllOrderProcesses(null, 0, null, null, true).Where(u => u.Order.OrderNumber.Equals(orderNumber) && u.WarehouseId == shopId).SelectMany(u => u.OrderProcessDetail);
+
+            var orderProcesses = new OrderProcessPallets();
+            orderProcesses.OrderId = allorderProcess.FirstOrDefault()?.OrderProcess?.OrderID ?? 0;
+            orderProcesses.OrderProcessId = allorderProcess.FirstOrDefault()?.OrderProcess?.OrderProcessID ?? 0;
+
+            foreach (var item in allorderProcess)
+            {
+                var orderProcessDetailList = new OrderProcessDetailList();
+                orderProcessDetailList.OrderProcessDetailId = item.OrderProcessDetailID;
+                orderProcessDetailList.Quantity = item.QtyProcessed;
+                orderProcessDetailList.PalletedQuantity = item.PalletedQuantity;
+                orderProcessDetailList.ProductId = item.ProductId;
+                orderProcessDetailList.ProductName = item.ProductMaster.Name;
+                orderProcessDetailList.SkuCode = item.ProductMaster.SKUCode;
+                orderProcesses.OrderProcessDetailList.Add(orderProcessDetailList);
+
+            }
+            var palletDetails = _palletingService.GetAllPallets(orderProcesses.OrderProcessId).Select(u => new PalletList
+            {
+                PalletID = u.PalletID,
+                PalletNumber = u.PalletNumber,
+                PalletProducts = u.PalletProducts.Select(g => new PalletProductList
+                {
+                    ProductId = g.ProductID,
+                    ProductName = g.Product.Name,
+                    SkuCode = g.Product.Name,
+                    Quantity = g.Quantity
+
+                }).ToList()
+
+            });
+            orderProcesses.PalletList.AddRange(palletDetails);
+            return Ok(orderProcesses);
+        }
 
     }
+
 }
