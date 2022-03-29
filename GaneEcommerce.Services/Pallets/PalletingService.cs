@@ -350,7 +350,10 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.PalletsDispatches.Where(u => u.DateCompleted.HasValue && (!orderProcessID.HasValue || u.OrderProcessID == orderProcessID) && (!reqDate.HasValue || (u.DateUpdated ?? u.DateCreated) >= reqDate) && (!dispatchId.HasValue || u.PalletsDispatchID == dispatchId)).OrderByDescending(x => x.DateCreated).ToList();
         }
-
+        public IQueryable<Pallet> GetAllPallets(int orderProcessId)
+        {
+            return _currentDbContext.Pallets.Where(u => u.OrderProcessID == orderProcessId && u.IsDeleted != true).OrderByDescending(u => u.PalletID);
+        }
         public IEnumerable<PalletsDispatch> GetAllPalletsDispatch()
         {
             return _currentDbContext.PalletsDispatches.Where(u => u.DispatchStatus == PalletDispatchStatusEnum.Created).OrderByDescending(u => u.PalletsDispatchID);

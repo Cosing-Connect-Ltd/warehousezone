@@ -56,6 +56,8 @@ namespace Ganedata.Core.Services
 
         bool MarkedOrderProcessAsDispatch(int OrderProcessId);
 
+        IQueryable<Pallet> GetAllPallets(int orderProcessId);
+
         IEnumerable<PalletsDispatch> GetAllPalletsDispatch();
 
         IQueryable<PalletsDispatch> GetAllPalletsDispatchs();

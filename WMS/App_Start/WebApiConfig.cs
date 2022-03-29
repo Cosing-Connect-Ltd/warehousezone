@@ -128,6 +128,7 @@ namespace WMS
             config.Routes.MapHttpRoute("StripePaymentsCreate", "api/stripe/post-payment", new { controller = "ApiStripePayments", action = "Create" });
             config.Routes.MapHttpRoute("StripePaymentsCharge", "api/stripe/charge-order", new { controller = "ApiStripePayments", action = "Charge" });
             config.Routes.MapHttpRoute("StripePaymentsWebhook", "api/stripe/chargehook", new { controller = "ApiStripePayments", action = "WebhookReceive" });
+            config.Routes.MapHttpRoute("GetOrderProcessesByOrderNumber", "api/get-order-processes/{shopId}/{orderNumber}", new { controller = "ApiOrderProcessesSync", action = "GetOrderProcessesByOrderNumber", shopId = string.Empty, orderNumber = string.Empty });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
