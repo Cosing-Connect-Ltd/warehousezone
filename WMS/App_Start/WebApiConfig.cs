@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace WMS
 {
@@ -141,7 +142,8 @@ namespace WMS
                 routeTemplate: "iclock/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
+            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
         }
     }
 }
