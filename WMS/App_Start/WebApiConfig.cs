@@ -130,7 +130,7 @@ namespace WMS
             config.Routes.MapHttpRoute("StripePaymentsCharge", "api/stripe/charge-order", new { controller = "ApiStripePayments", action = "Charge" });
             config.Routes.MapHttpRoute("StripePaymentsWebhook", "api/stripe/chargehook", new { controller = "ApiStripePayments", action = "WebhookReceive" });
             config.Routes.MapHttpRoute("GetOrderProcessesByOrderNumber", "api/get-order-processes/{shopId}/{orderNumber}", new { controller = "ApiOrderProcessesSync", action = "GetOrderProcessesByOrderNumber", shopId = string.Empty, orderNumber = string.Empty });
-            config.Routes.MapHttpRoute("PostUserLoginStatus", "api/sync/get-login-status", new { controller = "ApiTerminalUserSync", action = "GetUserLoginStatusNew" });
+            config.Routes.MapHttpRoute("PostUserLoginStatuss", "api/sync/get-login-status", new { controller = "ApiTerminalUserSync", action = "GetUserLoginStatusNew" });
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

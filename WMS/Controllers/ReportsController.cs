@@ -116,7 +116,7 @@ namespace WMS.Controllers
             report.paramsTenantId.Value = CurrentTenantId;
             report.paramWarehouseId.Value = CurrentWarehouseId;
 
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
+            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList().Distinct();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)report.paramProductId.LookUpSettings;
 
             foreach (var item in products)
