@@ -14,30 +14,25 @@
     }
 
     .table > tbody > tr > td {
-        padding: 0.5rem !important;
+        padding: 0.12rem !important;
     }
 </style>
-<script src="~/Scripts/jquery-3.5.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-<section class="content">
-
-
+<div class="container-fluid">
     <div class="row">
-        <form>
-            <div class="form-group">
-                @*<label class="form-label">Order Numbers</label>*@
-                <input type="text" class="form-control search-order" placeholder="Scan or Enter Order No" onkeydown="ReplaceHtmlWithNewOne(event)">
-            </div>
-        </form>
+        <div class="col-md-12">
+            @*<label class="form-label">Order Numbers</label>*@
+            <input type="text" class="form-control" placeholder="Scan or Enter Order No" onkeydown="ReplaceHtmlWithNewOne(event)">
+        </div>
+
     </div>
-    <div class="row" id="deliveries-list">
+    <div class="row" id="deliveries-list" style="margin-top:2px;">
 
         @Html.Action("_DeliveriesResult", new { palletDispatchStatus = PalletDispatchStatusEnum.Created })
 
     </div>
+</div>
 
-
-</section>
 @Html.Partial("~/Views/Home/_LoadTruck.cshtml")

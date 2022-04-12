@@ -14,9 +14,19 @@ namespace ShopOrderApp
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
+                name: "vechile",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "user", action = "VechileIdentifer", id = UrlParameter.Optional }
+            );
+            routes.MapRoute(
+                name: "load-truck",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
+            routes.MapRoute(
+                name: "unload-truck",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "UnloadTruck", id = UrlParameter.Optional }
             );
         }
     }

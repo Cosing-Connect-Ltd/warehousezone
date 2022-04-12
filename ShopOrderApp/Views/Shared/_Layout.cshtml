@@ -8,99 +8,55 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="~/Content/images/favicon.ico">
-
     <title>Becsco Truck Load - Dashboard</title>
-
-    <!-- Vendors Style-->
-    <link rel="stylesheet" href="~/Content/New/css/vendors_css.css">
-    <!-- Style-->
-    <link rel="stylesheet" href="~/Content/New/css/horizontal-menu.css">
-    <link rel="stylesheet" href="~/Content/New/css/style.css">
-    <link rel="stylesheet" href="~/Content/New/css/skin_color.css">
-
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<style>
+    .truck-container {
+        padding-top: 0.6rem;
+    }
+    input[type="checkbox"]:checked {
+        box-shadow: 0 0 0 3px hotpink;
+        background-color:forestgreen;
+    }
+</style>
 </head>
 
-<body class="layout-top-nav light-skin theme-primary fixed">
 
-    <div class="wrapper">
-        <div id="loader"></div>
+<body>
 
-        <header class="main-header">
-            <div class="inside-header">
-                <div class="d-flex align-items-center logo-box justify-content-start">
-                    <!-- Logo -->
-                    <a href="/" class="logo">
-                        <!-- logo-->
-                        <div class="logo-lg">
-                            <h2 class="light-logo" style="color:white">Truck Loading</h2>
-                        </div>
-                    </a>
-                </div>
-                <!-- Header Navbar -->
-                <nav class="navbar navbar-static-top">
-                    <!-- Sidebar toggle button-->
-                    <div class="app-menu">
-                        <ul class="header-megamenu nav">
-                        </ul>
-                    </div>
-
-                    <div class="navbar-custom-menu r-side">
-                       
-                    </div>
-                </nav>
-            </div>
-        </header>
-
-        <nav class="main-nav" role="navigation">
-
-            <!-- Mobile menu toggle button (hamburger/x icon) -->
-            <input id="main-menu-state" type="checkbox" />
-            <label class="main-menu-btn" for="main-menu-state">
-                <span class="main-menu-btn-icon"></span> Toggle main menu visibility
-            </label>
-
-            <!-- Sample menu definition -->
-            <ul id="main-menu" class="sm sm-blue">
-                <li>
-                    <a href="/"><i data-feather="monitor"></i>Load Truck</a>
-
-                </li>
-                <li>
-                    <a href="/Home/UnloadTruck/"><i data-feather="truck"></i>Unload Truck</a>
-                </li>
-                <li class="pull-right">
-                    <a href="/user/logout/"><i data-feather="user"></i>Logout</a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <div class="container-full">
-                @RenderBody()
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:blue !important;">
+        <a class="navbar-brand" href="/" style="color: white !important;">Truck Loading</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="/Home/Index" style="color: white !important;">Load Truck</a>
+                <a class="nav-item nav-link" href="/Home/unloadtruck" style="color: white !important;">Unload Truck</a>
             </div>
         </div>
-        <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <div class="pull-right d-none d-sm-inline-block">
-            </div>
-        </footer>
-
-
-
+    </nav>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <div class="truck-container" style="background-color: rgb(243, 246, 249)">
+        @RenderBody()
     </div>
-    <script src="~/Content/new/js/vendors.min.js"></script>
-    <script src="~/Content/new/js/pages/chat-popup.js"></script>
-    <script src="~/Content/new/assets/icons/feather-icons/feather.min.js"></script>
-    <script src="~/Content/new/assets/vendor_components/jquery-toast-plugin-master/src/jquery.toast.js"></script>
-    <script src="~/Content/new/assets/vendor_components/progressbar.js-master/dist/progressbar.js"></script>
-   
- 
-    <script src="~/Content/new/js/jquery.smartmenus.js"></script>
-    <script src="~/Content/new/js/menus.js"></script>
-    <script src="~/Content/new/js/template.js"></script>
-    <script src="~/Content/new/js/pages/toastr.js"></script>
-    <script src="~/Content/new/js/pages/notification.js"></script>
+
+
+
+
+
+    @*<script src="~/Content/new/js/pages/chat-popup.js"></script>
+        <script src="~/Content/new/assets/icons/feather-icons/feather.min.js"></script>
+        <script src="~/Content/new/assets/vendor_components/jquery-toast-plugin-master/src/jquery.toast.js"></script>
+        <script src="~/Content/new/assets/vendor_components/progressbar.js-master/dist/progressbar.js"></script>
+
+
+        <script src="~/Content/new/js/jquery.smartmenus.js"></script>
+        <script src="~/Content/new/js/menus.js"></script>
+        <script src="~/Content/new/js/template.js"></script>
+        <script src="~/Content/new/js/pages/toastr.js"></script>
+        <script src="~/Content/new/js/pages/notification.js"></script>*@
 
 </body>
 
@@ -117,7 +73,7 @@
             }
         });
     });
-   
+
 
 
 </script>

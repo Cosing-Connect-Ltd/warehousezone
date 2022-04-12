@@ -221,4 +221,15 @@ namespace Ganedata.Core.Entities.Domain
         public bool ScannedOnLoad { get; set; }
 
     }
+    public class PalletDispatchDetails
+    {
+        public string OrderNumber { get; set; }
+        public string DispatchReference { get; set; }
+        public string DeliveryNO { get; set; }
+        public string CompanyName { get; set; }
+        public string AccountCode { get; set; }
+        public string DateCreated { get; set; }
+
+
+    }
 }

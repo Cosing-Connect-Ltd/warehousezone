@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="modal-footer modal-footer-uniform">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="Cancel()">Cancel</button>
                 <button type="submit" class="btn btn-success pull-right" onclick="SubmitLoading();">Submit</button>
             </div>
         </div>
@@ -63,9 +63,9 @@
                 var htmldata = "";
 
                 if (data.Palletdetails.length > 0) {
+                    
                     $.each(data.Palletdetails, function (i, item) {
-
-                        htmldata += '<input class="filled-in chk-col-success checkBoxClass" type="checkbox" id="checkbox_' + item.Id + '" value=' + item.Id + ' disabled><label for="labelcheckbox_' + item.Id + '" id="checkbox_' + item.Id + '"" class="me-20">' + item.PalletNumber + '</label>'
+                        htmldata += '<input class="filled-in chk-col-success checkBoxClass" type="checkbox" id="checkbox_' + item.Id + '" value=' + item.Id + ' disabled>&nbsp;<label for="labelcheckbox_' + item.Id + '" id="checkbox_' + item.Id + '"" class="me-20">' + item.PalletNumber + '</label>&nbsp;'
 
                     });
                     $('.pallets-scan').html("").html(htmldata);
@@ -136,5 +136,8 @@
 
         }
 
+    }
+    function Cancel() {
+        $('#modal-center').modal("hide");
     }
 </script>

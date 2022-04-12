@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="hold-transition theme-primary bg-img" style="background-image: url(/content/new/images/auth-bg/bg-1.jpg)">
+<body class="hold-transition theme-primary bg-img">
 
     <div class="container h-p100">
         <div class="row align-items-center justify-content-md-center h-p100">
@@ -32,7 +32,7 @@
                     <div class="col-lg-5 col-md-5 col-12">
                         <div class="bg-white rounded10 shadow-lg">
                             <div class="content-top-agile p-20 pb-0">
-                                <h2 class="text-primary">Sign in Truck Loading</h2>
+                                <h2>Sign in for Truck Loading</h2>
                                 @if (ViewBag.LoginError != null)
                                 {
                                     <p class="mb-0 alert-danger text-uppercase">@ViewBag.LoginError</p>
@@ -45,13 +45,13 @@
                                     @Html.AntiForgeryToken()
                                     <div class="form-group">
                                         <div class="input-group mb-3">
-                                            <span class="input-group-text bg-transparent"><i class="ti-user"></i></span>
+                                            @*<span class="input-group-text bg-transparent"><i class="ti-user"></i></span>*@
                                             <input type="text" id="vechileId" name="vechileId" class="form-control ps-15 bg-transparent" placeholder="Enter Vechile Id">
                                         </div>
                                     </div>
 
                                     <div class="col-12 text-center">
-                                        <button type="submit" class="btn btn-danger mt-10">LOG IN</button>
+                                        <button type="submit" class="btn btn-primary mt-10">LOG IN</button>
                                     </div>
 
                                 }
