@@ -10,9 +10,11 @@ using Ganedata.Core.Entities.Enums;
 using System.Threading.Tasks;
 using AutoMapper;
 using System.Net;
+using System.Web.Http.Cors;
 
 namespace WMS.Controllers.WebAPI
 {
+    [EnableCorsAttribute("*", "*", "*")]
     public class ApiTerminalUserSyncController : BaseApiController
     {
         private readonly IActivityServices _activityServices;
