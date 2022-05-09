@@ -7,7 +7,10 @@ namespace WMS
     {
         public static void Register(HttpConfiguration config)
         {
+            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
             config.MapHttpAttributeRoutes();
+           
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects; config.Formatters.Remove(config.Formatters.XmlFormatter);
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
@@ -130,7 +133,29 @@ namespace WMS
             config.Routes.MapHttpRoute("StripePaymentsCharge", "api/stripe/charge-order", new { controller = "ApiStripePayments", action = "Charge" });
             config.Routes.MapHttpRoute("StripePaymentsWebhook", "api/stripe/chargehook", new { controller = "ApiStripePayments", action = "WebhookReceive" });
             config.Routes.MapHttpRoute("GetOrderProcessesByOrderNumber", "api/get-order-processes/{shopId}/{orderNumber}", new { controller = "ApiOrderProcessesSync", action = "GetOrderProcessesByOrderNumber", shopId = string.Empty, orderNumber = string.Empty });
-            config.Routes.MapHttpRoute("PostUserLoginStatuss", "api/sync/get-login-status", new { controller = "ApiTerminalUserSync", action = "GetUserLoginStatusNew" });
+           
+            //mobile app
+            config.Routes.MapHttpRoute("PostUserLoginStatuss", "api/sync/get-login-status-new", new { controller = "ApiTerminalUserSync", action = "GetUserLoginStatusNew" });
+            config.Routes.MapHttpRoute("OrdersSyncNew", "api/sync/orders/{orderId}/{shopId}/{orderNumber}",new{controller = "ApiOrdersSync",action = "GetOrderss",orderId = string.Empty,shopId = string.Empty,orderNumber = string.Empty
+            });
+            config.Routes.MapHttpRoute("ProductsSyncNew", "api/sync/products-new/{shopId}", new{controller = "ApiProductSync",
+                action = "GetProducts",
+                shopId = string.Empty
+            });
+            config.Routes.MapHttpRoute("VeriyPallets", "api/verify-pallet/{serial}/{productId}/{shopId}", (object)new
+            {
+                controller = "ApiPallettrackingSync",
+                action = "VerifyPallet",
+                serial = string.Empty,
+                productId = string.Empty,
+                shopId = string.Empty
+            });
+            config.Routes.MapHttpRoute("SubmitPalleteSerials", "api/submit-pallets", (object)new
+            {
+                controller = "ApiPallettrackingSync",
+                action = "SubmitPalleteSerials"
+            }); 
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
@@ -142,8 +167,7 @@ namespace WMS
                 routeTemplate: "iclock/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
-            config.EnableCors(cors);
+           
         }
     }
 }

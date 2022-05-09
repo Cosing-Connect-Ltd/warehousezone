@@ -9,9 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace WMS.Controllers.WebAPI
 {
+    [EnableCors("*", "*", "*")]
     public class ApiOrdersSyncController : BaseApiController
     {
 
@@ -295,6 +297,51 @@ namespace WMS.Controllers.WebAPI
             var result = await _productService.GetProductInfoBySerial(request.SerialCode, request.TenantId);
 
             return Ok(result);
+        }
+
+        public IHttpActionResult GetOrderss(int? orderId,int shopId,string orderNumber)
+        {
+            var result = new OrdersSyncCollection();
+
+            List<Order> list = OrderService.GetAllOrdersByTenantId(shopId).Where(u => (orderId.HasValue || u.IsDeleted != true) && (string.IsNullOrEmpty(orderNumber) || u.OrderNumber == orderNumber) && (!orderId.HasValue || (int?)u.OrderID == orderId) && (int)u.InventoryTransactionTypeId == 2).ToList<Order>();
+            var warehouses = _lookupService.GetAllWarehousesForTenant(shopId);
+            var orders = new List<OrdersSync>();
+
+            foreach (var p in list)
+            {
+                var order = new OrdersSync();
+                var mapped = _mapper.Map(p, order);
+                for (var i = 0; i < p.OrderDetails.Count; i++)
+                {
+                    mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList()[i].ProductAttributeValue?.Value;
+                    mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList<OrderDetail>()[i].ProductAttributeValue?.Value;
+                    mapped.OrderDetails[i].ProductName = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster?.Name;
+                    mapped.OrderDetails[i].SkuCode = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster?.SKUCode;
+                    mapped.OrderDetails[i].Barcode = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster?.BarCode;
+                    OrderDetailSync orderDetail = mapped.OrderDetails[i];
+                    ProductMaster productMaster = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster;
+                    int num = productMaster != null ? (productMaster.ProcessByPallet ? 1 : 0) : 0;
+                    orderDetail.ProcessByPallet = num != 0;
+                    mapped.OrderDetails[i].QuantityProcessed = new Decimal?(p.OrderDetails.ToList<OrderDetail>()[i].ProcessedQty);
+                }
+                //if user is assocaited to the account
+                if (p.AccountID != null)
+                {
+                    var user = UserService.GetAuthUserByAccountId(p.AccountID);
+                    if (user != null)
+                    {
+                        mapped.FullName = user.DisplayName;
+                        mapped.MobileNumber = user.UserMobileNumber;
+
+                    }
+                }
+
+                orders.Add(mapped);
+            }
+
+            result.Count = orders.Count;
+            result.Orders = orders;
+            return Ok(_mapper.Map(result, new OrdersSyncCollection()));
         }
 
     }

@@ -144,6 +144,11 @@ namespace Ganedata.Core.Models
         public int SortOrder { get; set; }
         public int? ProductAttributeValueId { get; set; }
         public string ProductAttributeValueName { get; set; }
+        public string ProductName { get; set; }
+        public string SkuCode { get; set; }
+        public string Barcode { get; set; }
+        public bool ProcessByPallet { get; set; }
+        public decimal? QuantityProcessed { get; set; }
     }
 
     public class SerialProcessStatus

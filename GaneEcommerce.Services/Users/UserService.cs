@@ -308,6 +308,8 @@ namespace Ganedata.Core.Services
                 _shoppingVoucherService.LoadDefaultSystemVouchersForNewUser(user.UserId);
                 _mapper.Map(user, resp);
                 resp.Success = true;
+                resp.shopId = user.TenantId;
+                resp.ShopName = "Becseco";
             }
 
             return resp;

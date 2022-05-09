@@ -2,22 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using AutoMapper;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 
 namespace WMS.Controllers.WebAPI
 {
+    [EnableCorsAttribute("*", "*", "*")]
     public class ApiPallettrackingSyncController : BaseApiController
     {
         private readonly IMapper _mapper;
-
-        public ApiPallettrackingSyncController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService, IProductServices productServices, IUserService userService, IMapper mapper)
+        private readonly IPurchaseOrderService _purchaseOrderService;
+        public ApiPallettrackingSyncController(ITerminalServices terminalServices, IPurchaseOrderService purchaseOrderService, ITenantLocationServices tenantLocationServices, IOrderService orderService, IProductServices productServices, IUserService userService, IMapper mapper)
             : base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _mapper = mapper;
+            _purchaseOrderService = purchaseOrderService;
         }
 
         // call example through URI http://localhost:8005/api/sync/get-pallet-tracking?ReqDate=2014-11-23&SerialNo=920013c000814
@@ -117,6 +121,61 @@ namespace WMS.Controllers.WebAPI
             TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, (pallet == null ? 0 : 1), terminal.TerminalId, TerminalLogTypeEnum.PalletTrackingSync);
             return Ok(result);
         }
+        [HttpGet]
+        public IHttpActionResult VerifyPallet(string serial,int productId,int shopId)
+        {
+            PalletTracking verifedPallet = this._purchaseOrderService.GetVerifedPallet(serial, productId, 1, shopId);
+            PalletTrackingSync palletTrackingSync = new PalletTrackingSync();
+            if (verifedPallet != null)
+            {
+                palletTrackingSync.PalletTrackingId = verifedPallet.PalletTrackingId;
+                palletTrackingSync.ProductId = verifedPallet.ProductId;
+                palletTrackingSync.RemainingCases = verifedPallet.RemainingCases;
+                palletTrackingSync.TotalCases = verifedPallet.TotalCases;
+            }
+            return (IHttpActionResult)this.Ok<PalletTrackingSync>(palletTrackingSync);
+        }
+        public IHttpActionResult SubmitPalleteSerials(SubmitPalletSerial submitPalletSerial)
+        {
+            GoodsReturnRequestSync serials = new GoodsReturnRequestSync();
+            int shopId = submitPalletSerial.ShopId;
+            List<PalleTrackingProcess> palleTrackingProcessList = new List<PalleTrackingProcess>();
+            foreach (string str in submitPalletSerial.PalletSerial)
+            {
+                PalleTrackingProcess palleTrackingProcess = new PalleTrackingProcess();
+                string[] strArray = str.Split(new string[2]
+                {
+          "#+#",
+          "#+#"
+                }, StringSplitOptions.RemoveEmptyEntries);
+                if (strArray.Length >= 2)
+                {
+                    if (!string.IsNullOrEmpty(strArray[0]))
+                    {
+                        int num = int.Parse(strArray[0]);
+                        palleTrackingProcess.PalletTrackingId = num;
+                    }
+                    if (!string.IsNullOrEmpty(strArray[1]))
+                    {
+                        Decimal num = Decimal.Parse(strArray[1]);
+                        palleTrackingProcess.ProcessedQuantity = num;
+                    }
+                }
+                palleTrackingProcessList.Add(palleTrackingProcess);
+            }
+            serials.PalleTrackingProcess = palleTrackingProcessList;
+            serials.ProductId = submitPalletSerial.ProductId;
+            serials.OrderId = submitPalletSerial.OrderId;
+            serials.deliveryNumber = GaneStaticAppExtensions.GenerateDateRandomNo();
+            serials.OrderDetailID = new int?(submitPalletSerial.OrderDetailID);
+            serials.tenantId = shopId;
+            serials.warehouseId = shopId;
+            serials.userId = submitPalletSerial.UserId;
+            serials.InventoryTransactionType = new InventoryTransactionTypeEnum?(submitPalletSerial.InventoryTransactionType);
+            return (IHttpActionResult)this.Ok<int>(this._purchaseOrderService.ProcessPalletTrackingSerial(serials));
+        }
+
+
 
     }
 }

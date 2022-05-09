@@ -3706,6 +3706,11 @@ namespace Ganedata.Core.Services
             return true;
         }
 
+        public IQueryable<Order> GetAllOrdersByTenantId(int tenantId)
+        {
+           return _currentDbContext.Order.Where(m => m.TenentId == tenantId);
+        }
+
 
     }
 }

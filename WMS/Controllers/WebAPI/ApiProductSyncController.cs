@@ -6,12 +6,15 @@ using System.Linq;
 using System.Web.Hosting;
 using System.Web.Http;
 using AutoMapper;
+using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
+using System.Web.Http.Cors;
 
 namespace WMS.Controllers.WebAPI
 {
+    [EnableCorsAttribute("*", "*", "*")]
     public class ApiProductSyncController : BaseApiController
     {
         private readonly IMapper _mapper;
@@ -63,6 +66,28 @@ namespace WMS.Controllers.WebAPI
             result.Products = products;
             return Ok(result);
         }
+        public IHttpActionResult GetProducts(int shopId)
+        {
+            ProductMasterSyncCollection masterSyncCollection = new ProductMasterSyncCollection();
+            var  list = this.ProductServices.GetAllValidProductMasters(shopId).Where(u=>u.IsDeleted != true).ToList();
+            List<ProductMasterSync> productMasterSyncList = new List<ProductMasterSync>();
+            foreach (var source in list)
+            {
+                ProductMasterSync destination = new ProductMasterSync();
+                ProductMasterSync productMasterSync = this._mapper.Map<ProductMaster, ProductMasterSync>(source, destination);
+                productMasterSync.ProductGroupName = source?.ProductGroup?.ProductGroup;
+                productMasterSync.DepartmentName = source?.TenantDepartment?.DepartmentName;
+                productMasterSync.TaxPercent = source.GlobalTax.PercentageOfAmount;
+                productMasterSync.SortOrder = source != null ? source.TenantDepartment.SortOrder : 0;
+                Uri uri = new Uri(ConfigurationManager.AppSettings["WarehouseStoreBaseUri"]);
+                ConfigurationManager.AppSettings["ImageFormats"].Split(',');
+                productMasterSyncList.Add(productMasterSync);
+            }
+            masterSyncCollection.Count = productMasterSyncList.Count;
+            masterSyncCollection.Products = productMasterSyncList;
+            return (IHttpActionResult)this.Ok<ProductMasterSyncCollection>(masterSyncCollection);
+        }
+
 
     }
 }

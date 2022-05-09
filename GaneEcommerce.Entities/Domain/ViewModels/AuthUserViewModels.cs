@@ -68,6 +68,9 @@ namespace Ganedata.Core.Entities.Domain
         public string ErrorMessage { get; set; }
         public string PersonalReferralCode { get; set; }
         public bool ReferralConfirmed { get; set; }
+
+        public int shopId { get; set; }
+        public string ShopName { get; set; }
     }
 
     public class UserRegisterRequestViewModel

@@ -51,6 +51,22 @@ namespace Ganedata.Core.Models
         public int PalletTrackingId { get; set; }
         public decimal ProcessedQuantity { get; set; }
     }
+    public class SubmitPalletSerial
+    {
+        public List<string> PalletSerial { get; set; }
+
+        public int ProductId { get; set; }
+
+        public int OrderId { get; set; }
+
+        public int OrderDetailID { get; set; }
+
+        public int UserId { get; set; }
+
+        public InventoryTransactionTypeEnum InventoryTransactionType { get; set; }
+
+        public int ShopId { get; set; }
+    }
 
 
 }

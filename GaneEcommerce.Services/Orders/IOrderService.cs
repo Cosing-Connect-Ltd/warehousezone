@@ -124,6 +124,7 @@ namespace Ganedata.Core.Services
        // void MapToOrderSync(Order source, OrdersSync target);
 
         List<OrderProcessLowStockItems> ValidateStockAvailability(int orderId);
+        IQueryable<Order> GetAllOrdersByTenantId(int tenantId);
 
 
     }
