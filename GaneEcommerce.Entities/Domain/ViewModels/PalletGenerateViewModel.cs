@@ -11,22 +11,42 @@ namespace Ganedata.Core.Entities.Domain
     {
         public PalletGenerateViewModel()
         {
-            AllCurrentPallets = new List<SelectListItem>();
+            this.AllCurrentPallets = new List<SelectListItem>();
+            this.PalletList = new List<PalletViewModel>();
         }
+
         public bool PalletsEnabled { get; set; }
+
         public string NextPalletNumber { get; set; }
+
         public bool IsNewPallet { get; set; }
+
         public bool IsCompleted { get; set; }
+
         public string PalletDateCompleted { get; set; }
+
         public int OrderDetailID { get; set; }
+
         public int OrderID { get; set; }
+
         public int ProductID { get; set; }
-        public decimal ProcessedQuantity { get; set; }
+
+        public Decimal ProcessedQuantity { get; set; }
+
         public string ProductName { get; set; }
+
         public int SelectedOrderProcessId { get; set; }
+
         public int SelectedPalletID { get; set; }
+
         public int? dispatchId { get; set; }
+
+        public int? UserId { get; set; }
+
+        public List<PalletViewModel> PalletList { get; set; }
+
         public List<SelectListItem> AllCurrentPallets { get; set; }
+
         public OrderProcess OrderProcesses { get; set; }
     }
 
@@ -51,6 +71,7 @@ namespace Ganedata.Core.Entities.Domain
         public string DispatchRefrenceNumber { get; set; }
 
         public string NetworkCode { get; set; }
+        public int? UserId { get; set; }
         public virtual IEnumerable<SelectListItem> AllSentMethods { get; set; }
         public virtual IEnumerable<int> SelectedPallets { get; set; }
 
@@ -163,7 +184,11 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime DateCreated { get; set; }
         public int CreatedBy { get; set; }
     }
-
+    public class RemovePalletViewModel
+    {
+        public int ProductId { get; set; }
+        public string PalletNumber { get; set; }
+    }
 
     public class PalletOrderProductsCollection
     {

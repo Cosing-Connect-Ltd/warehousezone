@@ -67,6 +67,20 @@ namespace Ganedata.Core.Models
 
         public int ShopId { get; set; }
     }
+    public class OrderProcessFull
+    {
+        public int OrderDetailId { get; set; }
+
+        public int ProductId { get; set; }
+
+        public int OrderId { get; set; }
+
+        public Decimal Quantity { get; set; }
+
+        public int ShopId { get; set; }
+
+        public int UserId { get; set; }
+    }
 
 
 }

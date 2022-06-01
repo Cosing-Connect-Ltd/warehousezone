@@ -114,11 +114,11 @@ namespace WMS.Controllers.WebAPI
                 var order = new OrdersSync();
                 var mapped = _mapper.Map(p, order);
 
-                for (var i=0;i< p.OrderDetails.Count;i++)
+                for (var i = 0; i < p.OrderDetails.Count; i++)
                 {
                     mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList()[i].ProductAttributeValue?.Value;
                 }
-                
+
                 mapped.TransferWarehouseName = warehouses.FirstOrDefault(x => x.WarehouseId == mapped.TransferWarehouseId)?.WarehouseName;
 
                 //if user is assocaited to the account
@@ -214,7 +214,7 @@ namespace WMS.Controllers.WebAPI
             {
                 await UserService.SendSmsBroadcast(order.Account.AccountOwner.UserMobileNumber, order.Tenant.TenantName, order.Account.OwnerUserId.ToString(), $"#{order.OrderNumber} - Order status updated to {statusId}");
             }
-             
+
         }
 
         [HttpPost]
@@ -299,7 +299,7 @@ namespace WMS.Controllers.WebAPI
             return Ok(result);
         }
 
-        public IHttpActionResult GetOrderss(int? orderId,int shopId,string orderNumber)
+        public IHttpActionResult GetOrderss(int? orderId, int shopId, string orderNumber)
         {
             var result = new OrdersSyncCollection();
 
@@ -323,6 +323,7 @@ namespace WMS.Controllers.WebAPI
                     int num = productMaster != null ? (productMaster.ProcessByPallet ? 1 : 0) : 0;
                     orderDetail.ProcessByPallet = num != 0;
                     mapped.OrderDetails[i].QuantityProcessed = new Decimal?(p.OrderDetails.ToList<OrderDetail>()[i].ProcessedQty);
+                    mapped.OrderDetails[i].InStock = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.ProductId == productMaster.ProductId && u.Status == PalletTrackingStatusEnum.Active);
                 }
                 //if user is assocaited to the account
                 if (p.AccountID != null)
@@ -343,6 +344,8 @@ namespace WMS.Controllers.WebAPI
             result.Orders = orders;
             return Ok(_mapper.Map(result, new OrdersSyncCollection()));
         }
+
+
 
     }
 }

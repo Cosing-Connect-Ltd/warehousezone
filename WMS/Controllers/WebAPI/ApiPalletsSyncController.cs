@@ -1,15 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using AutoMapper;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 
 namespace WMS.Controllers.WebAPI
 {
+    [EnableCorsAttribute("*", "*", "*")]
     public class ApiPalletsSyncController : BaseApiController
     {
         private readonly IPalletingService _palletService;
@@ -259,6 +263,62 @@ namespace WMS.Controllers.WebAPI
         {
             var result = _palletService.UpdateDispatchForLabelsStatus(shipmentId);
             return Ok(result);
+        }
+        [HttpPost]
+        public IHttpActionResult CreatePalletAndGetList(PalletGenerateViewModel data)
+        {
+            int selectedOrderProcessId = data.SelectedOrderProcessId;
+            Pallet newPallet = _palletService.CreateNewPallet(selectedOrderProcessId, data.UserId ?? 0);
+            PalletGenerateViewModel generateViewModel = new PalletGenerateViewModel();
+            generateViewModel.PalletList = _palletService.GetAllPallets(null, null, newPallet.OrderProcessID, null, null, newPallet.PalletsDispatchID).ToList();
+            generateViewModel.NextPalletNumber = newPallet.PalletNumber;
+            generateViewModel.SelectedPalletID = newPallet.PalletID;
+            return Ok(generateViewModel);
+        }
+        [HttpPost]
+        public IHttpActionResult AddProcessedProductsToPallet(PalletProductAddViewModel model)
+        {
+            model.DateCreated = DateTime.UtcNow;
+            var data = _palletService.AddFulFillmentPalletProduct(model);
+
+
+            return Ok(data.ProductID);
+        }
+        [HttpPost]
+        public IHttpActionResult RemovePalletProduct(RemovePalletViewModel model)
+        {
+            return Ok(_palletService.DeletePalletProduct(model.ProductId, model.PalletNumber));
+        }
+        [HttpPost]
+        public IHttpActionResult SavePalletsDispatch(PalletDispatchViewModel model)
+        {
+
+            var result = _palletService.DispatchPallets(model, (model.UserId ?? 0)).Result;
+
+            return Ok(result);
+        }
+        [HttpGet]
+        public IHttpActionResult GetTopFiveActivePallets(int productId)
+        {
+            return Ok(_palletService.GetFiveActivePallets(productId));
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> SavePalletsDispatch(int orderProcessId, int userId)
+        {
+            var orderProcess = OrderService.GetOrderProcessByOrderProcessId(orderProcessId);
+            var dispatchModel = new PalletDispatchViewModel
+            {
+                DeliveryMethod = orderProcess.Order.DeliveryMethod,
+                NetworkCode = orderProcess.Order.TenantDeliveryService?.NetworkCode,
+                DispatchRefrenceNumber = GaneStaticAppExtensions.GenerateDateRandomNo(),
+                OrderProcessId = orderProcessId
+            };
+
+            var result = await _palletService.DispatchPallets(dispatchModel, userId);
+
+            return Ok(result);
+
         }
     }
 }

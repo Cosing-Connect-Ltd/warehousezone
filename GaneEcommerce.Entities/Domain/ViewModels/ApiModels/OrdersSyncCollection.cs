@@ -149,6 +149,7 @@ namespace Ganedata.Core.Models
         public string Barcode { get; set; }
         public bool ProcessByPallet { get; set; }
         public decimal? QuantityProcessed { get; set; }
+        public bool InStock { get; set; }
     }
 
     public class SerialProcessStatus

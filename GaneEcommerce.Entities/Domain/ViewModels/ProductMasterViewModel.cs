@@ -50,7 +50,7 @@ namespace Ganedata.Core.Entities.Domain
         public string CommodityClass { get; set; }
         public double Height { get; set; }
         public double Width { get; set; }
-        public double Weight { get; set; }
+        public double? Weight { get; set; }
         public double Depth { get; set; }
         public decimal PercentMargin { get; set; }
         public string LotOptionDescription { get; set; }

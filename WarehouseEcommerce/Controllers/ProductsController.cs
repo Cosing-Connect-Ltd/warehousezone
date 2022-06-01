@@ -806,7 +806,7 @@ namespace WarehouseEcommerce.Controllers
                 return new
                 {
                     Id = c.Id.ToString(),
-                    IsAvailable = GetDeliveryAvailabilityStatus(c.ProductId, c.Weight, postCode)
+                    IsAvailable = GetDeliveryAvailabilityStatus(c.ProductId, (c.Weight??0), postCode)
                 };
             });
 

@@ -151,6 +151,7 @@ namespace Ganedata.Core.Models
         }
         public int OrderProcessId { get; set; }
         public int OrderId { get; set; }
+        public int? AccountId { get; set; }
         public List<OrderProcessDetailList> OrderProcessDetailList { get; set; }
         public List<PalletList> PalletList { get; set; }
     }
@@ -194,6 +195,8 @@ namespace Ganedata.Core.Models
         public string SkuCode { get; set; }
 
         public decimal Quantity { get; set; }
+
+   
 
     }
 

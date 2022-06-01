@@ -178,6 +178,7 @@ namespace WMS.Controllers.WebAPI
             var orderProcesses = new OrderProcessPallets();
             orderProcesses.OrderId = allorderProcess.FirstOrDefault()?.OrderProcess?.OrderID ?? 0;
             orderProcesses.OrderProcessId = allorderProcess.FirstOrDefault()?.OrderProcess?.OrderProcessID ?? 0;
+            orderProcesses.AccountId = allorderProcess.FirstOrDefault()?.OrderProcess?.Order?.AccountID ?? 0;
 
             foreach (var item in allorderProcess)
             {
@@ -195,11 +196,11 @@ namespace WMS.Controllers.WebAPI
             {
                 PalletID = u.PalletID,
                 PalletNumber = u.PalletNumber,
-                PalletProducts = u.PalletProducts.Select(g => new PalletProductList
+                PalletProducts = u.PalletProducts.Where(c=>c.IsDeleted != true).Select(g => new PalletProductList
                 {
                     ProductId = g.ProductID,
                     ProductName = g.Product.Name,
-                    SkuCode = g.Product.Name,
+                    SkuCode = g.Product.SKUCode,
                     Quantity = g.Quantity
 
                 }).ToList()

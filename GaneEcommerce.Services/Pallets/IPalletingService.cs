@@ -47,6 +47,7 @@ namespace Ganedata.Core.Services
         bool DeletePallet(int palletId);
 
         int DeletePalletProduct(int palletProductId, int userId);
+        int DeletePalletProduct(int productId, string palletNumber);
 
         PalletDispatchProgress UpdateDispatchProgress(PalletDispatchProgress currentDispatch, int userId);
 
@@ -75,6 +76,8 @@ namespace Ganedata.Core.Services
 
         AssigningDispatchToDelivery PalletLoadingFromDataBase(int dispatchId);
         int GetVechileVerification(string vechileId);
+
+        object GetFiveActivePallets(int productId);
 
 
 

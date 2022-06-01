@@ -390,7 +390,7 @@ namespace Ganedata.Core.Services
                 DateCreated = m.DateCreated,
                 DispatchTime = m.DateCompleted,
                 PalletID = m.PalletID,
-                Dispatch = m.PalletsDispatch,
+                //Dispatch = m.PalletsDispatch,
                 DateUpdated = m.DateUpdated,
                 ProductCount = m.PalletProducts.Any() ? true : false,
                 OrderProcessID = m.OrderProcessID,
@@ -619,7 +619,29 @@ namespace Ganedata.Core.Services
             }
             return palletId;
         }
-
+        public int DeletePalletProduct(int productId, string palletNumber)
+        {
+            var palletproduct = _currentDbContext.PalletProducts.FirstOrDefault(m => m.ProductID == productId && m.Pallet.PalletNumber==palletNumber);
+            int palletId = 0;
+            if (palletproduct != null)
+            {
+                try
+                {
+                    palletproduct.IsDeleted = true;
+                    palletproduct.DateUpdated = DateTime.UtcNow;
+                    _currentDbContext.PalletProducts.Attach(palletproduct);
+                    _currentDbContext.Entry(palletproduct).State = EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                    palletId = palletproduct.PalletID;
+                }
+                catch (Exception ex)
+                {
+                    ErrorSignal.FromCurrentContext().Raise(ex);
+                    return palletId;
+                }
+            }
+            return palletId;
+        }
         public bool MarkedOrderProcessAsDispatch(int OrderProcessId)
         {
             var orderprocess = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == OrderProcessId);
@@ -842,6 +864,19 @@ namespace Ganedata.Core.Services
             }
             return 0;
 
+        }
+
+        public object GetFiveActivePallets(int productId)
+        {
+            return _currentDbContext.PalletTracking.Where(u => u.ProductId == productId && u.Status == PalletTrackingStatusEnum.Active && u.RemainingCases > 0).OrderByDescending(u => u.PalletTrackingId).Take(5).
+                
+                Select(u => new {
+                    u.PalletSerial,
+                    u.ExpiryDate,
+                    u.RemainingCases
+
+                    }).ToList();
+            
         }
     }
 }

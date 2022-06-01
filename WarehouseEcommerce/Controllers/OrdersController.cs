@@ -518,7 +518,7 @@ namespace WarehouseEcommerce.Controllers
                 case CheckoutStep.ShipmentRule:
                     var cartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID);
                     var parcelWeightInGrams = cartItems.Sum(i => i.Weight);
-                    model.ShippingRules = _tenantWebsiteService.GetShippingRulesByShippingAddressId(CurrentTenantId, CurrentTenantWebsite.SiteID, model.ShippingAddressId.Value, parcelWeightInGrams);
+                    model.ShippingRules = _tenantWebsiteService.GetShippingRulesByShippingAddressId(CurrentTenantId, CurrentTenantWebsite.SiteID, model.ShippingAddressId.Value, (parcelWeightInGrams??0));
                     break;
             }
 

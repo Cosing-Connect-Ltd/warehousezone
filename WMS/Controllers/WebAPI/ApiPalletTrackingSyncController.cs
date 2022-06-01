@@ -122,7 +122,7 @@ namespace WMS.Controllers.WebAPI
             return Ok(result);
         }
         [HttpGet]
-        public IHttpActionResult VerifyPallet(string serial,int productId,int shopId)
+        public IHttpActionResult VerifyPallet(string serial, int productId, int shopId)
         {
             PalletTracking verifedPallet = this._purchaseOrderService.GetVerifedPallet(serial, productId, 1, shopId);
             PalletTrackingSync palletTrackingSync = new PalletTrackingSync();
@@ -143,11 +143,7 @@ namespace WMS.Controllers.WebAPI
             foreach (string str in submitPalletSerial.PalletSerial)
             {
                 PalleTrackingProcess palleTrackingProcess = new PalleTrackingProcess();
-                string[] strArray = str.Split(new string[2]
-                {
-          "#+#",
-          "#+#"
-                }, StringSplitOptions.RemoveEmptyEntries);
+                string[] strArray = str.Split(new string[] { "#+#" }, StringSplitOptions.RemoveEmptyEntries);
                 if (strArray.Length >= 2)
                 {
                     if (!string.IsNullOrEmpty(strArray[0]))
@@ -167,15 +163,73 @@ namespace WMS.Controllers.WebAPI
             serials.ProductId = submitPalletSerial.ProductId;
             serials.OrderId = submitPalletSerial.OrderId;
             serials.deliveryNumber = GaneStaticAppExtensions.GenerateDateRandomNo();
-            serials.OrderDetailID = new int?(submitPalletSerial.OrderDetailID);
+            serials.OrderDetailID = submitPalletSerial.OrderDetailID;
             serials.tenantId = shopId;
             serials.warehouseId = shopId;
             serials.userId = submitPalletSerial.UserId;
-            serials.InventoryTransactionType = new InventoryTransactionTypeEnum?(submitPalletSerial.InventoryTransactionType);
-            return (IHttpActionResult)this.Ok<int>(this._purchaseOrderService.ProcessPalletTrackingSerial(serials));
+            serials.InventoryTransactionType = submitPalletSerial.InventoryTransactionType;
+            var ordernumber = OrderService.GetOrderById(submitPalletSerial.OrderId).OrderNumber;
+            this._purchaseOrderService.ProcessPalletTrackingSerial(serials);
+            return Ok(ordernumber);
+        }
+        [HttpPost]
+        public IHttpActionResult PostOrderProcessSimple(OrderProcessFull OrderProcessFull)
+        {
+            InventoryTransaction model = new InventoryTransaction();
+            model.TenentId = 1;
+            model.WarehouseId = OrderProcessFull.ShopId;
+            model.CreatedBy = OrderProcessFull.UserId;
+            model.OrderID = new int?(OrderProcessFull.OrderId);
+            model.ProductId = OrderProcessFull.ProductId;
+            model.Quantity = OrderProcessFull.Quantity;
+            int num = 2;
+            int? cons_type = new int?();
+            string delivery = GaneStaticAppExtensions.GenerateDateRandomNo().ToString();
+            Inventory.StockTransaction(model, (InventoryTransactionTypeEnum)num, cons_type, delivery, new int?(OrderProcessFull.OrderDetailId));
+            return (IHttpActionResult)this.Ok<bool>(true);
         }
 
+        public IHttpActionResult GetSalesOrders(string orderNumber)
+        {
+            var orders = OrderService.GetAllOrdersByTenantId(tenantId: 1).Where(u => (string.IsNullOrEmpty(orderNumber) || u.OrderNumber == orderNumber) && u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder).OrderByDescending(u => u.OrderID).Take(10).Select(u => new
+            {
+                u.OrderID,
+                u.OrderNumber,
+                u.Account.CompanyName,
+                u.Account.AccountCode
 
 
+            }).ToList();
+            return Ok(orders);
+        }
+
+        [HttpGet]
+        public IHttpActionResult CanAutoComplete(int orderId, int userId)
+        {
+            OrderService.UpdateOrderStatus(orderId, OrderStatusEnum.Complete,userId);
+            return Ok(true);
+        }
+
+        
+        //[HttpPost]
+        //public async IHttpActionResult SavePalletsDispatch(PalletDispatchViewModel model)
+        //{
+        //    ViewBag.ControllerName = "Pallets";
+        //    if (Session["UploadedPalletEvidences"] != null)
+        //    {
+        //        var filelist = Session["UploadedPalletEvidences"] as List<string>;
+        //        model.ProofOfDeliveryImageFilenames = string.Join(",", filelist);
+        //    }
+        //    else
+        //    {
+        //        model.ProofOfDeliveryImageFilenames = "";
+        //    }
+        //    var result = await _palletingService.DispatchPallets(model, CurrentUserId);
+        //    if (!string.IsNullOrEmpty(result))
+        //    {
+        //        TempData["Error"] = result;
+        //    }
+        //    return RedirectToAction("Index", "Pallets");
+        //}
     }
 }

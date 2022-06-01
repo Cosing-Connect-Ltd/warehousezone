@@ -128,9 +128,8 @@ namespace Ganedata.Core.Entities.Domain
         public double Depth { get; set; }
 
         [Display(Name = "Weight")]
-        [Required]
-        [Range(0, 100000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public double Weight { get; set; }
+      
+        public double? Weight { get; set; }
 
         [Display(Name = "Tax")]
         public int TaxID { get; set; }

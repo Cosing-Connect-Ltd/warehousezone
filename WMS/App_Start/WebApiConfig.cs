@@ -10,7 +10,7 @@ namespace WMS
             EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
             config.MapHttpAttributeRoutes();
-           
+
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects; config.Formatters.Remove(config.Formatters.XmlFormatter);
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
@@ -27,7 +27,7 @@ namespace WMS
             config.Routes.MapHttpRoute("ProductInfoBySerial", "api/product/serial-details", new { controller = "ApiOrdersSync", action = "VerifyProductInfoBySerial" });
             //Handheld Api's
             //config.Routes.MapHttpRoute("EmailSchedulerApi", "api/warehouse-emails/send-notifications", new { controller = "ApiWarehouseSync", action = "SendOutEmailNotificationsFromQueue" });
-             //Handheld Api's
+            //Handheld Api's
             config.Routes.MapHttpRoute("UsersSync", "api/sync/users/{reqDate}/{serialNo}", new { controller = "ApiTerminalUserSync", action = "GetUsers", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountsSync", "api/sync/accounts/{reqDate}/{serialNo}", new { controller = "ApiAccountSync", action = "GetAccounts", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountsSyncResetPassword", "api/user/reset-password", new { controller = "ApiAccountSync", action = "AccountResetPassword" });
@@ -133,28 +133,41 @@ namespace WMS
             config.Routes.MapHttpRoute("StripePaymentsCharge", "api/stripe/charge-order", new { controller = "ApiStripePayments", action = "Charge" });
             config.Routes.MapHttpRoute("StripePaymentsWebhook", "api/stripe/chargehook", new { controller = "ApiStripePayments", action = "WebhookReceive" });
             config.Routes.MapHttpRoute("GetOrderProcessesByOrderNumber", "api/get-order-processes/{shopId}/{orderNumber}", new { controller = "ApiOrderProcessesSync", action = "GetOrderProcessesByOrderNumber", shopId = string.Empty, orderNumber = string.Empty });
-           
+
             //mobile app
             config.Routes.MapHttpRoute("PostUserLoginStatuss", "api/sync/get-login-status-new", new { controller = "ApiTerminalUserSync", action = "GetUserLoginStatusNew" });
-            config.Routes.MapHttpRoute("OrdersSyncNew", "api/sync/orders/{orderId}/{shopId}/{orderNumber}",new{controller = "ApiOrdersSync",action = "GetOrderss",orderId = string.Empty,shopId = string.Empty,orderNumber = string.Empty
-            });
-            config.Routes.MapHttpRoute("ProductsSyncNew", "api/sync/products-new/{shopId}", new{controller = "ApiProductSync",
-                action = "GetProducts",
-                shopId = string.Empty
-            });
-            config.Routes.MapHttpRoute("VeriyPallets", "api/verify-pallet/{serial}/{productId}/{shopId}", (object)new
+            config.Routes.MapHttpRoute("OrdersSyncNew", "api/sync/orders/{orderId}/{shopId}/{orderNumber}", new { controller = "ApiOrdersSync", action = "GetOrderss", orderId = string.Empty, shopId = string.Empty, orderNumber = string.Empty });
+            config.Routes.MapHttpRoute("ProductsSyncNew", "api/sync/products-new/{shopId}", new { controller = "ApiProductSync", action = "GetProducts", shopId = string.Empty });
+            config.Routes.MapHttpRoute("VeriyPallets", "api/verify-pallet/{serial}/{productId}/{shopId}", new { controller = "ApiPallettrackingSync", action = "VerifyPallet", serial = string.Empty, productId = string.Empty, shopId = string.Empty });
+            config.Routes.MapHttpRoute("SubmitPalleteSerials", "api/submit-pallets", new { controller = "ApiPallettrackingSync", action = "SubmitPalleteSerials" });
+            config.Routes.MapHttpRoute("PostOrderSimple", "api/submit-simple-product", new { controller = "ApiPallettrackingSync", action = "PostOrderProcessSimple" });
+            config.Routes.MapHttpRoute("CreateNewPallet", "api/create-pallete", new { controller = "ApiPalletsSync", action = "CreatePalletAndGetList" });
+            config.Routes.MapHttpRoute("AddPalletProducts", "api/add-pallet-product", new { controller = "ApiPalletsSync", action = "AddProcessedProductsToPallet" });
+            config.Routes.MapHttpRoute("RemovePalletProducts", "api/remove-pallet-product", new { controller = "ApiPalletsSync", action = "RemovePalletProduct" });
+            config.Routes.MapHttpRoute("OrdersNew", "api/sync/salesorders/{orderNumber}", new { controller = "ApiPallettrackingSync", action = "GetSalesOrders", orderNumber = string.Empty });
+            config.Routes.MapHttpRoute("AutoCompleteOrder", "api/can-auto-complete/{orderId}/{userId}", (object)new
             {
                 controller = "ApiPallettrackingSync",
-                action = "VerifyPallet",
-                serial = string.Empty,
+                action = "CanAutoComplete",
+                orderId = string.Empty,
+                userId = string.Empty
+            });
+
+            config.Routes.MapHttpRoute("GetTopFiveActivePalletSerial", "api/get-active-pallets/{productId}", (object)new
+            {
+                controller = "ApiPalletsSync",
+                action = "GetTopFiveActivePallets",
                 productId = string.Empty,
-                shopId = string.Empty
             });
-            config.Routes.MapHttpRoute("SubmitPalleteSerials", "api/submit-pallets", (object)new
+
+            config.Routes.MapHttpRoute("PalletDispatchesMethod", "api/dispatch-pallets/{orderProcessId}/{userId}", (object)new
             {
-                controller = "ApiPallettrackingSync",
-                action = "SubmitPalleteSerials"
-            }); 
+                controller = "ApiPalletsSync",
+                action = "SavePalletsDispatch",
+                orderProcessId = string.Empty,
+                userId = string.Empty
+            });
+
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
@@ -167,7 +180,8 @@ namespace WMS
                 routeTemplate: "iclock/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-           
+
+
         }
     }
 }

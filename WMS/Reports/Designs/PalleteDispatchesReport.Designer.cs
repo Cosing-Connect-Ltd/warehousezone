@@ -106,6 +106,10 @@
             DevExpress.DataAccess.Sql.Column column29 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression29 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Table table10 = new DevExpress.DataAccess.Sql.Table();
+            DevExpress.DataAccess.Sql.Column column30 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression30 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Column column31 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression31 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.Join join3 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo3 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
@@ -122,12 +126,14 @@
             DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo9 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PalleteDispatchesReport));
+            DevExpress.XtraReports.UI.XRSummary xrSummary1 = new DevExpress.XtraReports.UI.XRSummary();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.xrTable1 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow1 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell1 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell12 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell2 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell3 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell4 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -157,13 +163,18 @@
             this.xrTable2 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell7 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell13 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell8 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell9 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell10 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell11 = new DevExpress.XtraReports.UI.XRTableCell();
             this.lblQuantity = new DevExpress.XtraReports.UI.XRTableCell();
+            this.GroupHeader1 = new DevExpress.XtraReports.UI.GroupHeaderBand();
+            this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.calculatedField1 = new DevExpress.XtraReports.UI.CalculatedField();
             this.calculatedField2 = new DevExpress.XtraReports.UI.CalculatedField();
+            this.calculatedField3 = new DevExpress.XtraReports.UI.CalculatedField();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -175,7 +186,7 @@
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 40F;
+            this.BottomMargin.HeightF = 1F;
             this.BottomMargin.Name = "BottomMargin";
             // 
             // Detail
@@ -199,14 +210,14 @@
             this.xrLabel6,
             this.xrLabel8,
             this.xrLabel7});
-            this.Detail.HeightF = 599.6255F;
+            this.Detail.HeightF = 610.4584F;
             this.Detail.Name = "Detail";
             // 
             // xrTable1
             // 
             this.xrTable1.BackColor = System.Drawing.Color.Gainsboro;
             this.xrTable1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold);
-            this.xrTable1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 570.3334F);
+            this.xrTable1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 584.0001F);
             this.xrTable1.Name = "xrTable1";
             this.xrTable1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
             this.xrTable1.ProcessHiddenCellMode = DevExpress.XtraReports.UI.ProcessHiddenCellMode.StretchPreviousCell;
@@ -222,6 +233,7 @@
             // 
             this.xrTableRow1.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
             this.xrTableCell1,
+            this.xrTableCell12,
             this.xrTableCell2,
             this.xrTableCell3,
             this.xrTableCell4,
@@ -235,14 +247,21 @@
             this.xrTableCell1.Multiline = true;
             this.xrTableCell1.Name = "xrTableCell1";
             this.xrTableCell1.Text = "SKU";
-            this.xrTableCell1.Weight = 0.99026300768480335D;
+            this.xrTableCell1.Weight = 1.1468227187933362D;
+            // 
+            // xrTableCell12
+            // 
+            this.xrTableCell12.Multiline = true;
+            this.xrTableCell12.Name = "xrTableCell12";
+            this.xrTableCell12.Text = "Weight";
+            this.xrTableCell12.Weight = 0.91295660862901029D;
             // 
             // xrTableCell2
             // 
             this.xrTableCell2.Multiline = true;
             this.xrTableCell2.Name = "xrTableCell2";
             this.xrTableCell2.Text = "Name";
-            this.xrTableCell2.Weight = 2.7000510721699671D;
+            this.xrTableCell2.Weight = 2.7184969484593382D;
             // 
             // xrTableCell3
             // 
@@ -251,7 +270,7 @@
             this.xrTableCell3.Multiline = true;
             this.xrTableCell3.Name = "xrTableCell3";
             this.xrTableCell3.Text = "Prd Grp";
-            this.xrTableCell3.Weight = 0.83604098614763189D;
+            this.xrTableCell3.Weight = 0.80213476368798986D;
             // 
             // xrTableCell4
             // 
@@ -259,28 +278,28 @@
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([PalletsPalletProducts].[EnableTimberProperties]==true,\'ID\',\'\')")});
             this.xrTableCell4.Multiline = true;
             this.xrTableCell4.Name = "xrTableCell4";
-            this.xrTableCell4.Weight = 0.59253702754120929D;
+            this.xrTableCell4.Weight = 0.665683838015295D;
             // 
             // xrTableCell5
             // 
             this.xrTableCell5.Multiline = true;
             this.xrTableCell5.Name = "xrTableCell5";
             this.xrTableCell5.Text = "Orig";
-            this.xrTableCell5.Weight = 0.48700693242621862D;
+            this.xrTableCell5.Weight = 0.52919388046764138D;
             // 
             // xrTableCell6
             // 
             this.xrTableCell6.Multiline = true;
             this.xrTableCell6.Name = "xrTableCell6";
             this.xrTableCell6.Text = "QTY";
-            this.xrTableCell6.Weight = 0.50319333585902681D;
+            this.xrTableCell6.Weight = 0.60815719177631933D;
             // 
             // xrBarCode2
             // 
             this.xrBarCode2.AutoModule = true;
             this.xrBarCode2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PalletNumber]")});
-            this.xrBarCode2.LocationFloat = new DevExpress.Utils.PointFloat(237.9519F, 355.5002F);
+            this.xrBarCode2.LocationFloat = new DevExpress.Utils.PointFloat(237.9519F, 343.5002F);
             this.xrBarCode2.Module = 1.3F;
             this.xrBarCode2.Name = "xrBarCode2";
             this.xrBarCode2.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 0, 0, 100F);
@@ -290,7 +309,7 @@
             // xrLabel18
             // 
             this.xrLabel18.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel18.LocationFloat = new DevExpress.Utils.PointFloat(0F, 228.3336F);
+            this.xrLabel18.LocationFloat = new DevExpress.Utils.PointFloat(0F, 216.3336F);
             this.xrLabel18.Name = "xrLabel18";
             this.xrLabel18.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel18.SizeF = new System.Drawing.SizeF(237.9518F, 56.25002F);
@@ -304,7 +323,7 @@
             this.xrLabel19.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PalletsPalletProducts].[ShipmentAddressLine1]")});
             this.xrLabel19.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel19.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 228.3336F);
+            this.xrLabel19.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 216.3336F);
             this.xrLabel19.Name = "xrLabel19";
             this.xrLabel19.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel19.SizeF = new System.Drawing.SizeF(546.0482F, 56.24998F);
@@ -359,7 +378,7 @@
             // xrLabel3
             // 
             this.xrLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0F, 499.4167F);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0F, 487.4167F);
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel3.SizeF = new System.Drawing.SizeF(237.9518F, 70.91656F);
@@ -373,10 +392,10 @@
             this.xrLabel4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DispatchReference]")});
             this.xrLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 499.4168F);
+            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 489.4168F);
             this.xrLabel4.Name = "xrLabel4";
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel4.SizeF = new System.Drawing.SizeF(546.0482F, 70.9166F);
+            this.xrLabel4.SizeF = new System.Drawing.SizeF(546.0482F, 68.91635F);
             this.xrLabel4.StylePriority.UseFont = false;
             this.xrLabel4.StylePriority.UseTextAlignment = false;
             this.xrLabel4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -395,7 +414,7 @@
             this.xrLabel53.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CompanyName]")});
             this.xrLabel53.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel53.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 164.7086F);
+            this.xrLabel53.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 152.7086F);
             this.xrLabel53.Name = "xrLabel53";
             this.xrLabel53.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel53.SizeF = new System.Drawing.SizeF(546.0482F, 63.62495F);
@@ -407,7 +426,7 @@
             // xrLabel52
             // 
             this.xrLabel52.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel52.LocationFloat = new DevExpress.Utils.PointFloat(0F, 164.7086F);
+            this.xrLabel52.LocationFloat = new DevExpress.Utils.PointFloat(0F, 152.7086F);
             this.xrLabel52.Name = "xrLabel52";
             this.xrLabel52.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel52.SizeF = new System.Drawing.SizeF(237.9518F, 63.62489F);
@@ -436,7 +455,7 @@
             // xrLabel2
             // 
             this.xrLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 284.5836F);
+            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 272.5836F);
             this.xrLabel2.Name = "xrLabel2";
             this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel2.SizeF = new System.Drawing.SizeF(237.9518F, 70.91655F);
@@ -450,7 +469,7 @@
             this.xrLabel1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[AccountCode]")});
             this.xrLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 284.5836F);
+            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 272.5836F);
             this.xrLabel1.Name = "xrLabel1";
             this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel1.SizeF = new System.Drawing.SizeF(546.0482F, 70.91666F);
@@ -462,7 +481,7 @@
             // xrLabel6
             // 
             this.xrLabel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(0F, 355.5002F);
+            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(0F, 343.5002F);
             this.xrLabel6.Name = "xrLabel6";
             this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel6.SizeF = new System.Drawing.SizeF(237.9518F, 75.08321F);
@@ -476,7 +495,7 @@
             this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TrackingReference]")});
             this.xrLabel8.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 430.5835F);
+            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 418.5835F);
             this.xrLabel8.Name = "xrLabel8";
             this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel8.SizeF = new System.Drawing.SizeF(546.0482F, 68.83331F);
@@ -488,7 +507,7 @@
             // xrLabel7
             // 
             this.xrLabel7.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(0F, 430.5833F);
+            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(0F, 418.5833F);
             this.xrLabel7.Name = "xrLabel7";
             this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel7.SizeF = new System.Drawing.SizeF(237.9518F, 68.83325F);
@@ -551,7 +570,8 @@
             queryParameter1.Name = "sqlParamDispatchId";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter1.Value = new DevExpress.DataAccess.Expression("?dispatchId", typeof(int));
-            selectQuery1.Parameters.Add(queryParameter1);
+            selectQuery1.Parameters.AddRange(new DevExpress.DataAccess.Sql.QueryParameter[] {
+            queryParameter1});
             relationColumnInfo1.NestedKeyColumn = "AccountID";
             relationColumnInfo1.ParentKeyColumn = "RecipientAccountID";
             join1.KeyColumns.Add(relationColumnInfo1);
@@ -568,7 +588,7 @@
             selectQuery1.Tables.Add(table2);
             selectQuery1.Tables.Add(table3);
             columnExpression10.ColumnName = "ProductID";
-            table4.MetaSerializable = "<Meta X=\"30\" Y=\"30\" Width=\"125\" Height=\"267\" />";
+            table4.MetaSerializable = "<Meta X=\"30\" Y=\"30\" Width=\"125\" Height=\"283\" />";
             table4.Name = "PalletProducts";
             columnExpression10.Table = table4;
             column10.Expression = columnExpression10;
@@ -582,7 +602,7 @@
             columnExpression13.Table = table4;
             column13.Expression = columnExpression13;
             columnExpression14.ColumnName = "SKUCode";
-            table5.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"1293\" />";
+            table5.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"1523\" />";
             table5.Name = "ProductMaster";
             columnExpression14.Table = table5;
             column14.Expression = columnExpression14;
@@ -593,7 +613,7 @@
             columnExpression16.Table = table5;
             column16.Expression = columnExpression16;
             columnExpression17.ColumnName = "OrderNumber";
-            table6.MetaSerializable = "<Meta X=\"390\" Y=\"40\" Width=\"125\" Height=\"1369\" />";
+            table6.MetaSerializable = "<Meta X=\"390\" Y=\"40\" Width=\"125\" Height=\"1963\" />";
             table6.Name = "Orders";
             columnExpression17.Table = table6;
             column17.Expression = columnExpression17;
@@ -622,25 +642,31 @@
             columnExpression25.Table = table5;
             column25.Expression = columnExpression25;
             columnExpression26.ColumnName = "ID";
-            table7.MetaSerializable = "<Meta X=\"545\" Y=\"30\" Width=\"125\" Height=\"362\" />";
+            table7.MetaSerializable = "<Meta X=\"545\" Y=\"30\" Width=\"125\" Height=\"423\" />";
             table7.Name = "OrderProcessDetails";
             columnExpression26.Table = table7;
             column26.Expression = columnExpression26;
             columnExpression27.ColumnName = "ProductGroup";
-            table8.MetaSerializable = "<Meta X=\"700\" Y=\"30\" Width=\"125\" Height=\"286\" />";
+            table8.MetaSerializable = "<Meta X=\"700\" Y=\"30\" Width=\"125\" Height=\"303\" />";
             table8.Name = "ProductGroups";
             columnExpression27.Table = table8;
             column27.Expression = columnExpression27;
             columnExpression28.ColumnName = "EnableTimberProperties";
-            table9.MetaSerializable = "<Meta X=\"855\" Y=\"30\" Width=\"125\" Height=\"1027\" />";
+            table9.MetaSerializable = "<Meta X=\"855\" Y=\"30\" Width=\"125\" Height=\"1563\" />";
             table9.Name = "TenantConfigs";
             columnExpression28.Table = table9;
             column28.Expression = columnExpression28;
             columnExpression29.ColumnName = "PalletsDispatchID";
-            table10.MetaSerializable = "<Meta X=\"1010\" Y=\"30\" Width=\"125\" Height=\"400\" />";
+            table10.MetaSerializable = "<Meta X=\"1010\" Y=\"30\" Width=\"125\" Height=\"423\" />";
             table10.Name = "Pallets";
             columnExpression29.Table = table10;
             column29.Expression = columnExpression29;
+            columnExpression30.ColumnName = "Weight";
+            columnExpression30.Table = table5;
+            column30.Expression = columnExpression30;
+            columnExpression31.ColumnName = "CasesPerPallet";
+            columnExpression31.Table = table5;
+            column31.Expression = columnExpression31;
             selectQuery2.Columns.Add(column10);
             selectQuery2.Columns.Add(column11);
             selectQuery2.Columns.Add(column12);
@@ -661,15 +687,18 @@
             selectQuery2.Columns.Add(column27);
             selectQuery2.Columns.Add(column28);
             selectQuery2.Columns.Add(column29);
-            selectQuery2.FilterString = "[PalletProducts.IsDeleted] <> True Or [PalletProducts.IsDeleted] Is Null Or [Pall" +
-    "ets.PalletsDispatchID] = ?dispatchId";
+            selectQuery2.Columns.Add(column30);
+            selectQuery2.Columns.Add(column31);
+            selectQuery2.FilterString = "[Pallets.PalletsDispatchID] = ?dispatchId And [PalletProducts.Quantity] > 0.0m An" +
+    "d ([PalletProducts.IsDeleted] = False Or [PalletProducts.IsDeleted] Is Null)";
             selectQuery2.GroupFilterString = "";
             selectQuery2.MetaSerializable = "<Meta X=\"260\" Y=\"20\" Width=\"220\" Height=\"292\" />";
             selectQuery2.Name = "PalletProducts";
             queryParameter2.Name = "dispatchId";
             queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter2.Value = new DevExpress.DataAccess.Expression("?dispatchId", typeof(int));
-            selectQuery2.Parameters.Add(queryParameter2);
+            selectQuery2.Parameters.AddRange(new DevExpress.DataAccess.Sql.QueryParameter[] {
+            queryParameter2});
             relationColumnInfo3.NestedKeyColumn = "ProductId";
             relationColumnInfo3.ParentKeyColumn = "ProductID";
             join3.KeyColumns.Add(relationColumnInfo3);
@@ -685,25 +714,25 @@
             join5.KeyColumns.Add(relationColumnInfo5);
             join5.Nested = table7;
             join5.Parent = table4;
-            join5.Type = DevExpress.Xpo.DB.JoinType.LeftOuter;
+            join5.SqlJoinType = ((DevExpress.DataAccess.Sql.SqlJoinType)(DevExpress.DataAccess.Sql.SqlJoinType.LeftOuter));
             relationColumnInfo6.NestedKeyColumn = "TenantId";
             relationColumnInfo6.ParentKeyColumn = "TenantId";
             join6.KeyColumns.Add(relationColumnInfo6);
             join6.Nested = table9;
             join6.Parent = table5;
-            join6.Type = DevExpress.Xpo.DB.JoinType.LeftOuter;
+            join6.SqlJoinType = ((DevExpress.DataAccess.Sql.SqlJoinType)(DevExpress.DataAccess.Sql.SqlJoinType.LeftOuter));
             relationColumnInfo7.NestedKeyColumn = "ProductGroupId";
             relationColumnInfo7.ParentKeyColumn = "ProductGroupId";
             join7.KeyColumns.Add(relationColumnInfo7);
             join7.Nested = table8;
             join7.Parent = table5;
-            join7.Type = DevExpress.Xpo.DB.JoinType.LeftOuter;
+            join7.SqlJoinType = ((DevExpress.DataAccess.Sql.SqlJoinType)(DevExpress.DataAccess.Sql.SqlJoinType.LeftOuter));
             relationColumnInfo8.NestedKeyColumn = "PalletID";
             relationColumnInfo8.ParentKeyColumn = "PalletID";
             join8.KeyColumns.Add(relationColumnInfo8);
             join8.Nested = table10;
             join8.Parent = table4;
-            join8.Type = DevExpress.Xpo.DB.JoinType.LeftOuter;
+            join8.SqlJoinType = ((DevExpress.DataAccess.Sql.SqlJoinType)(DevExpress.DataAccess.Sql.SqlJoinType.LeftOuter));
             selectQuery2.Relations.Add(join3);
             selectQuery2.Relations.Add(join4);
             selectQuery2.Relations.Add(join5);
@@ -739,7 +768,8 @@
             // DetailReport
             // 
             this.DetailReport.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
-            this.Detail1});
+            this.Detail1,
+            this.GroupHeader1});
             this.DetailReport.DataMember = "Pallets.PalletsPalletProducts";
             this.DetailReport.DataSource = this.sqlDataSource1;
             this.DetailReport.Level = 0;
@@ -750,7 +780,7 @@
             // 
             this.Detail1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrTable2});
-            this.Detail1.HeightF = 27.99689F;
+            this.Detail1.HeightF = 27.78854F;
             this.Detail1.Name = "Detail1";
             // 
             // xrTable2
@@ -770,6 +800,7 @@
             // 
             this.xrTableRow2.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
             this.xrTableCell7,
+            this.xrTableCell13,
             this.xrTableCell8,
             this.xrTableCell9,
             this.xrTableCell10,
@@ -785,7 +816,17 @@
             this.xrTableCell7.Multiline = true;
             this.xrTableCell7.Name = "xrTableCell7";
             this.xrTableCell7.Text = "xrTableCell7";
-            this.xrTableCell7.Weight = 0.99026289804960188D;
+            this.xrTableCell7.Weight = 1.1026967365343889D;
+            // 
+            // xrTableCell13
+            // 
+            this.xrTableCell13.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([CasesPerPallet]*[Weight]>0,([CasesPerPallet]*[Weight])+\'Kg\',\'-\')\n")});
+            this.xrTableCell13.Multiline = true;
+            this.xrTableCell13.Name = "xrTableCell13";
+            this.xrTableCell13.Text = "xrTableCell13";
+            this.xrTableCell13.TextFormatString = "{0:#.00}";
+            this.xrTableCell13.Weight = 0.87782905956481472D;
             // 
             // xrTableCell8
             // 
@@ -793,7 +834,7 @@
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Name]")});
             this.xrTableCell8.Name = "xrTableCell8";
             this.xrTableCell8.Text = "xrTableCell8";
-            this.xrTableCell8.Weight = 2.7000505206732428D;
+            this.xrTableCell8.Weight = 2.613897235348702D;
             this.xrTableCell8.WordWrap = false;
             // 
             // xrTableCell9
@@ -802,7 +843,7 @@
             this.xrTableCell9.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([EnableTimberProperties]==true,[ProductGroup],\'\')")});
             this.xrTableCell9.Name = "xrTableCell9";
-            this.xrTableCell9.Weight = 0.83604081080376269D;
+            this.xrTableCell9.Weight = 0.77127171494924063D;
             this.xrTableCell9.WordWrap = false;
             this.xrTableCell9.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrTableCell9_BeforePrint);
             // 
@@ -813,7 +854,7 @@
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([EnableTimberProperties]==true,[ID],\'\')")});
             this.xrTableCell10.Multiline = true;
             this.xrTableCell10.Name = "xrTableCell10";
-            this.xrTableCell10.Weight = 0.59253779318278832D;
+            this.xrTableCell10.Weight = 0.640070442528224D;
             this.xrTableCell10.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrTableCell10_BeforePrint);
             // 
             // xrTableCell11
@@ -823,7 +864,7 @@
             this.xrTableCell11.Multiline = true;
             this.xrTableCell11.Name = "xrTableCell11";
             this.xrTableCell11.Text = "xrTableCell11";
-            this.xrTableCell11.Weight = 0.48700687693363581D;
+            this.xrTableCell11.Weight = 0.50883218336162317D;
             // 
             // lblQuantity
             // 
@@ -832,7 +873,48 @@
             this.lblQuantity.Multiline = true;
             this.lblQuantity.Name = "lblQuantity";
             this.lblQuantity.Text = "lblQuantity";
-            this.lblQuantity.Weight = 0.503193453538462D;
+            this.lblQuantity.Weight = 0.584757878944102D;
+            // 
+            // GroupHeader1
+            // 
+            this.GroupHeader1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel9,
+            this.xrLabel5});
+            this.GroupHeader1.GroupFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
+            new DevExpress.XtraReports.UI.GroupField("PalletID", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
+            this.GroupHeader1.HeightF = 27.29155F;
+            this.GroupHeader1.KeepTogether = true;
+            this.GroupHeader1.Name = "GroupHeader1";
+            // 
+            // xrLabel9
+            // 
+            this.xrLabel9.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(1.000004F, 0F);
+            this.xrLabel9.Multiline = true;
+            this.xrLabel9.Name = "xrLabel9";
+            this.xrLabel9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel9.SizeF = new System.Drawing.SizeF(143.2609F, 25.45827F);
+            this.xrLabel9.StylePriority.UseFont = false;
+            this.xrLabel9.StylePriority.UseTextAlignment = false;
+            this.xrLabel9.Text = "Total Weight:";
+            this.xrLabel9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrLabel5
+            // 
+            this.xrLabel5.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "iif(sum([Weight]*[CasesPerPallet])>0,sum([Weight]*[CasesPerPallet]) +\'Kg\',\'-\') ")});
+            this.xrLabel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(147.261F, 0F);
+            this.xrLabel5.Multiline = true;
+            this.xrLabel5.Name = "xrLabel5";
+            this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel5.SizeF = new System.Drawing.SizeF(154.2325F, 25.45825F);
+            this.xrLabel5.StylePriority.UseFont = false;
+            this.xrLabel5.StylePriority.UseTextAlignment = false;
+            xrSummary1.Running = DevExpress.XtraReports.UI.SummaryRunning.Group;
+            this.xrLabel5.Summary = xrSummary1;
+            this.xrLabel5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrLabel5.TextFormatString = "{0:#.00}";
             // 
             // calculatedField1
             // 
@@ -848,6 +930,13 @@
             this.calculatedField2.Expression = "[DataSource.RowCount]";
             this.calculatedField2.Name = "calculatedField2";
             // 
+            // calculatedField3
+            // 
+            this.calculatedField3.DataMember = "PalletProducts";
+            this.calculatedField3.DisplayName = "WeightKG";
+            this.calculatedField3.Expression = "Iif([CasesPerPallet]*[Weight]>0,([CasesPerPallet]*[Weight])+\'Kg\',\'-\')\n";
+            this.calculatedField3.Name = "calculatedField3";
+            // 
             // PalleteDispatchesReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -857,20 +946,21 @@
             this.DetailReport});
             this.CalculatedFields.AddRange(new DevExpress.XtraReports.UI.CalculatedField[] {
             this.calculatedField1,
-            this.calculatedField2});
+            this.calculatedField2,
+            this.calculatedField3});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sqlDataSource1});
             this.DataMember = "Pallets";
             this.DataSource = this.sqlDataSource1;
             this.FilterString = "[PalletsDispatchID] = ?dispatchId";
             this.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.Margins = new System.Drawing.Printing.Margins(21, 22, 10, 40);
+            this.Margins = new System.Drawing.Printing.Margins(19, 19, 10, 1);
             this.PageHeight = 1169;
             this.PageWidth = 827;
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.dispatchId});
-            this.Version = "19.2";
+            this.Version = "21.2";
             this.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.PalleteDispatchesReport_BeforePrint);
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
@@ -922,5 +1012,11 @@
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell10;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell11;
         public DevExpress.XtraReports.UI.XRTableCell lblQuantity;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell12;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell13;
+        private DevExpress.XtraReports.UI.CalculatedField calculatedField3;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel5;
+        private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeader1;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel9;
     }
 }
