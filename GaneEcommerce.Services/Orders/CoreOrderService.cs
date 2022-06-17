@@ -229,6 +229,10 @@ namespace Ganedata.Core.Services
         {
             return OrderService.SaveOrderDetail(podetail, tenantId, userId);
         }
+        public OrderDetail SaveOrderDetailAdmin(OrderDetail podetail, int tenantId, int userId, decimal priceTobeChanged)
+        {
+            return OrderService.SaveOrderDetailAdmin(podetail, tenantId, userId, priceTobeChanged);
+        }
 
         public void RemoveOrderDetail(int orderDetailId, int tenantId, int userId)
         {

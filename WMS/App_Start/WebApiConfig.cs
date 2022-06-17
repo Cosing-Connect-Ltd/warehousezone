@@ -160,7 +160,7 @@ namespace WMS
                 productId = string.Empty,
             });
 
-            config.Routes.MapHttpRoute("PalletDispatchesMethod", "api/dispatch-pallets/{orderProcessId}/{userId}", (object)new
+            config.Routes.MapHttpRoute("PalletDispatchesMethod", "api/dispatch-pallets/{orderProcessId}/{userId}/{markCompleted}", (object)new
             {
                 controller = "ApiPalletsSync",
                 action = "SavePalletsDispatch",
@@ -168,6 +168,8 @@ namespace WMS
                 userId = string.Empty
             });
 
+            config.Routes.MapHttpRoute("SalesOrderByPaging", "api/Get-all-active-saleorders", new { controller = "ApiOrdersSync", action = "GetSalesOrderByPagination" });
+            
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

@@ -304,7 +304,7 @@ namespace WMS.Controllers.WebAPI
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> SavePalletsDispatch(int orderProcessId, int userId)
+        public async Task<IHttpActionResult> SavePalletsDispatch(int orderProcessId, int userId,bool markCompleted)
         {
             var orderProcess = OrderService.GetOrderProcessByOrderProcessId(orderProcessId);
             var dispatchModel = new PalletDispatchViewModel
@@ -312,7 +312,8 @@ namespace WMS.Controllers.WebAPI
                 DeliveryMethod = orderProcess.Order.DeliveryMethod,
                 NetworkCode = orderProcess.Order.TenantDeliveryService?.NetworkCode,
                 DispatchRefrenceNumber = GaneStaticAppExtensions.GenerateDateRandomNo(),
-                OrderProcessId = orderProcessId
+                OrderProcessId = orderProcessId,
+                MarkCompleted=markCompleted
             };
 
             var result = await _palletService.DispatchPallets(dispatchModel, userId);

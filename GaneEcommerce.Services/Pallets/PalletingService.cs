@@ -259,6 +259,10 @@ namespace Ganedata.Core.Services
                     }
                     if (orderProcess != null)
                     {
+                        if (dispatch.MarkCompleted)
+                        {
+                            orderProcess.Order.OrderStatusID = OrderStatusEnum.Complete;
+                        }
                         orderProcess.OrderProcessStatusId = OrderProcessStatusEnum.Dispatched;
                         orderProcess.DateUpdated = DateTime.UtcNow;
                         orderProcess.UpdatedBy = userId;
@@ -606,7 +610,9 @@ namespace Ganedata.Core.Services
                     palletproduct.IsDeleted = true;
                     palletproduct.DateUpdated = DateTime.UtcNow;
                     palletproduct.UpdatedBy = userId;
+                    palletproduct.Pallet.DateCompleted = null;
                     _currentDbContext.PalletProducts.Attach(palletproduct);
+                    
                     _currentDbContext.Entry(palletproduct).State = EntityState.Modified;
                     _currentDbContext.SaveChanges();
                     palletId = palletproduct.PalletID;

@@ -56,6 +56,8 @@ namespace Ganedata.Core.Services
         List<OrderDetail> GetOrderDetailsForProduct(int orderId, int productId, int TenantId);
 
         OrderDetail SaveOrderDetail(OrderDetail podetail, int tenantId, int userId);
+
+        OrderDetail SaveOrderDetailAdmin(OrderDetail podetail, int tenantId, int userId, decimal priceTobeChanged);
         void RemoveOrderDetail(int orderDetailId, int tenantId, int userId);
         OrderDetail GetOrderDetailsById(int orderDetailId);
         List<OrderDetail> GetAllOrderDetailsForOrderAccount(int supplierAccountId, int poOrderId, int tenantId);

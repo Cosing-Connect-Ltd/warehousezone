@@ -23,6 +23,8 @@ namespace Ganedata.Core.Services
         InvoiceMaster SaveInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId);
         List<InvoiceProductPriceModel> GetInvoiceProductsPrices(int InvoiceMasterId, int[] productIds, int tenantId);
         InvoiceViewModel GetInvoicePreviewModelByOrderProcessId(int orderProcessId, caTenant tenant);
+        bool SaveInvoiceDetail(InvoiceDetail detail,int tenantId,int userId, decimal priceTobeChanged);
+        
 
         bool RemoveInvoice(int id, int userId,int tenantId);
     }

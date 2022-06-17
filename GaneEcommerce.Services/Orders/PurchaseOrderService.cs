@@ -1234,7 +1234,7 @@ namespace Ganedata.Core.Services
                             UpdatedBy = serials.userId,
 
                             ProductId = serials.ProductId,
-                            QtyProcessed = Inventory.GetUomQuantity(product.ProductId, (quantity * product.ProductsPerCase ?? 1)),
+                            QtyProcessed = Inventory.GetUomQuantity(product.ProductId, (quantity * (product.ProductsPerCase ?? 1))),
                             TenentId = serials.tenantId,
                             OrderProcessId = orderProcess.OrderProcessID,
                             OrderDetailID = serials.OrderDetailID,

@@ -944,6 +944,48 @@ namespace Ganedata.Core.Services
             return podetail;
         }
 
+        public OrderDetail SaveOrderDetailAdmin(OrderDetail podetail, int tenantId, int userId, decimal priceTobeChanged)
+        {
+            podetail.DateUpdated = DateTime.UtcNow;
+            podetail.TenentId = tenantId;
+            podetail.UpdatedBy = userId;
+            decimal total = 0;
+
+            if (podetail.OrderDetailID > 0)
+            {
+                podetail.IsDeleted = false;
+
+                var detail = _currentDbContext.OrderDetail.FirstOrDefault(c => c.OrderDetailID == podetail.OrderDetailID && c.Price == priceTobeChanged && c.IsDeleted != true);
+                if (detail != null)
+                {
+                    detail.ProductId = podetail.ProductId;
+                    detail.WarrantyID = podetail.WarrantyID;
+                    detail.Price = podetail.Price;
+                    detail.Qty = podetail.Qty;
+                    detail.TaxID = podetail.TaxID;
+                    detail.Notes = podetail.Notes;
+                    detail.UpdatedBy = userId;
+                    detail.DateUpdated = DateTime.UtcNow;
+                    detail.TaxAmount = podetail.TaxAmount;
+                    detail.TotalAmount = podetail.TotalAmount;
+                    _currentDbContext.Entry(detail).State = EntityState.Modified;
+                    podetail = detail;
+                    var po = _currentDbContext.Order.Find(podetail.OrderID);
+                    po.DateUpdated = DateTime.UtcNow;
+                    po.UpdatedBy = userId;
+                    po.OrderTotal = _currentDbContext.OrderDetail.Where(u => u.OrderID == podetail.OrderID).Select(u => u.TotalAmount).DefaultIfEmpty(0).Sum();
+                    po.OrderCost = po.OrderTotal;
+                    _currentDbContext.Entry(po).State = EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                }
+
+              
+            }
+          
+           
+            return podetail;
+        }
+
         public void RemoveOrderDetail(int orderDetailId, int tenantId, int userId)
         {
             var podetail = _currentDbContext.OrderDetail.Find(orderDetailId);
@@ -3419,7 +3461,7 @@ namespace Ganedata.Core.Services
                     {
                         pallet.IsDeleted = true;
                         _currentDbContext.Entry(pallet).State = EntityState.Modified;
-                        
+
                     }
                 }
             }
@@ -3708,7 +3750,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<Order> GetAllOrdersByTenantId(int tenantId)
         {
-           return _currentDbContext.Order.Where(m => m.TenentId == tenantId);
+            return _currentDbContext.Order.Where(m => m.TenentId == tenantId);
         }
 
 

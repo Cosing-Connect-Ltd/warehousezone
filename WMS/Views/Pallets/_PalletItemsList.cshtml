@@ -31,13 +31,12 @@
             column.Caption = "Actions";
             column.SetDataItemTemplateContent(m =>
             {
-                var DispatchStatus = (int?)DataBinder.Eval(m.DataItem, "Pallet.PalletsDispatchID");
-                if (DispatchStatus == null)
-                {
-                    var PalletProductId = (int)DataBinder.Eval(m.DataItem, "PalletProductID");
-                    var function = string.Format("DeletePalletProduct({0})", PalletProductId);
-                    ViewContext.Writer.Write("<a class='process-button fa fa fa-trash' href='javascript:" + function + ";'></a>");
-                }
+
+                var PalletProductId = (int)DataBinder.Eval(m.DataItem, "PalletProductID");
+                var PalletID = (int)DataBinder.Eval(m.DataItem, "PalletID");
+                var function = string.Format("DeletePalletProduct({0},{1})", PalletProductId, PalletID);
+                ViewContext.Writer.Write("<a class='process-button fa fa fa-trash' href='javascript:" + function + ";'></a>");
+
             });
         });
 

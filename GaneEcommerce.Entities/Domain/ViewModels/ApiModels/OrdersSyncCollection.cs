@@ -108,8 +108,9 @@ namespace Ganedata.Core.Models
         public List<OrderProcessLowStockItems> ProductsWithoutEnoughStock { get; set; }
     }
 
-    public class OrderProcessLowStockItems  {
-    
+    public class OrderProcessLowStockItems
+    {
+
         public int ProductId { get; set; }
         public decimal StockLevel { get; set; }
         public string ProductName { get; set; }
@@ -117,7 +118,7 @@ namespace Ganedata.Core.Models
 
     }
 
-    
+
     public class OrderDetailSync
     {
         public int OrderDetailID { get; set; }
@@ -170,6 +171,38 @@ namespace Ganedata.Core.Models
         public int OrderId { get; set; }
         public OrderStatusEnum StatusId { get; set; }
         public int UserId { get; set; }
+    }
+    public class PagingData
+    {
+        const int maxPageSize = 10;
+        public int PageNumber { get; set; } = 1;
+        private int _pageSize = 10;
+        public int PageSize
+        {
+            get
+            {
+                return _pageSize;
+            }
+            set
+            {
+                _pageSize = (value > maxPageSize) ? maxPageSize : value;
+            }
+        }
+        public int TotalCount { get; set; }
+        public int ShopId { get; set; }
+    }
+    public class OrderColumns { 
+    
+        public string OrderNumber { get; set; }
+        public string AccountCode { get; set; }
+        public string CompanyName { get; set; }
+
+    }
+    public class ReturnOrders
+    {
+        public int TotalCount { get; set; }
+        public List<OrderColumns> Orders { get; set; }
+
     }
 
 }

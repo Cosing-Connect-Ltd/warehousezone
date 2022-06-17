@@ -363,8 +363,7 @@ function DeletePalletProduct(PalletProductId) {
             success: function (data) {
                 LoadingPanel.Hide();
                 if (data) {
-
-                    PalletsListGridView1.Refresh();
+                    Gane.Pallets.UpdatePalletGenerator();
 
                 }
             }

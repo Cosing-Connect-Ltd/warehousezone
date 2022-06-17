@@ -413,7 +413,7 @@ namespace WMS.Controllers
             var archivablePallets = _currentDbContext.PalletTracking.Where(x => x.TenantId == CurrentTenantId &&
                                                                                 x.WarehouseId == CurrentWarehouseId &&
                                                                                 x.RemainingCases == 0 &&
-                                                                                (x.DateUpdated ?? x.DateCreated) < archiveDate && x.Status !=PalletTrackingStatusEnum.Archived).ToList();
+                                                                                (x.DateUpdated ?? x.DateCreated) < archiveDate && x.Status != PalletTrackingStatusEnum.Archived).ToList();
 
             int counter = 0;
             int remaining = archivablePallets.Count();
@@ -458,7 +458,7 @@ namespace WMS.Controllers
             ViewBag.Message = "Operation was Successful";
             ViewBag.Detail = $"Archiving {archivablePallets.Count()} and Removing {unusedPallets.Count()} old pallets operation was Completed Successfully; ";
 
-            
+
 
             return View("AdminUtilities");
 
@@ -737,6 +737,32 @@ namespace WMS.Controllers
 
             return View("AdminUtilities");
         }
+
+        public ActionResult UpdateProductPriceInAllRelatedTables(int productId, decimal priceTobeChanged,decimal priceTobeUpdated)
+        {
+
+            foreach (var item in _productServices.GetOrderDetailsByProductId(productId))
+            {
+                item.Price = priceTobeUpdated;
+                item.DateUpdated = DateTime.UtcNow;
+                item.TotalAmount = Math.Round((item.Qty * item.Price), 2);
+                item.TaxAmount = item.TaxAmount > 0 ? item.TaxName?.PercentageOfAmount == null ? 0 : Math.Round(((item.TotalAmount / 100) * item.TaxName.PercentageOfAmount), 2) : 0;
+                item.TotalAmount = item.TotalAmount + item.TaxAmount;
+                OrderService.SaveOrderDetailAdmin(item, CurrentTenantId, CurrentUserId, priceTobeChanged);
+            }
+            foreach (var item in _productServices.GetInvoiceDetailsByProductId(productId))
+            {
+                item.Price = priceTobeUpdated;
+                item.Total = Math.Round((priceTobeUpdated * item.Quantity), 2);
+                item.Tax = item.Tax > 0 ? item.GlobalTax?.PercentageOfAmount == null ? 0 : Math.Round(((item.Total / 100) * item.GlobalTax.PercentageOfAmount), 2) : 0;
+                item.NetAmount = item.Total + item.Tax;
+                _invoiceServices.SaveInvoiceDetail(item, CurrentTenantId, CurrentUserId,priceTobeChanged);
+            }
+
+            return View();
+        }
+
+
 
         public ActionResult ExplicitGC()
         {

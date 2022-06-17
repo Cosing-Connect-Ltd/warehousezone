@@ -116,5 +116,7 @@ namespace Ganedata.Core.Services
         List<string> CreatePalletTracking(LabelPrintViewModel requestData, int tenantId, int warehouseId);
         ProductKitMap SaveProductKit(int KitId, decimal Quantity, int ProductId, int userId, int? ProductKitTypeId);
         PalletTracking GetVerifedPalletAsync(VerifyPalletTrackingSync verifyPalletTracking);
+        List<OrderDetail> GetOrderDetailsByProductId(int productId);
+        List<InvoiceDetail> GetInvoiceDetailsByProductId(int productId);
     }
 }

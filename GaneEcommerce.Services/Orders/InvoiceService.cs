@@ -160,7 +160,7 @@ namespace Ganedata.Core.Services
                 CurrencyId = account?.CurrencyID ?? tenant.CurrencyID,
             };
 
-            
+
             invoice.InvoiceNumber = process?.InvoiceNo != null ? process.InvoiceNo : GenerateNextInvoiceNumber(tenantId);
 
             invoice.InvoiceDetails = invoiceData.AllInvoiceProducts.Select(m => new InvoiceDetail()
@@ -552,6 +552,44 @@ namespace Ganedata.Core.Services
                 _currentDbContext.SaveChanges();
             }
             return true;
+        }
+
+        public bool SaveInvoiceDetail(InvoiceDetail detail, int tenantId, int userId, decimal priceTobeUpdated)
+        {
+            if (detail != null)
+            {
+                var invoiceDetail = _currentDbContext.InvoiceDetails.FirstOrDefault(u => u.InvoiceDetailId == detail.InvoiceDetailId && u.Price==priceTobeUpdated && u.IsDeleted != true);
+                if (invoiceDetail != null)
+                {
+                    invoiceDetail.TenantId = tenantId;
+                    invoiceDetail.DateUpdated = DateTime.Now;
+                    invoiceDetail.UpdatedBy = userId;
+                    invoiceDetail.Price = detail.Price;
+                    invoiceDetail.Tax = detail.Tax;
+                    invoiceDetail.Total = detail.Total;
+                    invoiceDetail.NetAmount = detail.NetAmount;
+                    _currentDbContext.Entry(invoiceDetail).State = EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                    var invoiceMaster = _currentDbContext.InvoiceMasters.FirstOrDefault(u => u.InvoiceMasterId == detail.InvoiceMasterId);
+                    if (invoiceMaster != null)
+                    {
+                        var invoiceDetails= _currentDbContext.InvoiceDetails.Where(u => u.InvoiceMasterId == detail.InvoiceMasterId);
+                        invoiceMaster.TenantId = tenantId;
+                        invoiceMaster.DateUpdated = DateTime.UtcNow;
+                        invoiceMaster.UpdatedBy = userId;
+                        invoiceMaster.NetAmount = invoiceDetails.Select(u => u.Total).DefaultIfEmpty(0).Sum();
+                        invoiceMaster.TaxAmount = invoiceDetails.Select(u => u.Tax).DefaultIfEmpty(0).Sum();
+                        invoiceMaster.InvoiceTotal = invoiceDetails.Select(u => u.NetAmount).DefaultIfEmpty(0).Sum();
+                        _currentDbContext.Entry(invoiceMaster).State = EntityState.Modified;
+                        _currentDbContext.SaveChanges();
+
+                    }
+                }
+
+            }
+
+            return true;
+
         }
     }
 }

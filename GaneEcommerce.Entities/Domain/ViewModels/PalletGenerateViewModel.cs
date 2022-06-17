@@ -71,6 +71,8 @@ namespace Ganedata.Core.Entities.Domain
         public string DispatchRefrenceNumber { get; set; }
 
         public string NetworkCode { get; set; }
+
+        public bool MarkCompleted { get; set; }
         public int? UserId { get; set; }
         public virtual IEnumerable<SelectListItem> AllSentMethods { get; set; }
         public virtual IEnumerable<int> SelectedPallets { get; set; }

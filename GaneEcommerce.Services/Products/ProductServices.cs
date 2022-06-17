@@ -2037,5 +2037,16 @@ namespace Ganedata.Core.Services
 
             return palletTracking;
         }
+
+        public List<OrderDetail> GetOrderDetailsByProductId(int productId)
+        {
+            return _currentDbContext.OrderDetail.Where(u => u.ProductId == productId && u.IsDeleted != true).ToList();
+            
+        }
+        public List<InvoiceDetail> GetInvoiceDetailsByProductId(int productId)
+        {
+            return _currentDbContext.InvoiceDetails.Where(u => u.ProductId == productId && u.IsDeleted != true).ToList();
+
+        }
     }
 }
