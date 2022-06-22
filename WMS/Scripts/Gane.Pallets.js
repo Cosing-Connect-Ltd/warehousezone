@@ -101,33 +101,33 @@ var TotalCount = 0;
             var networkCode = $('#orderDeliveryNetworkCode').val();
             LoadingPanel.Show();
 
-                if (!!deliveryMethod && (deliveryMethod !== '3' || (deliveryMethod === '3' && !!networkCode))) {
-                    LoadingPanel.Show();
-                    $("#frmPalletsEditor").submit();
-                }
-                else {
-                    LoadingPanel.Hide();
-                    $("#btnQuickDispatchPallets").attr("disabled", false);
-                    LoadingPanel.Show();
-                    var data = { palletId: $("#SelectedPalletID").val(), orderProcessId: $("#SelectedOrderProcessId").val() };
-                    $.post('/Pallets/AddAllProcessedProductsToPallet',
-                        data,
-                        function (result) {
-                            if (result != null) {
-                                $(".pallet-number").html("<label>Pallet Number :" + result.NextPalletNumber + "</label>");
-                                Gane.Helpers.LoadListItemsToDropdown('SelectedPalletID', result.AllCurrentPallets);
-                                $("#SelectedPalletID").val(result.SelectedPalletID);
-                                $("#SelectedPalletID").trigger("chosen:updated");
-                            }
+            if (!!deliveryMethod && (deliveryMethod !== '3' || (deliveryMethod === '3' && !!networkCode))) {
+                LoadingPanel.Show();
+                $("#frmPalletsEditor").submit();
+            }
+            else {
+                LoadingPanel.Hide();
+                $("#btnQuickDispatchPallets").attr("disabled", false);
+                LoadingPanel.Show();
+                var data = { palletId: $("#SelectedPalletID").val(), orderProcessId: $("#SelectedOrderProcessId").val() };
+                $.post('/Pallets/AddAllProcessedProductsToPallet',
+                    data,
+                    function (result) {
+                        if (result != null) {
+                            $(".pallet-number").html("<label>Pallet Number :" + result.NextPalletNumber + "</label>");
+                            Gane.Helpers.LoadListItemsToDropdown('SelectedPalletID', result.AllCurrentPallets);
+                            $("#SelectedPalletID").val(result.SelectedPalletID);
+                            $("#SelectedPalletID").trigger("chosen:updated");
+                        }
 
-                            updatePalletGenerator();
-                            openDispatchPopup();
+                        updatePalletGenerator();
+                        openDispatchPopup();
                     }).fail(function (xhr, status, error) {
-                            updatePalletGenerator();
-                            LoadingPanel.Hide();
-                            $("#btnQuickDispatchPallets").attr("disabled", false);
+                        updatePalletGenerator();
+                        LoadingPanel.Hide();
+                        $("#btnQuickDispatchPallets").attr("disabled", false);
                     });
-                }
+            }
         };
 
 
@@ -158,6 +158,20 @@ var TotalCount = 0;
 
             $("#btnQuickDispatchPallets").unbind("click").on("click", function () {
                 quickDispatch();
+            });
+            $("#editpallets").unbind("click").on("click", function () {
+                LoadingPanel.Show();
+                var data = { SelectedOrderProcessId: $("#SelectedOrderProcessId").val() };
+                $.post('/Pallets/_EditPallet',
+                    data,
+                    function (result) {
+                        Gane.Helpers.LoadListItemsToDropdown('SelectedPalletID', result.AllCurrentPallets);
+                        $("#SelectedPalletID").trigger("chosen:updated");
+
+                        updatePalletGenerator();
+
+                        LoadingPanel.Hide();
+                    });
             });
         };
 

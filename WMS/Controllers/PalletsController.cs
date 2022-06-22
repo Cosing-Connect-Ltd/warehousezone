@@ -200,6 +200,18 @@ namespace WMS.Controllers
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult _EditPallet(PalletGenerateViewModel data)
+        {
+             _palletingService.UpdateAllPallets(data.SelectedOrderProcessId, CurrentUserId);
+
+            var model = new PalletGenerateViewModel
+            {
+                AllCurrentPallets = _palletingService.GetAllPallets(300, orderProcessId: data.SelectedOrderProcessId).Select(m => new SelectListItem() { Text = m.PalletNumber, Value = m.PalletID.ToString() }).ToList(),
+              
+            };
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult _GetPalletDetails(PalletGenerateViewModel data)
         {

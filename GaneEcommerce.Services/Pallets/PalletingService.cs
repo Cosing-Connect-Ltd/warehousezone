@@ -154,6 +154,22 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             return pallet;
         }
+        public void UpdateAllPallets(int orderProcessId, int userId)
+        {
+            var orderProcess = _currentDbContext.OrderProcess.Find(orderProcessId);
+            var updatePallets = _currentDbContext.Pallets.Where(u => u.OrderProcessID == orderProcessId).ToList();
+            foreach (var item in updatePallets)
+            {
+                item.DateCompleted = null;
+                item.UpdatedBy = userId;
+                item.DateUpdated = DateTime.UtcNow;
+
+                _currentDbContext.Entry(item).State = EntityState.Modified;
+
+            }
+            _currentDbContext.SaveChanges();
+            
+        }
 
         public decimal GetFulfilledProductQuantity(int orderProcessDetailId)
         {

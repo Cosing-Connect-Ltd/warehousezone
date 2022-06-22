@@ -72,6 +72,11 @@
 <div class="col-md-12 p-0 pull-left" style="display: none" id="divPalletGenerator"></div>
 <div class="col-md-12 pull-left">
     <div class="col-md-offset-2 col-md-10 bottom-right">
+
+        @if (Model.dispatchId > 0)
+        {
+            <a class="btn btn-primary" id="editpallets">Edit Pallets</a>
+        }
         @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Pallets", "AddAllProcessedProductsToPallet"))
         {
             <a class="btn btn-success" id="btnQuickDispatchPallets">Quick Dispatch</a>

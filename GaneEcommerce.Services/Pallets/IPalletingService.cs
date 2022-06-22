@@ -27,6 +27,7 @@ namespace Ganedata.Core.Services
         List<PalletsDispatch> GetAllPalletsDispatch(int? dispatchId, DateTime? reqDate, int? orderProcessID = null);
 
         string GenerateNextPalletNumber(string prefix = null);
+        void UpdateAllPallets(int orderProcessId, int userId);
 
         Pallet GetFulfillmentPalletById(int palletId);
 
