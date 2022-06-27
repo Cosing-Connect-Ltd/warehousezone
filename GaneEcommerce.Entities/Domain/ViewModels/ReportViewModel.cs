@@ -50,7 +50,19 @@ namespace Ganedata.Core.Models
         public decimal? TotalProfitPercent { get; set; }
         
     }
-    
+    public class StockShortageReportModel
+    {
+        public string OrderNumber { get; set; }
+        public List<StockShortageReportDetail> StockReportDetails { get; set; }
+    }
+    public class StockShortageReportDetail
+    {
+        public string OrderNumber { get; set; }
+        public string SkuCode { get; set; }
+        public string ProductName { get; set; }
+        public decimal Qty { get; set; }
+    }
+
     public class InvoiceProfitReportProductsViewModel
     {
         public int InvoiceId { get; set; }

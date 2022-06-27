@@ -168,7 +168,7 @@ namespace Ganedata.Core.Services
 
             }
             _currentDbContext.SaveChanges();
-            
+
         }
 
         public decimal GetFulfilledProductQuantity(int orderProcessDetailId)
@@ -628,7 +628,7 @@ namespace Ganedata.Core.Services
                     palletproduct.UpdatedBy = userId;
                     palletproduct.Pallet.DateCompleted = null;
                     _currentDbContext.PalletProducts.Attach(palletproduct);
-                    
+
                     _currentDbContext.Entry(palletproduct).State = EntityState.Modified;
                     _currentDbContext.SaveChanges();
                     palletId = palletproduct.PalletID;
@@ -643,7 +643,7 @@ namespace Ganedata.Core.Services
         }
         public int DeletePalletProduct(int productId, string palletNumber)
         {
-            var palletproduct = _currentDbContext.PalletProducts.FirstOrDefault(m => m.ProductID == productId && m.Pallet.PalletNumber==palletNumber);
+            var palletproduct = _currentDbContext.PalletProducts.FirstOrDefault(m => m.ProductID == productId && m.Pallet.PalletNumber == palletNumber);
             int palletId = 0;
             if (palletproduct != null)
             {
@@ -813,7 +813,7 @@ namespace Ganedata.Core.Services
                 {
                     if (palletDispatchStatus == PalletDispatchStatusEnum.Loaded)
                     {
-                        
+
                         pallet.ScannedOnLoading = true;
                         pallet.DeliveredScanTime = DateTime.UtcNow;
                     }
@@ -846,21 +846,21 @@ namespace Ganedata.Core.Services
 
 
             return default;
-           // && (palletDispatchStatus == PalletDispatchStatusEnum.Created || c.MarketVehicleID == VechileId)
-           // var orderprocess = GetAllPalletsDispatchs().Where(c => c.DispatchStatus == palletDispatchStatus
-           //&& (string.IsNullOrEmpty(searchText) || c.OrderProcess.Order.OrderNumber.Contains(searchText));
-           // var check = orderprocess.Count();
-            
-           // var orderComplete = orderprocess.OrderByDescending(U => U.DateCreated);
-           //return orderComplete.Select(u => new {
-           //     u.OrderID,
-           //     u.OrderProcess.Order.OrderNumber,
-           //     u.DispatchReference,
-           //     u.OrderProcess.DeliveryNO,
-           //     u.OrderProcess.Order.Account.CompanyName,
-           //     u.OrderProcess.Order.Account.AccountCode,
-           //     u.DateCreated
-           // }).ToList();
+            // && (palletDispatchStatus == PalletDispatchStatusEnum.Created || c.MarketVehicleID == VechileId)
+            // var orderprocess = GetAllPalletsDispatchs().Where(c => c.DispatchStatus == palletDispatchStatus
+            //&& (string.IsNullOrEmpty(searchText) || c.OrderProcess.Order.OrderNumber.Contains(searchText));
+            // var check = orderprocess.Count();
+
+            // var orderComplete = orderprocess.OrderByDescending(U => U.DateCreated);
+            //return orderComplete.Select(u => new {
+            //     u.OrderID,
+            //     u.OrderProcess.Order.OrderNumber,
+            //     u.DispatchReference,
+            //     u.OrderProcess.DeliveryNO,
+            //     u.OrderProcess.Order.Account.CompanyName,
+            //     u.OrderProcess.Order.Account.AccountCode,
+            //     u.DateCreated
+            // }).ToList();
         }
 
         public AssigningDispatchToDelivery PalletLoadingFromDataBase(int dispatchId)
@@ -891,14 +891,22 @@ namespace Ganedata.Core.Services
         public object GetFiveActivePallets(int productId)
         {
             return _currentDbContext.PalletTracking.Where(u => u.ProductId == productId && u.Status == PalletTrackingStatusEnum.Active && u.RemainingCases > 0).OrderByDescending(u => u.PalletTrackingId).Take(5).
-                
-                Select(u => new {
+
+                Select(u => new
+                {
                     u.PalletSerial,
                     u.ExpiryDate,
                     u.RemainingCases
 
-                    }).ToList();
-            
+                }).ToList();
+
+        }
+
+        public bool CheckPalletRemaingCases(int productId, decimal qty)
+        {
+            var remainingCases = _currentDbContext.PalletTracking.Where(c => c.Status == PalletTrackingStatusEnum.Active && c.ProductId==productId)
+                .Select(u => u.RemainingCases).DefaultIfEmpty(0).Sum();
+            return remainingCases > qty;
         }
     }
 }

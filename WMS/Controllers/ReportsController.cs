@@ -141,7 +141,7 @@ namespace WMS.Controllers
 
             var products = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(p => productIds.Contains(p.ProductId)).ToList();
 
-            var inventoryStocks = _productServices.GetAllPalletTrackings(tenantId ?? 0, warehouseId ?? 0).Where(u => (u.Status == PalletTrackingStatusEnum.Active || u.Status==PalletTrackingStatusEnum.Hold) && productIds.Contains(u.ProductId)).GroupBy(u => u.ProductId).Select(c => new
+            var inventoryStocks = _productServices.GetAllPalletTrackings(tenantId ?? 0, warehouseId ?? 0).Where(u => (u.Status == PalletTrackingStatusEnum.Active || u.Status == PalletTrackingStatusEnum.Hold) && productIds.Contains(u.ProductId)).GroupBy(u => u.ProductId).Select(c => new
             {
                 ProductId = c.Key,
                 inStock = c.Sum(u => u.RemainingCases),
@@ -1460,6 +1460,71 @@ namespace WMS.Controllers
 
             report.DataSource = dataSource;
         }
+
+
+        #region StockShortageReport
+        public ActionResult StockShortageReport()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            // get properties of tenant
+            var report = new StockShortage();
+            report.paramStartDate.Value = DateTime.Today;
+            report.paramEndDate.Value = DateTime.Today;
+
+
+            report.DataSourceDemanded += StockShortageReport_DataSourceDemanded;
+
+            return View(report);
+        }
+        private void StockShortageReport_DataSourceDemanded(object sender, EventArgs e)
+        {
+            var report = (StockShortage)sender;
+            var startDate = (DateTime)report.paramStartDate.Value;
+            var endDate = (DateTime)report.paramEndDate.Value;
+            endDate = endDate.AddHours(24);
+            var orders = OrderService.GetAllOrders(CurrentTenantId, 1)
+                                          .Where(x => x.IssueDate >= startDate && x.IssueDate < endDate && x.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder).ToList();
+            var orderDetails = orders.SelectMany(u => u.OrderDetails).ToList();
+            var dataSource = new List<StockShortageReportDetail>();
+            foreach (var orderDetail in orderDetails.ToList())
+            {
+                var remainingCases = _palletingService.CheckPalletRemaingCases(orderDetail.ProductId, orderDetail.Qty);
+                if (!remainingCases)
+                {
+                    dataSource.Add(new StockShortageReportDetail
+                    {
+                        OrderNumber = orderDetail.Order.OrderNumber,
+                        ProductName = orderDetail.ProductMaster.Name,
+                        Qty = orderDetail.Qty,
+                        SkuCode = orderDetail.ProductMaster.SKUCode
+                    });
+                }
+
+            }
+            var groupedData = dataSource.GroupBy(u => u.OrderNumber).ToList();
+            var data = groupedData.Select(u => new StockShortageReportModel
+            {
+
+                OrderNumber = u.Key,
+                StockReportDetails = u.SelectMany(c => new List<StockShortageReportDetail>
+                { 
+                    new StockShortageReportDetail
+                {
+                    ProductName = c.ProductName,
+                    SkuCode = c.SkuCode,
+                    Qty = c.Qty
+                }
+                }).ToList()
+
+            }).ToList();
+            report.DataSource = data;
+        }
+
+
+
+        #endregion
+
 
         #endregion InvoiceProfitReport
 
