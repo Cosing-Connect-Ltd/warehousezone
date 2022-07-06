@@ -119,7 +119,7 @@ namespace Ganedata.Core.Services
                 {
                     item.PurchaseOrderNumber = purchaseOrderService?.OrderNumber;
                     item.SupplierName = purchaseOrderService?.Account.CompanyName;
-                    item.SupplierInvoiceNumber = purchaseOrderService?.ExternalOrderNumber;
+                    item.SupplierInvoiceNumber = purchaseOrderService?.InvoiceNo;
                 }
 
                 results.Add(item);

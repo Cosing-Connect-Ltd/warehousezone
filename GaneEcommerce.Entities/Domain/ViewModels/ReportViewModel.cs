@@ -48,7 +48,7 @@ namespace Ganedata.Core.Models
         public decimal? TotalProfit { get; set; }
 
         public decimal? TotalProfitPercent { get; set; }
-        
+
     }
     public class StockShortageReportModel
     {
@@ -61,6 +61,22 @@ namespace Ganedata.Core.Models
         public string SkuCode { get; set; }
         public string ProductName { get; set; }
         public decimal Qty { get; set; }
+        public decimal RemainingCases { get; set; }
+        public decimal Shortage { get; set; }
+
+
+
+
+
+    }
+
+    public class ShortagePallets
+    {
+        public decimal RemainingCases { get; set;}
+
+        
+
+
     }
 
     public class InvoiceProfitReportProductsViewModel
@@ -80,7 +96,7 @@ namespace Ganedata.Core.Models
     {
         public string UserName { get; set; }
         public DateTime? Date { get; set; }
-        public string  FirstYear { get; set; }
+        public string FirstYear { get; set; }
         public string SecondYear { get; set; }
         public string ThirdYear { get; set; }
         public string FourthYear { get; set; }

@@ -890,7 +890,7 @@ namespace Ganedata.Core.Services
 
         public object GetFiveActivePallets(int productId)
         {
-            return _currentDbContext.PalletTracking.Where(u => u.ProductId == productId && u.Status == PalletTrackingStatusEnum.Active && u.RemainingCases > 0).OrderByDescending(u => u.PalletTrackingId).Take(5).
+            return _currentDbContext.PalletTracking.Where(u => u.ProductId == productId && (u.Status == PalletTrackingStatusEnum.Active || u.Status==PalletTrackingStatusEnum.Hold) && u.RemainingCases > 0).OrderByDescending(u => u.PalletTrackingId).Take(5).
 
                 Select(u => new
                 {
@@ -902,11 +902,12 @@ namespace Ganedata.Core.Services
 
         }
 
-        public bool CheckPalletRemaingCases(int productId, decimal qty)
+        public ShortagePallets CheckPalletRemaingCases(int productId, decimal qty)
         {
             var remainingCases = _currentDbContext.PalletTracking.Where(c => c.Status == PalletTrackingStatusEnum.Active && c.ProductId==productId)
-                .Select(u => u.RemainingCases).DefaultIfEmpty(0).Sum();
-            return remainingCases > qty;
+                .Select(u =>u.RemainingCases).DefaultIfEmpty(0).Sum();
+            var model = new ShortagePallets { RemainingCases = remainingCases };
+            return model;
         }
     }
 }

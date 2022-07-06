@@ -935,6 +935,12 @@
     <Compile Include="Reports\Designs\LowStockItemsReport.Designer.cs">
       <DependentUpon>LowStockItemsReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\Designs\InvoiceTrackingReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Designs\InvoiceTrackingReport.Designer.cs">
+      <DependentUpon>InvoiceTrackingReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\Designs\StockShortage.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -2254,6 +2260,7 @@
     <Content Include="Views\PalletTracking\PalletLabelPrintViewer.cshtml" />
     <Content Include="Views\PalletTracking\SelectPalletStatus.cshtml" />
     <Content Include="Views\Reports\StockShortageReport.cshtml" />
+    <Content Include="Views\Reports\InvoiceTrackingReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -2352,6 +2359,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\LowStockItemsReport.resx">
       <DependentUpon>LowStockItemsReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Designs\InvoiceTrackingReport.resx">
+      <DependentUpon>InvoiceTrackingReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\StockShortage.resx">
       <DependentUpon>StockShortage.cs</DependentUpon>

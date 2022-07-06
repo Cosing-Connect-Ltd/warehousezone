@@ -80,7 +80,7 @@ namespace Ganedata.Core.Services
 
         object GetFiveActivePallets(int productId);
 
-        bool CheckPalletRemaingCases(int productId, decimal qty);
+        ShortagePallets CheckPalletRemaingCases(int productId, decimal qty);
 
 
 

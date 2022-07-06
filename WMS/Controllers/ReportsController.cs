@@ -10,6 +10,7 @@ using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -1469,7 +1470,6 @@ namespace WMS.Controllers
 
             // get properties of tenant
             var report = new StockShortage();
-            report.paramStartDate.Value = DateTime.Today;
             report.paramEndDate.Value = DateTime.Today;
 
 
@@ -1480,24 +1480,25 @@ namespace WMS.Controllers
         private void StockShortageReport_DataSourceDemanded(object sender, EventArgs e)
         {
             var report = (StockShortage)sender;
-            var startDate = (DateTime)report.paramStartDate.Value;
             var endDate = (DateTime)report.paramEndDate.Value;
-            endDate = endDate.AddHours(24);
             var orders = OrderService.GetAllOrders(CurrentTenantId, 1)
-                                          .Where(x => x.IssueDate >= startDate && x.IssueDate < endDate && x.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder).ToList();
+                                          .Where(x => DbFunctions.TruncateTime(x.ExpectedDate) == DbFunctions.TruncateTime(endDate) && x.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder).ToList();
             var orderDetails = orders.SelectMany(u => u.OrderDetails).ToList();
             var dataSource = new List<StockShortageReportDetail>();
             foreach (var orderDetail in orderDetails.ToList())
             {
                 var remainingCases = _palletingService.CheckPalletRemaingCases(orderDetail.ProductId, orderDetail.Qty);
-                if (!remainingCases)
+                if (orderDetail.Qty > remainingCases.RemainingCases)
                 {
                     dataSource.Add(new StockShortageReportDetail
                     {
                         OrderNumber = orderDetail.Order.OrderNumber,
                         ProductName = orderDetail.ProductMaster.Name,
                         Qty = orderDetail.Qty,
-                        SkuCode = orderDetail.ProductMaster.SKUCode
+                        SkuCode = orderDetail.ProductMaster.SKUCode,
+                        RemainingCases = remainingCases.RemainingCases,
+                        Shortage = orderDetail.Qty - remainingCases.RemainingCases,
+
                     });
                 }
 
@@ -1508,12 +1509,14 @@ namespace WMS.Controllers
 
                 OrderNumber = u.Key,
                 StockReportDetails = u.SelectMany(c => new List<StockShortageReportDetail>
-                { 
+                {
                     new StockShortageReportDetail
                 {
                     ProductName = c.ProductName,
                     SkuCode = c.SkuCode,
-                    Qty = c.Qty
+                    Qty = c.Qty,
+                    RemainingCases=c.RemainingCases,
+                    Shortage=c.Shortage
                 }
                 }).ToList()
 
@@ -1524,6 +1527,19 @@ namespace WMS.Controllers
 
 
         #endregion
+
+        #region StockShortageReport
+        public ActionResult InvoiceTrackingReport()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            // get properties of tenant
+            var report = new InvoiceTrackingReport();
+
+            return View(report);
+        }
+
+        #endregion StockShortageReport
 
 
         #endregion InvoiceProfitReport
