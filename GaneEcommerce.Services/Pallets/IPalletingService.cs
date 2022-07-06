@@ -29,6 +29,8 @@ namespace Ganedata.Core.Services
         string GenerateNextPalletNumber(string prefix = null);
         void UpdateAllPallets(int orderProcessId, int userId);
 
+        void UpdatePalletStatusBySerial(string palletSerial);
+
         Pallet GetFulfillmentPalletById(int palletId);
 
         Pallet GetFulfillmentPalletByNumber(string palletNumber);

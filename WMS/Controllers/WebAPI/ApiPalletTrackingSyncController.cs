@@ -17,10 +17,12 @@ namespace WMS.Controllers.WebAPI
     {
         private readonly IMapper _mapper;
         private readonly IPurchaseOrderService _purchaseOrderService;
-        public ApiPallettrackingSyncController(ITerminalServices terminalServices, IPurchaseOrderService purchaseOrderService, ITenantLocationServices tenantLocationServices, IOrderService orderService, IProductServices productServices, IUserService userService, IMapper mapper)
+        private readonly IPalletingService _palletService;
+        public ApiPallettrackingSyncController(ITerminalServices terminalServices, IPurchaseOrderService purchaseOrderService, ITenantLocationServices tenantLocationServices, IOrderService orderService, IProductServices productServices, IUserService userService, IMapper mapper,IPalletingService palletingService)
             : base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _mapper = mapper;
+            _palletService = palletingService;
             _purchaseOrderService = purchaseOrderService;
         }
 
@@ -124,6 +126,8 @@ namespace WMS.Controllers.WebAPI
         [HttpGet]
         public IHttpActionResult VerifyPallet(string serial, int productId, int shopId)
         {
+
+            _palletService.UpdatePalletStatusBySerial(serial);
             PalletTracking verifedPallet = this._purchaseOrderService.GetVerifedPallet(serial, productId, 1, shopId);
             PalletTrackingSync palletTrackingSync = new PalletTrackingSync();
             if (verifedPallet != null)
@@ -133,7 +137,7 @@ namespace WMS.Controllers.WebAPI
                 palletTrackingSync.RemainingCases = verifedPallet.RemainingCases;
                 palletTrackingSync.TotalCases = verifedPallet.TotalCases;
             }
-            return (IHttpActionResult)this.Ok<PalletTrackingSync>(palletTrackingSync);
+            return Ok(palletTrackingSync);
         }
         public IHttpActionResult SubmitPalleteSerials(SubmitPalletSerial submitPalletSerial)
         {

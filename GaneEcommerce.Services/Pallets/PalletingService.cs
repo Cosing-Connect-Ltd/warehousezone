@@ -170,6 +170,16 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
 
         }
+        public void UpdatePalletStatusBySerial(string palletSerial)
+        {
+            var pallet = _currentDbContext.PalletTracking.FirstOrDefault(u => u.PalletSerial == palletSerial && u.Status==PalletTrackingStatusEnum.Hold);
+            if (pallet != null)
+            {
+                pallet.Status = PalletTrackingStatusEnum.Active;
+                _currentDbContext.Entry(pallet).State=EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+        }
 
         public decimal GetFulfilledProductQuantity(int orderProcessDetailId)
         {
