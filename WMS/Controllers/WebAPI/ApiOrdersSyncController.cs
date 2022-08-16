@@ -311,6 +311,7 @@ namespace WMS.Controllers.WebAPI
             {
                 var order = new OrdersSync();
                 var mapped = _mapper.Map(p, order);
+                mapped.AccountName = p.Account.CompanyName;
                 for (var i = 0; i < p.OrderDetails.Count; i++)
                 {
                     mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList()[i].ProductAttributeValue?.Value;
@@ -323,7 +324,7 @@ namespace WMS.Controllers.WebAPI
                     int num = productMaster != null ? (productMaster.ProcessByPallet ? 1 : 0) : 0;
                     mapped.OrderDetails[i].ProcessByPallet = productMaster.ProcessByPallet;
                     mapped.OrderDetails[i].QuantityProcessed = new Decimal?(p.OrderDetails.ToList<OrderDetail>()[i].ProcessedQty);
-                    mapped.OrderDetails[i].InStock = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.ProductId == productMaster.ProductId && u.Status == PalletTrackingStatusEnum.Active && u.RemainingCases > 0);
+                    mapped.OrderDetails[i].InStock = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.ProductId == productMaster.ProductId && (u.Status == PalletTrackingStatusEnum.Active || u.Status==PalletTrackingStatusEnum.Hold) && u.RemainingCases > 0);
                 }
                 //if user is assocaited to the account
                 if (p.AccountID != null)

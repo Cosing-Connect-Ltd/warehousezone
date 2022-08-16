@@ -104,6 +104,7 @@ namespace Ganedata.Core.Models
         public bool OfflineSale { get; set; }
         public string VoucherCode { get; set; }
         public string PaypalBraintreeNonce { get; set; }
+        public string AccountName { get; set; }
 
         public List<OrderProcessLowStockItems> ProductsWithoutEnoughStock { get; set; }
     }
