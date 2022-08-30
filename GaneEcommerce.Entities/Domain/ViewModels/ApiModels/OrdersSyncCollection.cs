@@ -191,6 +191,8 @@ namespace Ganedata.Core.Models
         }
         public int TotalCount { get; set; }
         public int ShopId { get; set; }
+
+        public int TransactionType { get; set; }
     }
     public class OrderColumns { 
     
