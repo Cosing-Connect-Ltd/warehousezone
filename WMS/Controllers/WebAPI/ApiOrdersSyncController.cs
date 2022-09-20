@@ -33,7 +33,7 @@ namespace WMS.Controllers.WebAPI
             _purchaseOrderService = purchaseOrderService;
             _productService = productService;
             _accountServices = accountServices;
-            _configurationHelper = configurationHelper; 
+            _configurationHelper = configurationHelper;
             _mapper = mapper;
         }
 
@@ -303,7 +303,7 @@ namespace WMS.Controllers.WebAPI
         {
             var result = new OrdersSyncCollection();
 
-            List<Order> list = OrderService.GetAllOrdersByTenantId(shopId).Where(u => (orderId.HasValue || u.IsDeleted != true) && (string.IsNullOrEmpty(orderNumber) || u.OrderNumber == orderNumber) && (!orderId.HasValue || (int?)u.OrderID == orderId)  && u.IsDeleted != true && u.OrderStatusID == OrderStatusEnum.Active).ToList<Order>();
+            List<Order> list = OrderService.GetAllOrdersByTenantId(shopId).Where(u => (orderId.HasValue || u.IsDeleted != true) && (string.IsNullOrEmpty(orderNumber) || u.OrderNumber == orderNumber) && (!orderId.HasValue || (int?)u.OrderID == orderId) && u.IsDeleted != true && u.OrderStatusID == OrderStatusEnum.Active).ToList<Order>();
             var warehouses = _lookupService.GetAllWarehousesForTenant(shopId);
             var orders = new List<OrdersSync>();
 
@@ -312,19 +312,22 @@ namespace WMS.Controllers.WebAPI
                 var order = new OrdersSync();
                 var mapped = _mapper.Map(p, order);
                 mapped.AccountName = p.Account.CompanyName;
-                for (var i = 0; i < p.OrderDetails.Where(u=>u.IsDeleted !=true).Count(); i++)
+                for (var i = 0; i < p.OrderDetails.Where(u => u.IsDeleted != true).Count(); i++)
                 {
-                    mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList()[i].ProductAttributeValue?.Value;
-                    mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList<OrderDetail>()[i].ProductAttributeValue?.Value;
-                    mapped.OrderDetails[i].ProductName = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster?.Name;
-                    mapped.OrderDetails[i].SkuCode = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster?.SKUCode;
-                    mapped.OrderDetails[i].Barcode = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster?.BarCode;
-                    OrderDetailSync orderDetail = mapped.OrderDetails[i];
-                    ProductMaster productMaster = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster;
-                    int num = productMaster != null ? (productMaster.ProcessByPallet ? 1 : 0) : 0;
-                    mapped.OrderDetails[i].ProcessByPallet = productMaster.ProcessByPallet;
-                    mapped.OrderDetails[i].QuantityProcessed = new Decimal?(p.OrderDetails.ToList<OrderDetail>()[i].ProcessedQty);
-                    mapped.OrderDetails[i].InStock = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.ProductId == productMaster.ProductId && (u.Status == PalletTrackingStatusEnum.Active || u.Status==PalletTrackingStatusEnum.Hold) && u.RemainingCases > 0);
+                    if (p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster != null)
+                    {
+                        mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList()[i].ProductAttributeValue?.Value;
+                        mapped.OrderDetails[i].ProductAttributeValueName = p.OrderDetails.ToList<OrderDetail>()[i].ProductAttributeValue?.Value;
+                        mapped.OrderDetails[i].ProductName = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster?.Name;
+                        mapped.OrderDetails[i].SkuCode = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster?.SKUCode;
+                        mapped.OrderDetails[i].Barcode = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster?.BarCode;
+                        OrderDetailSync orderDetail = mapped.OrderDetails[i];
+                        ProductMaster productMaster = p.OrderDetails.ToList<OrderDetail>()[i].ProductMaster;
+                        int num = productMaster != null ? (productMaster.ProcessByPallet ? 1 : 0) : 0;
+                        mapped.OrderDetails[i].ProcessByPallet = productMaster.ProcessByPallet;
+                        mapped.OrderDetails[i].QuantityProcessed = new Decimal?(p.OrderDetails.ToList<OrderDetail>()[i].ProcessedQty);
+                        mapped.OrderDetails[i].InStock = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.ProductId == productMaster.ProductId && (u.Status == PalletTrackingStatusEnum.Active) && u.RemainingCases > 0);
+                    }
                 }
                 //if user is assocaited to the account
                 if (p.AccountID != null)
@@ -352,7 +355,8 @@ namespace WMS.Controllers.WebAPI
         public IHttpActionResult GetSalesOrderByPagination(PagingData data)
         {
             var orders = OrderService.GetAllOrdersByTenantId(data.ShopId).Where(u => u.InventoryTransactionTypeId == (InventoryTransactionTypeEnum)data.TransactionType && u.OrderStatusID == OrderStatusEnum.Active && u.IsDeleted != true);
-            var selectedColumns = orders.OrderByDescending(c=>c.OrderID).Skip((data.PageNumber - 1) * data.PageSize).Take(data.PageSize).Select(u => new OrderColumns {
+            var selectedColumns = orders.OrderByDescending(c => c.OrderID).Skip((data.PageNumber - 1) * data.PageSize).Take(data.PageSize).Select(u => new OrderColumns
+            {
                 OrderNumber = u.OrderNumber,
                 AccountCode = u.Account.AccountCode,
                 CompanyName = u.Account.CompanyName

@@ -900,7 +900,7 @@ namespace Ganedata.Core.Services
 
         public object GetFiveActivePallets(int productId)
         {
-            return _currentDbContext.PalletTracking.Where(u => u.ProductId == productId && (u.Status == PalletTrackingStatusEnum.Active || u.Status==PalletTrackingStatusEnum.Hold) && u.RemainingCases > 0).OrderBy(u => u.PalletTrackingId).Take(5).
+            return _currentDbContext.PalletTracking.Where(u => u.ProductId == productId && (u.Status == PalletTrackingStatusEnum.Active) && u.RemainingCases > 0).OrderBy(u => u.PalletTrackingId).Take(5).
 
                 Select(u => new
                 {
