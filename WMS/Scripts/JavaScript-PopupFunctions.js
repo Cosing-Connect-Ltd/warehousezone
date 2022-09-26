@@ -58,11 +58,12 @@ function showPalletLabelPreview() {
 }
 
 function showPalletOrProductLabelPreview(labelType) {
+    debugger;
 
     if (IsValidForm('#frmLabelPrint')) {
         var requestData = $("#frmLabelPrint").serialize();
         requestData = requestData.substring(0, requestData.indexOf("&DXScript"));
-        if ($(".LabelDate").length > 0) {
+        if ($("#LabelDate_I").length > 0) {
             requestData = updateQueryStringParameter(requestData, 'LabelDate', LabelDate.GetDate().toISOString())
         }
         window.open('/Products/Print' + labelType + 'LabelPreview?' + requestData).focus();

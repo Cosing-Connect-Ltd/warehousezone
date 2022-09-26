@@ -303,7 +303,7 @@ namespace WMS.Controllers.WebAPI
         {
             var result = new OrdersSyncCollection();
 
-            List<Order> list = OrderService.GetAllOrdersByTenantId(shopId).Where(u => (orderId.HasValue || u.IsDeleted != true) && (string.IsNullOrEmpty(orderNumber) || u.OrderNumber == orderNumber) && (!orderId.HasValue || (int?)u.OrderID == orderId) && u.IsDeleted != true && u.OrderStatusID == OrderStatusEnum.Active).ToList<Order>();
+            List<Order> list = OrderService.GetAllOrdersByTenantId(shopId).Where(u =>  (string.IsNullOrEmpty(orderNumber) || u.OrderNumber == orderNumber) && (!orderId.HasValue || (int?)u.OrderID == orderId) && u.IsDeleted != true && u.OrderStatusID == OrderStatusEnum.Active).ToList<Order>();
             var warehouses = _lookupService.GetAllWarehousesForTenant(shopId);
             var orders = new List<OrdersSync>();
 

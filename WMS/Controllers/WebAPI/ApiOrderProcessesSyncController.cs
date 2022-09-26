@@ -24,7 +24,7 @@ namespace WMS.Controllers.WebAPI
         public ApiOrderProcessesSyncController(ITerminalServices terminalServices, IDeliverectSyncService deliverectSyncService,
             ITenantLocationServices tenantLocationServices, IOrderService orderService, ITenantsServices tenantsServices,
             IProductServices productServices, IUserService userService, IAccountServices accountServices,
-            IGaneConfigurationsHelper configHelper, IMapper mapper, IShoppingVoucherService shoppingVoucherService,IPalletingService palletingService) :
+            IGaneConfigurationsHelper configHelper, IMapper mapper, IShoppingVoucherService shoppingVoucherService, IPalletingService palletingService) :
             base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _accountServices = accountServices;
@@ -123,7 +123,7 @@ namespace WMS.Controllers.WebAPI
                     foreach (var item in orderProcesses)
                     {
                         var order = OrderService.SaveOrderProcessSync(item, terminal);
-                       
+
                         if (!string.IsNullOrEmpty(item.VoucherCode))
                         {
                             _shoppingVoucherService.ApplyVoucher(new ShoppingVoucherValidationRequestModel()
@@ -173,14 +173,14 @@ namespace WMS.Controllers.WebAPI
         public IHttpActionResult GetOrderProcessesByOrderNumber(int shopId, string orderNumber)
         {
 
-            var allorderProcess = OrderService.GetAllOrderProcesses(null, 0, null, null, true).Where(u => u.Order.OrderNumber.Equals(orderNumber) && u.WarehouseId == shopId).SelectMany(u => u.OrderProcessDetail);
+            var allorderProcess = OrderService.GetAllOrderProcesses(null, 0, null, null, true).Where(u => u.Order.OrderNumber.Equals(orderNumber) && u.WarehouseId == shopId && u.IsDeleted != true).SelectMany(u => u.OrderProcessDetail);
 
             var orderProcesses = new OrderProcessPallets();
             orderProcesses.OrderId = allorderProcess.FirstOrDefault()?.OrderProcess?.OrderID ?? 0;
             orderProcesses.OrderProcessId = allorderProcess.FirstOrDefault()?.OrderProcess?.OrderProcessID ?? 0;
             orderProcesses.AccountId = allorderProcess.FirstOrDefault()?.OrderProcess?.Order?.AccountID ?? 0;
 
-            foreach (var item in allorderProcess)
+            foreach (var item in allorderProcess.Where(u => u.IsDeleted != true).ToList())
             {
                 var orderProcessDetailList = new OrderProcessDetailList();
                 orderProcessDetailList.OrderProcessDetailId = item.OrderProcessDetailID;
@@ -196,7 +196,7 @@ namespace WMS.Controllers.WebAPI
             {
                 PalletID = u.PalletID,
                 PalletNumber = u.PalletNumber,
-                PalletProducts = u.PalletProducts.Where(c=>c.IsDeleted != true).Select(g => new PalletProductList
+                PalletProducts = u.PalletProducts.Where(c => c.IsDeleted != true).Select(g => new PalletProductList
                 {
                     ProductId = g.ProductID,
                     ProductName = g.Product.Name,

@@ -195,7 +195,7 @@ namespace WMS.Controllers.WebAPI
 
         public IHttpActionResult GetSalesOrders(string orderNumber)
         {
-            var orders = OrderService.GetAllOrdersByTenantId(tenantId: 1).Where(u => (string.IsNullOrEmpty(orderNumber) || u.OrderNumber.Contains(orderNumber)) && u.OrderStatusID==OrderStatusEnum.Active).OrderByDescending(u => u.OrderID).Take(10).Select(u => new
+            var orders = OrderService.GetAllOrdersByTenantId(tenantId: 1).Where(u => (string.IsNullOrEmpty(orderNumber) || u.OrderNumber.Contains(orderNumber)) && u.OrderStatusID==OrderStatusEnum.Active && u.IsDeleted != true).OrderByDescending(u => u.OrderID).Take(10).Select(u => new
             {
                 u.OrderID,
                 u.OrderNumber,

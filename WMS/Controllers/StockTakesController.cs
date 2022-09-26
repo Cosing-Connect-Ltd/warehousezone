@@ -108,8 +108,8 @@ namespace WMS.Controllers
             {
                 return RedirectToAction("Details", new { id = pendingStoppedStockTake.StockTakeId });
             }
-
-            return View();
+            
+            return View(new StockTake());
 
         }
 
