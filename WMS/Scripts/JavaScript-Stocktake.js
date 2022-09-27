@@ -456,13 +456,13 @@ var updateScannedStockTakes = function (data) {
             $scanRecord.append("<td></td>");
         }
         $scanRecord.append("<td>" + data.ScannedQuantity + "</td>");
-        if (data.BatchNumber === "" || data.BatchNumber === null) {
-            $scanRecord.append("<td></td>");
-        }
-        else {
-            $scanRecord.append("<td>" + data.BatchNumber + "</td>");
+        //if (data.BatchNumber === "" || data.BatchNumber === null) {
+        //    $scanRecord.append("<td></td>");
+        //}
+        //else {
+        //    $scanRecord.append("<td>" + data.BatchNumber + "</td>");
 
-        }
+        //}
         if (data.ExpiryDate === "" || data.ExpiryDate === null) {
             $scanRecord.append("<td></td>");
         }

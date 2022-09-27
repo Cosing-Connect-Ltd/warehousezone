@@ -761,92 +761,92 @@ namespace Ganedata.Core.Services
             _context.StockTakes.Add(stockTake);
             int Result = _context.SaveChanges();
 
-            if (Result > 0)
-            {
+            //if (Result > 0)
+            //{
 
-                // get all products in specific warehouse
-                var Products = (from e in _context.ProductMaster
-                                where e.IsDeleted != true && e.DontMonitorStock != true
-                                select new
-                                {
-                                    ProductId = e.ProductId,
-                                    SKUCode = e.SKUCode,
-                                    IsSerialised = e.Serialisable,
-                                    ProcessByPallet = e.ProcessByPallet
-                                }).ToList();
+            //    // get all products in specific warehouse
+            //    var Products = (from e in _context.ProductMaster
+            //                    where e.IsDeleted != true && e.DontMonitorStock != true
+            //                    select new
+            //                    {
+            //                        ProductId = e.ProductId,
+            //                        SKUCode = e.SKUCode,
+            //                        IsSerialised = e.Serialisable,
+            //                        ProcessByPallet = e.ProcessByPallet
+            //                    }).ToList();
 
-                // get all the inventory and store in memory
-                var Stocks = (from e in _context.InventoryStocks
-                              where e.WarehouseId == warehouseId && e.TenantId == tenantId
-                              select new
-                              {
-                                  InStock = e.InStock,
-                                  ProductId = e.ProductId,
-                              }).ToList();
+            //    // get all the inventory and store in memory
+            //    var Stocks = (from e in _context.InventoryStocks
+            //                  where e.WarehouseId == warehouseId && e.TenantId == tenantId
+            //                  select new
+            //                  {
+            //                      InStock = e.InStock,
+            //                      ProductId = e.ProductId,
+            //                  }).ToList();
 
 
-                foreach (var Prod in Products)
-                {
-                    StockTakeSnapshot snap = new StockTakeSnapshot();
+            //    foreach (var Prod in Products)
+            //    {
+            //        StockTakeSnapshot snap = new StockTakeSnapshot();
 
-                    snap.StockTakeId = stockTake.StockTakeId;
-                    snap.ProductId = Prod.ProductId;
-                    snap.ReceivedSku = Prod.SKUCode;
+            //        snap.StockTakeId = stockTake.StockTakeId;
+            //        snap.ProductId = Prod.ProductId;
+            //        snap.ReceivedSku = Prod.SKUCode;
 
-                    decimal Qty = Stocks.Where(e => e.ProductId == Prod.ProductId).Select(x => x.InStock).FirstOrDefault();
+            //        decimal Qty = Stocks.Where(e => e.ProductId == Prod.ProductId).Select(x => x.InStock).FirstOrDefault();
 
-                    snap.PreviousQuantity = Qty;
-                    snap.UpdatedBy = userId;
-                    snap.CreatedBy = userId;
-                    snap.TenentId = tenantId;
-                    snap.DateCreated = DateTime.UtcNow;
-                    snap.DateUpdated = DateTime.UtcNow;
+            //        snap.PreviousQuantity = Qty;
+            //        snap.UpdatedBy = userId;
+            //        snap.CreatedBy = userId;
+            //        snap.TenentId = tenantId;
+            //        snap.DateCreated = DateTime.UtcNow;
+            //        snap.DateUpdated = DateTime.UtcNow;
 
-                    InventoryTransactionTypeEnum[] inStockStatuses = { InventoryTransactionTypeEnum.PurchaseOrder, InventoryTransactionTypeEnum.TransferIn, InventoryTransactionTypeEnum.AdjustmentIn, InventoryTransactionTypeEnum.Returns };
+            //        InventoryTransactionTypeEnum[] inStockStatuses = { InventoryTransactionTypeEnum.PurchaseOrder, InventoryTransactionTypeEnum.TransferIn, InventoryTransactionTypeEnum.AdjustmentIn, InventoryTransactionTypeEnum.Returns };
 
-                    if (Prod.IsSerialised)
-                    {
-                        var prodSerials = _context.ProductSerialization.Where(p => p.ProductId == Prod.ProductId).ToList();
-                        foreach (var item in prodSerials)
-                        {
-                            var serialSnap = new StockTakeSerialSnapshot
-                            {
-                                ProductId = Prod.ProductId,
-                                ProductSerialId = item.SerialID,
-                                StockTake = stockTake,
-                                IsInStock = prodSerials.FirstOrDefault() != null &&
-                                            inStockStatuses.Contains(prodSerials.First().CurrentStatus),
-                                CurrentStatus = prodSerials.FirstOrDefault() != null
-                                    ? prodSerials.First().CurrentStatus
-                                    : 0
-                            };
-                            snap.StockTakeSerialSnapshots.Add(serialSnap);
-                        }
-                    }
+            //        if (Prod.IsSerialised)
+            //        {
+            //            var prodSerials = _context.ProductSerialization.Where(p => p.ProductId == Prod.ProductId).ToList();
+            //            foreach (var item in prodSerials)
+            //            {
+            //                var serialSnap = new StockTakeSerialSnapshot
+            //                {
+            //                    ProductId = Prod.ProductId,
+            //                    ProductSerialId = item.SerialID,
+            //                    StockTake = stockTake,
+            //                    IsInStock = prodSerials.FirstOrDefault() != null &&
+            //                                inStockStatuses.Contains(prodSerials.First().CurrentStatus),
+            //                    CurrentStatus = prodSerials.FirstOrDefault() != null
+            //                        ? prodSerials.First().CurrentStatus
+            //                        : 0
+            //                };
+            //                snap.StockTakeSerialSnapshots.Add(serialSnap);
+            //            }
+            //        }
 
-                    if (Prod.ProcessByPallet)
-                    {
-                        var prodPallets = _context.PalletTracking.Where(p => p.ProductId == Prod.ProductId && p.Status != PalletTrackingStatusEnum.Completed).ToList();
-                        foreach (var item in prodPallets)
-                        {
-                            var palletSnap = new StockTakePalletsSnapshot
-                            {
-                                ProductId = Prod.ProductId,
-                                PalletTrackingId = item.PalletTrackingId,
-                                StockTake = stockTake,
-                                Status = item.Status,
-                                RemainingCases = item.RemainingCases,
-                                TotalCases = item.TotalCases
+            //        if (Prod.ProcessByPallet)
+            //        {
+            //            var prodPallets = _context.PalletTracking.Where(p => p.ProductId == Prod.ProductId && p.Status != PalletTrackingStatusEnum.Completed && p.Status != PalletTrackingStatusEnum.Archived).ToList();
+            //            foreach (var item in prodPallets)
+            //            {
+            //                var palletSnap = new StockTakePalletsSnapshot
+            //                {
+            //                    ProductId = Prod.ProductId,
+            //                    PalletTrackingId = item.PalletTrackingId,
+            //                    StockTake = stockTake,
+            //                    Status = item.Status,
+            //                    RemainingCases = item.RemainingCases,
+            //                    TotalCases = item.TotalCases
 
-                            };
-                            snap.StockTakePalletsSnapshot.Add(palletSnap);
-                        }
-                    }
+            //                };
+            //                snap.StockTakePalletsSnapshot.Add(palletSnap);
+            //            }
+            //        }
 
-                    _context.StockTakeSnapshot.Add(snap);
-                }
-                _context.SaveChanges();
-            }
+            //        _context.StockTakeSnapshot.Add(snap);
+            //    }
+            //    _context.SaveChanges();
+            //}
             return stockTake;
         }
 
@@ -999,7 +999,7 @@ namespace Ganedata.Core.Services
                     }
                     else if (inventoryProduct.ProcessByPallet)
                     {
-                        var palletSerials = _context.PalletTracking.Where(m => m.ProductId == inventoryProduct.ProductId && m.Status== PalletTrackingStatusEnum.Active).ToList();
+                        var palletSerials = _context.PalletTracking.Where(m => m.ProductId == inventoryProduct.ProductId).ToList();
                         var stocktakePallets = _context.StockTakeDetailsPallets.Where(x => x.StockTakeDetail.StockTakeId == request.StockTakeId);
                         foreach (var palletSerial in palletSerials)
                         {
