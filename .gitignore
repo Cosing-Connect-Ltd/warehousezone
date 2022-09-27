@@ -344,3 +344,4 @@ healthchecksdb
 /WarehouseEcommerce/ModelCache/*
 /GaneEcommerce.Data/binModelCache
 /WMS/Logs/*
+/WMS/barcodes

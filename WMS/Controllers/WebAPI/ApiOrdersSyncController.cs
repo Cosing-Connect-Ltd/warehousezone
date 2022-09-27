@@ -309,6 +309,7 @@ namespace WMS.Controllers.WebAPI
 
             foreach (var p in list)
             {
+               p.OrderDetails = p.OrderDetails.Where(c => c.IsDeleted != true).ToList();
                 var order = new OrdersSync();
                 var mapped = _mapper.Map(p, order);
                 mapped.AccountName = p.Account.CompanyName;
@@ -340,7 +341,7 @@ namespace WMS.Controllers.WebAPI
 
                     }
                 }
-
+                
                 orders.Add(mapped);
             }
 
