@@ -127,7 +127,6 @@ namespace WMS.Controllers.WebAPI
         public IHttpActionResult VerifyPallet(string serial, int productId, int shopId)
         {
 
-            _palletService.UpdatePalletStatusBySerial(serial);
             PalletTracking verifedPallet = this._purchaseOrderService.GetVerifedPallet(serial, productId, 1, shopId);
             PalletTrackingSync palletTrackingSync = new PalletTrackingSync();
             if (verifedPallet != null)
