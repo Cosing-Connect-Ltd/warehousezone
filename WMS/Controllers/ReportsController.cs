@@ -150,18 +150,18 @@ namespace WMS.Controllers
 
             }).ToList();
 
-            report.DataSource = inventoryStocks.Select(i =>
-            {
-                var buyPrice = _productPriceService.GetAveragePurchasePrice(i.ProductId, CurrentTenantId);
-                return new
+            report.DataSource = inventoryStocks.Where(u => u.inStock > 0).Select(i =>
                 {
-                    ProductSkuCode = i.ProductMaster.SKUCode,
-                    ProductName = i.ProductMaster.NameWithCode,
-                    InStock = i.inStock,
-                    BuyPrice = buyPrice,
-                    TotalPrice = (buyPrice ?? 0) * i.inStock
-                };
-            });
+                    var buyPrice = _productPriceService.GetAveragePurchasePrice(i.ProductId, CurrentTenantId);
+                    return new
+                    {
+                        ProductSkuCode = i.ProductMaster.SKUCode,
+                        ProductName = i.ProductMaster.NameWithCode,
+                        InStock = i.inStock,
+                        BuyPrice = buyPrice,
+                        TotalPrice = (buyPrice ?? 0) * i.inStock
+                    };
+                });
         }
 
         #endregion StockValueReport
