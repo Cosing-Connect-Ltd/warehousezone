@@ -32,6 +32,7 @@ namespace Ganedata.Core.Services
 
         List<ProductOrdersDetailViewModel> GetAllOrdersByProductId(InventoryTransactionTypeEnum[] inventoryTransactionType, int productId, DateTime startDate, DateTime endDate, int tenantId, int warehouseId, int[] accountIds, int[] ownerIds, int[] accountSectorIds, int? marketId);
 
+        List<ProductOrdersDetailViewModel> GetPurhaseOrderAgainstProductId(int[] productIds, int tenantId, int warehouseId);
         bool AuthoriseSalesOrder(int orderId, int userId, string notes, bool unauthorize = false);
 
         List<SalesOrderViewModel> GetAllSalesOrdersForPalletsByAccount(int tenantId, int accountId);

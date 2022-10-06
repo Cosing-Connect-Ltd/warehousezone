@@ -119,6 +119,7 @@ namespace WMS.Controllers
 
             IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList().Distinct();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)report.paramProductId.LookUpSettings;
+           
 
             foreach (var item in products)
             {
@@ -127,9 +128,29 @@ namespace WMS.Controllers
                 product.Value = item.ProductId;
                 setting.LookUpValues.Add(product);
             }
-
             report.DataSourceDemanded += StockValueReport_DataSourceDemanded;
+            //var stockValueDetailReport= new StockValueDetailReport();
+            //stockValueDetailReport.DataSourceDemanded += StockValueDetailReport_DataSourceDemanded;
+            //stockValueDetailReport.OrderNumber.DataBindings.AddRange(new XRBinding[] {
+            //    new XRBinding("Text", stockValueDetailReport.DataSource, ".OrderNumber")});
 
+            //stockValueDetailReport.Pallet.DataBindings.AddRange(new XRBinding[] {
+            //    new XRBinding("Text", stockValueDetailReport.DataSource, ".Pallet")});
+
+            //stockValueDetailReport.ExpectedDate.DataBindings.AddRange(new XRBinding[] {
+            //    new XRBinding("Text", stockValueDetailReport.DataSource, ".ExpectedDate")});
+
+
+            //stockValueDetailReport.Cases.DataBindings.AddRange(new XRBinding[] {
+            //    new XRBinding("Text", stockValueDetailReport.DataSource, ".Cases")});
+
+            //stockValueDetailReport.BuyPrice.DataBindings.AddRange(new XRBinding[] {
+            //    new XRBinding("Text", stockValueDetailReport.DataSource, ".BuyPrice")});
+
+            //stockValueDetailReport.TotalAmount.DataBindings.AddRange(new XRBinding[] {
+            //    new XRBinding("Text", stockValueDetailReport.DataSource, ".TotalAmount")});
+
+            //report.stockDetailSubReport.ReportSource = stockValueDetailReport;
             return report;
         }
 
@@ -140,28 +161,12 @@ namespace WMS.Controllers
             var tenantId = (int?)report.paramsTenantId.Value;
             var warehouseId = (int?)report.paramWarehouseId.Value;
 
-            var products = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(p => productIds.Contains(p.ProductId)).ToList();
+            var orders = OrderService.GetPurhaseOrderAgainstProductId(productIds,CurrentTenantId,CurrentWarehouseId).OrderBy(c=>c.SkuCode);
 
-            var inventoryStocks = _productServices.GetAllPalletTrackings(tenantId ?? 0, warehouseId ?? 0).Where(u => (u.Status == PalletTrackingStatusEnum.Active || u.Status == PalletTrackingStatusEnum.Hold) && productIds.Contains(u.ProductId)).GroupBy(u => u.ProductId).Select(c => new
-            {
-                ProductId = c.Key,
-                inStock = c.Sum(u => u.RemainingCases),
-                ProductMaster = c.Select(u => u.ProductMaster).FirstOrDefault()
 
-            }).ToList();
 
-            report.DataSource = inventoryStocks.Where(u => u.inStock > 0).Select(i =>
-                {
-                    var buyPrice = _productPriceService.GetAveragePurchasePrice(i.ProductId, CurrentTenantId);
-                    return new
-                    {
-                        ProductSkuCode = i.ProductMaster.SKUCode,
-                        ProductName = i.ProductMaster.NameWithCode,
-                        InStock = i.inStock,
-                        BuyPrice = buyPrice,
-                        TotalPrice = (buyPrice ?? 0) * i.inStock
-                    };
-                });
+            report.DataSource = orders;
+                
         }
 
         #endregion StockValueReport

@@ -375,6 +375,11 @@ namespace Ganedata.Core.Entities.Domain
         public decimal TaxAmount { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal Qty { get; set; }
+        public int? ProductId { get; set; }
+        public string PalletSerial { get; set; }
+        public string SkuCode { get; set; }
+        public string ProductName { get; set; }
+        public decimal? Total { get; set; }
     }
 
 }

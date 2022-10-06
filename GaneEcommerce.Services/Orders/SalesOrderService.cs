@@ -765,5 +765,45 @@ namespace Ganedata.Core.Services
 
             return productOrdersDetails;
         }
+
+
+        public List<ProductOrdersDetailViewModel> GetPurhaseOrderAgainstProductId(int[] productIds, int tenantId, int warehouseId)
+        {
+
+            var palletIds = _currentDbContext.PalletTracking.Where(o => o.TenantId == tenantId && o.WarehouseId == warehouseId && o.RemainingCases > 0 && o.Status == PalletTrackingStatusEnum.Active
+            && productIds.Contains(o.ProductId)).Select(c => c.PalletTrackingId).ToList();
+            var InventoryTransactions = _currentDbContext.InventoryTransactions.Where(c => palletIds.Contains(c.PalletTrackingId ?? 0) && (c.InventoryTransactionTypeId==InventoryTransactionTypeEnum.PurchaseOrder 
+            || c.InventoryTransactionTypeId==InventoryTransactionTypeEnum.AdjustmentIn || c.InventoryTransactionTypeId==InventoryTransactionTypeEnum.TransferIn));
+
+            var productOrdersDetails = InventoryTransactions.Select(o => new ProductOrdersDetailViewModel
+            {
+                OrderId = o.OrderID ?? 0,
+                AccountCompanyName = o.Order.Account != null ? o.Order.Account.CompanyName : "",
+                AccountCode = o.Order.Account != null ? o.Order.Account.AccountCode : "",
+                OrderNumber = o.Order.OrderNumber ?? "",
+                Date = o.DateCreated,
+                Qty = o.PalletTracking != null ? o.PalletTracking.RemainingCases : 0,
+                TaxAmount = 0,
+                SellPrice = 0,
+                BuyPrice = 0,
+                TotalAmount = 0,
+                WarrantyAmount = 0,
+                PalletSerial = o.PalletTracking != null ? o.PalletTracking.PalletSerial : "",
+                ProductId = o.ProductId,
+                SkuCode= o.ProductMaster.SKUCode,
+                ProductName=o.ProductMaster.Name,
+                 
+            }).ToList();
+
+            productOrdersDetails.ForEach(p =>
+            {
+                p.BuyPrice = _productPriceService.GetPurchasePrice(p.ProductId ?? 0, tenantId, p.Date, p.OrderId) ?? 0;
+                p.TotalAmount = Math.Round(p.BuyPrice * p.Qty, 2);
+            });
+
+
+
+            return productOrdersDetails;
+        }
     }
 }

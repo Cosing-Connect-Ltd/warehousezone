@@ -893,6 +893,12 @@
     <Compile Include="Reports\Designs\ProductMovementPrint.Designer.cs">
       <DependentUpon>ProductMovementPrint.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\Designs\StockValueDetailReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Designs\StockValueDetailReport.Designer.cs">
+      <DependentUpon>StockValueDetailReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\Designs\ProductSoldByPalletType.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -2337,6 +2343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\ProductMovementPrint.resx">
       <DependentUpon>ProductMovementPrint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Designs\StockValueDetailReport.resx">
+      <DependentUpon>StockValueDetailReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\ProductSoldByPalletType.resx">
       <DependentUpon>ProductSoldByPalletType.cs</DependentUpon>
