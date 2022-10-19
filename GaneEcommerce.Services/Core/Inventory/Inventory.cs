@@ -63,7 +63,7 @@ namespace Ganedata.Core.Services
                 CreatedBy = user.UserId,
                 UpdatedBy = user.UserId,
                 IsActive = true,
-                LocationId = locationId>0? location: (int?)null,
+                LocationId = locationId > 0 ? location : (int?)null,
                 InventoryTransactionRef = transactionRef,
                 SerialID = serialId,
                 DontMonitorStock = dontMonitorStock,
@@ -83,7 +83,7 @@ namespace Ganedata.Core.Services
                 AdjustRecipeItemsInventory(transaction);
 
                 //calculate location stock
-                if (!dontMonitorStock && locationId>0)
+                if (!dontMonitorStock && locationId > 0)
                 {
                     InventoryStockMoveExtensions.AdjustStockLocations(transaction.ProductId, 0, location, transaction.Quantity, transaction.WarehouseId, transaction.TenentId, transaction.CreatedBy, pallettrackingId, serialId, false);
                 }
@@ -373,7 +373,7 @@ namespace Ganedata.Core.Services
             int? cons_type, string delivery, int? Line_Id, List<CommonLocationViewModel> stockLocations = null,
             AccountShipmentInfo shipmentInfo = null)
         {
-            int location = model.LocationId>0 ? GetLocation(model.TenentId, model.WarehouseId, model.CreatedBy, model.LocationId): 0;
+            int location = model.LocationId > 0 ? GetLocation(model.TenentId, model.WarehouseId, model.CreatedBy, model.LocationId) : 0;
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             InventoryTransaction AutoTransferInventoryTransaction = new InventoryTransaction();
             bool reverseInventoryTransaction = false;
@@ -623,7 +623,7 @@ namespace Ganedata.Core.Services
                     if (altOrder != null && altOrder.Warehouse.AutoTransferOrders == true)
                     {
                         var AltOrderDetail = altOrder.OrderDetails.FirstOrDefault(m =>
-                            m.ProductId == model.ProductId && m.Qty >= m.ProcessedQty && m.IsDeleted!=true);
+                            m.ProductId == model.ProductId && m.Qty >= m.ProcessedQty && m.IsDeleted != true);
                         var targetWarehouseProcess = context.OrderProcess
                             .Where(m => m.OrderID == model.OrderID && m.IsDeleted != true).ToList().FirstOrDefault(m =>
                                 consolidateOrderProcess == true ||
@@ -1075,10 +1075,10 @@ namespace Ganedata.Core.Services
                     InventoryAvailabilityExtensions.RemoveProductFromNotifyQueue(productId, tenantId, warehouseId, context);
                 }
 
-                oldStock.InStock = inStock;
+                oldStock.InStock = inStock >= 0 ? inStock : 0;
                 oldStock.Allocated = itemsAllocated;
                 oldStock.OnOrder = itemsOnOrder;
-                oldStock.Available = available;
+                oldStock.Available = available >= 0 ? available : 0;
                 oldStock.DateUpdated = DateTime.UtcNow;
                 oldStock.UpdatedBy = userId;
                 oldStock.IsActive = true;
@@ -1091,10 +1091,10 @@ namespace Ganedata.Core.Services
                     ProductId = productId,
                     WarehouseId = warehouseId,
                     TenantId = tenantId,
-                    InStock = inStock,
+                    InStock = inStock >= 0 ? inStock : 0,
                     Allocated = itemsAllocated,
                     OnOrder = itemsOnOrder,
-                    Available = available,
+                    Available = available >= 0 ? available : 0,
                     DateCreated = DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
                     UpdatedBy = userId,
@@ -1109,10 +1109,10 @@ namespace Ganedata.Core.Services
             if (transaction != null)
             {
                 var ts = context.InventoryTransactions.FirstOrDefault(m => m.InventoryTransactionId == transaction.InventoryTransactionId);
-                ts.InStock = inStock;
+                ts.InStock = inStock >= 0 ? inStock : 0;
                 ts.Allocated = itemsAllocated;
                 ts.OnOrder = itemsOnOrder;
-                ts.Available = available;
+                ts.Available = available >= 0 ? available : 0;
                 ts.OrderStatus = transaction.Order?.OrderStatusID;
                 context.Entry(ts).State = EntityState.Modified;
             }
@@ -1328,7 +1328,7 @@ namespace Ganedata.Core.Services
                 x.ProductId == productId && x.TenantId == tenantId &&
                 x.WarehouseId == warehouseId && x.IsDeleted != true)?.InStock ?? 0;
 
-            if  (InventoryExtensions.StockInTransactionTypeList.Contains(transType))
+            if (InventoryExtensions.StockInTransactionTypeList.Contains(transType))
             {
                 totalStock = currentStock + newStock;
             }

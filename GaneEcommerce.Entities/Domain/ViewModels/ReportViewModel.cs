@@ -53,11 +53,13 @@ namespace Ganedata.Core.Models
     public class StockShortageReportModel
     {
         public string OrderNumber { get; set; }
+        public DateTime RDate { get; set; }
         public List<StockShortageReportDetail> StockReportDetails { get; set; }
     }
     public class StockShortageReportDetail
     {
         public string OrderNumber { get; set; }
+        public DateTime RDate { get; set; }
         public string SkuCode { get; set; }
         public string ProductName { get; set; }
         public decimal Qty { get; set; }

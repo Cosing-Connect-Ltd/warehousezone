@@ -31,6 +31,8 @@
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.RDate = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.order = new DevExpress.XtraReports.UI.XRLabel();
             this.OrderNumber = new DevExpress.XtraReports.UI.XRLabel();
             this.ReOrder = new DevExpress.XtraReports.UI.XRLabel();
@@ -53,6 +55,9 @@
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
+            this.paramStartDate = new DevExpress.XtraReports.Parameters.Parameter();
+            this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel11 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -68,10 +73,38 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.RDate,
+            this.xrLabel8,
             this.order,
             this.OrderNumber});
-            this.Detail.HeightF = 22.79167F;
+            this.Detail.HeightF = 22.7917F;
             this.Detail.Name = "Detail";
+            // 
+            // RDate
+            // 
+            this.RDate.BorderWidth = 0F;
+            this.RDate.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[RDate]")});
+            this.RDate.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RDate.LocationFloat = new DevExpress.Utils.PointFloat(452.5833F, 3.916709F);
+            this.RDate.Name = "RDate";
+            this.RDate.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.RDate.SizeF = new System.Drawing.SizeF(142.2496F, 18.87499F);
+            this.RDate.StylePriority.UseBorderWidth = false;
+            this.RDate.StylePriority.UseFont = false;
+            this.RDate.TextFormatString = "{0:M/d/yyyy}";
+            // 
+            // xrLabel8
+            // 
+            this.xrLabel8.BorderWidth = 0F;
+            this.xrLabel8.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(357.2087F, 3.591697F);
+            this.xrLabel8.Name = "xrLabel8";
+            this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel8.SizeF = new System.Drawing.SizeF(95.3746F, 19.19999F);
+            this.xrLabel8.StylePriority.UseBorderWidth = false;
+            this.xrLabel8.StylePriority.UseFont = false;
+            this.xrLabel8.Text = "Required Date";
             // 
             // order
             // 
@@ -115,6 +148,8 @@
             // ReportHeader
             // 
             this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel11,
+            this.xrLabel10,
             this.xrLabel21,
             this.xrLine1,
             this.xrLabel22,
@@ -130,10 +165,10 @@
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?paramEndDate")});
             this.xrLabel21.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel21.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel21.LocationFloat = new DevExpress.Utils.PointFloat(294.5419F, 49.45836F);
+            this.xrLabel21.LocationFloat = new DevExpress.Utils.PointFloat(401.8336F, 49.45836F);
             this.xrLabel21.Name = "xrLabel21";
             this.xrLabel21.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel21.SizeF = new System.Drawing.SizeF(229.9164F, 18.83337F);
+            this.xrLabel21.SizeF = new System.Drawing.SizeF(122.6247F, 18.83337F);
             this.xrLabel21.StylePriority.UseBackColor = false;
             this.xrLabel21.StylePriority.UseFont = false;
             this.xrLabel21.StylePriority.UseForeColor = false;
@@ -241,7 +276,7 @@
             // 
             // paramEndDate
             // 
-            this.paramEndDate.Description = "SO Required Date";
+            this.paramEndDate.Description = "Required Date To";
             this.paramEndDate.Name = "paramEndDate";
             this.paramEndDate.Type = typeof(System.DateTime);
             this.paramEndDate.ValueInfo = "2022-06-27";
@@ -357,6 +392,47 @@
             this.xrLabel5.StylePriority.UseFont = false;
             this.xrLabel5.Text = "SKU";
             // 
+            // paramStartDate
+            // 
+            this.paramStartDate.Description = "Required Date From";
+            this.paramStartDate.Name = "paramStartDate";
+            this.paramStartDate.Type = typeof(System.DateTime);
+            this.paramStartDate.ValueInfo = "2022-10-18";
+            // 
+            // xrLabel10
+            // 
+            this.xrLabel10.BackColor = System.Drawing.Color.Transparent;
+            this.xrLabel10.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?paramStartDate")});
+            this.xrLabel10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel10.ForeColor = System.Drawing.Color.Black;
+            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(247.9589F, 49.45836F);
+            this.xrLabel10.Name = "xrLabel10";
+            this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel10.SizeF = new System.Drawing.SizeF(138.2497F, 18.83337F);
+            this.xrLabel10.StylePriority.UseBackColor = false;
+            this.xrLabel10.StylePriority.UseFont = false;
+            this.xrLabel10.StylePriority.UseForeColor = false;
+            this.xrLabel10.StylePriority.UseTextAlignment = false;
+            this.xrLabel10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrLabel10.TextFormatString = "{0:dd/MM/yyyy}";
+            // 
+            // xrLabel11
+            // 
+            this.xrLabel11.BackColor = System.Drawing.Color.Transparent;
+            this.xrLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel11.ForeColor = System.Drawing.Color.Black;
+            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(386.2085F, 49.45836F);
+            this.xrLabel11.Name = "xrLabel11";
+            this.xrLabel11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel11.SizeF = new System.Drawing.SizeF(15.62503F, 18.83337F);
+            this.xrLabel11.StylePriority.UseBackColor = false;
+            this.xrLabel11.StylePriority.UseFont = false;
+            this.xrLabel11.StylePriority.UseForeColor = false;
+            this.xrLabel11.StylePriority.UseTextAlignment = false;
+            this.xrLabel11.Text = "-";
+            this.xrLabel11.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
             // StockShortage
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -368,6 +444,7 @@
             this.Font = new System.Drawing.Font("Arial", 9.75F);
             this.Margins = new System.Drawing.Printing.Margins(35, 7, 5, 5);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
+            this.paramStartDate,
             this.paramEndDate});
             this.Version = "21.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -401,5 +478,10 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.XtraReports.UI.XRLabel xrLabel21;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel8;
+        private DevExpress.XtraReports.UI.XRLabel RDate;
+        public DevExpress.XtraReports.Parameters.Parameter paramStartDate;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel11;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel10;
     }
 }

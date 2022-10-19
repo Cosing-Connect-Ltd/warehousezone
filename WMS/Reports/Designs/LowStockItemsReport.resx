@@ -140,8 +140,7 @@
        and ("InventoryStocks"."WarehouseId" = "ProductLocationStockLevel"."TenantLocationID")))
  where
        (("InventoryStocks"."Available" &lt;= "ProductLocationStockLevel"."MinStockQuantity")
-       and ("ProductLocationStockLevel"."TenantId" = @sqlParamTenantId)
-       and ("ProductLocationStockLevel"."TenantLocationID" = @sqlParamWarehouseId)
+       and ("ProductLocationStockLevel"."TenantId" = @sqlParamTenantId)       
        and (("ProductLocationStockLevel"."IsDeleted" = 0)
        or "ProductLocationStockLevel"."IsDeleted"
        is null)

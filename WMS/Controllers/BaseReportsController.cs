@@ -337,7 +337,7 @@ namespace WMS.Controllers
                 financialreport.StartDate.Value = DateTime.Today.AddMonths(-1);
                 financialreport.EndDate.Value = DateTime.Today;
                 StaticListLookUpSettings accountsSettings = (StaticListLookUpSettings)financialreport.AccountId.LookUpSettings;
-                var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
+                var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).OrderBy(c=>c.AccountCode).ToList();
                 accountsSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, (m.AccountCode + " - " + m.CompanyName))));
             }
 

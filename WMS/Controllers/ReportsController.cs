@@ -85,7 +85,7 @@ namespace WMS.Controllers
             InventoryReport.paramTenantId.Value = CurrentTenantId;
             InventoryReport.paramWarehouseId.Value = CurrentWarehouseId;
 
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
+            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).OrderBy(c => c.Name).ToList();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)InventoryReport.paramProductId.LookUpSettings;
 
             foreach (var item in products)
@@ -117,9 +117,9 @@ namespace WMS.Controllers
             report.paramsTenantId.Value = CurrentTenantId;
             report.paramWarehouseId.Value = CurrentWarehouseId;
 
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList().Distinct();
+            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).OrderBy(c => c.Name).ToList().Distinct();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)report.paramProductId.LookUpSettings;
-           
+
 
             foreach (var item in products)
             {
@@ -161,12 +161,12 @@ namespace WMS.Controllers
             var tenantId = (int?)report.paramsTenantId.Value;
             var warehouseId = (int?)report.paramWarehouseId.Value;
 
-            var orders = OrderService.GetPurhaseOrderAgainstProductId(productIds,CurrentTenantId,CurrentWarehouseId).OrderBy(c=>c.SkuCode);
+            var orders = OrderService.GetPurhaseOrderAgainstProductId(productIds, CurrentTenantId, CurrentWarehouseId).OrderBy(c => c.SkuCode);
 
 
 
             report.DataSource = orders;
-                
+
         }
 
         #endregion StockValueReport
@@ -211,7 +211,6 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             LowStockItemsReport report = new LowStockItemsReport();
-            StaticListLookUpSettings setting = (StaticListLookUpSettings)report.WarehouseParam.LookUpSettings;
             caTenant tenant = caCurrent.CurrentTenant();
             report.TenantIdParam.Value = tenant.TenantId;
 
@@ -236,25 +235,8 @@ namespace WMS.Controllers
                 tenantDepartmentsSettings.LookUpValues.Add(group);
             }
 
-            TenantConfig config = _tenantServices.GetTenantConfigById(CurrentTenantId);
-            if (!config.ShowDecimalPoint)
-            {
-                report.lblQuantity.TextFormatString = "{0:0.##}";
-            }
-            LookUpValue item = new LookUpValue();
-            item.Description = "Select Location";
-            item.Value = 0;
-            setting.LookUpValues.Add(item);
 
-            IEnumerable<TenantLocations> Warehouses = LookupServices.GetAllWarehousesForTenant(CurrentTenantId);
 
-            foreach (var whs in Warehouses)
-            {
-                LookUpValue item2 = new LookUpValue();
-                item2.Description = whs.WarehouseName;
-                item2.Value = whs.WarehouseId;
-                setting.LookUpValues.Add(item2);
-            }
 
             return View(report);
         }
@@ -1371,18 +1353,18 @@ namespace WMS.Controllers
             report.paramStartDate.Value = DateTime.Today.AddMonths(-1);
             report.paramEndDate.Value = DateTime.Today;
             var accountsSettings = (StaticListLookUpSettings)report.paramAccountIds.LookUpSettings;
-            var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
+            var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).OrderBy(c => c.CompanyName).ToList();
             accountsSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));
 
             var productsSettings = (StaticListLookUpSettings)report.paramProductIds.LookUpSettings;
-            var products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
+            var products = _productServices.GetAllValidProductMasters(CurrentTenantId).OrderBy(c => c.Name).ToList();
             productsSettings.LookUpValues.AddRange(products.Select(m => new LookUpValue(m.ProductId, m.NameWithCode)));
 
             var marketsSettings = (StaticListLookUpSettings)report.paramMarketId.LookUpSettings;
             var markets = _marketServices.GetAllValidMarkets(CurrentTenantId).Markets;
             marketsSettings.LookUpValues.AddRange(markets.Select(m => new LookUpValue(m.Id, m.Name)));
 
-            var users = OrderService.GetAllAuthorisedUsers(CurrentTenantId, true);
+            var users = OrderService.GetAllAuthorisedUsers(CurrentTenantId, true).OrderBy(c => c.UserFirstName);
             StaticListLookUpSettings ownerSettings = (StaticListLookUpSettings)report.paramOwnerIds.LookUpSettings;
             ownerSettings.LookUpValues.AddRange(users.Select(m => new LookUpValue(m.UserId, m.DisplayName)));
 
@@ -1485,9 +1467,10 @@ namespace WMS.Controllers
         private void StockShortageReport_DataSourceDemanded(object sender, EventArgs e)
         {
             var report = (StockShortage)sender;
+            var startDate = (DateTime)report.paramStartDate.Value;
             var endDate = (DateTime)report.paramEndDate.Value;
             var orders = OrderService.GetAllOrders(CurrentTenantId, 1)
-                                          .Where(x => DbFunctions.TruncateTime(x.ExpectedDate) == DbFunctions.TruncateTime(endDate) && x.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder).ToList();
+                                          .Where(x => DbFunctions.TruncateTime(x.ExpectedDate) >= DbFunctions.TruncateTime(startDate) && DbFunctions.TruncateTime(x.ExpectedDate) <= DbFunctions.TruncateTime(endDate) && x.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder).ToList();
             var orderDetails = orders.SelectMany(u => u.OrderDetails).ToList();
             var dataSource = new List<StockShortageReportDetail>();
             foreach (var orderDetail in orderDetails.ToList())
@@ -1498,10 +1481,11 @@ namespace WMS.Controllers
                     dataSource.Add(new StockShortageReportDetail
                     {
                         OrderNumber = orderDetail.Order.OrderNumber,
+                        RDate = orderDetail.Order.ExpectedDate.Value,
                         ProductName = orderDetail.ProductMaster.Name,
                         Qty = orderDetail.Qty,
                         SkuCode = orderDetail.ProductMaster.SKUCode,
-                        RemainingCases = remainingCases.RemainingCases,
+                        RemainingCases = remainingCases.RemainingCases >= 0 ? remainingCases.RemainingCases : 0,
                         Shortage = orderDetail.Qty - remainingCases.RemainingCases,
 
                     });
@@ -1513,9 +1497,10 @@ namespace WMS.Controllers
             {
 
                 OrderNumber = u.Key,
+                RDate = u.FirstOrDefault().RDate,
                 StockReportDetails = u.SelectMany(c => new List<StockShortageReportDetail>
                 {
-                    new StockShortageReportDetail
+                  new StockShortageReportDetail
                 {
                     ProductName = c.ProductName,
                     SkuCode = c.SkuCode,
@@ -1564,7 +1549,7 @@ namespace WMS.Controllers
             InvoiceByProductReport.paramStartDate.Value = DateTime.Today.AddMonths(-1);
             InvoiceByProductReport.paramEndDate.Value = DateTime.Today;
             InvoiceByProductReport.TenantID.Value = CurrentTenantId;
-            var products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
+            var products = _productServices.GetAllValidProductMasters(CurrentTenantId).OrderBy(c => c.Name).ToList();
             var setting = (StaticListLookUpSettings)InvoiceByProductReport.paramProductsIds.LookUpSettings;
 
             foreach (var item in products)
