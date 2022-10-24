@@ -915,7 +915,7 @@ namespace Ganedata.Core.Services
 
         public ShortagePallets CheckPalletRemaingCases(int productId, decimal qty)
         {
-            var remainingCases = _currentDbContext.PalletTracking.Where(c => c.Status == PalletTrackingStatusEnum.Active && c.ProductId==productId)
+            var remainingCases = _currentDbContext.PalletTracking.Where(c => (c.Status == PalletTrackingStatusEnum.Active || c.Status== PalletTrackingStatusEnum.Hold) && c.ProductId==productId)
                 .Select(u =>u.RemainingCases).DefaultIfEmpty(0).Sum();
             var model = new ShortagePallets { RemainingCases = remainingCases };
             return model;
