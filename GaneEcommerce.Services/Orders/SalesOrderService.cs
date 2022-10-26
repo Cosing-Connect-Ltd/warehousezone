@@ -512,6 +512,7 @@ namespace Ganedata.Core.Services
                 IssueDate = p.IssueDate,
                 DateUpdated = p.DateUpdated,
                 DateCreated = p.DateCreated,
+                ExpectedDate=p.ExpectedDate,
                 POStatus = p.OrderStatusID.ToString(),
                 OrderStatusID = p.OrderStatusID,
                 Account = p.Account.AccountCode,

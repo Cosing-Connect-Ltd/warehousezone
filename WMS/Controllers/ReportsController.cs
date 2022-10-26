@@ -1457,7 +1457,8 @@ namespace WMS.Controllers
 
             // get properties of tenant
             var report = new StockShortage();
-            report.paramEndDate.Value = DateTime.Today;
+            report.paramStartDate.Value = DateTime.Today;
+            report.paramEndDate.Value = DateTime.Today.AddDays(1);
 
 
             report.DataSourceDemanded += StockShortageReport_DataSourceDemanded;

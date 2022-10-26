@@ -18,10 +18,38 @@
     <div data-bind="dxDateBox: { value: value.extend({ throttle: 500 }), closeOnValueChange: true, format: 'date', disabled: disabled }, dxValidator: { validationRules: validationRules || [] }"></div>
 </script>
 <script type="text/javascript">
+    function removeTime(date = new Date()) {
+        return new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate()
+        );
+    }
     function designer_CustomizeParameterEditors(s, e) {
         if (e.parameter.type == "System.DateTime") {
             e.info.editor.header = 'custom-dx-date';
         }
+        var viewer = s;
+        if (e.parameter.name === 'paramStartDate') {
+            debugger;
+            e.info.validationRules = [{
+                type: 'custom', validationCallback: function (e) {
+                    var value = e.value;
+                    var endValue = viewer.GetParametersModel()["paramEndDate"]();
+                    return (value && endValue >= value && value >= removeTime(new Date())) || !endValue;
+                }, message: 'Start date value is not valid!'
+            }];
+        }
+        if (e.parameter.name === 'paramEndDate') {
+            e.info.validationRules = [{
+                type: 'custom', validationCallback: function (e) {
+                    var value = e.value;
+                    var startDate = viewer.GetParametersModel()["paramStartDate"]();
+                    return (value && value >= startDate && value >= removeTime(new Date())) || !startDate;
+                }, message: 'End Date is not valid!'
+            }];
+        }
+
     }
 </script>
 <h2><span>@ViewBag.Title</span></h2>

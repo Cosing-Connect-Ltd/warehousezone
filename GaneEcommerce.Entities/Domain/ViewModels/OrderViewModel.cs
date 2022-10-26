@@ -153,7 +153,6 @@ namespace Ganedata.Core.Entities.Domain
         public string ShipmentCountry { get; set; }
         public List<OrderNotesViewModel> OrderNotesList { get; set; }
 
-
         public string OrderNotesListText
         {
             get
