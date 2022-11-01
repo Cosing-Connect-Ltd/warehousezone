@@ -1474,7 +1474,7 @@ namespace WMS.Controllers
                                           .Where(x => DbFunctions.TruncateTime(x.ExpectedDate) >= DbFunctions.TruncateTime(startDate) && DbFunctions.TruncateTime(x.ExpectedDate) <= DbFunctions.TruncateTime(endDate) && x.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder).ToList();
             var orderDetails = orders.SelectMany(u => u.OrderDetails).ToList();
             var dataSource = new List<StockShortageReportDetail>();
-            foreach (var orderDetail in orderDetails.ToList())
+            foreach (var orderDetail in orderDetails.Where(c => c.IsDeleted != true).ToList())
             {
                 var remainingCases = _palletingService.CheckPalletRemaingCases(orderDetail.ProductId, orderDetail.Qty);
                 if (orderDetail.Qty > remainingCases.RemainingCases)
@@ -1486,8 +1486,8 @@ namespace WMS.Controllers
                         ProductName = orderDetail.ProductMaster.Name,
                         Qty = orderDetail.Qty,
                         SkuCode = orderDetail.ProductMaster.SKUCode,
-                        RemainingCases = remainingCases.RemainingCases >= 0 ? remainingCases.RemainingCases : 0,
-                        Shortage = orderDetail.Qty - remainingCases.RemainingCases,
+                        RemainingCases = (remainingCases.RemainingCases >= 0 ? remainingCases.RemainingCases : 0),
+                        Shortage = orderDetail.Qty - (remainingCases.RemainingCases >= 0 ? remainingCases.RemainingCases : 0),
 
                     });
                 }
