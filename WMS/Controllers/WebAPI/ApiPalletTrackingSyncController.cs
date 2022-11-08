@@ -124,10 +124,17 @@ namespace WMS.Controllers.WebAPI
             return Ok(result);
         }
         [HttpGet]
-        public IHttpActionResult VerifyPallet(string serial, int productId, int shopId)
+        public IHttpActionResult VerifyPallet(string serial, int productId, int shopId, int type)
         {
-
-            PalletTracking verifedPallet = this._purchaseOrderService.GetVerifedPallet(serial, productId, 1, shopId);
+            VerifyPalletTrackingSync data = new VerifyPalletTrackingSync();
+            data.PalletSerial = serial;
+            data.InventoryTransactionType = type;
+            data.ProductId = productId;
+            data.WarehouseId = shopId;
+            data.TenantId = shopId;
+            PalletTracking verifedPallet = ProductServices.GetVerifedPalletAsync(data);
+            //this._purchaseOrderService.GetVerifedPallet(serial, productId, 1, shopId);
+            //
             PalletTrackingSync palletTrackingSync = new PalletTrackingSync();
             if (verifedPallet != null)
             {

@@ -138,7 +138,7 @@ namespace WMS
             config.Routes.MapHttpRoute("PostUserLoginStatuss", "api/sync/get-login-status-new", new { controller = "ApiTerminalUserSync", action = "GetUserLoginStatusNew" });
             config.Routes.MapHttpRoute("OrdersSyncNew", "api/sync/orders/{orderId}/{shopId}/{orderNumber}", new { controller = "ApiOrdersSync", action = "GetOrderss", orderId = string.Empty, shopId = string.Empty, orderNumber = string.Empty });
             config.Routes.MapHttpRoute("ProductsSyncNew", "api/sync/products-new/{shopId}", new { controller = "ApiProductSync", action = "GetProducts", shopId = string.Empty });
-            config.Routes.MapHttpRoute("VeriyPallets", "api/verify-pallet/{serial}/{productId}/{shopId}", new { controller = "ApiPallettrackingSync", action = "VerifyPallet", serial = string.Empty, productId = string.Empty, shopId = string.Empty });
+            config.Routes.MapHttpRoute("VeriyPallets", "api/verify-pallet/{serial}/{productId}/{shopId}/{type}", new { controller = "ApiPallettrackingSync", action = "VerifyPallet", serial = string.Empty, productId = string.Empty, shopId = string.Empty, type=string.Empty });
             config.Routes.MapHttpRoute("SubmitPalleteSerials", "api/submit-pallets", new { controller = "ApiPallettrackingSync", action = "SubmitPalleteSerials" });
             config.Routes.MapHttpRoute("PostOrderSimple", "api/submit-simple-product", new { controller = "ApiPallettrackingSync", action = "PostOrderProcessSimple" });
             config.Routes.MapHttpRoute("CreateNewPallet", "api/create-pallete", new { controller = "ApiPalletsSync", action = "CreatePalletAndGetList" });
@@ -169,7 +169,7 @@ namespace WMS
             });
 
             config.Routes.MapHttpRoute("SalesOrderByPaging", "api/Get-all-active-saleorders", new { controller = "ApiOrdersSync", action = "GetSalesOrderByPagination" });
-            
+
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

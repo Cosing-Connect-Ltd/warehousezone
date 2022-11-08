@@ -904,6 +904,7 @@ namespace Ganedata.Core.Services
 
                 Select(u => new
                 {
+                    u.PalletTrackingId,
                     u.PalletSerial,
                     u.ExpiryDate,
                     u.RemainingCases,
