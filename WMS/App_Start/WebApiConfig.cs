@@ -153,11 +153,12 @@ namespace WMS
                 userId = string.Empty
             });
 
-            config.Routes.MapHttpRoute("GetTopFiveActivePalletSerial", "api/get-active-pallets/{productId}", (object)new
+            config.Routes.MapHttpRoute("GetTopFiveActivePalletSerial", "api/get-active-pallets/{productId}/{type}", (object)new
             {
                 controller = "ApiPalletsSync",
                 action = "GetTopFiveActivePallets",
                 productId = string.Empty,
+                type = string.Empty,
             });
 
             config.Routes.MapHttpRoute("PalletDispatchesMethod", "api/dispatch-pallets/{orderProcessId}/{userId}/{markCompleted}", (object)new

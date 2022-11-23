@@ -172,11 +172,11 @@ namespace Ganedata.Core.Services
         }
         public void UpdatePalletStatusBySerial(string palletSerial)
         {
-            var pallet = _currentDbContext.PalletTracking.FirstOrDefault(u => u.PalletSerial == palletSerial && u.Status==PalletTrackingStatusEnum.Hold);
+            var pallet = _currentDbContext.PalletTracking.FirstOrDefault(u => u.PalletSerial == palletSerial && u.Status == PalletTrackingStatusEnum.Hold);
             if (pallet != null)
             {
                 pallet.Status = PalletTrackingStatusEnum.Active;
-                _currentDbContext.Entry(pallet).State=EntityState.Modified;
+                _currentDbContext.Entry(pallet).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
             }
         }
@@ -898,9 +898,9 @@ namespace Ganedata.Core.Services
 
         }
 
-        public object GetFiveActivePallets(int productId)
+        public object GetFiveActivePallets(int productId, int type)
         {
-            return _currentDbContext.PalletTracking.Where(u => u.ProductId == productId && (u.Status == PalletTrackingStatusEnum.Active) && u.RemainingCases > 0).OrderBy(u => u.PalletTrackingId).Take(5).
+            return _currentDbContext.PalletTracking.Where(u => u.ProductId == productId && (type == 2 ? u.Status == PalletTrackingStatusEnum.Active : u.Status == PalletTrackingStatusEnum.Created) && u.RemainingCases > 0).OrderBy(u => u.PalletTrackingId).Take(5).
 
                 Select(u => new
                 {
@@ -916,8 +916,8 @@ namespace Ganedata.Core.Services
 
         public ShortagePallets CheckPalletRemaingCases(int productId, decimal qty)
         {
-            var remainingCases = _currentDbContext.PalletTracking.Where(c => (c.Status == PalletTrackingStatusEnum.Active || c.Status== PalletTrackingStatusEnum.Hold) && c.ProductId==productId)
-                .Select(u =>u.RemainingCases).DefaultIfEmpty(0).Sum();
+            var remainingCases = _currentDbContext.PalletTracking.Where(c => (c.Status == PalletTrackingStatusEnum.Active || c.Status == PalletTrackingStatusEnum.Hold) && c.ProductId == productId)
+                .Select(u => u.RemainingCases).DefaultIfEmpty(0).Sum();
             var model = new ShortagePallets { RemainingCases = remainingCases };
             return model;
         }

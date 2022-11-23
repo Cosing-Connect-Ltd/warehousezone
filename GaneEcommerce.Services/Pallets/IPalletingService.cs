@@ -80,7 +80,7 @@ namespace Ganedata.Core.Services
         AssigningDispatchToDelivery PalletLoadingFromDataBase(int dispatchId);
         int GetVechileVerification(string vechileId);
 
-        object GetFiveActivePallets(int productId);
+        object GetFiveActivePallets(int productId,int type);
 
         ShortagePallets CheckPalletRemaingCases(int productId, decimal qty);
 

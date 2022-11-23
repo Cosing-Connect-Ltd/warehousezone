@@ -298,9 +298,9 @@ namespace WMS.Controllers.WebAPI
             return Ok(result);
         }
         [HttpGet]
-        public IHttpActionResult GetTopFiveActivePallets(int productId)
+        public IHttpActionResult GetTopFiveActivePallets(int productId,int type)
         {
-            return Ok(_palletService.GetFiveActivePallets(productId));
+            return Ok(_palletService.GetFiveActivePallets(productId,type));
         }
 
         [HttpGet]

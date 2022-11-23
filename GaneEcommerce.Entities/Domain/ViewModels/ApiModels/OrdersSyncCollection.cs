@@ -134,6 +134,7 @@ namespace Ganedata.Core.Models
         public int? WarrantyID { get; set; }
         public decimal WarrantyAmount { get; set; }
         public int? TaxID { get; set; }
+        public int type { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal TotalAmount { get; set; }
         public DateTime DateCreated { get; set; }

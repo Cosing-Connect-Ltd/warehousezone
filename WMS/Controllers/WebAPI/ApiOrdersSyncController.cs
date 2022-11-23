@@ -303,13 +303,13 @@ namespace WMS.Controllers.WebAPI
         {
             var result = new OrdersSyncCollection();
 
-            List<Order> list = OrderService.GetAllOrdersByTenantId(shopId).Where(u =>  (string.IsNullOrEmpty(orderNumber) || u.OrderNumber == orderNumber) && (!orderId.HasValue || (int?)u.OrderID == orderId) && u.IsDeleted != true && u.OrderStatusID == OrderStatusEnum.Active).ToList<Order>();
+            List<Order> list = OrderService.GetAllOrdersByTenantId(shopId).Where(u => (string.IsNullOrEmpty(orderNumber) || u.OrderNumber == orderNumber) && (!orderId.HasValue || (int?)u.OrderID == orderId) && u.IsDeleted != true && u.OrderStatusID == OrderStatusEnum.Active).ToList<Order>();
             var warehouses = _lookupService.GetAllWarehousesForTenant(shopId);
             var orders = new List<OrdersSync>();
 
             foreach (var p in list)
             {
-               p.OrderDetails = p.OrderDetails.Where(c => c.IsDeleted != true).ToList();
+                p.OrderDetails = p.OrderDetails.Where(c => c.IsDeleted != true).ToList();
                 var order = new OrdersSync();
                 var mapped = _mapper.Map(p, order);
                 mapped.AccountName = p.Account.CompanyName;
@@ -327,8 +327,9 @@ namespace WMS.Controllers.WebAPI
                         int num = productMaster != null ? (productMaster.ProcessByPallet ? 1 : 0) : 0;
                         mapped.OrderDetails[i].ProcessByPallet = productMaster.ProcessByPallet;
                         mapped.OrderDetails[i].QuantityProcessed = new Decimal?(p.OrderDetails.ToList<OrderDetail>()[i].ProcessedQty);
-                        mapped.OrderDetails[i].InStock = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.ProductId == productMaster.ProductId && (u.Status == PalletTrackingStatusEnum.Active) && u.RemainingCases > 0);
-                        mapped.OrderDetails[i].OnHold = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.Status==PalletTrackingStatusEnum.Hold && u.RemainingCases > 0);
+                        mapped.OrderDetails[i].type = (int)p.InventoryTransactionTypeId;
+                        mapped.OrderDetails[i].InStock = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.ProductId == productMaster.ProductId && (p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder ? u.Status == PalletTrackingStatusEnum.Created : u.Status == PalletTrackingStatusEnum.Active) && u.RemainingCases > 0);
+                        mapped.OrderDetails[i].OnHold = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.Status == PalletTrackingStatusEnum.Hold && u.RemainingCases > 0);
                     }
                 }
                 //if user is assocaited to the account
@@ -342,7 +343,7 @@ namespace WMS.Controllers.WebAPI
 
                     }
                 }
-                
+
                 orders.Add(mapped);
             }
 

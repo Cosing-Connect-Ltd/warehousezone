@@ -18,7 +18,7 @@ namespace WMS.Controllers.WebAPI
         private readonly IMapper _mapper;
         private readonly IPurchaseOrderService _purchaseOrderService;
         private readonly IPalletingService _palletService;
-        public ApiPallettrackingSyncController(ITerminalServices terminalServices, IPurchaseOrderService purchaseOrderService, ITenantLocationServices tenantLocationServices, IOrderService orderService, IProductServices productServices, IUserService userService, IMapper mapper,IPalletingService palletingService)
+        public ApiPallettrackingSyncController(ITerminalServices terminalServices, IPurchaseOrderService purchaseOrderService, ITenantLocationServices tenantLocationServices, IOrderService orderService, IProductServices productServices, IUserService userService, IMapper mapper, IPalletingService palletingService)
             : base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _mapper = mapper;
@@ -149,6 +149,7 @@ namespace WMS.Controllers.WebAPI
         {
             GoodsReturnRequestSync serials = new GoodsReturnRequestSync();
             int shopId = submitPalletSerial.ShopId;
+            submitPalletSerial.InventoryTransactionType = OrderService.GetOrderById(submitPalletSerial.OrderId).InventoryTransactionTypeId;
             List<PalleTrackingProcess> palleTrackingProcessList = new List<PalleTrackingProcess>();
             foreach (string str in submitPalletSerial.PalletSerial)
             {
@@ -177,7 +178,10 @@ namespace WMS.Controllers.WebAPI
             serials.tenantId = shopId;
             serials.warehouseId = shopId;
             serials.userId = submitPalletSerial.UserId;
-            serials.InventoryTransactionType = submitPalletSerial.InventoryTransactionType;
+            if (submitPalletSerial.InventoryTransactionType != InventoryTransactionTypeEnum.PurchaseOrder)
+            {
+                serials.InventoryTransactionType = submitPalletSerial.InventoryTransactionType;
+            }
             var ordernumber = OrderService.GetOrderById(submitPalletSerial.OrderId).OrderNumber;
             this._purchaseOrderService.ProcessPalletTrackingSerial(serials);
             return Ok(ordernumber);
@@ -201,7 +205,7 @@ namespace WMS.Controllers.WebAPI
 
         public IHttpActionResult GetSalesOrders(string orderNumber)
         {
-            var orders = OrderService.GetAllOrdersByTenantId(tenantId: 1).Where(u => (string.IsNullOrEmpty(orderNumber) || u.OrderNumber.Contains(orderNumber)) && u.OrderStatusID==OrderStatusEnum.Active && u.IsDeleted != true).OrderByDescending(u => u.OrderID).Take(10).Select(u => new
+            var orders = OrderService.GetAllOrdersByTenantId(tenantId: 1).Where(u => (string.IsNullOrEmpty(orderNumber) || u.OrderNumber.Contains(orderNumber)) && u.OrderStatusID == OrderStatusEnum.Active && u.IsDeleted != true).OrderByDescending(u => u.OrderID).Take(10).Select(u => new
             {
                 u.OrderID,
                 u.OrderNumber,
@@ -216,11 +220,11 @@ namespace WMS.Controllers.WebAPI
         [HttpGet]
         public IHttpActionResult CanAutoComplete(int orderId, int userId)
         {
-            OrderService.UpdateOrderStatus(orderId, OrderStatusEnum.Complete,userId);
+            OrderService.UpdateOrderStatus(orderId, OrderStatusEnum.Complete, userId);
             return Ok(true);
         }
 
-        
+
         //[HttpPost]
         //public async IHttpActionResult SavePalletsDispatch(PalletDispatchViewModel model)
         //{
