@@ -1448,7 +1448,7 @@ namespace WMS.Controllers
 
             report.DataSource = dataSource;
         }
-
+        #endregion InvoiceProfitReport
 
         #region StockShortageReport
         public ActionResult StockShortageReport()
@@ -1533,7 +1533,7 @@ namespace WMS.Controllers
         #endregion StockShortageReport
 
 
-        #endregion InvoiceProfitReport
+
 
         #region InvoiceByProduct
 
@@ -1796,5 +1796,56 @@ namespace WMS.Controllers
         }
 
         #endregion ProductSaleReportByPalletType
+
+        #region PalletExpirableReport
+
+        public ActionResult PalletExpirableReport()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            // get properties of tenant
+            var tenant = caCurrent.CurrentTenant();
+            var report = new PalletExpirablePrint();
+            report.paramStartDate.Value = DateTime.Today.AddMonths(-1);
+            report.paramEndDate.Value = DateTime.Today;
+            report.DataSourceDemanded += PalletExpirableReport_DataSourceDemanded;
+
+            return View(report);
+        }
+
+        private void PalletExpirableReport_DataSourceDemanded(object sender, EventArgs e)
+        {
+            var report = (PalletExpirablePrint)sender;
+            var startDate = (DateTime)report.paramStartDate.Value;
+            var endDate = (DateTime)report.paramEndDate.Value;
+            endDate = endDate.AddHours(24);
+
+            var dataSource = new List<ExpirableReportViewModel>();
+
+            var pallets = _productServices.GetAllPalletTrackings(1, 1).Where(c => c.ExpiryDate.HasValue && c.ExpiryDate.Value >= startDate && c.ExpiryDate.Value <= endDate && (c.Status == PalletTrackingStatusEnum.Active || c.Status == PalletTrackingStatusEnum.Hold) && c.RemainingCases > 0).GroupBy(c => c.ProductId).ToList();
+            foreach (var pallet in pallets.ToList())
+            {
+
+                dataSource.Add(new ExpirableReportViewModel
+                {
+                    ProductName = pallet.FirstOrDefault().ProductMaster.Name,
+                    SkuCode = pallet.FirstOrDefault().ProductMaster.SKUCode,
+                    ExpirableReportPallets = pallet.Select(p => new ExpirableReportPallets
+                    {
+                        PalletSerial = p.PalletSerial,
+                        ExpiryDate = p.ExpiryDate,
+                        RemainingCases = p.RemainingCases,
+                        TotalCases = p.TotalCases,
+                        Status = p.Status == PalletTrackingStatusEnum.Active ? "Active" : "Hold"
+                    }).ToList()
+                });
+            }
+
+
+            report.DataSource = dataSource;
+        }
+        #endregion PalletExpirableReport
+
+
     }
 }

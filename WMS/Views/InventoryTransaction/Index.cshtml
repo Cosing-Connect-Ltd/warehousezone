@@ -2,11 +2,13 @@
 @section scripts {
 
     @Html.DevExpress().GetStyleSheets(
-        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme }
         )
 
     @Html.DevExpress().GetScripts(
-        new Script { ExtensionType = ExtensionType.GridView }
+        new Script { ExtensionType = ExtensionType.GridView },
+          new Script { ExtensionType = ExtensionType.PopupControl }
         )
 }
 
@@ -20,8 +22,17 @@
     function OnGridFocusedRowChanged(s, e) {
         $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
     }
+    
 </script>
-
+@Html.Hidden("selkey", null, new { @class = "selkey" })
 <div class="col-md-12 p-0 View">
     @Html.Action("_InventoryTransList")
 </div>
+<div class="p-0 col-md-offset-2 col-md-10 bottom-right">
+    <a href="javascript:;" onclick="popupshow();" class="btn btn-primary">Inventory Adjustments</a>
+</div>
+<script>
+    function popupshow() {
+        ModalPopupInventoryAdjustmentEmail.Show();
+    }
+</script>

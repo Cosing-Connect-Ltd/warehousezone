@@ -1,0 +1,64 @@
+@model Ganedata.Core.Entities.Domain.InventoryTransaction
+
+@{
+    Layout = null;
+}
+
+<div class="col-md-12 p-0">
+    <div class="col-md-12" id="frmInventoryStockAdjustment">
+        @using (Html.BeginForm("InventoryAdjustments", "InventoryStocks", FormMethod.Post, new { @class = "frmAdjust" }))
+        {
+            @Html.AntiForgeryToken()
+        <div class="form-horizontal col-md-12 pull-left">
+            <table class="table tdclear">
+                <caption>
+                    @Html.ValidationSummary(true)
+                </caption>
+                <tr>
+                    <td style="width:30%" class="h3">
+                        @Html.Label("Product")
+                    </td>
+                    <td>
+                        @Model.ProductMaster.Name
+                        @Html.Hidden("ProductId")
+                        @Html.ValidationMessageFor(model => model.ProductId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.InventoryTransactionTypeId)
+                    </td>
+                    <td>
+                        @Html.DropDownList("InventoryTransactionTypeId", "Select Transaction Type")
+                        @Html.ValidationMessageFor(model => model.InventoryTransactionTypeId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Current Quantity")
+                    </td>
+                    <td>
+                        @ViewBag.CurrentQuantity
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Quantity)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Quantity)
+                        @Html.ValidationMessageFor(model => model.Quantity)
+                    </td>
+                </tr>
+
+            </table>
+
+            <div class="col-md-12">
+                <input type="submit" value="Confirm Adjustment" class="btn btn-primary btn-adjst pull-right" />&nbsp;&nbsp;
+                <div class="back-list">@Html.ActionLink("Back to List", "Index", (string)ViewBag.RController, null, new { @class = "btn btn-default" })</div>
+            </div>
+
+        </div>
+        }
+    </div>
+</div>

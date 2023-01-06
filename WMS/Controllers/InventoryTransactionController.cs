@@ -716,6 +716,26 @@ namespace WMS.Controllers
         }
 
 
+        public ActionResult _InventoryAdjustmentPartial()
+        {
+            if (!string.IsNullOrEmpty(Request.Params["inventoryId"]))
+            {
+                int inventoryId = int.Parse(Request.Params["inventoryId"]);
+                var inventoryTransaction = _productServices.GetInventoryTransactionById(inventoryId);
+                ViewBag.productId = inventoryTransaction.ProductMaster.ProductId;
+                ViewBag.ProductDescription = inventoryTransaction.ProductMaster.Description;
+
+                var transactionTypes = from InventoryTransactionTypeEnum d in Enum.GetValues(typeof(InventoryTransactionTypeEnum))
+                                       where d == InventoryTransactionTypeEnum.AdjustmentIn || d == InventoryTransactionTypeEnum.AdjustmentOut
+                                       select new { InventoryTransactionTypeId = (int)d, InventoryTransactionTypeName = d.ToString() };
+                ViewBag.InventoryTransactionTypeId = new SelectList(transactionTypes, "InventoryTransactionTypeId", "InventoryTransactionTypeName");
+                ViewBag.CurrentQuantity = inventoryTransaction.Quantity;
+                inventoryTransaction.Quantity = 0;
+                return View(inventoryTransaction);
+
+            }
+            return View();
+        }
 
 
 

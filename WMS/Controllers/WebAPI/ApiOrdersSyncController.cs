@@ -329,7 +329,7 @@ namespace WMS.Controllers.WebAPI
                         mapped.OrderDetails[i].QuantityProcessed = new Decimal?(p.OrderDetails.ToList<OrderDetail>()[i].ProcessedQty);
                         mapped.OrderDetails[i].type = (int)p.InventoryTransactionTypeId;
                         mapped.OrderDetails[i].InStock = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.ProductId == productMaster.ProductId && (p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder ? u.Status == PalletTrackingStatusEnum.Created : u.Status == PalletTrackingStatusEnum.Active) && u.RemainingCases > 0);
-                        mapped.OrderDetails[i].OnHold = _productService.GetAllPalletTrackings(1, shopId).Any(u => u.Status == PalletTrackingStatusEnum.Hold && u.RemainingCases > 0);
+                        mapped.OrderDetails[i].OnHold = mapped.OrderDetails[i].InStock ? false : _productService.GetAllPalletTrackings(1, shopId).Any(u => u.Status == PalletTrackingStatusEnum.Hold && u.RemainingCases > 0 && u.ProductId == productMaster.ProductId);
                     }
                 }
                 //if user is assocaited to the account

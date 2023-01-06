@@ -805,6 +805,12 @@
     <Compile Include="Reports\Designs\DileveryReportPrintGroup.Designer.cs">
       <DependentUpon>DileveryReportPrintGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\Designs\PalletExpirablePrint.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Designs\PalletExpirablePrint.Designer.cs">
+      <DependentUpon>PalletExpirablePrint.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\Designs\ProductLabelPrint.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -2267,6 +2273,8 @@
     <Content Include="Views\PalletTracking\SelectPalletStatus.cshtml" />
     <Content Include="Views\Reports\StockShortageReport.cshtml" />
     <Content Include="Views\Reports\InvoiceTrackingReport.cshtml" />
+    <Content Include="Views\Reports\PalletExpirableReport.cshtml" />
+    <Content Include="Views\Shared\_InventoryAdjustmentPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -2286,6 +2294,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\DileveryReportPrintGroup.resx">
       <DependentUpon>DileveryReportPrintGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Designs\PalletExpirablePrint.resx">
+      <DependentUpon>PalletExpirablePrint.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\ProductLabelPrint.resx">
       <DependentUpon>ProductLabelPrint.cs</DependentUpon>

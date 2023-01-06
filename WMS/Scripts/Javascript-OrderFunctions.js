@@ -16,6 +16,10 @@ function setValue(val) {
         }
     });
 }
+function beginInventoryAdjustmentPopup(s, e) {
+    var inventoryId = $('.selkey').val();
+    e.customArgs["inventoryId"] = inventoryId;
+}
 function VerifyQunatity() {
     var qty = $("#Qty_I").val();
     var orderdetailId = $("#OrderDetailID").val();

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -1958,6 +1959,7 @@ namespace Ganedata.Core.Services
                 var palletSerial = string.Empty;
                 while (palletSerials.Contains(palletSerial) || string.IsNullOrEmpty(palletSerial))
                 {
+                    
                     palletSerial = DateTime.Now.Date.ToString("ddMMyy") +
                                               DateTime.Now.ToString("HHmmss") +
                                               GenerateRandomNo();
@@ -1969,6 +1971,7 @@ namespace Ganedata.Core.Services
                 _currentDbContext.SaveChanges();
                 palletTrackingId.Add(palletTracking.PalletTrackingId);
                 palletSerials.Add(palletTracking.PalletSerial);
+                Thread.Sleep(TimeSpan.FromSeconds(2));
             }
             return string.Join(",", palletTrackingId.ToArray());
         }

@@ -427,6 +427,27 @@
         settings.EnableClientSideAPI = true;
         settings.ClientSideEvents.BeginCallback = "beginAddCustomEmailPopup";
     }).GetHtml()
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "ModalPopupInventoryAdjustmentEmail";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.CallbackRouteValues = new { Controller = "InventoryTransaction", Action = "_InventoryAdjustmentPartial", Method = "GET" };
+        settings.Width = 750;
+        settings.Height = 350;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+        settings.ShowHeader = false;
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ScrollBars = ScrollBars.Vertical;
+        settings.EnableClientSideAPI = true;
+        settings.ClientSideEvents.BeginCallback = "beginInventoryAdjustmentPopup";
+    }).GetHtml()
 
 
 @Html.DevExpress().PopupControl(

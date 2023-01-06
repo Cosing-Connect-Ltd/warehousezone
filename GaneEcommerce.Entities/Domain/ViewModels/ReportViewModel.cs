@@ -74,9 +74,9 @@ namespace Ganedata.Core.Models
 
     public class ShortagePallets
     {
-        public decimal RemainingCases { get; set;}
+        public decimal RemainingCases { get; set; }
 
-        
+
 
 
     }
@@ -103,5 +103,24 @@ namespace Ganedata.Core.Models
         public string ThirdYear { get; set; }
         public string FourthYear { get; set; }
         public string FifthYear { get; set; }
+    }
+
+    public class ExpirableReportViewModel
+    {
+        public string ProductName { get; set; }
+        public string SkuCode { get; set; }
+
+        public List<ExpirableReportPallets> ExpirableReportPallets { get; set; }
+    }
+    public class ExpirableReportPallets
+    {
+        public string PalletSerial { get; set; }
+        public DateTime? ExpiryDate { get; set; }
+
+        public decimal TotalCases { get; set; }
+
+        public decimal RemainingCases { get; set; }
+        public string Status { get; set; }
+
     }
 }

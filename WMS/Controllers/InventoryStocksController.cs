@@ -86,7 +86,7 @@ namespace WMS.Controllers
                 ViewBag.RController = "Products";
             }
 
-            return View();
+            return View(new InventoryTransaction());
         }
 
         public ActionResult InventoryAdjustmentsSerial(int id)
@@ -416,6 +416,8 @@ namespace WMS.Controllers
             }
             return View("Index");
         }
+
+       
 
     }
 }
