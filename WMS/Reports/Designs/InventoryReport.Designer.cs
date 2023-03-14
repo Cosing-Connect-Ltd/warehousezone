@@ -80,9 +80,6 @@ namespace WMS.Reports
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel11 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel14 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel15 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel17 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel18 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel13 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel12 = new DevExpress.XtraReports.UI.XRLabel();
@@ -100,9 +97,6 @@ namespace WMS.Reports
             this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -113,9 +107,6 @@ namespace WMS.Reports
             this.xrLabel6,
             this.xrLabel5,
             this.xrLabel11,
-            this.xrLabel14,
-            this.xrLabel15,
-            this.xrLabel17,
             this.xrLabel18});
             this.Detail.HeightF = 19.82384F;
             this.Detail.Name = "Detail";
@@ -128,7 +119,7 @@ namespace WMS.Reports
             this.xrLabel6.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InStock]")});
             this.xrLabel6.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(343.9167F, 5.722046E-06F);
+            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(601.4169F, 5.722046E-06F);
             this.xrLabel6.Name = "xrLabel6";
             this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel6.SizeF = new System.Drawing.SizeF(85F, 18.83334F);
@@ -156,44 +147,8 @@ namespace WMS.Reports
             this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(88.09942F, 0F);
             this.xrLabel11.Name = "xrLabel11";
             this.xrLabel11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel11.SizeF = new System.Drawing.SizeF(255.8174F, 18.83334F);
+            this.xrLabel11.SizeF = new System.Drawing.SizeF(513.3174F, 18.83334F);
             this.xrLabel11.StylePriority.UseFont = false;
-            // 
-            // xrLabel14
-            // 
-            this.xrLabel14.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Allocated]")});
-            this.xrLabel14.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel14.LocationFloat = new DevExpress.Utils.PointFloat(428.9167F, 0F);
-            this.xrLabel14.Name = "xrLabel14";
-            this.xrLabel14.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel14.SizeF = new System.Drawing.SizeF(85F, 18.83334F);
-            this.xrLabel14.StylePriority.UseFont = false;
-            this.xrLabel14.TextFormatString = "{0:0}";
-            // 
-            // xrLabel15
-            // 
-            this.xrLabel15.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[OnOrder]")});
-            this.xrLabel15.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel15.LocationFloat = new DevExpress.Utils.PointFloat(513.9167F, 0F);
-            this.xrLabel15.Name = "xrLabel15";
-            this.xrLabel15.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel15.SizeF = new System.Drawing.SizeF(87.5F, 18.83334F);
-            this.xrLabel15.StylePriority.UseFont = false;
-            this.xrLabel15.TextFormatString = "{0:0}";
-            // 
-            // xrLabel17
-            // 
-            this.xrLabel17.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Available]")});
-            this.xrLabel17.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel17.LocationFloat = new DevExpress.Utils.PointFloat(601.4169F, 0F);
-            this.xrLabel17.Name = "xrLabel17";
-            this.xrLabel17.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel17.SizeF = new System.Drawing.SizeF(85F, 18.83334F);
-            this.xrLabel17.StylePriority.UseFont = false;
-            this.xrLabel17.TextFormatString = "{0:0}";
             // 
             // xrLabel18
             // 
@@ -214,7 +169,7 @@ namespace WMS.Reports
             this.xrLabel13.Multiline = true;
             this.xrLabel13.Name = "xrLabel13";
             this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel13.SizeF = new System.Drawing.SizeF(255.8174F, 18.83334F);
+            this.xrLabel13.SizeF = new System.Drawing.SizeF(513.3176F, 18.83334F);
             this.xrLabel13.StylePriority.UseFont = false;
             this.xrLabel13.Text = "Product Name\r\n";
             // 
@@ -351,7 +306,7 @@ namespace WMS.Reports
             this.sqlDataSource1.ConnectionName = "ApplicationContext";
             this.sqlDataSource1.Name = "sqlDataSource1";
             columnExpression1.ColumnName = "ProductId";
-            table1.MetaSerializable = "<Meta X=\"30\" Y=\"30\" Width=\"125\" Height=\"1255\" />";
+            table1.MetaSerializable = "<Meta X=\"30\" Y=\"30\" Width=\"125\" Height=\"1523\" />";
             table1.Name = "ProductMaster";
             columnExpression1.Table = table1;
             column1.Expression = columnExpression1;
@@ -362,7 +317,7 @@ namespace WMS.Reports
             columnExpression3.Table = table1;
             column3.Expression = columnExpression3;
             columnExpression4.ColumnName = "InStock";
-            table2.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"324\" />";
+            table2.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"343\" />";
             table2.Name = "InventoryStocks";
             columnExpression4.Table = table2;
             column4.Expression = columnExpression4;
@@ -402,9 +357,10 @@ namespace WMS.Reports
             queryParameter3.Name = "sqlParamProductIds";
             queryParameter3.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter3.Value = new DevExpress.DataAccess.Expression("[Parameters.paramProductId]", typeof(int));
-            selectQuery1.Parameters.Add(queryParameter1);
-            selectQuery1.Parameters.Add(queryParameter2);
-            selectQuery1.Parameters.Add(queryParameter3);
+            selectQuery1.Parameters.AddRange(new DevExpress.DataAccess.Sql.QueryParameter[] {
+            queryParameter1,
+            queryParameter2,
+            queryParameter3});
             relationColumnInfo1.NestedKeyColumn = "ProductId";
             relationColumnInfo1.ParentKeyColumn = "ProductId";
             join1.KeyColumns.Add(relationColumnInfo1);
@@ -420,46 +376,13 @@ namespace WMS.Reports
             // xrLabel4
             // 
             this.xrLabel4.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(343.9168F, 0F);
+            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(601.417F, 0F);
             this.xrLabel4.Multiline = true;
             this.xrLabel4.Name = "xrLabel4";
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel4.SizeF = new System.Drawing.SizeF(84.99985F, 18.83334F);
             this.xrLabel4.StylePriority.UseFont = false;
             this.xrLabel4.Text = "In Stock ";
-            // 
-            // xrLabel7
-            // 
-            this.xrLabel7.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(428.9167F, 0F);
-            this.xrLabel7.Multiline = true;
-            this.xrLabel7.Name = "xrLabel7";
-            this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel7.SizeF = new System.Drawing.SizeF(85.00006F, 18.83334F);
-            this.xrLabel7.StylePriority.UseFont = false;
-            this.xrLabel7.Text = "Allocated";
-            // 
-            // xrLabel8
-            // 
-            this.xrLabel8.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(513.9167F, 0F);
-            this.xrLabel8.Multiline = true;
-            this.xrLabel8.Name = "xrLabel8";
-            this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel8.SizeF = new System.Drawing.SizeF(87.50003F, 18.83334F);
-            this.xrLabel8.StylePriority.UseFont = false;
-            this.xrLabel8.Text = "On Order";
-            // 
-            // xrLabel9
-            // 
-            this.xrLabel9.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(601.4167F, 0F);
-            this.xrLabel9.Multiline = true;
-            this.xrLabel9.Name = "xrLabel9";
-            this.xrLabel9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel9.SizeF = new System.Drawing.SizeF(85.00012F, 18.83334F);
-            this.xrLabel9.StylePriority.UseFont = false;
-            this.xrLabel9.Text = "Available";
             // 
             // xrLabel10
             // 
@@ -476,11 +399,8 @@ namespace WMS.Reports
             // 
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel10,
-            this.xrLabel9,
-            this.xrLabel8,
             this.xrLabel4,
             this.xrLabel12,
-            this.xrLabel7,
             this.xrLabel13});
             this.PageHeader.HeightF = 25F;
             this.PageHeader.Name = "PageHeader";
@@ -505,7 +425,7 @@ namespace WMS.Reports
             this.paramProductId,
             this.paramTenantId,
             this.paramWarehouseId});
-            this.Version = "20.1";
+            this.Version = "21.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
@@ -514,14 +434,8 @@ namespace WMS.Reports
 
         private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
         private XRLabel xrLabel4;
-        private XRLabel xrLabel7;
-        private XRLabel xrLabel8;
-        private XRLabel xrLabel9;
         private XRLabel xrLabel10;
         public XRLabel xrLabel11;
-        public XRLabel xrLabel14;
-        public XRLabel xrLabel15;
-        public XRLabel xrLabel17;
         public XRLabel xrLabel18;
         private XRLine xrLine1;
         private PageHeaderBand PageHeader;

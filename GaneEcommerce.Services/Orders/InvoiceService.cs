@@ -553,6 +553,21 @@ namespace Ganedata.Core.Services
             }
             return true;
         }
+        public bool RemoveOrderProcesses(int id, int userId, int tenantId)
+        {
+            var invoice = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == id);
+            if (invoice != null)
+            {
+                invoice.TenentId = tenantId;
+                invoice.IsDeleted = true;
+                invoice.UpdatedBy = userId;
+                invoice.DateUpdated = DateTime.UtcNow;
+                _currentDbContext.Entry(invoice);
+                _currentDbContext.SaveChanges();
+            }
+            return true;
+        }
+
 
         public bool SaveInvoiceDetail(InvoiceDetail detail, int tenantId, int userId, decimal priceTobeUpdated)
         {

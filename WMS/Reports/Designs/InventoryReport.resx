@@ -121,7 +121,7 @@
     <value>17, 173</value>
   </metadata>
   <data name="selectQuery1.FilterString" xml:space="preserve">
-    <value>[InventoryStocks.TenantId] = ?sqlParamTenantId And [InventoryStocks.WarehouseId] = ?sqlParamWarehouseId And [InventoryStocks.ProductId] In (?sqlParamProductIds) And ([ProductMaster.IsDeleted] Is Null Or [ProductMaster.IsDeleted] &lt;&gt; True)</value>
+    <value>[InventoryStocks.TenantId] = ?sqlParamTenantId And [InventoryStocks.WarehouseId] = ?sqlParamWarehouseId And [InventoryStocks.ProductId] In (?sqlParamProductIds) And ([ProductMaster.IsDeleted] Is Null Or [ProductMaster.IsDeleted] &lt;&gt; True) And [InventoryStocks.InStock] &gt; 0.0m</value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
     <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9InF1ZXJ5SW52ZW50b3J5U3RvY2tzIj48RmllbGQgTmFtZT0iUHJvZHVjdElkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iU0tVQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluU3RvY2siIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9Ik9uT3JkZXIiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IkFsbG9jYXRlZCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iQXZhaWxhYmxlIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJEYXRlVXBkYXRlZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IlRlbmFudElkIiBUeXBlPSJJbnQzMiIgLz48L1ZpZXc+PC9EYXRhU2V0Pg==</value>

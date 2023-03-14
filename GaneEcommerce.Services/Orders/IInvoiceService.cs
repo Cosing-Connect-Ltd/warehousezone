@@ -27,5 +27,7 @@ namespace Ganedata.Core.Services
         
 
         bool RemoveInvoice(int id, int userId,int tenantId);
+
+        bool RemoveOrderProcesses(int id, int userId, int tenantId);
     }
 }

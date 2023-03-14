@@ -761,7 +761,19 @@ namespace WMS.Controllers
 
         public JsonResult DeleteInvoice(int id)
         {
-            return Json(_invoiceService.RemoveInvoice(id,CurrentUserId,CurrentTenantId),JsonRequestBehavior.AllowGet);
+            return Json(_invoiceService.RemoveInvoice(id, CurrentUserId, CurrentTenantId), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DeleteOrderProcesses(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var processIds = id.Split(',');
+                foreach (var processId in processIds)
+                {
+                    _invoiceService.RemoveOrderProcesses(processId.AsInt(), CurrentUserId, CurrentTenantId);
+                }
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
     }

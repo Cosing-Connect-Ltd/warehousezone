@@ -197,6 +197,23 @@
             })
         }
     }
+    function RemoveOrderProcess() {
+        var selectedIds = $("#SelectedOrderProcessIds").val();
+        if(selectedIds.length <= 0) { alert("Please select order first, which you want to  process"); return; }
+        if (confirm("Are you sure to delete this Order Process?")) {
+            $.ajax({
+                url: '/Invoice/DeleteOrderProcesses',
+                type: "GET",
+                data: { id: selectedIds },
+                success: function (data) {
+                    gridMasterAwaitingInvoicing.Refresh();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
+                }
+            })
+        }
+    }
     function OnGridFocusedRowChanged(s, e) {
         $('#invoiceId').val(s.GetRowKey(s.GetFocusedRowIndex()));
 
@@ -221,6 +238,7 @@
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <a type="button" class="btn btn-primary" href="@Url.Action("CreateInvoice")"><b class="fa fa-list"></b>New Custom Invoice</a>
             <a type="button" class="btn btn-primary" href="javascript:GenerateInvoiceForSelected()"><b class="fa fa-print"></b>Generate Invoices</a>
+            <a type="button" class="btn btn-primary" href="javascript:RemoveOrderProcess()"><b class="fa fa-trash"></b>Delete</a>
         </div>
     </div>
     <div id="TP">
