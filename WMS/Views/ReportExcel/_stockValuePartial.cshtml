@@ -1,0 +1,118 @@
+﻿
+@using Ganedata.Core.Entities.Enums
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "stockvalueexcelView";
+        settings.CallbackRouteValues = new
+        {
+            Controller = "ReportExcel",
+            Action = "_stockValuePartial",
+            productIds = ViewBag.productIds
+
+        };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsPager.PageSize = 10;
+        settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.WYSIWYG;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsExport.EnableClientSideExportAPI = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Settings.ShowGroupPanel = true;
+
+        settings.Toolbars.Add(toolbar =>
+        {
+            toolbar.Position = GridToolbarPosition.Top;
+            toolbar.ItemAlign = GridToolbarItemAlign.Left;
+
+            toolbar.Items.Add(i =>
+            {
+                i.Text = "Export Type";
+                i.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ActionsDownload16x16office2013;
+                i.BeginGroup = true;
+                i.Items.Add(GridViewToolbarCommand.ExportToCsv);
+                i.Items.Add(GridViewToolbarCommand.ExportToXls);
+                i.Items.Add(GridViewToolbarCommand.ExportToXlsx);
+                i.Items.Add(GridViewToolbarCommand.ExportToPdf);
+                i.Items.Add(GridViewToolbarCommand.ExportToDocx);
+                i.Items.Add(GridViewToolbarCommand.ExportToRtf);
+            });
+        });
+
+        if (ViewData["exportRowType"] != null)
+        {
+            settings.SettingsExport.ExportSelectedRowsOnly = ViewData["exportRowType"] as GridViewExportedRowType? == GridViewExportedRowType.Selected;
+        }
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SkuCode";
+            c.Caption = "Sku Code";
+            c.GroupIndex = 0;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ProductName";
+            c.Caption = "Product Name";
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNumber";
+            c.Caption = "Order";
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PalletSerial";
+            c.Caption = "Pallet";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Qty";
+            c.Caption = "Cases";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "BuyPrice";
+            c.Caption = "Buy Price";
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TotalAmount";
+            c.Caption = "Total";
+        });
+
+        settings.ClientSideEvents.BeginCallback = "OnBeginCallbackSVReport";
+        settings.ClientSideEvents.EndCallback = "OnEndCallbackSVReport";
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsBehavior.AutoExpandAllGroups = true;
+        settings.Settings.ShowFooter = true;
+        settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "TotalAmount").DisplayFormat = "c";
+        settings.GroupSummary.Add(DevExpress.Data.SummaryItemType.Sum, "TotalAmount").DisplayFormat = "Total {0}";
+
+    });
+
+
+}
+
+@grid.Bind(Model).GetHtml()

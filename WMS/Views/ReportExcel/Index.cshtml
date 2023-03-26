@@ -1,0 +1,47 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Stock Value Report";
+}
+
+<h2><span>Stock Value Report</span></h2>
+
+<script type="text/javascript">
+    var OnBeginCallbackSVReport = function (s, e) {
+        var productid = $("#ProductId").val();
+        e.customArgs["productId"] = productid;
+    }
+    var OnEndCallbackSVReport = function (s, e) {
+        $("#dvbusy").hide();
+        
+    }
+</script>
+<form>
+    <div class="col-md-12 report-date-header">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Select Products", htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-4 text-center pull-left">
+                @Html.ListBox("ProductId", new MultiSelectList(ViewBag.products, "ProductId", "Name"), new { Multiple = "multiple", size = "80", @class = "chosen-select", data_placeholder = "Choose Products" })
+            </div>
+            <a id="linksearch" class="btn btn-primary">Search</a>
+        </div>
+    </div>
+
+    @Html.Action("_stockValuePartial", "ReportExcel", new { productIds = new List<int>() })
+</form>
+<script>
+    $("#linksearch").on("click", function () {
+        stockvalueexcelView.Refresh();
+    });
+</script>

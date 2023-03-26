@@ -1023,6 +1023,7 @@
       <DependentUpon>MarketTotal.cs</DependentUpon>
     </Compile>
     <Compile Include="Controllers\TenantEmailNotificationQueuesController.cs" />
+    <Compile Include="Views\ReportExcelController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="apple-touch-icon-120x120-precomposed.png" />
@@ -2275,6 +2276,8 @@
     <Content Include="Views\Reports\InvoiceTrackingReport.cshtml" />
     <Content Include="Views\Reports\PalletExpirableReport.cshtml" />
     <Content Include="Views\Shared\_InventoryAdjustmentPartial.cshtml" />
+    <Content Include="Views\ReportExcel\_stockValuePartial.cshtml" />
+    <Content Include="Views\ReportExcel\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
