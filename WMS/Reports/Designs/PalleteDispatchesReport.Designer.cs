@@ -53,33 +53,33 @@
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression8 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Column column9 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression9 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Column column10 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression10 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter1 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.Join join1 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.Join join2 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo2 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.SelectQuery selectQuery2 = new DevExpress.DataAccess.Sql.SelectQuery();
-            DevExpress.DataAccess.Sql.Column column10 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression10 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table4 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column11 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression11 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Table table4 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column12 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression12 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Column column13 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression13 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Column column14 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression14 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table5 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column15 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression15 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Table table5 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column16 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression16 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Column column17 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression17 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table6 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column18 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression18 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Table table6 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column19 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression19 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Column column20 = new DevExpress.DataAccess.Sql.Column();
@@ -96,20 +96,22 @@
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression25 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Column column26 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression26 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table7 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column27 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression27 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table8 = new DevExpress.DataAccess.Sql.Table();
+            DevExpress.DataAccess.Sql.Table table7 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column28 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression28 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table9 = new DevExpress.DataAccess.Sql.Table();
+            DevExpress.DataAccess.Sql.Table table8 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column29 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression29 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table10 = new DevExpress.DataAccess.Sql.Table();
+            DevExpress.DataAccess.Sql.Table table9 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column30 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression30 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Table table10 = new DevExpress.DataAccess.Sql.Table();
             DevExpress.DataAccess.Sql.Column column31 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression31 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Column column32 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression32 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.Join join3 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo3 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
@@ -175,6 +177,9 @@
             this.calculatedField1 = new DevExpress.XtraReports.UI.CalculatedField();
             this.calculatedField2 = new DevExpress.XtraReports.UI.CalculatedField();
             this.calculatedField3 = new DevExpress.XtraReports.UI.CalculatedField();
+            this.pallettype = new DevExpress.XtraReports.UI.CalculatedField();
+            this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel11 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -192,6 +197,8 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel10,
+            this.xrLabel11,
             this.xrTable1,
             this.xrBarCode2,
             this.xrLabel18,
@@ -378,10 +385,10 @@
             // xrLabel3
             // 
             this.xrLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0F, 487.4167F);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0F, 474.6666F);
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel3.SizeF = new System.Drawing.SizeF(237.9518F, 70.91656F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(237.9518F, 54.24988F);
             this.xrLabel3.StylePriority.UseFont = false;
             this.xrLabel3.StylePriority.UseTextAlignment = false;
             this.xrLabel3.Text = "Despatch Ref:";
@@ -392,10 +399,10 @@
             this.xrLabel4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DispatchReference]")});
             this.xrLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 489.4168F);
+            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 476.6667F);
             this.xrLabel4.Name = "xrLabel4";
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel4.SizeF = new System.Drawing.SizeF(546.0482F, 68.91635F);
+            this.xrLabel4.SizeF = new System.Drawing.SizeF(546.0482F, 52.24973F);
             this.xrLabel4.StylePriority.UseFont = false;
             this.xrLabel4.StylePriority.UseTextAlignment = false;
             this.xrLabel4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -495,10 +502,10 @@
             this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TrackingReference]")});
             this.xrLabel8.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(237.9518F, 418.5835F);
+            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(237.9519F, 418.5835F);
             this.xrLabel8.Name = "xrLabel8";
             this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel8.SizeF = new System.Drawing.SizeF(546.0482F, 68.83331F);
+            this.xrLabel8.SizeF = new System.Drawing.SizeF(546.0482F, 58.08328F);
             this.xrLabel8.StylePriority.UseFont = false;
             this.xrLabel8.StylePriority.UseTextAlignment = false;
             this.xrLabel8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -510,7 +517,7 @@
             this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(0F, 418.5833F);
             this.xrLabel7.Name = "xrLabel7";
             this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel7.SizeF = new System.Drawing.SizeF(237.9518F, 68.83325F);
+            this.xrLabel7.SizeF = new System.Drawing.SizeF(237.9518F, 56.08325F);
             this.xrLabel7.StylePriority.UseFont = false;
             this.xrLabel7.StylePriority.UseTextAlignment = false;
             this.xrLabel7.Text = "Tracking Ref:";
@@ -521,7 +528,7 @@
             this.sqlDataSource1.ConnectionName = "ApplicationContext";
             this.sqlDataSource1.Name = "sqlDataSource1";
             columnExpression1.ColumnName = "PalletNumber";
-            table1.MetaSerializable = "<Meta X=\"0\" Y=\"20\" Width=\"180\" Height=\"400\" />";
+            table1.MetaSerializable = "<Meta X=\"0\" Y=\"20\" Width=\"180\" Height=\"443\" />";
             table1.Name = "Pallets";
             columnExpression1.Table = table1;
             column1.Expression = columnExpression1;
@@ -529,7 +536,7 @@
             columnExpression2.Table = table1;
             column2.Expression = columnExpression2;
             columnExpression3.ColumnName = "AccountCode";
-            table2.MetaSerializable = "<Meta X=\"220\" Y=\"30\" Width=\"125\" Height=\"647\" />";
+            table2.MetaSerializable = "<Meta X=\"220\" Y=\"30\" Width=\"125\" Height=\"763\" />";
             table2.Name = "Account";
             columnExpression3.Table = table2;
             column3.Expression = columnExpression3;
@@ -540,7 +547,7 @@
             columnExpression5.Table = table2;
             column5.Expression = columnExpression5;
             columnExpression6.ColumnName = "DispatchReference";
-            table3.MetaSerializable = "<Meta X=\"420\" Y=\"70\" Width=\"310\" Height=\"495\" />";
+            table3.MetaSerializable = "<Meta X=\"420\" Y=\"70\" Width=\"310\" Height=\"623\" />";
             table3.Name = "PalletsDispatches";
             columnExpression6.Table = table3;
             column6.Expression = columnExpression6;
@@ -553,6 +560,9 @@
             columnExpression9.ColumnName = "PalletsDispatchID";
             columnExpression9.Table = table1;
             column9.Expression = columnExpression9;
+            columnExpression10.ColumnName = "PalletTypeId";
+            columnExpression10.Table = table1;
+            column10.Expression = columnExpression10;
             selectQuery1.Columns.Add(column1);
             selectQuery1.Columns.Add(column2);
             selectQuery1.Columns.Add(column3);
@@ -562,6 +572,7 @@
             selectQuery1.Columns.Add(column7);
             selectQuery1.Columns.Add(column8);
             selectQuery1.Columns.Add(column9);
+            selectQuery1.Columns.Add(column10);
             selectQuery1.FilterString = "[Pallets.PalletsDispatchID] = ?sqlParamDispatchId And ([Pallets.IsDeleted] = Fals" +
     "e Or [Pallets.IsDeleted] Is Null)";
             selectQuery1.GroupFilterString = "";
@@ -587,87 +598,86 @@
             selectQuery1.Tables.Add(table1);
             selectQuery1.Tables.Add(table2);
             selectQuery1.Tables.Add(table3);
-            columnExpression10.ColumnName = "ProductID";
+            columnExpression11.ColumnName = "ProductID";
             table4.MetaSerializable = "<Meta X=\"30\" Y=\"30\" Width=\"125\" Height=\"283\" />";
             table4.Name = "PalletProducts";
-            columnExpression10.Table = table4;
-            column10.Expression = columnExpression10;
-            columnExpression11.ColumnName = "PalletID";
             columnExpression11.Table = table4;
             column11.Expression = columnExpression11;
-            columnExpression12.ColumnName = "Quantity";
+            columnExpression12.ColumnName = "PalletID";
             columnExpression12.Table = table4;
             column12.Expression = columnExpression12;
-            columnExpression13.ColumnName = "OrderID";
+            columnExpression13.ColumnName = "Quantity";
             columnExpression13.Table = table4;
             column13.Expression = columnExpression13;
-            columnExpression14.ColumnName = "SKUCode";
+            columnExpression14.ColumnName = "OrderID";
+            columnExpression14.Table = table4;
+            column14.Expression = columnExpression14;
+            columnExpression15.ColumnName = "SKUCode";
             table5.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"1523\" />";
             table5.Name = "ProductMaster";
-            columnExpression14.Table = table5;
-            column14.Expression = columnExpression14;
-            columnExpression15.ColumnName = "Name";
             columnExpression15.Table = table5;
             column15.Expression = columnExpression15;
-            columnExpression16.ColumnName = "BarCode";
+            columnExpression16.ColumnName = "Name";
             columnExpression16.Table = table5;
             column16.Expression = columnExpression16;
-            columnExpression17.ColumnName = "OrderNumber";
+            columnExpression17.ColumnName = "BarCode";
+            columnExpression17.Table = table5;
+            column17.Expression = columnExpression17;
+            columnExpression18.ColumnName = "OrderNumber";
             table6.MetaSerializable = "<Meta X=\"390\" Y=\"40\" Width=\"125\" Height=\"1963\" />";
             table6.Name = "Orders";
-            columnExpression17.Table = table6;
-            column17.Expression = columnExpression17;
-            columnExpression18.ColumnName = "IssueDate";
             columnExpression18.Table = table6;
             column18.Expression = columnExpression18;
-            columnExpression19.ColumnName = "Note";
+            columnExpression19.ColumnName = "IssueDate";
             columnExpression19.Table = table6;
             column19.Expression = columnExpression19;
-            columnExpression20.ColumnName = "ShipmentAddressLine1";
+            columnExpression20.ColumnName = "Note";
             columnExpression20.Table = table6;
             column20.Expression = columnExpression20;
-            columnExpression21.ColumnName = "ShipmentAddressLine2";
+            columnExpression21.ColumnName = "ShipmentAddressLine1";
             columnExpression21.Table = table6;
             column21.Expression = columnExpression21;
-            columnExpression22.ColumnName = "ShipmentAddressLine3";
+            columnExpression22.ColumnName = "ShipmentAddressLine2";
             columnExpression22.Table = table6;
             column22.Expression = columnExpression22;
-            columnExpression23.ColumnName = "ShipmentAddressTown";
+            columnExpression23.ColumnName = "ShipmentAddressLine3";
             columnExpression23.Table = table6;
             column23.Expression = columnExpression23;
-            columnExpression24.ColumnName = "ShipmentAddressPostcode";
+            columnExpression24.ColumnName = "ShipmentAddressTown";
             columnExpression24.Table = table6;
             column24.Expression = columnExpression24;
-            columnExpression25.ColumnName = "CountryOfOrigion";
-            columnExpression25.Table = table5;
+            columnExpression25.ColumnName = "ShipmentAddressPostcode";
+            columnExpression25.Table = table6;
             column25.Expression = columnExpression25;
-            columnExpression26.ColumnName = "ID";
+            columnExpression26.ColumnName = "CountryOfOrigion";
+            columnExpression26.Table = table5;
+            column26.Expression = columnExpression26;
+            columnExpression27.ColumnName = "ID";
             table7.MetaSerializable = "<Meta X=\"545\" Y=\"30\" Width=\"125\" Height=\"423\" />";
             table7.Name = "OrderProcessDetails";
-            columnExpression26.Table = table7;
-            column26.Expression = columnExpression26;
-            columnExpression27.ColumnName = "ProductGroup";
+            columnExpression27.Table = table7;
+            column27.Expression = columnExpression27;
+            columnExpression28.ColumnName = "ProductGroup";
             table8.MetaSerializable = "<Meta X=\"700\" Y=\"30\" Width=\"125\" Height=\"303\" />";
             table8.Name = "ProductGroups";
-            columnExpression27.Table = table8;
-            column27.Expression = columnExpression27;
-            columnExpression28.ColumnName = "EnableTimberProperties";
+            columnExpression28.Table = table8;
+            column28.Expression = columnExpression28;
+            columnExpression29.ColumnName = "EnableTimberProperties";
             table9.MetaSerializable = "<Meta X=\"855\" Y=\"30\" Width=\"125\" Height=\"1563\" />";
             table9.Name = "TenantConfigs";
-            columnExpression28.Table = table9;
-            column28.Expression = columnExpression28;
-            columnExpression29.ColumnName = "PalletsDispatchID";
+            columnExpression29.Table = table9;
+            column29.Expression = columnExpression29;
+            columnExpression30.ColumnName = "PalletsDispatchID";
             table10.MetaSerializable = "<Meta X=\"1010\" Y=\"30\" Width=\"125\" Height=\"423\" />";
             table10.Name = "Pallets";
-            columnExpression29.Table = table10;
-            column29.Expression = columnExpression29;
-            columnExpression30.ColumnName = "Weight";
-            columnExpression30.Table = table5;
+            columnExpression30.Table = table10;
             column30.Expression = columnExpression30;
-            columnExpression31.ColumnName = "CasesPerPallet";
+            columnExpression31.ColumnName = "Weight";
             columnExpression31.Table = table5;
             column31.Expression = columnExpression31;
-            selectQuery2.Columns.Add(column10);
+            columnExpression32.ColumnName = "CasesPerPallet";
+            columnExpression32.Table = table5;
+            column32.Expression = columnExpression32;
             selectQuery2.Columns.Add(column11);
             selectQuery2.Columns.Add(column12);
             selectQuery2.Columns.Add(column13);
@@ -689,6 +699,7 @@
             selectQuery2.Columns.Add(column29);
             selectQuery2.Columns.Add(column30);
             selectQuery2.Columns.Add(column31);
+            selectQuery2.Columns.Add(column32);
             selectQuery2.FilterString = "[Pallets.PalletsDispatchID] = ?dispatchId And [PalletProducts.Quantity] > 0.0m An" +
     "d ([PalletProducts.IsDeleted] = False Or [PalletProducts.IsDeleted] Is Null)";
             selectQuery2.GroupFilterString = "";
@@ -937,6 +948,40 @@
             this.calculatedField3.Expression = "Iif([CasesPerPallet]*[Weight]>0,([CasesPerPallet]*[Weight])+\'Kg\',\'-\')\n";
             this.calculatedField3.Name = "calculatedField3";
             // 
+            // pallettype
+            // 
+            this.pallettype.DataMember = "Pallets";
+            this.pallettype.Expression = "Iif([PalletTypeId]==1,\'CHEP/BLUE\',Iif([PalletTypeId]==2,\'LPR/RED\',Iif([PalletType" +
+    "Id]==3,\'IPP/BROWN\',Iif([PalletTypeId]==4,\'WHITE\',Iif([PalletTypeId]==5,\'EURO\',\'\'" +
+    ")))))";
+            this.pallettype.Name = "pallettype";
+            // 
+            // xrLabel10
+            // 
+            this.xrLabel10.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[pallettype]")});
+            this.xrLabel10.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(242.9518F, 530.9166F);
+            this.xrLabel10.Name = "xrLabel10";
+            this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel10.SizeF = new System.Drawing.SizeF(546.0482F, 52.24973F);
+            this.xrLabel10.StylePriority.UseFont = false;
+            this.xrLabel10.StylePriority.UseTextAlignment = false;
+            this.xrLabel10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            this.xrLabel10.TextFormatString = "{0:dd/MM/yyyy}";
+            // 
+            // xrLabel11
+            // 
+            this.xrLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(5F, 528.9164F);
+            this.xrLabel11.Name = "xrLabel11";
+            this.xrLabel11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel11.SizeF = new System.Drawing.SizeF(237.9518F, 54.24988F);
+            this.xrLabel11.StylePriority.UseFont = false;
+            this.xrLabel11.StylePriority.UseTextAlignment = false;
+            this.xrLabel11.Text = "Pallet Type:";
+            this.xrLabel11.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            // 
             // PalleteDispatchesReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -947,7 +992,8 @@
             this.CalculatedFields.AddRange(new DevExpress.XtraReports.UI.CalculatedField[] {
             this.calculatedField1,
             this.calculatedField2,
-            this.calculatedField3});
+            this.calculatedField3,
+            this.pallettype});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sqlDataSource1});
             this.DataMember = "Pallets";
@@ -1018,5 +1064,8 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel5;
         private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeader1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel9;
+        private DevExpress.XtraReports.UI.CalculatedField pallettype;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel10;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel11;
     }
 }

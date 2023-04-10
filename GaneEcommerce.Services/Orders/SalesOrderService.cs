@@ -512,7 +512,7 @@ namespace Ganedata.Core.Services
                 IssueDate = p.IssueDate,
                 DateUpdated = p.DateUpdated,
                 DateCreated = p.DateCreated,
-                ExpectedDate=p.ExpectedDate,
+                ExpectedDate = p.ExpectedDate,
                 POStatus = p.OrderStatusID.ToString(),
                 OrderStatusID = p.OrderStatusID,
                 Account = p.Account.AccountCode,
@@ -770,10 +770,11 @@ namespace Ganedata.Core.Services
 
         public List<ProductOrdersDetailViewModel> GetPurhaseOrderAgainstProductId(int[] productIds, int tenantId, int warehouseId)
         {
-
-            var palletIds = _currentDbContext.PalletTracking.Where(o => o.TenantId == tenantId && o.WarehouseId == warehouseId && o.RemainingCases > 0 && (o.Status == PalletTrackingStatusEnum.Active || o.Status == PalletTrackingStatusEnum.Hold)
-            && productIds.Contains(o.ProductId)).Select(c => c.PalletTrackingId).ToList();
-            var InventoryTransactions = _currentDbContext.InventoryTransactions.Where(c => palletIds.Contains(c.PalletTrackingId ?? 0) && (c.InventoryTransactionTypeId==InventoryTransactionTypeEnum.PurchaseOrder));
+            
+            var palletIds = _currentDbContext.PalletTracking.Where(o => o.TenantId == tenantId && o.WarehouseId == warehouseId && o.RemainingCases > 0
+            && (o.Status == PalletTrackingStatusEnum.Active || o.Status == PalletTrackingStatusEnum.Hold)
+            && (productIds.Any(c => c == 0) || productIds.Contains(o.ProductId))).Select(c => c.PalletTrackingId).ToList();
+            var InventoryTransactions = _currentDbContext.InventoryTransactions.Where(c => palletIds.Contains(c.PalletTrackingId ?? 0) && (c.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder));
 
             var productOrdersDetails = InventoryTransactions.Select(o => new ProductOrdersDetailViewModel
             {
@@ -790,9 +791,9 @@ namespace Ganedata.Core.Services
                 WarrantyAmount = 0,
                 PalletSerial = o.PalletTracking != null ? o.PalletTracking.PalletSerial : "",
                 ProductId = o.ProductId,
-                SkuCode= o.ProductMaster.SKUCode,
-                ProductName=o.ProductMaster.Name,
-                 
+                SkuCode = o.ProductMaster.SKUCode,
+                ProductName = o.ProductMaster.Name,
+
             }).ToList();
 
             productOrdersDetails.ForEach(p =>

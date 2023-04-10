@@ -15,6 +15,8 @@ namespace Ganedata.Core.Services
         void AddFulFillmentPalletAllOrderProducts(int orderProcessId, int palletId, int currentUserId);
 
         Pallet CreateNewPallet(int orderProcessId, int userId);
+        Pallet CreateNewPalletApi(int orderProcessId, int userId,int palletTypeId);
+        
 
         List<PalletProduct> GetFulFillmentPalletProductsForPallet(int palletId);
 

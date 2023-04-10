@@ -108,6 +108,7 @@
         settings.SettingsBehavior.AutoExpandAllGroups = true;
         settings.Settings.ShowFooter = true;
         settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "TotalAmount").DisplayFormat = "c";
+        settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "Qty").DisplayFormat = "c";
         settings.GroupSummary.Add(DevExpress.Data.SummaryItemType.Sum, "TotalAmount").DisplayFormat = "Total {0}";
 
     });

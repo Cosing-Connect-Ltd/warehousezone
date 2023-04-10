@@ -90,6 +90,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool ScannedOnDelivered { get; set; }
         public DateTime? DeliveredScanTime { get; set; }
 
+        public int? PalletTypeId { get; set; }
+
     }
     [Serializable]
     public class PalletProduct : BaseAuditInfo

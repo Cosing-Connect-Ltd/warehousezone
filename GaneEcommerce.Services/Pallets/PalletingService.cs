@@ -154,6 +154,23 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             return pallet;
         }
+        public Pallet CreateNewPalletApi(int orderProcessId, int userId, int palletTypeId)
+        {
+            var orderProcess = _currentDbContext.OrderProcess.Find(orderProcessId);
+
+            var pallet = new Pallet()
+            {
+                PalletNumber = GenerateNextPalletNumber(),
+                DateCreated = DateTime.UtcNow,
+                CreatedBy = userId,
+                OrderProcessID = orderProcessId,
+                RecipientAccountID = orderProcess.Order.AccountID,
+                PalletTypeId = palletTypeId
+            };
+            _currentDbContext.Pallets.Add(pallet);
+            _currentDbContext.SaveChanges();
+            return pallet;
+        }
         public void UpdateAllPallets(int orderProcessId, int userId)
         {
             var orderProcess = _currentDbContext.OrderProcess.Find(orderProcessId);

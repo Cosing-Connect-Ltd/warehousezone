@@ -23,7 +23,10 @@ namespace WMS.Views
         public ActionResult Index()
         {
 
-            ViewBag.products = _productServices.GetAllValidProductMasters(CurrentTenantId).OrderBy(c => c.Name).Select(c => new { c.ProductId, c.Name }).ToList().Distinct();
+            var model = _productServices.GetAllValidProductMasters(CurrentTenantId).OrderBy(c => c.Name).Select(c => new { c.ProductId, c.Name }).Distinct().ToList();
+            model.Insert(0, new { ProductId = 0, Name = "All" });
+            ViewBag.products = model;
+
             return View();
         }
         public PartialViewResult _stockValuePartial(int[] productId)
@@ -33,7 +36,7 @@ namespace WMS.Views
                 return PartialView(new List<ProductOrdersDetailViewModel>());
             }
             ViewBag.productIds = productId;
-            var orders = OrderService.GetPurhaseOrderAgainstProductId(productId.ToArray(), CurrentTenantId, CurrentWarehouseId).OrderBy(c => c.SkuCode);
+            var orders = OrderService.GetPurhaseOrderAgainstProductId(productId, CurrentTenantId, CurrentWarehouseId).OrderBy(c => c.SkuCode);
             return PartialView(orders);
         }
     }

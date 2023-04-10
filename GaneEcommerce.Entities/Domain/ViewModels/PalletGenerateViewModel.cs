@@ -43,6 +43,8 @@ namespace Ganedata.Core.Entities.Domain
 
         public int? UserId { get; set; }
 
+        public int? PalletTypeId { get; set; }
+
         public List<PalletViewModel> PalletList { get; set; }
 
         public List<SelectListItem> AllCurrentPallets { get; set; }
