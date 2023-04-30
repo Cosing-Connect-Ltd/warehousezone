@@ -353,6 +353,8 @@ namespace Ganedata.Core.Services
                 {
                     var dItem = _currentDbContext.OrderDetail.FirstOrDefault(a => a.OrderDetailID == item);
                     dItem.IsDeleted = true;
+                    dItem.UpdatedBy = userId;
+                    dItem.DateUpdated = DateTime.UtcNow;
                 }
                 foreach (var item in cItems)
                 {
