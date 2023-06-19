@@ -738,7 +738,7 @@ namespace WMS.Controllers
             return View("AdminUtilities");
         }
 
-        public ActionResult UpdateProductPriceInAllRelatedTables(int productId, decimal priceTobeChanged,decimal priceTobeUpdated)
+        public ActionResult UpdateProductPriceInAllRelatedTables(int productId, decimal priceTobeChanged, decimal priceTobeUpdated)
         {
 
             foreach (var item in _productServices.GetOrderDetailsByProductId(productId))
@@ -756,13 +756,50 @@ namespace WMS.Controllers
                 item.Total = Math.Round((priceTobeUpdated * item.Quantity), 2);
                 item.Tax = item.Tax > 0 ? item.GlobalTax?.PercentageOfAmount == null ? 0 : Math.Round(((item.Total / 100) * item.GlobalTax.PercentageOfAmount), 2) : 0;
                 item.NetAmount = item.Total + item.Tax;
-                _invoiceServices.SaveInvoiceDetail(item, CurrentTenantId, CurrentUserId,priceTobeChanged);
+                _invoiceServices.SaveInvoiceDetail(item, CurrentTenantId, CurrentUserId, priceTobeChanged);
             }
 
             return View();
         }
 
 
+        public ActionResult UpdateProductForOrder()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult UpdateProductForOrder(string OrderNumber, string opsku, string npsku)
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            var orders = _currentDbContext.Order.AsNoTracking().FirstOrDefault(c => c.OrderNumber.ToLower() == OrderNumber.ToLower() && c.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder);
+            if (orders != null)
+            {
+                var orderdetails = _currentDbContext.OrderDetail.Where(c => c.OrderID == orders.OrderID).ToList();
+                var oldProduct = orderdetails.FirstOrDefault(c => c.ProductMaster.SKUCode.ToLower() == opsku.ToLower());
+                var newProduct = _currentDbContext.ProductMaster.FirstOrDefault(c => c.SKUCode.ToLower() == npsku.ToLower());
+                if (orderdetails.Count > 0 && oldProduct != null && newProduct != null)
+                {
+                    oldProduct.ProductId = newProduct.ProductId;
+                    var orderprocessDetails = _currentDbContext.OrderProcessDetail.Where(c => c.OrderDetailID == oldProduct.OrderDetailID).ToList();
+                    if (orderprocessDetails.Count > 0)
+                    {
+                        var orderprocessIds = orderprocessDetails.Select(c => c.OrderProcessId).FirstOrDefault();
+                        orderprocessDetails.ForEach(c => c.ProductId = newProduct.ProductId);
+                        var inventoryTransaction = _currentDbContext.InventoryTransactions.Where(c => c.OrderProcessId == orderprocessIds).ToList();
+                        inventoryTransaction.ForEach(c => c.ProductId = newProduct.ProductId);
+                        var palletIds = inventoryTransaction.Select(c => c.PalletTrackingId);
+                        var pallettrackings = _currentDbContext.PalletTracking.Where(c => palletIds.Contains(c.PalletTrackingId)).ToList();
+                        pallettrackings.ForEach(c => c.ProductId = newProduct.ProductId);
+
+                    }
+
+
+                }
+                _currentDbContext.SaveChanges();
+            }
+            return RedirectToAction("Index", "SalesOrders");
+        }
 
         public ActionResult ExplicitGC()
         {

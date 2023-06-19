@@ -268,7 +268,7 @@ namespace WMS.Controllers.WebAPI
         public IHttpActionResult CreatePalletAndGetList(PalletGenerateViewModel data)
         {
             int selectedOrderProcessId = data.SelectedOrderProcessId;
-            Pallet newPallet = _palletService.CreateNewPalletApi(selectedOrderProcessId, data.UserId ?? 0,data.PalletTypeId.Value);
+            Pallet newPallet = _palletService.CreateNewPalletApi(selectedOrderProcessId, data.UserId ?? 0,data.PalletTypeId??0);
             PalletGenerateViewModel generateViewModel = new PalletGenerateViewModel();
             generateViewModel.PalletList = _palletService.GetAllPallets(null, null, newPallet.OrderProcessID, null, null, newPallet.PalletsDispatchID).ToList();
             generateViewModel.NextPalletNumber = newPallet.PalletNumber;

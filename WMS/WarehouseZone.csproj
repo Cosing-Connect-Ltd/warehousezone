@@ -2278,6 +2278,7 @@
     <Content Include="Views\Shared\_InventoryAdjustmentPartial.cshtml" />
     <Content Include="Views\ReportExcel\_stockValuePartial.cshtml" />
     <Content Include="Views\ReportExcel\Index.cshtml" />
+    <Content Include="Views\AdminUtilities\UpdateProductForOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
